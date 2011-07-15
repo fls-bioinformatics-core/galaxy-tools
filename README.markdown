@@ -49,4 +49,4 @@ symbolic link is sufficient).
 
 To add to Galaxy put this somewhere in tool_conf.xml:
 
-   <tool file="fls_samstats/samstats.xml" />
+    <tool file="fls_samstats/samstats.xml" />
