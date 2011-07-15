@@ -26,17 +26,20 @@ fastq_screen.conf has been configured appropriately for the local
 setup.
 
 To add to Galaxy put this somewhere in tool_conf.xml:
-<tool file="fls_fastq_screen/fastq_screen.xml" />
+
+    <tool file="fls_fastq_screen/fastq_screen.xml" />
+
+fastq_screen can be obtained from [http://www.bioinformatics.bbsrc.ac.uk/projects/fastq_screen/]().
 
 qc_boxplotter
 -------------
 XML and wrapper script for the FLS SOLiD QC boxplotter. Assumes that
 colour_QC_script.sh (the driver for the boxplotter) is on the Galaxy
-user's path (currently it's in
-bioinf-scripts/NGS-general/qc_boxplotter/).
+user's path (currently it's in bioinf-scripts/NGS-general/qc_boxplotter/).
 
 To add to Galaxy put this somewhere in tool_conf.xml:
-<tool file="fls_qc_boxplotter/qc_boxplotter.xml" />
+
+    <tool file="fls_qc_boxplotter/qc_boxplotter.xml" />
 
 SamStats
 --------
@@ -45,4 +48,5 @@ SamStats.jar file is in .../galaxy-dist/tools-data/shared/jars (a
 symbolic link is sufficient).
 
 To add to Galaxy put this somewhere in tool_conf.xml:
-<tool file="fls_samstats/samstats.xml" />
+
+   <tool file="fls_samstats/samstats.xml" />
