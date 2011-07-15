@@ -1,7 +1,7 @@
 galaxy-tools
 ============
 
-Tools and tool-wrappers for Galaxy.
+FLS tools and tool-wrappers for Galaxy.
 
 Tools are organised into subdirectories; to add these to your local
 Galaxy:
@@ -15,8 +15,13 @@ Galaxy:
 
 You will also need to restart Galaxy for the changes to take effect.
 
-(Note that tests are available for each tool, but the test data is not
-currently in this repository.)
+Note:
+
+ * The XML files also contain test for each tool, but the test data is not
+   currently in this repository.
+
+ * The tool ids of the FLS tools are weakly namespaced by an "fls_" prefix
+   on the tool ids.
 
 fastq_screen
 ------------
