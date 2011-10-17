@@ -39,8 +39,8 @@ fastq_screen can be obtained from [http://www.bioinformatics.bbsrc.ac.uk/project
 qc_boxplotter
 -------------
 XML and wrapper script for the FLS SOLiD QC boxplotter. Assumes that
-colour_QC_script.sh (the driver for the boxplotter) is on the Galaxy
-user's path (currently it's in bioinf-scripts/NGS-general/qc_boxplotter/).
+`qc_boxplotter.sh` (the driver for the boxplotter) is on the Galaxy
+user's path (currently it's in `genomics/NGS-general/`).
 
 To add to Galaxy put this somewhere in tool_conf.xml:
 
