@@ -1,0 +1,14 @@
+#This is a sample file distributed with Galaxy that is used by the
+#fastq_screenr tool. The fastq_screen.loc file has this format (white space 
+#characters are TAB characters):
+#
+#<Description>	<PathToConfFile>
+#
+#For example:
+#
+#Model organisms	/home/galaxy/genomes/model_organisms.conf
+#rRNA screens	/home/galaxy/genomes/rRNA_screens.conf
+#...etc...
+#
+#This file should be placed in galaxy's tool-data directory when the
+#fastq_screen is installed.

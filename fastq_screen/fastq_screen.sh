@@ -5,11 +5,11 @@
 # The wrapper is needed for two reasons:
 #
 # 1. To trap for fastq_screen writing to stderr (which otherwise makes
-#    Galaxy think that the tool run has failed; and
+#    Galaxy think that the tool run has failed); and
 # 2. To rename the auto-generated output file names to file names
 #    chosen by Galaxy.
 #
-# usage: sh fastq_screen.sh <fastq_in> <screen_txt_out> <screen_png_out>
+# usage: sh fastq_screen.sh <fastq_in> <conf_file> <screen_txt_out> <screen_png_out>
 #
 # Note that this wrapper assumes:
 #
@@ -24,7 +24,7 @@ echo FastQ Screen: check for contaminants
 # (Could be mitigated by using --quiet option?)
 # Direct output to a temporary file
 log=`mktemp`
-fastq_screen --color --multilib $1 > $log 2>&1
+fastq_screen --conf $2 --color --multilib $1 > $log 2>&1
 #
 # Check exit code
 if [ "$?" -ne "0" ] ; then
@@ -39,10 +39,10 @@ fi
 # Outputs are <fastq_in>_screen.txt and <fastq_in>_screen.png
 # check these exist and rename to supplied arguments
 if [ -f "${1}_screen.txt" ] ; then
-    /bin/mv ${1}_screen.txt $2
+    /bin/mv ${1}_screen.txt $3
 fi
 if [ -f "${1}_screen.png" ] && [ "$3" != "" ] ; then
-    /bin/mv ${1}_screen.png $3
+    /bin/mv ${1}_screen.png $4
 fi
 #
 # Clean up

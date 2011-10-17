@@ -34,7 +34,11 @@ To add to Galaxy put this somewhere in tool_conf.xml:
 
     <tool file="fls_fastq_screen/fastq_screen.xml" />
 
-fastq_screen can be obtained from [http://www.bioinformatics.bbsrc.ac.uk/projects/fastq_screen/]().
+You also need to make a copy of the `fastq_screen.loc` file (sample
+version is provided here) which points to one or more fastq_screen `.conf`
+files. The user can choose which conf file to use at run time.
+
+`fastq_screen` can be obtained from [http://www.bioinformatics.bbsrc.ac.uk/projects/fastq_screen/]().
 
 qc_boxplotter
 -------------
