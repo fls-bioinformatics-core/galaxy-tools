@@ -34,6 +34,7 @@ if [ "$?" -ne "0" ] ; then
     echo cat $log
     # Clean up and exit
     /bin/rm -f $log
+    /bin/rm -rf $outdir
     exit $?
 fi
 #
@@ -55,5 +56,6 @@ fi
 #
 # Clean up
 /bin/rm -f $log
+/bin/rm -rf $outdir
 #
 # Done
