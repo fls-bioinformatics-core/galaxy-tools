@@ -24,7 +24,8 @@ echo FastQ Screen: check for contaminants
 # (Could be mitigated by using --quiet option?)
 # Direct output to a temporary file
 log=`mktemp`
-fastq_screen --conf $2 --color --multilib $1 > $log 2>&1
+outdir=`mktemp -d`
+fastq_screen --outdir $outdir --conf $2 --color --multilib $1 > $log 2>&1
 #
 # Check exit code
 if [ "$?" -ne "0" ] ; then
@@ -38,11 +39,18 @@ fi
 #
 # Outputs are <fastq_in>_screen.txt and <fastq_in>_screen.png
 # check these exist and rename to supplied arguments
-if [ -f "${1}_screen.txt" ] ; then
-    /bin/mv ${1}_screen.txt $3
+base_name=`basename $1`
+if [ -f "${outdir}/${base_name}_screen.txt" ] ; then
+    /bin/mv ${outdir}/${base_name}_screen.txt $3
+else
+    echo No file ${outdir}/${base_name}_screen.txt
+    exit 1
 fi
-if [ -f "${1}_screen.png" ] && [ "$3" != "" ] ; then
-    /bin/mv ${1}_screen.png $4
+if [ -f "${outdir}/${base_name}_screen.png" ] && [ "$3" != "" ] ; then
+    /bin/mv ${outdir}/${base_name}_screen.png $4
+else
+    echo No file ${outdir}/${base_name}_screen.png
+    exit 1
 fi
 #
 # Clean up
