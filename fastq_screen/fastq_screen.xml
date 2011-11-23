@@ -11,8 +11,8 @@
     </param>
   </inputs>
   <outputs>
-    <data format="txt" name="screen_txt" label="${tool.name} on ${on_string}: report" />
-    <data format="png" name="screen_png" label="${tool.name} on ${on_string}: plot" />
+    <data format="txt" name="screen_txt" label="${tool.name} for ${conf_file.fields.name} on ${on_string}: report" />
+    <data format="png" name="screen_png" label="${tool.name} for ${conf_file.fields.name} on ${on_string}: plot" />
   </outputs>
   <tests>
     <test>
