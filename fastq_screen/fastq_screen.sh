@@ -31,7 +31,7 @@ fastq_screen --outdir $outdir --conf $2 --color --multilib $1 > $log 2>&1
 if [ "$?" -ne "0" ] ; then
     echo FastQ Screen exited with non-zero status
     echo Output:
-    echo cat $log
+    cat $log
     # Clean up and exit
     /bin/rm -f $log
     /bin/rm -rf $outdir
