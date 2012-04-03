@@ -1,5 +1,5 @@
 #This is a sample file distributed with Galaxy that is used by the
-#fastq_screenr tool. The fastq_screen.loc file has this format (white space 
+#fastq_screen tool. The fastq_screen.loc file has this format (white space 
 #characters are TAB characters):
 #
 #<Description>	<PathToConfFile>
