@@ -6,7 +6,7 @@
     <param format="tabular" name="chipseq" type="data" label="ChIP peaks data file" />
   </inputs>
   <outputs>
-    <data format="xls" name="xls_output" label="RnaChipIntegrator XLS" />
+    <data format="xls" name="xls_output" label="RnaChipIntegrator analyses for ${rnaseq.name} vs ${chipseq.name}" />
   </outputs>
   <tests>
     <test>
