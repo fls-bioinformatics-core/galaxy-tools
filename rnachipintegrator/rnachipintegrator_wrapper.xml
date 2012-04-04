@@ -1,0 +1,54 @@
+<tool id="fls_rnachipintegrator_wrapper" name="Run RnaChipIntegrator" version="0.0.1">
+  <description>to analyse gene expression and ChIP data</description>
+  <command interpreter="bash">rnachipintegrator_wrapper.sh $rnaseq $chipseq $xls_output</command>
+  <inputs>
+    <param format="tabular" name="rnaseq" type="data" label="Gene expression data file" />
+    <param format="tabular" name="chipseq" type="data" label="ChIP peaks data file" />
+  </inputs>
+  <outputs>
+    <data format="xls" name="xls_output" label="RnaChipIntegrator XLS" />
+  </outputs>
+  <tests>
+    <test>
+      <param name="rnaseq" value="ExpressionData.txt" />
+      <param name="chipseq" value="ChIP_peaks.txt" />
+      <output name="xls_output" file="peaks.xls" compare="sim_size" />
+    </test>
+    <test>
+      <param name="rnaseq" value="ExpressionData.txt" />
+      <param name="chipseq" value="ChIP_edges.txt" />
+      <output name="xls_output" file="peaks.xls" compare="sim_size" />
+    </test>
+  </tests>
+  <help>
+Run RnaChipIntegrator to perform integrated analyses of gene expression
+and ChIP data, identifying the nearest ChIP peaks to each transcript
+and vice versa.
+
+The program was originally written specifically for ChIP-Seq and RNA-Seq data
+but works equally well for ChIP-chip and microarray expression data, and can
+also be used to integrate any set of genomic features (e.g. canonical genes,
+CpG islands) with expression data.
+
+The expression data must be in a tab-delimited file with the following columns
+of data for each genomic feature (one feature per line):
+
+    ID  chr  start  end  strand  [diff_expr]
+
+`chr` is the chromosome name, `start` and `end` define the limits of the feature,
+and strand must be either `+` or `-`. `ID` is a name which is used to identify the
+genomic feature in the output. The 6th column `diff_expr` is optional, if present
+then it indicates whether the transcript was differentially expressed (= 1) or not
+(= 0).
+
+The ChIP-seq data must be in a tab-delimited file with 3 columns of data for each
+ChIP peak (one per line):
+
+    chr  start  end
+
+`chr` is the chromosome name (must match those in the RNA-seq file), and `start`
+and `end` define the ChIP peaks - these can either be the summit of the binding
+region (in which case 'end' - 'start' = 1), or the entire binding region (with
+'start' and 'end' indicating the extent).
+  </help>
+</tool>
