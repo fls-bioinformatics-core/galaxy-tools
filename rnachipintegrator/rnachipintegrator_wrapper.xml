@@ -21,34 +21,76 @@
     </test>
   </tests>
   <help>
+
+.. class:: infomark
+
+**What it does**
+
 Run RnaChipIntegrator to perform integrated analyses of gene expression
 and ChIP data, identifying the nearest ChIP peaks to each transcript
 and vice versa.
+
+For ChIP peaks defined as regions the following analyses are performed:
+
+* TranscriptsToPeakEdges: reports the nearest transcripts with the smallest
+  distance from either their TSS or TES to the nearest peak edge.
+
+* TSSToPeakEdges: reports the nearest transcripts with the smallest distance
+  from their TSS to the nearest peak edge.
+
+For ChIP peaks defined as summits:
+
+* TSSToSummits: reports the nearest transcripts with the smallest distance
+  from the TSS to the nearest peak summit.
+
+* PeaksToTranscripts: reports the nearest peak summits with the smallest
+  distance to either the TSS or TES of each transcript.
 
 The program was originally written specifically for ChIP-Seq and RNA-Seq data
 but works equally well for ChIP-chip and microarray expression data, and can
 also be used to integrate any set of genomic features (e.g. canonical genes,
 CpG islands) with expression data.
 
+-------------
+
+.. class:: infomark
+
+**Input**
+
 The expression data must be in a tab-delimited file with the following columns
 of data for each genomic feature (one feature per line):
 
-    ID  chr  start  end  strand  [diff_expr]
-
-`chr` is the chromosome name, `start` and `end` define the limits of the feature,
-and strand must be either `+` or `-`. `ID` is a name which is used to identify the
-genomic feature in the output. The 6th column `diff_expr` is optional, if present
-then it indicates whether the transcript was differentially expressed (= 1) or not
-(= 0).
+====== ========== ======================================================================
+Column Name       Description
+====== ========== ======================================================================
+     1 chr        Chromosome name
+     2 start      Start position of the feature
+     3 end        End position of the feature
+     4 strand     Must be either '+' or '-'
+     5 diff_expr  Optional: indicates feature is differentially expressed (1) or not (0)
+====== ========== ======================================================================
 
 The ChIP-seq data must be in a tab-delimited file with 3 columns of data for each
 ChIP peak (one per line):
 
-    chr  start  end
+====== ========== ======================================================================
+Column Name       Description
+====== ========== ======================================================================
+     1 chr        Chromosome name (must match one of those in expression data file)
+     2 start      Start position of the peak 
+     3 end        End position of the peak (start + 1 for summit data)
+====== ========== ======================================================================
 
-`chr` is the chromosome name (must match those in the RNA-seq file), and `start`
-and `end` define the ChIP peaks - these can either be the summit of the binding
-region (in which case 'end' - 'start' = 1), or the entire binding region (with
-'start' and 'end' indicating the extent).
+The ChIP peak data can be either the summit (in which case 'end' - 'start' = 1) or the
+entire extent of the binding region (with 'start' and 'end' indicating the limits).
+
+-------------
+
+.. class:: infomark
+
+**Output**
+
+An Excel spreadsheet with one page for each analysis performed.
+
   </help>
 </tool>
