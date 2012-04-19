@@ -25,20 +25,30 @@ Note:
 
 fastq_screen
 ------------
-XML and wrapper script for fastq_screen program. Assumes that
-fastq_screen program is on the Galaxy user's path, and that
-fastq_screen.conf has been configured appropriately for the local
-setup.
+XML and wrapper script for fastq_screen program.
 
-To add to Galaxy put this somewhere in tool_conf.xml:
+The tool assumes that the fastq_screen program is on the Galaxy user's path,
+and that one or more fastq_screen `.conf` files have been configured
+for the appropriate bowtie indexes and added to the `fastq_screen.loc` data
+file.
 
-    <tool file="fls_fastq_screen/fastq_screen.xml" />
+`fastq_screen` can be obtained from [http://www.bioinformatics.bbsrc.ac.uk/projects/fastq_screen/]().
+
+To add to Galaxy add the following to tool_conf.xml:
+
+    <tool file="fastq_screen/fastq_screen.xml" />
 
 You also need to make a copy of the `fastq_screen.loc` file (sample
 version is provided here) which points to one or more fastq_screen `.conf`
-files. The user can choose which conf file to use at run time.
+files along with the type of data that the conf file can operate with (i.e.
+`fastqsanger` for letterspace data, `fastqcssanger` for colorspace). The
+user can choose which conf file to use at run time.
 
-`fastq_screen` can be obtained from [http://www.bioinformatics.bbsrc.ac.uk/projects/fastq_screen/]().
+### Changes ###
+
+0.1.0: allows both colorspace and letterspace conf files to be specified in
+       the fastq_screen.loc file.
+       Note that there is a change in loc file format from earlier versions.
 
 qc_boxplotter
 -------------

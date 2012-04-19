@@ -9,7 +9,7 @@
 # 2. To rename the auto-generated output file names to file names
 #    chosen by Galaxy.
 #
-# usage: sh fastq_screen.sh <fastq_in> <conf_file> <screen_txt_out> <screen_png_out>
+# usage: sh fastq_screen.sh [ --color ] <fastq_in> <conf_file> <screen_txt_out> <screen_png_out>
 #
 # Note that this wrapper assumes:
 #
@@ -19,21 +19,33 @@
 #
 echo FastQ Screen: check for contaminants
 #
+# Check command line options
+OPTS=
+if [ "$1" == "--color" ] ; then
+    # Only --color supported
+    OPTS="$OPTS $1"
+    shift
+fi
+#
+# Check conf file exists
+if [ ! -f "$2" ] ; then
+    echo No conf file $2
+    exit 1
+fi
+#
 # Run fastq screen
 # NB append stderr to stdout otherwise Galaxy job will fail
 # (Could be mitigated by using --quiet option?)
 # Direct output to a temporary file
-log=`mktemp`
 outdir=`mktemp -d`
-fastq_screen --outdir $outdir --conf $2 --color --multilib $1 > $log 2>&1
+fastq_screen_cmd="fastq_screen --outdir $outdir --conf $2 $OPTS --multilib $1"
+echo $fastq_screen_cmd
+$fastq_screen_cmd 2>&1
 #
 # Check exit code
 if [ "$?" -ne "0" ] ; then
     echo FastQ Screen exited with non-zero status
-    echo Output:
-    cat $log
     # Clean up and exit
-    /bin/rm -f $log
     /bin/rm -rf $outdir
     exit $?
 fi
@@ -41,6 +53,7 @@ fi
 # Outputs are <fastq_in>_screen.txt and <fastq_in>_screen.png
 # check these exist and rename to supplied arguments
 base_name=`basename $1`
+base_name=${base_name%.fastq}
 if [ -f "${outdir}/${base_name}_screen.txt" ] ; then
     /bin/mv ${outdir}/${base_name}_screen.txt $3
 else
@@ -55,7 +68,6 @@ else
 fi
 #
 # Clean up
-/bin/rm -f $log
 /bin/rm -rf $outdir
 #
 # Done
