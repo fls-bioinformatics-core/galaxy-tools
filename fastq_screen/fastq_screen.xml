@@ -1,6 +1,6 @@
-<tool id="fls_fastq_screen_wrapper" name="Run FastQ Screen" version="0.1.0">
+<tool id="fls_fastq_screen" name="Run FastQ Screen" version="0.1.1">
   <description>to check for contaminants in your sample</description>
-  <command interpreter="bash">fastq_screen_wrapper.sh
+  <command interpreter="bash">fastq_screen.sh
   #if $input.extension.startswith( "fastqcs" ):
      ##if extension starts with fastqcs, then we have a color space file
      --color
