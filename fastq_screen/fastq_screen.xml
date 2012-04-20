@@ -12,7 +12,7 @@
   <inputs>
     <param name="input" type="data" format="fastqsanger,fastqcssanger" label="FASTQ file" />
     <param name="conf_file" type="select" label="FastQ Screen conf file">
-      <options from_file="fastq_screen_conf.loc">
+      <options from_file="fastq_screen.loc">
         <filter type="multiple_splitter" column="1" separator=","/>
         <filter type="param_value" column="1" ref="input" ref_attribute="extension"/>
 	<filter type="sort_by" column="0"/>
