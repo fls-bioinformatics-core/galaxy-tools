@@ -46,6 +46,8 @@ user can choose which conf file to use at run time.
 
 ### Changes ###
 
+0.1.1: fix error in tool and script names in version 0.1.0.
+
 0.1.0: allows both colorspace and letterspace conf files to be specified in
        the fastq_screen.loc file.
        Note that there is a change in loc file format from earlier versions.
