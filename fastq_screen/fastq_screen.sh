@@ -9,7 +9,11 @@
 # 2. To rename the auto-generated output file names to file names
 #    chosen by Galaxy.
 #
-# usage: sh fastq_screen.sh [ --color ] <fastq_in> <conf_file> <screen_txt_out> <screen_png_out>
+# usage: sh fastq_screen.sh OPTIONS <fastq_in> <conf_file> <screen_txt_out> <screen_png_out>
+#
+# Options:
+#    --color: input is in colorspace format
+#    --subset <n>: use a subset of <n> reads
 #
 # Note that this wrapper assumes:
 #
@@ -21,11 +25,19 @@ echo FastQ Screen: check for contaminants
 #
 # Check command line options
 OPTS=
-if [ "$1" == "--color" ] ; then
-    # Only --color supported
-    OPTS="$OPTS $1"
-    shift
-fi
+check_args=yes
+while [ ! -z "$check_args" ] ; do
+    if [ "$1" == "--color" ] ; then
+	OPTS="$OPTS $1"
+	shift
+    elif [ "$1" == "--subset" ] ; then
+	OPTS="$OPTS $1 $2"
+	shift; shift
+    else
+	# End of options
+	check_args=
+    fi
+done
 #
 # Check conf file exists
 if [ ! -f "$2" ] ; then
