@@ -1,16 +1,18 @@
-<tool id="fls_qc_boxplotter" name="Run QC Boxplotter" version="0.0.2">
+<tool id="fls_qc_boxplotter" name="Run QC Boxplotter" version="0.0.3">
   <description>to get quality boxplot for SOLiD data</description>
-  <command interpreter="bash">qc_boxplotter.sh $input $seq_order_boxplot_pdf</command>
+  <command interpreter="bash">qc_boxplotter.sh $input $seq_order_boxplot_pdf $seq_order_boxplot_png</command>
   <inputs>
     <param format="qualsolid" name="input" type="data" label="Generate boxplot plot from SOLiD qual file" />
   </inputs>
   <outputs>
     <data format="pdf" name="seq_order_boxplot_pdf" label="Nucleotide order boxplot for ${on_string}" />
+    <data format="png" name="seq_order_boxplot_png" label="Nucleotide order boxplot for ${on_string}" />
   </outputs>
   <tests>
     <test>
       <param name="input" value="solid_qc_boxplotter_in.qual" />
       <output name="seq_order_boxplot_pdf" file="solid_qc_boxplotter_out_seq.pdf" compare="sim_size" delta="500" />
+      <output name="seq_order_boxplot_png" file="solid_qc_boxplotter_out_seq.png" compare="sim_size" delta="500" />
     </test>
   </tests>
   <help>
