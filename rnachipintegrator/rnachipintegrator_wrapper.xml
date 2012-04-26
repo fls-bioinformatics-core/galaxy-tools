@@ -32,24 +32,27 @@ and vice versa.
 
 For ChIP peaks defined as regions the following analyses are performed:
 
-* TranscriptsToPeakEdges: reports the nearest transcripts with the smallest
-  distance from either their TSS or TES to the nearest peak edge.
+ * TranscriptsToPeakEdges: reports the nearest transcripts with the smallest
+   distance from either their TSS or TES to the nearest peak edge.
 
-* TSSToPeakEdges: reports the nearest transcripts with the smallest distance
-  from their TSS to the nearest peak edge.
+ * TSSToPeakEdges: reports the nearest transcripts with the smallest distance
+   from their TSS to the nearest peak edge.
 
 For ChIP peaks defined as summits:
 
-* TSSToSummits: reports the nearest transcripts with the smallest distance
-  from the TSS to the nearest peak summit.
+ * TSSToSummits: reports the nearest transcripts with the smallest distance
+   from the TSS to the nearest peak summit.
 
-* PeaksToTranscripts: reports the nearest peak summits with the smallest
-  distance to either the TSS or TES of each transcript.
+ * PeaksToTranscripts: reports the nearest peak summits with the smallest
+   distance to either the TSS or TES of each transcript.
 
 The program was originally written specifically for ChIP-Seq and RNA-Seq data
 but works equally well for ChIP-chip and microarray expression data, and can
 also be used to integrate any set of genomic features (e.g. canonical genes,
 CpG islands) with expression data.
+
+RnaChipIntgerator can be obtained from
+http://fls-bioinformatics-core.github.com/RnaChipIntegrator/
 
 -------------
 
