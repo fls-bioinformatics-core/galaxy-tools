@@ -1,9 +1,28 @@
 <tool id="fls_rnachipintegrator_wrapper" name="Run RnaChipIntegrator" version="0.0.1">
   <description>to analyse gene expression and ChIP data</description>
-  <command interpreter="bash">rnachipintegrator_wrapper.sh $rnaseq $chipseq $xls_output</command>
+  <command interpreter="bash">rnachipintegrator_wrapper.sh
+  #if str( $analysis_options.peak_type ) == "summits"
+    #if str( $analysis_options.window ) != ""
+    --window=$analysis_options.window
+    #end if
+  #end if
+  $rnaseq $chipseq --output $xls_output</command>
   <inputs>
     <param format="tabular" name="rnaseq" type="data" label="Gene expression data file" />
     <param format="tabular" name="chipseq" type="data" label="ChIP peaks data file" />
+  <conditional name="analysis_options">
+    <!-- user must specify if ChIP peaks are summits or regions -->
+    <param name="peak_type" type="select" label="ChIP peaks are"
+	   help="Options and outputs depend on whether ChIP data are summits or regions">
+      <option value="summits">summits</option>
+      <option value="regions">regions</option>
+    </param>
+    <when value="summits">
+      <param name="window" type="integer" value="" optional="true"
+	     label="Maximum distance a peak can be from each transcript
+		    TSS before being omitted from analysis" />
+    </when>
+  </conditional>
   </inputs>
   <outputs>
     <data format="xls" name="xls_output" label="RnaChipIntegrator analyses for ${rnaseq.name} vs ${chipseq.name}" />
