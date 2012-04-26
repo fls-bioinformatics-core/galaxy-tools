@@ -9,6 +9,17 @@
     --cutoff=$analysis_options.cutoff
     #end if
   #end if
+  #if str( $analysis_options.peak_type ) == "peaks"
+    #if str( $analysis_options.edge_cutoff ) != ""
+    --edge-cutoff=$analysis_options.edge_cutoff
+    #end if
+    #if str( $analysis_options.number ) != ""
+    --number=$analysis_options.edge_cutoff
+    #end if
+    #if (str( $analysis_options.promoter_start ) != "" and str( $analysis_options.promoter_end ))
+    --promoter_region=$analysis_options.promoter_start,$analysis_options.promoter_end
+    #end if
+  #end if
   $rnaseq $chipseq
   --output_xls $xls_output</command>
   <inputs>
@@ -22,12 +33,24 @@
       <option value="regions">regions</option>
     </param>
     <when value="summits">
-      <param name="window" type="integer" value="" optional="true"
+      <param name="window" type="integer" value="20000" optional="true"
 	     label="Maximum distance a peak can be from each transcript
 		    TSS before being omitted from analysis" />
-      <param name="cutoff" type="integer" value="" optional="true"
+      <param name="cutoff" type="integer" value="130000" optional="true"
 	     label="Maximum distance a transcript TSS can be from each
 		    peak before being omitted from the analysis" />
+    </when>
+    <when value="regions">
+      <param name="edge_cutoff" type="integer" value="" optional="true"
+	     label="Maximum distance a transcript edge can be from the
+		    peak edge before being omitted from the analysis" />
+      <param name="number" type="integer" value="4" optional="true"
+	     label="Maximum number of transcripts per peak to report from
+		    from the analysis" />
+      <param name="promoter_start" type="integer" value="-10000" optional="true"
+	     label="Start of promoter region with respect to gene TSS" />
+      <param name="promoter_end" type="integer" value="2500" optional="true"
+	     label="End of promoter region with respect to gene TSS" />
     </when>
   </conditional>
   </inputs>
