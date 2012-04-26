@@ -6,7 +6,8 @@
     --window=$analysis_options.window
     #end if
   #end if
-  $rnaseq $chipseq --output $xls_output</command>
+  $rnaseq $chipseq
+  --output_xls $xls_output</command>
   <inputs>
     <param format="tabular" name="rnaseq" type="data" label="Gene expression data file" />
     <param format="tabular" name="chipseq" type="data" label="ChIP peaks data file" />
