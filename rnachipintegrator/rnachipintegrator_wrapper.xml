@@ -5,6 +5,9 @@
     #if str( $analysis_options.window ) != ""
     --window=$analysis_options.window
     #end if
+    #if str( $analysis_options.cutoff ) != ""
+    --cutoff=$analysis_options.cutoff
+    #end if
   #end if
   $rnaseq $chipseq
   --output_xls $xls_output</command>
@@ -22,6 +25,9 @@
       <param name="window" type="integer" value="" optional="true"
 	     label="Maximum distance a peak can be from each transcript
 		    TSS before being omitted from analysis" />
+      <param name="cutoff" type="integer" value="" optional="true"
+	     label="Maximum distance a transcript TSS can be from each
+		    peak before being omitted from the analysis" />
     </when>
   </conditional>
   </inputs>
