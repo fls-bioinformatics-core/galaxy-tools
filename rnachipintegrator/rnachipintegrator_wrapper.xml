@@ -9,19 +9,29 @@
     --cutoff=$analysis_options.cutoff
     #end if
   #end if
-  #if str( $analysis_options.peak_type ) == "peaks"
+  #if str( $analysis_options.peak_type ) == "regions"
     #if str( $analysis_options.edge_cutoff ) != ""
     --edge-cutoff=$analysis_options.edge_cutoff
     #end if
     #if str( $analysis_options.number ) != ""
-    --number=$analysis_options.edge_cutoff
+    --number=$analysis_options.number
     #end if
     #if (str( $analysis_options.promoter_start ) != "" and str( $analysis_options.promoter_end ))
     --promoter_region=$analysis_options.promoter_start,$analysis_options.promoter_end
     #end if
   #end if
   $rnaseq $chipseq
-  --output_xls $xls_output</command>
+  --output_xls $xls_output
+  #if str( $analysis_options.peak_type ) == "summits"
+    --summit_outputs $peaks_to_transcripts_out $tss_to_summits_out
+  #end if
+  #if str( $analysis_options.peak_type ) == "regions"
+    --peak_outputs $transcripts_to_edges_out
+                   $transcripts_to_edges_summary
+                   $tss_to_edges_out
+                   $tss_to_edges_summary
+  #end if
+  </command>
   <inputs>
     <param format="tabular" name="rnaseq" type="data" label="Gene expression data file" />
     <param format="tabular" name="chipseq" type="data" label="ChIP peaks data file" />
@@ -55,7 +65,35 @@
   </conditional>
   </inputs>
   <outputs>
-    <data format="xls" name="xls_output" label="RnaChipIntegrator analyses for ${rnaseq.name} vs ${chipseq.name}" />
+    <!-- Always produce XLS output -->
+    <data format="xls" name="xls_output"
+	  label="All RnaChipIntegrator analyses for ${rnaseq.name} vs ${chipseq.name}" />
+    <!-- Outputs only produced for summit data -->
+    <data format="tabular" name="peaks_to_transcripts_out"
+	  label="Nearest summits to transcripts for ${rnaseq.name} vs ${chipseq.name}" >
+      <filter>analysis_options['peak_type'] == "summits"</filter>
+    </data>
+    <data format="tabular" name="tss_to_summits_out"
+	  label="Nearest summits to TSS for ${rnaseq.name} vs ${chipseq.name}" >
+      <filter>analysis_options['peak_type'] == "summits"</filter>
+    </data>
+    <!-- Outputs only produced for peak data -->
+    <data format="tabular" name="transcripts_to_edges_out"
+	  label="Nearest transcripts to peak edges for ${rnaseq.name} vs ${chipseq.name}" >
+      <filter>analysis_options['peak_type'] == "regions"</filter>
+    </data>
+    <data format="tabular" name="transcripts_to_edges_summary"
+	  label="Nearest transcripts to peak edges (summary) for ${rnaseq.name} vs ${chipseq.name}" >
+      <filter>analysis_options['peak_type'] == "regions"</filter>
+    </data>
+    <data format="tabular" name="tss_to_edges_out"
+	  label="Nearest TSS to peak edges for ${rnaseq.name} vs ${chipseq.name}" >
+      <filter>analysis_options['peak_type'] == "regions"</filter>
+    </data>
+    <data format="tabular" name="tss_to_edges_summary"
+	  label="Nearest TSS to peak edges (summary) for ${rnaseq.name} vs ${chipseq.name}" >
+      <filter>analysis_options['peak_type'] == "regions"</filter>
+    </data>
   </outputs>
   <tests>
     <test>
