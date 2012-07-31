@@ -1,0 +1,123 @@
+<tool id="fls_rnachipintegrator_histone_mod" name="Analyse gene expression data" version="0.0.1">
+  <description>against histone modifications</description>
+  <command interpreter="bash">rnachipintegrator_wrapper.sh
+  #if str( $edge_cutoff ) != ""
+  --edge-cutoff=$edge_cutoff
+  #end if
+  #if str( $number ) != ""
+  --number=$number
+  #end if
+  #if (str( $promoter_start ) != "" and str( $promoter_end ))
+  --promoter_region=$promoter_start,$promoter_end
+  #end if
+  $rnaseq
+  $histone_data.value
+  --output_xls $xls_output
+  --peak_outputs $transcripts_to_edges_out
+                 $transcripts_to_edges_summary
+                 $tss_to_edges_out
+                 $tss_to_edges_summary
+  </command>
+  <inputs>
+    <param format="tabular" name="rnaseq" type="data" label="Gene expression data file" />
+    <param name="histone_data" type="select" label="Cell line/antibody">
+      <options from_file="rnachipintegrator_histone_mod.loc">
+        <filter type="param_value" column="0" ref="rnaseq" ref_attribute="dbkey"/>
+	<column name="name" index="1"/>
+	<column name="value" index="2"/>
+	<!--
+        <validator type="no_options" message="No indexes are available for the selected input dataset"/>
+	-->
+      </options>
+    </param>
+    <param name="edge_cutoff" type="integer" value="" optional="true"
+	   label="Maximum distance a transcript edge can be from the
+		  peak edge before being omitted from the analysis" />
+    <param name="number" type="integer" value="4" optional="true"
+	   label="Maximum number of transcripts per peak to report from
+		  from the analysis" />
+    <param name="promoter_start" type="integer" value="-10000" optional="true"
+	   label="Start of promoter region with respect to gene TSS" />
+    <param name="promoter_end" type="integer" value="2500" optional="true"
+	   label="End of promoter region with respect to gene TSS" />
+  </inputs>
+  <outputs>
+    <!-- Always produce XLS output -->
+    <data format="xls" name="xls_output"
+	  label="All RnaChipIntegrator analyses for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name}" />
+    <!-- Outputs only produced for peak data -->
+    <data format="tabular" name="transcripts_to_edges_out"
+	  label="Nearest transcripts to peak edges for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name}" >
+    </data>
+    <data format="tabular" name="transcripts_to_edges_summary"
+	  label="Nearest transcripts to peak edges (summary) for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name}" >
+    </data>
+    <data format="tabular" name="tss_to_edges_out"
+	  label="Nearest TSS to peak edges for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name}" >
+    </data>
+    <data format="tabular" name="tss_to_edges_summary"
+	  label="Nearest TSS to peak edges (summary) for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name}" >
+    </data>
+  </outputs>
+  <tests>
+    <test>
+      <param name="rnaseq" value="ExpressionData.txt" />
+      <param name="chipseq" value="ChIP_peaks.txt" />
+      <output name="xls_output" file="peaks.xls" compare="sim_size" />
+    </test>
+    <test>
+      <param name="rnaseq" value="ExpressionData.txt" />
+      <param name="chipseq" value="ChIP_edges.txt" />
+      <output name="xls_output" file="peaks.xls" compare="sim_size" />
+    </test>
+  </tests>
+  <help>
+
+.. class:: infomark
+
+**What it does**
+
+Run RnaChipIntegrator to perform analyses of gene expression data against
+histone modification data, identifying the nearest ChIP peaks to each transcript
+and vice versa.
+
+The following analyses are performed:
+
+ * TranscriptsToPeakEdges: reports the nearest transcripts with the smallest
+   distance from either their TSS or TES to the nearest peak edge.
+
+ * TSSToPeakEdges: reports the nearest transcripts with the smallest distance
+   from their TSS to the nearest peak edge.
+
+RnaChipIntgerator can be obtained from
+http://fls-bioinformatics-core.github.com/RnaChipIntegrator/
+
+-------------
+
+.. class:: infomark
+
+**Input**
+
+The expression data must be in a tab-delimited file with the following columns
+of data for each genomic feature (one feature per line):
+
+====== ========== ======================================================================
+Column Name       Description
+====== ========== ======================================================================
+     1 chr        Chromosome name
+     2 start      Start position of the feature
+     3 end        End position of the feature
+     4 strand     Must be either '+' or '-'
+     5 diff_expr  Optional: indicates feature is differentially expressed (1) or not (0)
+====== ========== ======================================================================
+
+-------------
+
+.. class:: infomark
+
+**Output**
+
+An Excel spreadsheet with one page for each analysis performed.
+
+  </help>
+</tool>
