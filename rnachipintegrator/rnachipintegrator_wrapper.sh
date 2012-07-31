@@ -43,7 +43,7 @@ $cmd 2>&1
 #
 # Check exit code
 if [ "$?" -ne "0" ] ; then
-    echo RnaChipIntegrator exited with non-zero status
+    echo RnaChipIntegrator exited with non-zero status > 2
     # Clean up and exit
     /bin/rm -rf $outdir
     exit $?
