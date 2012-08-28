@@ -10,6 +10,7 @@ echo RnaChipIntegrator: analyse gene expression and ChIP data
 opts=
 output_xls=
 peaks_to_transcripts_out=
+zip_file=
 while [ ! -z "$1" ] ; do
     case $1 in
 	--output_xls)
@@ -24,6 +25,9 @@ while [ ! -z "$1" ] ; do
 	    shift; transcripts_to_edges_summary=$1
 	    shift; tss_to_edges_out=$1
 	    shift; tss_to_edges_summary=$1
+	    ;;
+	--zip_file)
+	    shift; zip_file=$1
 	    ;;
 	*)
 	    opts="$opts $1"
@@ -57,6 +61,17 @@ else
     # Clean up and exit
     /bin/rm -rf $outdir
     exit 1
+fi
+#
+# Zip file
+if [ ! -z "$zip_file" ] ; then
+    for ext in "PeaksToTranscripts" "TSSToSummits" "TranscriptsToPeakEdges" "TranscriptsToPeakEdges_summary" "TSSToPeakEdges" "TSSToPeakEdges_summary" ; do
+	txt_file=${outdir}/${base_name}_${ext}.txt
+	if [ -f "$txt_file" ] ; then
+	    zip -j -g ${outdir}/archive.zip $txt_file
+	fi
+    done
+    /bin/mv ${outdir}/archive.zip $zip_file
 fi
 #
 # Peaks to transcripts
