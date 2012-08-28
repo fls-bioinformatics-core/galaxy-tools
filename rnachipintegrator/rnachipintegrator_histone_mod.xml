@@ -20,7 +20,7 @@
   </command>
   <inputs>
     <param format="tabular" name="rnaseq" type="data" label="Gene expression data file" />
-    <param name="histone_data" type="select" label="Cell line/antibody">
+    <param name="histone_data" type="select" label="Analyse against ChIP-seq peaks for cell line/antibody">
       <options from_file="rnachipintegrator_histone_mod.loc">
         <filter type="param_value" column="0" ref="rnaseq" ref_attribute="dbkey"/>
 	<column name="name" index="1"/>
