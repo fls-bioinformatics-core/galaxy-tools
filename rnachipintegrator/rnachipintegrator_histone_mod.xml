@@ -1,4 +1,4 @@
-<tool id="fls_rnachipintegrator_histone_mod" name="Analyse gene expression data" version="0.0.1">
+<tool id="fls_rnachipintegrator_histone_mod" name="Analyse gene expression data" version="0.0.2">
   <description>against histone modifications</description>
   <command interpreter="bash">rnachipintegrator_wrapper.sh
   #if str( $edge_cutoff ) != ""
@@ -13,10 +13,14 @@
   $rnaseq
   $histone_data.value
   --output_xls $xls_output
+  #if $results_as_zip
+  --zip_file $zip_file
+  #else
   --peak_outputs $transcripts_to_edges_out
                  $transcripts_to_edges_summary
                  $tss_to_edges_out
                  $tss_to_edges_summary
+  #end if
   </command>
   <inputs>
     <param format="tabular" name="rnaseq" type="data" label="Gene expression data file" />
@@ -40,6 +44,8 @@
 	   label="Start of promoter region with respect to gene TSS" />
     <param name="promoter_end" type="integer" value="2500" optional="true"
 	   label="End of promoter region with respect to gene TSS" />
+    <param name="results_as_zip" type="boolean" checked="true" truevalue="yes"
+           label="Put output tab-delimited files into a single zip archive" />
   </inputs>
   <outputs>
     <!-- Always produce XLS output -->
@@ -48,15 +54,23 @@
     <!-- Outputs only produced for peak data -->
     <data format="tabular" name="transcripts_to_edges_out"
 	  label="Nearest transcripts to peak edges for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name}" >
+      <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="transcripts_to_edges_summary"
 	  label="Nearest transcripts to peak edges (summary) for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name}" >
+      <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="tss_to_edges_out"
 	  label="Nearest TSS to peak edges for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name}" >
+      <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="tss_to_edges_summary"
 	  label="Nearest TSS to peak edges (summary) for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name}" >
+      <filter>results_as_zip is False</filter>
+    </data>
+    <data format="zip" name="zip_file"
+	  label="All tab-delimited files for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name}" >
+      <filter>results_as_zip is True</filter>
     </data>
   </outputs>
   <tests>
