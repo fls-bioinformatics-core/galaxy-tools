@@ -1,4 +1,4 @@
-<tool id="fls_rnachipintegrator_wrapper" name="Run RnaChipIntegrator" version="0.0.1">
+<tool id="fls_rnachipintegrator_wrapper" name="Run RnaChipIntegrator" version="0.0.2">
   <description>to analyse gene expression and ChIP data</description>
   <command interpreter="bash">rnachipintegrator_wrapper.sh
   #if str( $analysis_options.peak_type ) == "summits"
@@ -22,14 +22,18 @@
   #end if
   $rnaseq $chipseq
   --output_xls $xls_output
-  #if str( $analysis_options.peak_type ) == "summits"
+  #if $results_as_zip
+  --zip_file $zip_file
+  #else
+    #if str( $analysis_options.peak_type ) == "summits"
     --summit_outputs $peaks_to_transcripts_out $tss_to_summits_out
-  #end if
-  #if str( $analysis_options.peak_type ) == "regions"
+    #end if
+    #if str( $analysis_options.peak_type ) == "regions"
     --peak_outputs $transcripts_to_edges_out
                    $transcripts_to_edges_summary
                    $tss_to_edges_out
                    $tss_to_edges_summary
+    #end if
   #end if
   </command>
   <inputs>
@@ -63,6 +67,8 @@
 	     label="End of promoter region with respect to gene TSS" />
     </when>
   </conditional>
+    <param name="results_as_zip" type="boolean" checked="true" truevalue="yes"
+           label="Put output tab-delimited files into a single zip archive" />
   </inputs>
   <outputs>
     <!-- Always produce XLS output -->
@@ -72,27 +78,37 @@
     <data format="tabular" name="peaks_to_transcripts_out"
 	  label="Nearest summits to transcripts for ${rnaseq.name} vs ${chipseq.name}" >
       <filter>analysis_options['peak_type'] == "summits"</filter>
+      <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="tss_to_summits_out"
 	  label="Nearest summits to TSS for ${rnaseq.name} vs ${chipseq.name}" >
       <filter>analysis_options['peak_type'] == "summits"</filter>
+      <filter>results_as_zip is False</filter>
     </data>
     <!-- Outputs only produced for peak data -->
     <data format="tabular" name="transcripts_to_edges_out"
 	  label="Nearest transcripts to peak edges for ${rnaseq.name} vs ${chipseq.name}" >
       <filter>analysis_options['peak_type'] == "regions"</filter>
+      <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="transcripts_to_edges_summary"
 	  label="Nearest transcripts to peak edges (summary) for ${rnaseq.name} vs ${chipseq.name}" >
       <filter>analysis_options['peak_type'] == "regions"</filter>
+      <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="tss_to_edges_out"
 	  label="Nearest TSS to peak edges for ${rnaseq.name} vs ${chipseq.name}" >
       <filter>analysis_options['peak_type'] == "regions"</filter>
+      <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="tss_to_edges_summary"
 	  label="Nearest TSS to peak edges (summary) for ${rnaseq.name} vs ${chipseq.name}" >
       <filter>analysis_options['peak_type'] == "regions"</filter>
+      <filter>results_as_zip is False</filter>
+    </data>
+    <data format="zip" name="zip_file"
+	  label="All tab-delimited files for ${rnaseq.name} vs ${chipseq.name}" >
+      <filter>results_as_zip is True</filter>
     </data>
   </outputs>
   <tests>
