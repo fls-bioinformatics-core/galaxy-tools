@@ -1,0 +1,19 @@
+#This is a sample file distributed with Galaxy that is used by the
+#rnachipintegrator_canonical_genes tool. The file has this format (white space 
+#characters are TAB characters):
+#
+#<Build>	<Genome>	<PathToGeneListFile>
+#
+#For example:
+#
+#hg18	Gm12878/Ctcf	/home/galaxy/genomes/
+#hg19	Gm12878/H3k27ac	/home/galaxy/genomes/
+#mm9	Gm12878/H3k27me3	/home/galaxy/genomes/
+#...etc...
+#
+#The gene list files should contain the gene symbol, chromosome, start and end
+#positions, and strand for each gene in the list.
+#
+#This file should be placed in galaxy's tool-data directory when the
+#rnachipintegrator_canonical_genes tool is installed.
+
