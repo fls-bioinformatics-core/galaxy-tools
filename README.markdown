@@ -67,13 +67,40 @@ To add to Galaxy put this somewhere in tool_conf.xml:
 
 RnaChipIntegrator
 -----------------
-XML and wrapper script for the FLS RnaChipIntegrator program (see
+XML files and wrapper script for the FLS RnaChipIntegrator program (see
 http://fls-bioinformatics-core.github.com/RnaChipIntegrator/). Assumes
 that `RnaChipIntegrator.py` is installed on the Galaxy user's path.
 
-To add to Galaxy put the following line in tool_conf.xml:
+There are three tools available that are built around RnaChipIntegrator:
+
+ 1. General RnaChipIntegrator tool that allows any peaks to be analysed
+    against any gene list
+ 2. A "histone modification" variant which allows a gene list to be
+    analysed against a selected histone modification cell line/antibody
+ 3. A "cannonical gene" variant which allows ChIP peaks to be analysed
+    against a list of cannonical genes for different genomes
+
+To add these to Galaxy put the following lines in tool_conf.xml for each:
+tool that you want:
 
    <tool file="rnachipintegrator/rnachipintegrator_wrapper.xml" />
+   <tool file="rnachipintegrator/rnachipintegrator_histone_mod.xml" />
+   <tool file="rnachipintegrator/rnachipintegrator_canonical_genes.xml" />
+
+In addition for the histone modification and cannonical gene variants, it's
+necessary to set up .loc files.
+
+ * ''Histone modification data'': use the `get_histone_data_hg18.sh` script
+   to download the hg18 data and construct a .loc file automatically. The
+   .loc file should then be renamed to `rnachipintegrator_histone_mod.loc`.
+
+ * ''Cannonical genes'': its necessary to manually acquire cannonical gene
+   list files from UCSC; then make a copy of the
+   `rnachipintegrator_canonical_genes.loc.sample` file and add references
+   to the genes there.
+
+In either case the final .loc files need to be put into the `tool-data`
+directory of the Galaxy installation.
 
 ### Note on Excel output files and Galaxy ###
 
