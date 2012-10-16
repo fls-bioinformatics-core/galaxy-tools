@@ -83,18 +83,18 @@ There are three tools available that are built around RnaChipIntegrator:
 To add these to Galaxy put the following lines in tool_conf.xml for each:
 tool that you want:
 
-   <tool file="rnachipintegrator/rnachipintegrator_wrapper.xml" />
-   <tool file="rnachipintegrator/rnachipintegrator_histone_mod.xml" />
-   <tool file="rnachipintegrator/rnachipintegrator_canonical_genes.xml" />
+    <tool file="rnachipintegrator/rnachipintegrator_wrapper.xml" />
+    <tool file="rnachipintegrator/rnachipintegrator_histone_mod.xml" />
+    <tool file="rnachipintegrator/rnachipintegrator_canonical_genes.xml" />
 
 In addition for the histone modification and cannonical gene variants, it's
 necessary to set up .loc files.
 
- * ''Histone modification data'': use the `get_histone_data_hg18.sh` script
+ * **Histone modification data**: use the `get_histone_data_hg18.sh` script
    to download the hg18 data and construct a .loc file automatically. The
    .loc file should then be renamed to `rnachipintegrator_histone_mod.loc`.
 
- * ''Cannonical genes'': its necessary to manually acquire cannonical gene
+ * **Cannonical genes**: its necessary to manually acquire cannonical gene
    list files from UCSC; then make a copy of the
    `rnachipintegrator_canonical_genes.loc.sample` file and add references
    to the genes there.
