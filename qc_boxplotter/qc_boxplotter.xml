@@ -5,8 +5,8 @@
     <param format="qualsolid" name="input" type="data" label="Generate boxplot plot from SOLiD qual file" />
   </inputs>
   <outputs>
-    <data format="pdf" name="seq_order_boxplot_pdf" label="Nucleotide order boxplot for ${on_string}" />
-    <data format="png" name="seq_order_boxplot_png" label="Nucleotide order boxplot for ${on_string}" />
+    <data format="pdf" name="seq_order_boxplot_pdf" label="Nucleotide order boxplot for ${on_string} (PDF)" />
+    <data format="png" name="seq_order_boxplot_png" label="Nucleotide order boxplot for ${on_string} (PNG)" />
   </outputs>
   <tests>
     <test>
