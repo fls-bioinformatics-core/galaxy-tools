@@ -21,6 +21,10 @@
 #    options; and
 # 2. The conf file specifies colorspace bowtie indexes.
 #
+# Changes:
+# 2012/10/18: Removed --multilib option as this isn't supported by the latest
+#             version of fastq_screen (v0.3.1)
+#
 echo FastQ Screen: check for contaminants
 #
 # Check command line options
@@ -50,7 +54,7 @@ fi
 # (Could be mitigated by using --quiet option?)
 # Direct output to a temporary file
 outdir=`mktemp -d`
-fastq_screen_cmd="fastq_screen --outdir $outdir --conf $2 $OPTS --multilib $1"
+fastq_screen_cmd="fastq_screen --outdir $outdir --conf $2 $OPTS $1"
 echo $fastq_screen_cmd
 $fastq_screen_cmd 2>&1
 #
