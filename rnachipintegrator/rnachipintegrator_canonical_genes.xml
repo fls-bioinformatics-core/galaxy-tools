@@ -168,19 +168,6 @@ http://fls-bioinformatics-core.github.com/RnaChipIntegrator/
 
 **Input**
 
-The expression data must be in a tab-delimited file with the following columns
-of data for each genomic feature (one feature per line):
-
-====== ========== ======================================================================
-Column Name       Description
-====== ========== ======================================================================
-     1 chr        Chromosome name
-     2 start      Start position of the feature
-     3 end        End position of the feature
-     4 strand     Must be either '+' or '-'
-     5 diff_expr  Optional: indicates feature is differentially expressed (1) or not (0)
-====== ========== ======================================================================
-
 The ChIP-seq data must be in a tab-delimited file with 3 columns of data for each
 ChIP peak (one per line):
 

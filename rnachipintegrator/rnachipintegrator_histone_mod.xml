@@ -118,11 +118,12 @@ of data for each genomic feature (one feature per line):
 ====== ========== ======================================================================
 Column Name       Description
 ====== ========== ======================================================================
-     1 chr        Chromosome name
-     2 start      Start position of the feature
-     3 end        End position of the feature
-     4 strand     Must be either '+' or '-'
-     5 diff_expr  Optional: indicates feature is differentially expressed (1) or not (0)
+     1 ID         Name used to identify the feature in the output
+     2 chr        Chromosome name
+     3 start      Start position of the feature
+     4 end        End position of the feature
+     5 strand     Must be either '+' or '-'
+     6 diff_expr  Optional: indicates feature is differentially expressed (1) or not (0)
 ====== ========== ======================================================================
 
 -------------
