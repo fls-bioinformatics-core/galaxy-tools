@@ -1,4 +1,4 @@
-<tool id="fls_rnachipintegrator_canonical_genes" name="Analyse canonical gene lists" version="0.0.1">
+<tool id="fls_rnachipintegrator_canonical_genes" name="Analyse canonical gene lists" version="0.0.2">
   <description>against ChIP data</description>
   <command interpreter="bash">rnachipintegrator_wrapper.sh
   #if str( $analysis_options.peak_type ) == "summits"
@@ -78,7 +78,7 @@
   <outputs>
     <!-- Always produce XLS output -->
     <data format="xls" name="xls_output"
-	  label="All RnaChipIntegrator analyses for ${canonical_genes.fields.name} vs ${chipseq.name}" />
+	  label="All RnaChipIntegrator analyses for ${canonical_genes.fields.name} vs ${chipseq.name} (Excel spreadsheet)" />
     <!-- Outputs only produced for summit data -->
     <data format="tabular" name="peaks_to_transcripts_out"
 	  label="Nearest summits to transcripts for ${canonical_genes.fields.name} vs ${chipseq.name}" >
@@ -112,7 +112,7 @@
       <filter>results_as_zip is False</filter>
     </data>
     <data format="zip" name="zip_file"
-	  label="All tab-delimited files for ${canonical_genes.fields.name} vs ${chipseq.name}" >
+	  label="All tab-delimited files for ${canonical_genes.fields.name} vs ${chipseq.name} (zip file)" >
       <filter>results_as_zip is True</filter>
     </data>
   </outputs>

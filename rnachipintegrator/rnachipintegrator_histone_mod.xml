@@ -1,4 +1,4 @@
-<tool id="fls_rnachipintegrator_histone_mod" name="Analyse gene expression data" version="0.0.2">
+<tool id="fls_rnachipintegrator_histone_mod" name="Analyse gene expression data" version="0.0.3">
   <description>against histone modifications</description>
   <command interpreter="bash">rnachipintegrator_wrapper.sh
   #if str( $edge_cutoff ) != ""
@@ -50,7 +50,7 @@
   <outputs>
     <!-- Always produce XLS output -->
     <data format="xls" name="xls_output"
-	  label="All RnaChipIntegrator analyses for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name}" />
+	  label="All RnaChipIntegrator analyses for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name} (Excel spreadsheet)" />
     <!-- Outputs only produced for peak data -->
     <data format="tabular" name="transcripts_to_edges_out"
 	  label="Nearest transcripts to peak edges for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name}" >
@@ -69,7 +69,7 @@
       <filter>results_as_zip is False</filter>
     </data>
     <data format="zip" name="zip_file"
-	  label="All tab-delimited files for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name}" >
+	  label="All tab-delimited files for ${rnaseq.name} vs ${rnaseq.dbkey} ${histone_data.fields.name} (zip file)" >
       <filter>results_as_zip is True</filter>
     </data>
   </outputs>
