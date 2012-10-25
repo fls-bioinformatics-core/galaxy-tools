@@ -34,7 +34,7 @@
 	-->
       </options>
     </param>
-    <param name="edge_cutoff" type="integer" value="" optional="true"
+    <param name="edge_cutoff" type="integer" value="10000" optional="true"
 	   label="Maximum distance a transcript edge can be from the
 		  peak edge before being omitted from the analysis" />
     <param name="number" type="integer" value="4" optional="true"
