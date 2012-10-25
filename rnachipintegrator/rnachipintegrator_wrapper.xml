@@ -1,4 +1,4 @@
-<tool id="fls_rnachipintegrator_wrapper" name="Run RnaChipIntegrator" version="0.0.3">
+<tool id="fls_rnachipintegrator_wrapper" name="Run RnaChipIntegrator" version="0.0.4">
   <description>to analyse gene expression and ChIP data</description>
   <command interpreter="bash">rnachipintegrator_wrapper.sh
   #if str( $analysis_options.peak_type ) == "summits"
@@ -67,7 +67,7 @@
 	     label="End of promoter region with respect to gene TSS" />
     </when>
   </conditional>
-    <param name="results_as_zip" type="boolean" checked="true" truevalue="yes"
+    <param name="results_as_zip" type="boolean" checked="false" truevalue="yes"
            label="Put output tab-delimited files into a single zip archive" />
   </inputs>
   <outputs>

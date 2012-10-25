@@ -72,7 +72,7 @@
 	     label="End of promoter region with respect to gene TSS" />
     </when>
   </conditional>
-    <param name="results_as_zip" type="boolean" checked="true" truevalue="yes"
+    <param name="results_as_zip" type="boolean" checked="false" truevalue="yes"
            label="Put output tab-delimited files into a single zip archive" />
   </inputs>
   <outputs>
