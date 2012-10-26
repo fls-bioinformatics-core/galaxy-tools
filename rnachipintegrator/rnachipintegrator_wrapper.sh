@@ -46,18 +46,19 @@ echo $cmd
 $cmd 2>&1
 #
 # Check exit code
-if [ "$?" -ne "0" ] ; then
-    echo RnaChipIntegrator exited with non-zero status > 2
+exit_status=$?
+if [ "$exit_status" -ne "0" ] ; then
+    echo RnaChipIntegrator exited with non-zero status >&2
     # Clean up and exit
     /bin/rm -rf $outdir
-    exit $?
+    exit $exit_status
 fi
 #
 # Deal with output files - XLS
 if [ -f "${outdir}/${base_name}.xls" ] ; then
     /bin/mv ${outdir}/${base_name}.xls $output_xls
 else
-    echo No file ${outdir}/${base_name}.xls
+    echo No file ${outdir}/${base_name}.xls >&2
     # Clean up and exit
     /bin/rm -rf $outdir
     exit 1
@@ -80,7 +81,7 @@ if [ ! -z "$peaks_to_transcripts_out" ] ; then
     if [ -f "$outfile" ] ; then
 	/bin/mv $outfile $peaks_to_transcripts_out
     else
-	echo No file $outfile
+	echo No file $outfile >&2
     fi
 fi
 #
@@ -90,7 +91,7 @@ if [ ! -z "$tss_to_summits_out" ] ; then
     if [ -f "$outfile" ] ; then
 	/bin/mv $outfile $tss_to_summits_out
     else
-	echo No file $outfile
+	echo No file $outfile >&2
     fi
 fi
 #
@@ -100,7 +101,7 @@ if [ ! -z "$transcripts_to_edges_out" ] ; then
     if [ -f "$outfile" ] ; then
 	/bin/mv $outfile $transcripts_to_edges_out
     else
-	echo No file $outfile
+	echo No file $outfile >&2
     fi
 fi
 if [ ! -z "$transcripts_to_edges_summary" ] ; then
@@ -108,7 +109,7 @@ if [ ! -z "$transcripts_to_edges_summary" ] ; then
     if [ -f "$outfile" ] ; then
 	/bin/mv $outfile $transcripts_to_edges_summary
     else
-	echo No file $outfile
+	echo No file $outfile >&2
     fi
 fi
 #
@@ -118,7 +119,7 @@ if [ ! -z "$tss_to_edges_out" ] ; then
     if [ -f "$outfile" ] ; then
 	/bin/mv $outfile $tss_to_edges_out
     else
-	echo No file $outfile
+	echo No file $outfile >&2
     fi
 fi
 if [ ! -z "$tss_to_edges_summary" ] ; then
@@ -126,7 +127,7 @@ if [ ! -z "$tss_to_edges_summary" ] ; then
     if [ -f "$outfile" ] ; then
 	/bin/mv $outfile $tss_to_edges_summary
     else
-	echo No file $outfile
+	echo No file $outfile >&2
     fi
 fi
 #
