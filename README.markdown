@@ -143,3 +143,8 @@ The tool assumes that the weeder programs `weederlauncher.out`,
 To add to Galaxy add the following to tool_conf.xml:
 
     <tool file="weeder/weeder_wrapper.xml" />
+
+### Changes ###
+
+0.0.1: add full list of organisms and update output data items names
+       and types (so they can be displayed within the browser)
