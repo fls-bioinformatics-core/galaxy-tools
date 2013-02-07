@@ -1,0 +1,37 @@
+<tool id="motiffinding_weeder" name="Weeder" version="0.0.1">
+  <description>Motif discovery in sequences from coregulated genes of a single species</description>
+  <command interpreter="bash">weeder_wrapper.sh $sequence_file $output_mix_file $output_wee_file $species_code $analysis_type $strands $repeat_motif T$n_motifs</command>
+  <requirements>
+    <requirement type="package">weederlauncher.out</requirement>
+  </requirements>
+  <inputs>
+    <param name="sequence_file" type="data" format="fasta" label="Input sequence" />
+    <param name="species_code" type="select" label="Species to use for background comparison">
+      <!-- Hard code options for now -->
+      <option value="HS">Homo sapiens</option>
+      <option value="HSI">Homo sapiens (intergenic frequencies)</option>
+      <option value="MM">Mus musculus</option>
+      <option value="MMI">Mus musculus (intergenic frequencies)</option>
+      <option value="DM">Drosophila melanogaster</option>
+      <!-- can add more later... -->
+    </param>
+    <param name="analysis_type" type="select" label="Size of motifs and degree of degeneracy to search for">
+      <option value="small">Motifs of length 6 and 8</option>
+      <option value="medium" selected="true">Motifs of length 6 8 and 10</option>
+      <option value="large">Motifs of length 6,8, 10 and 12</option>
+    </param>
+    <param name="strands" label="Use both strands of sequence" type="boolean" truevalue="S" falsevalue="" checked="False"/>
+    <param name="repeat_motif" label="Allow multiple motif occurances in each sequence" type="boolean" truevalue="M" falsevalue=""/>
+    <param name="n_motifs" type="integer" label="Number of discovered motifs to report" value="20"/>
+  </inputs>
+  <outputs>
+    <data name="output_mix_file" format="text" label="Weeder 'mix' output for ${on_string}" />
+    <data name="output_wee_file" format="text" label="Weeder 'wee' output for ${on_string}" />
+  </outputs>
+  <help>
+**What it does**
+
+Weeder is a program for finding novel motifs (transcription factor binding sites) conserved in a
+set of regulatory regions of related genes.
+  </help>
+</tool>

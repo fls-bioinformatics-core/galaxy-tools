@@ -127,3 +127,17 @@ symbolic link is sufficient).
 To add to Galaxy put this somewhere in tool_conf.xml:
 
     <tool file="fls_samstats/samstats.xml" />
+
+
+weeder
+------
+XML and wrapper script for weeder motif discovery package.
+
+The tool assumes that the weeder programs `weederlauncher.out`,
+`weederTBFS.out` and `adviser.out` are on the Galaxy user's path.
+
+`weeder` can be obtained from [http://159.149.160.51/modtools/downloads/weeder.html]().
+
+To add to Galaxy add the following to tool_conf.xml:
+
+    <tool file="weeder/weeder_wrapper.xml" />
