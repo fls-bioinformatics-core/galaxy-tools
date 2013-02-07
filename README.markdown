@@ -46,6 +46,8 @@ user can choose which conf file to use at run time.
 
 ### Changes ###
 
+0.1.3: remove --multilib option for compatibility with fastq_screen v0.3.1.
+
 0.1.2: add support for fastq_screen's `--subset` option.
 
 0.1.1: fix error in tool and script names in version 0.1.0.
