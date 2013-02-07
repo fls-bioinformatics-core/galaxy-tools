@@ -146,5 +146,5 @@ To add to Galaxy add the following to tool_conf.xml:
 
 ### Changes ###
 
-0.0.1: add full list of organisms and update output data items names
+0.0.2: add full list of organisms and update output data items names
        and types (so they can be displayed within the browser)
