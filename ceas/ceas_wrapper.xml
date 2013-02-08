@@ -1,0 +1,41 @@
+<tool id="ceas" name="CEAS" version="0.0.1">
+  <description>Annotate intervals and scores with genome features</description>
+  <command interpreter="bash">ceas_wrapper.sh $bed_file $gdb_file $wig_file $log_output $pdf_report $png_report</command>
+  <requirements>
+    <requirement type="package">ceas</requirement>
+  </requirements>
+  <inputs>
+    <param name="bed_file" type="data" format="bed" label="BED file with ChIP regions" />
+    <param name="wig_file" type="data" format="wig" label="WIG file for wig profiling or genome background annotation" optional="true" />
+    <param name="gdb_file" type="select" label="Gene annotation table">
+      <options from_file="ceas.loc">
+	<column name="name" index="1"/>
+	<column name="value" index="2"/>
+        <validator type="no_options" message="No tables are available for the selected input"/>
+      </options>
+    </param>
+  </inputs>
+  <outputs>
+    <data name="log_output" format="txt" label="CEAS on ${on_string} (log output)" />
+    <data name="pdf_report" format="pdf" label="CEAS on ${on_string} (PDF report)" />
+    <data name="png_report" format="png" label="CEAS on ${on_string} (PNG report)" />
+  </outputs>
+  <help>
+**What it does**
+
+CEAS (Cis-regulatory Element Annotation System) is a tool for characterizing genome-wide
+protein-DNA interaction patterns from ChIP-chip and ChIP-Seq of both sharp and broad
+binding factors. It provides statistics on ChIP enrichment at important genome features
+such as specific chromosome, promoters, gene bodies, or exons, and infers genes most
+likely to be regulated by a binding factor.
+
+CEAS also enables biologists to visualize the average ChIP enrichment signals over
+specific genomic features, allowing continuous and broad ChIP enrichment to be perceived
+which might be too subtle to detect from ChIP peaks alone.
+
+This tool is compatible with CEAS 1.0.2. CEAS can be obtained from
+http://liulab.dfci.harvard.edu/CEAS/index.html
+
+The CEAS user manual is available at http://liulab.dfci.harvard.edu/CEAS/usermanual.html
+  </help>
+</tool>
