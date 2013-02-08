@@ -13,36 +13,45 @@ LOG_OUT=$4
 PDF_OUT=$5
 PNG_OUT=$6
 #
-# Construct and run CEAS command line
+# Convenience variables for local files
 base_name="ceas"
+log_file=${base_name}.log
+r_script=${base_name}.R
+pdf_report=${base_name}.pdf
+png_report=${base_name}.png
+#
+# Get CEAS version
+ceas --version > $log_file
+#
+# Construct and run CEAS command line
 ceas_cmd="ceas --name $base_name -g $GDB_IN -b $BED_IN"
 if [ "$WIG_IN" != "None" ] ; then
     ceas_cmd="$ceas_cmd -w $WIG_IN"
 fi
 echo "Running $ceas_cmd"
-$ceas_cmd > ${base_name}.log 2>&1
+$ceas_cmd >> $log_file 2>&1
 #
 # Run the R script to generate the PDF report
-if [ -e ${base_name}.R ] ; then
-    echo "Running $base_name.R to generate $base_name.pdf"
-    R --vanilla < ${base_name}.R
+if [ -e $r_script ] ; then
+    echo "Running $r_script to generate $pdf_report"
+    R --vanilla < $r_script
     # Make PNG version using ImageMagick's convert program
-    convert ${base_name}.pdf ${base_name}_%04d.png
-    convert ${base_name}_*.png -append ${base_name}.png
+    convert $pdf_report ${base_name}_%04d.png
+    convert ${base_name}_*.png -append $png_report
 fi
 #
 # Move outputs to final destination
-if [ -e ${base_name}.log ] ; then
-    echo "Moving $base_name.log to $LOG_OUT"
-    /bin/mv ${base_name}.log $LOG_OUT
+if [ -e $log_file ] ; then
+    echo "Moving $log_file to $LOG_OUT"
+    /bin/mv $log_file $LOG_OUT
 fi
-if [ -e ${base_name}.pdf ] ; then
-    echo "Moving $base_name.pdf to $PDF_OUT"
-    /bin/mv ${base_name}.pdf $PDF_OUT
+if [ -e $pdf_report ] ; then
+    echo "Moving $pdf_report to $PDF_OUT"
+    /bin/mv $pdf_report $PDF_OUT
 fi
-if [ -e ${base_name}.png ] ; then
-    echo "Moving $base_name.pdf to $PNG_OUT"
-    /bin/mv ${base_name}.png $PNG_OUT
+if [ -e $png_report ] ; then
+    echo "Moving $png_report to $PNG_OUT"
+    /bin/mv $png_report $PNG_OUT
 fi
 #
 # Done
