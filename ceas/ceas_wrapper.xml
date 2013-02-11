@@ -1,6 +1,6 @@
-<tool id="ceas" name="CEAS" version="0.0.1">
+<tool id="ceas" name="CEAS" version="0.0.2">
   <description>Annotate intervals and scores with genome features</description>
-  <command interpreter="bash">ceas_wrapper.sh $bed_file $gdb_file $wig_file $log_output $pdf_report $png_report
+  <command interpreter="bash">ceas_wrapper.sh $bed_file $gdb_file $wig_file $extra_bed_file $log_output $pdf_report
   #if (str($span) and int(str($span)) > 0)
     --span $span
   #end if
@@ -14,6 +14,7 @@
   <inputs>
     <param name="bed_file" type="data" format="bed" label="BED file with ChIP regions" />
     <param name="wig_file" type="data" format="wig" label="WIG file for wig profiling or genome background annotation" optional="true" />
+    <param name="extra_bed_file" type="data" format="bed" label="BED file with extra regions of interest (e.g. non-coding regions)" optional="true" />
     <param name="gdb_file" type="select" label="Gene annotation table">
       <options from_file="ceas.loc">
 	<column name="name" index="1"/>
@@ -33,7 +34,6 @@
   <outputs>
     <data name="log_output" format="txt" label="CEAS on ${on_string} (log output)" />
     <data name="pdf_report" format="pdf" label="CEAS on ${on_string} (PDF report)" />
-    <data name="png_report" format="png" label="CEAS on ${on_string} (PNG report)" />
   </outputs>
   <help>
 **What it does**
