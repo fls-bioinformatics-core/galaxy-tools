@@ -1,6 +1,13 @@
 <tool id="ceas" name="CEAS" version="0.0.1">
   <description>Annotate intervals and scores with genome features</description>
-  <command interpreter="bash">ceas_wrapper.sh $bed_file $gdb_file $wig_file $log_output $pdf_report $png_report</command>
+  <command interpreter="bash">ceas_wrapper.sh $bed_file $gdb_file $wig_file $log_output $pdf_report $png_report
+  #if (str($span) and int(str($span)) > 0)
+    --span $span
+  #end if
+  --sizes $sizes_lower,$sizes_middle,$sizes_upper
+  --bisizes $bisizes_lower,$bisizes_upper
+  --pf-res $profiling_resolution
+  --rel-dist $relative_distance</command>
   <requirements>
     <requirement type="package">ceas</requirement>
   </requirements>
@@ -14,6 +21,14 @@
         <validator type="no_options" message="No tables are available for the selected input"/>
       </options>
     </param>
+    <param name="span" type="integer" label="Span from TSS and TTS in the gene-centered annotation (bp)" help="ChIP regions within this range from TSS and TTS are considered when calculating the coverage rates of promoter and downstream by ChIP regions" value="3000" />
+    <param name="sizes_lower" type="integer" label="Lower interval for promoter/downstream sizes for ChIP region annotation (bp)" value="1000" />
+    <param name="sizes_middle" type="integer" label="Middle interval for promoter/downstream sizes (bp)" value="2000" help="Values > 10000bp are automatically fixed to 10000bp" />
+    <param name="sizes_upper" type="integer" label="Upper interval for promoter/downstream sizes (bp)" value="3000" help="Values > 10000bp are automatically fixed to 10000bp" />
+    <param name="bisizes_lower" type="integer" label="Lower interval for bidirectional-promoter sizes for ChIP region annotation (bp)" value="2500" />
+    <param name="bisizes_upper" type="integer" label="Upper interval for bidirectional-promoter sizes (bp)" value="5000" help="Values > 20000bp are automatically fixed to 20000bp" />
+    <param name="profiling_resolution" type="integer" label="Wig profiling resolution (bp)" value="50" help="Warning: a number smaller than the wig interval (resolution) may cause aliasing error" />
+    <param name="relative_distance" type="integer" label="Relative distance to TSS/TTS in wig profiling (bp)" value="3000" />
   </inputs>
   <outputs>
     <data name="log_output" format="txt" label="CEAS on ${on_string} (log output)" />

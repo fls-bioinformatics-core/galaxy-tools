@@ -13,6 +13,13 @@ LOG_OUT=$4
 PDF_OUT=$5
 PNG_OUT=$6
 #
+# Collect remaining args
+OPTIONS=
+while [ ! -z "$7" ] ; do
+    OPTIONS="$OPTIONS $7"
+    shift
+done
+#
 # Convenience variables for local files
 base_name="ceas"
 log_file=${base_name}.log
@@ -24,10 +31,10 @@ png_report=${base_name}.png
 ceas --version > $log_file
 #
 # Construct and run CEAS command line
-ceas_cmd="ceas --name $base_name -g $GDB_IN -b $BED_IN"
+ceas_cmd="ceas --name $base_name $OPTIONS -g $GDB_IN -b $BED_IN"
 if [ "$WIG_IN" != "None" ] ; then
     ceas_cmd="$ceas_cmd -w $WIG_IN"
-fi
+fi 
 echo "Running $ceas_cmd"
 $ceas_cmd >> $log_file 2>&1
 #
