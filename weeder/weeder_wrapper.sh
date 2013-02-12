@@ -2,14 +2,14 @@
 #
 # Wrapper script to run weeder as a Galaxy tool
 #
-# Usage: weeder_wrapper.sh FASTA_IN MIX_OUT LOG_OUT [ ARGS... ]
+# Usage: weeder_wrapper.sh FASTA_IN MIX_OUT WEE_OUT [ ARGS... ]
 #
 # ARGS: one or more arguments to supply directly to weeder
 #
 # Process command line
 FASTA_IN=$1
 MIX_OUT=$2
-LOG_OUT=$3
+WEE_OUT=$3
 #
 # Other arguments
 ARGS=""
@@ -35,24 +35,37 @@ for prog in weederlauncher.out weederTFBS.out adviser.out ; do
     fi
 done
 #
+# Link to the FreqFiles directory
+echo "Linking to FreqFiles directory"
+ln -s /usr/share/FreqFiles FreqFiles
+#
 # Construct names of input and output files
 fasta=`basename $FASTA_IN`
 mix=$fasta.mix
-log=$fasta.wee
+wee=$fasta.wee
 #
 # Construct and run weeder command
-# NB weeder logs output to stderr error so redirect to stdout
+# NB weeder logs output to stderr eso redirect to stdout
 # to prevent the Galaxy tool reporting failure
 weeder_cmd="./weederlauncher.out $fasta $ARGS"
 echo "Running $weeder_cmd"
-$weeder_cmd 2>&1
+$weeder_cmd 2>&1 | tee weeder.log
+#
+# NB advisor.out is started as a background process (why???)
+# so keep checking the log file - when we encounter
+# "Job completed" then the process has finished
+running=
+while [ -z "$running" ] ; do
+    running=`tail weeder.log | grep "Job completed"`
+    sleep 5s
+done
 #
 # Move outputs to final destinations
 if [ -e $mix ] ; then
     /bin/mv $mix $MIX_OUT
 fi
-if [ -e $log ] ; then
-    /bin/mv $log $LOG_OUT
+if [ -e $wee ] ; then
+    /bin/mv $wee $WEE_OUT
 fi
 #
 # Done

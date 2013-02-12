@@ -1,6 +1,6 @@
-<tool id="motiffinding_weeder" name="Weeder" version="0.0.2">
+<tool id="motiffinding_weeder" name="Weeder" version="0.0.3">
   <description>Motif discovery in sequences from coregulated genes of a single species</description>
-  <command interpreter="bash">weeder_wrapper.sh $sequence_file $output_mix_file $output_log_file $species_code $analysis_type $strands $repeat_motif T$n_motifs</command>
+  <command interpreter="bash">weeder_wrapper.sh $sequence_file $output_mix_file $output_wee_file $species_code $analysis_type $strands $repeat_motif T$n_motifs</command>
   <requirements>
     <requirement type="package">weederlauncher.out</requirement>
   </requirements>
@@ -41,7 +41,7 @@
   </inputs>
   <outputs>
     <data name="output_mix_file" format="txt" label="Weeder on ${on_string} ('mix' output)" />
-    <data name="output_log_file" format="txt" label="Weeder on ${on_string} (log output)" />
+    <data name="output_wee_file" format="txt" label="Weeder on ${on_string} ('wee' output)" />
   </outputs>
   <help>
 **What it does**
