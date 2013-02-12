@@ -31,8 +31,8 @@
       <option value="BBS">Bacillus subtilis</option>
     </param>
     <param name="analysis_type" type="select" label="Size of motifs and degree of degeneracy to search for">
-      <option value="small">Motifs of length 6 and 8</option>
-      <option value="medium" selected="true">Motifs of length 6 8 and 10</option>
+      <option value="small" selected="true">Motifs of length 6 and 8</option>
+      <option value="medium">Motifs of length 6 8 and 10</option>
       <option value="large">Motifs of length 6,8, 10 and 12</option>
     </param>
     <param name="strands" label="Use both strands of sequence" type="boolean" truevalue="S" falsevalue="" checked="False"/>
