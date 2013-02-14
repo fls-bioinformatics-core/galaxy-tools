@@ -2,7 +2,7 @@
 #
 # Wrapper script to run weeder as a Galaxy tool
 #
-# Usage: weeder_wrapper.sh FASTA_IN MIX_OUT WEE_OUT [ ARGS... ]
+# Usage: weeder_wrapper.sh FASTA_IN MIX_OUT WEE_OUT MATRICES_ALL MATRICES_BEST [ ARGS... ]
 #
 # ARGS: one or more arguments to supply directly to weeder
 #
@@ -10,13 +10,19 @@
 FASTA_IN=$1
 MIX_OUT=$2
 WEE_OUT=$3
+MATRICES_ALL=$4
+MATRICES_BEST=$5
 #
 # Other arguments
 ARGS=""
-while [ ! -z "$4" ] ; do
-    ARGS="$ARGS $4"
+while [ ! -z "$6" ] ; do
+    ARGS="$ARGS $6"
     shift
 done
+#
+# Tool directory i.e. location where this script is held
+# Need this to locate the supplementary perl script
+TOOL_DIR=`dirname $0`
 #
 # Link to input file
 ln -s $FASTA_IN
@@ -35,9 +41,17 @@ for prog in weederlauncher.out weederTFBS.out adviser.out ; do
     fi
 done
 #
-# Link to the FreqFiles directory
-echo "Linking to FreqFiles directory"
-ln -s /usr/share/FreqFiles FreqFiles
+# Also link to the FreqFiles directory
+# PJB actually this doesn't appear to be necessary for our local
+# RPM install so commented out for now
+##freqfiles_dir=/usr/share/weeder-1.4.2/FreqFiles
+##if [ -d $freqfiles_dir ] ; then
+##    echo "Linking to FreqFiles directory"
+##    ln -s $freqfiles_dir FreqFiles
+##else
+##    echo "ERROR FreqFiles directory not found" >&2
+##    exit 1
+##fi
 #
 # Construct names of input and output files
 fasta=`basename $FASTA_IN`
@@ -60,6 +74,11 @@ while [ -z "$running" ] ; do
     sleep 5s
 done
 #
+# Extract matrices
+if [ -e $wee ] ; then
+    perl ${TOOL_DIR}/ExtractWeederMatrices.pl $wee
+fi
+#
 # Move outputs to final destinations
 if [ -e $mix ] ; then
     /bin/mv $mix $MIX_OUT
@@ -67,5 +86,11 @@ fi
 if [ -e $wee ] ; then
     /bin/mv $wee $WEE_OUT
 fi
+if [ -e ${wee}_ALL_matrix.txt ] ; then
+    /bin/mv ${wee}_ALL_matrix.txt $MATRICES_ALL
+fi
+if [ -e ${wee}_BEST_matrix.txt ] ; then
+    /bin/mv ${wee}_BEST_matrix.txt $MATRICES_BEST
+fi  
 #
 # Done
