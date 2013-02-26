@@ -1,0 +1,46 @@
+<tool id="microsat_pal_finder" name="pal_finder" version="0.0.1">
+  <description>Find microsatellite repeat elements sequencing reads and design PCR primers to amplify them</description>
+  <command interpreter="bash">pal_finder_wrapper.sh $input_fastq_r1 $input_fastq_r2 $output_microsat_summary $output_pal_summary
+  #if $keep_config_file
+    --output_config_file $output_config_file
+  #end if
+  --primer-prefix $primer_prefix
+  --2merMinReps $min_2mer_repeats
+  --3merMinReps $min_3mer_repeats
+  --4merMinReps $min_4mer_repeats
+  --5merMinReps $min_5mer_repeats
+  --6merMinReps $min_6mer_repeats
+  --primer-min-tm $primer_min_tm
+  </command>
+  <requirements>
+    <requirement type="package">pal_finder.pl</requirement>
+    <requirement type="package">primer3_core</requirement>
+  </requirements>
+  <inputs>
+    <param name="primer_prefix" type="text" value="test" size="25" label="Primer prefix" help="This prefix will be added to the beginning of all primer names" />
+    <param name="input_fastq_r1" type="data" format="fastqsanger" label="Illumina fastq file (read 1)" />
+    <param name="input_fastq_r2" type="data" format="fastqsanger" label="Illumina fastq file (read 2)" />
+    <param name="min_2mer_repeats" type="integer" value="6" label="Minimum number of 2-mer repeat units to detect" help="Set to zero to ignore repeats of this n-mer unit" />
+    <param name="min_3mer_repeats" type="integer" value="0" label="Minimum number of 3-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
+    <param name="min_4mer_repeats" type="integer" value="0" label="Minimum number of 4-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
+    <param name="min_5mer_repeats" type="integer" value="0" label="Minimum number of 5-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
+    <param name="min_6mer_repeats" type="integer" value="0" label="Minimum number of 6-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
+    <param name="primer_min_tm" type="float" value="58.0" label="Minimum acceptable melting temperature for a primer oligo" help="Temperature should be in degrees Celsius" />
+    <param name="keep_config_file" type="boolean" truevalue="True" falsevalue="False" label="Output the config file to the history" />
+  </inputs>
+  <outputs>
+    <data name="output_microsat_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellite types)" />
+    <data name="output_pal_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellites with read IDs and primer pairs)" />
+    <data name="output_config_file" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (config file)">
+      <filter>keep_config_file is True</filter>
+    </data>
+  </outputs>
+  <help>
+**What it does**
+
+pal_finder finds microsatellite repeat elements directly from raw 454 or Illumina paired-end
+sequencing reads. It then designs PCR primers to amplify these repeat loci (Potentially Amplifiable Loci: PAL).
+
+This tool is compatible with pal_finder version 0.02.04; pal_finder can be obtained from http://sourceforge.net/projects/palfinder/
+  </help>
+</tool>
