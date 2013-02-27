@@ -13,23 +13,40 @@
 # --5merMinReps N
 # --6merMinReps N
 # --primer-min-tm VALUE: minimum acceptable melting temperature (Celsius) for a primer oligo
+# --output_config_file FNAME: write a copy of the config.txt file to FNAME
 #
 # pal_finder is available from http://sourceforge.net/projects/palfinder/
 #
 # primer3 is available from http://primer3.sourceforge.net/releases.php
 # (nb needs version 2.0.0-alpha)
 #
+# Explicitly set the locations of the pal_finder script, data files and the primer3
+# executable by setting the following variables in the environment:
+#
+#  * PALFINDER_SCRIPT_DIR: location of the pal_finder Perl script (defaults to
+#    /usr/bin)
+#  * PALFINDER_DATA_DIR: location of the pal_finder data files (specifically
+#    config.txt and simple.ref; defaults to /usr/share/pal_finder_v0.02.04)
+#  * PRIMER3_CORE_EXE: name of the primer3_core program, which should include the
+#    full path if it's not on the Galaxy user's PATH (defaults to primer3_core)
+#
 echo $*
 #
-# Initialise
-PALFINDER_DIR=/home/pjb/software-install/pal_finder_v0.02.04
+# Initialise locations of scripts, data and executables
+#
+# Set these in the environment to overide at execution time
+: ${PALFINDER_SCRIPT_DIR:=/usr/bin}
+: ${PALFINDER_DATA_DIR:=/usr/share/pal_finder_v0.02.04}
+: ${PRIMER3_CORE_EXE:=primer3_core}
+#
+# Initialise parameters used in the config.txt file
 PRIMER_PREFIX="test"
 MIN_2_MER_REPS=6
 MIN_3_MER_REPS=0
 MIN_4_MER_REPS=0
 MIN_5_MER_REPS=0
 MIN_6_MER_REPS=0
-PRIMER_MISPRIMING_LIBRARY=$PALFINDER_DIR/simple.ref
+PRIMER_MISPRIMING_LIBRARY=$PALFINDER_DATA_DIR/simple.ref
 PRIMER_MIN_TM=
 OUTPUT_CONFIG_FILE=
 #
@@ -91,7 +108,6 @@ while [ ! -z "$5" ] ; do
 done
 #
 # Check that primer3_core is available
-PRIMER3_CORE_EXE=/home/pjb/software-install/primer3-2.0.0-alpha/primer3_core
 got_primer3=`which $PRIMER3_CORE_EXE 2>&1 | grep -v "no primer3_core in"`
 if [ -z "$got_primer3" ] ; then
   echo ERROR primer3_core not found
@@ -106,7 +122,7 @@ fastq_r1=`basename $FASTQ_R1`
 fastq_r2=`basename $FASTQ_R2`
 #
 # Copy in the default config.txt file
-/bin/cp $PALFINDER_DIR/config.txt .
+/bin/cp $PALFINDER_DATA_DIR/config.txt .
 #
 # Update the config.txt file with new values
 function set_config_value() {
@@ -139,7 +155,7 @@ if [ ! -z "$PRIMER_MIN_TM" ] ; then
 fi
 #
 # Run pal_finder
-perl $PALFINDER_DIR/pal_finder_v0.02.04.pl config.txt 2>&1
+perl $PALFINDER_SCRIPT_DIR/pal_finder_v0.02.04.pl config.txt 2>&1
 #
 # Clean up
 if [ -f Output/microsat_summary.txt ] ; then
