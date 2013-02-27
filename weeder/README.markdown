@@ -1,0 +1,28 @@
+weeder
+======
+
+XML and wrapper script for weeder motif discovery package.
+
+The tool assumes that the weeder programs `weederlauncher.out`,
+`weederTBFS.out` and `adviser.out` are on the Galaxy user's path.
+
+`weeder` can be obtained from [http://159.149.160.51/modtools/downloads/weeder.html]().
+
+The tool includes an additional script `ExtractWeederMatrices.pl` which extracts
+the motif matrices from the weeder `.wee` file and puts them into separate files.
+
+To add to Galaxy add the following to tool_conf.xml:
+
+    <tool file="weeder/weeder_wrapper.xml" />
+
+### Changes ###
+
+0.0.4: run ExtractWeederMatrices.pl to get matrices from .wee output;
+       add weeder `A` option; comment out link to FreqFiles (doesn't
+       seem to be required after all!)
+
+0.0.3: fix needed to capture output from adviser (otherwise output is
+       incomplete); make a link to the FreqFiles directory.
+
+0.0.2: add full list of organisms and update output data items names
+       and types (so they can be displayed within the browser)
