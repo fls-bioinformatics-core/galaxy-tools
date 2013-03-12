@@ -11,7 +11,7 @@
   $input $conf_file $screen_txt $screen_png</command>
   <inputs>
     <param name="input" type="data" format="fastqsanger,fastqcssanger" label="FASTQ file" help="Sequences can be either Illumina (Sanger) or SOLiD (colorspace) format" />
-    <param name="conf_file" type="select" label="FastQ Screen conf file">
+    <param name="conf_file" type="select" label="FastQ Screen conf file" help="Select a conf file with a specific set of bowtie indexes to screen against" >
       <options from_file="fastq_screen.loc">
         <filter type="multiple_splitter" column="1" separator=","/>
         <filter type="param_value" column="1" ref="input" ref_attribute="extension"/>
@@ -50,22 +50,6 @@ FASTQ file.
 fastq_screen reports the percentage of mapped reads against each index as both a textual
 table and as a plot (in PNG format), giving an indication of how much of each organism
 is present in the sample and revealing sources of contamination.
-
--------------
-
-.. class:: infomark
-
-**Available screens**
-
-This version of the tool offers three sets of screens:
-
- * **Model organisms**: a standard set of common genomes (human, mouse, rat, fly,
-   C. elgans, yeast, E. coli...)
-
- * **Other organisms**: a set of less common genomes (S. Bayanus, N. Crassa,
-   Dictystelium...)
-
- * **rRNAs**: rRNA sequences for a selection of "model" and "other" organisms.
 
 -------------
 
