@@ -1,5 +1,5 @@
-<tool id="fls_qc_boxplotter" name="Run QC Boxplotter" version="0.0.3">
-  <description>to get quality boxplot for SOLiD data</description>
+<tool id="fls_qc_boxplotter" name="QC Boxplotter" version="0.0.3">
+  <description>Generate boxplot to characterise SOLiD data quality</description>
   <command interpreter="bash">qc_boxplotter.sh $input $seq_order_boxplot_pdf $seq_order_boxplot_png</command>
   <inputs>
     <param format="qualsolid" name="input" type="data" label="Generate boxplot plot from SOLiD qual file" />
@@ -16,7 +16,28 @@
     </test>
   </tests>
   <help>
-This tool runs the FLS QC boxplotter program to assess the quality
-of a SOLiD read sequence by base.
+.. class:: infomark
+
+**What it does**
+
+This tool generates a boxplot of the quality values for each base position across
+all reads in a SOLiD qual file (containing the quality scores corresponding to the
+colorspace reads).
+
+The boxplot is output in both PDF and PNG format, and gives an indication of the
+overall data quality.
+
+-------------
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed within the Bioinformatics Core Facility at the
+University of Manchester, and runs the qc_boxplotter program also developed by this
+group. The qc_boxplotter program can be obtained from 
+https://github.com/fls-bioinformatics-core/genomics/tree/master/NGS-general
+
+Please kindly acknowledge the Bioinformatics Core Facility if you use this tool.
   </help>
 </tool>
