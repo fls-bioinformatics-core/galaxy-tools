@@ -1,5 +1,5 @@
-<tool id="fls_rnachipintegrator_canonical_genes" name="Analyse canonical gene lists" version="0.0.2">
-  <description>against ChIP data</description>
+<tool id="fls_rnachipintegrator_canonical_genes" name="Analyse canonical genes against ChIP data" version="0.0.2">
+  <description>using RnaChipIntegrator</description>
   <command interpreter="bash">rnachipintegrator_wrapper.sh
   #if str( $analysis_options.peak_type ) == "summits"
     #if str( $analysis_options.window ) != ""
@@ -134,30 +134,25 @@
 
 **What it does**
 
-Run RnaChipIntegrator to perform integrated analyses of gene expression
-and ChIP data, identifying the nearest ChIP peaks to each transcript
-and vice versa.
+Run RnaChipIntegrator to analyse ChIP data against a set of list of "canonical
+genes" for a specific organism/genome build, identifying the nearest ChIP peaks
+to each cannonical gene (vice versa).
 
 For ChIP peaks defined as regions the following analyses are performed:
 
- * TranscriptsToPeakEdges: reports the nearest transcripts with the smallest
+ * **TranscriptsToPeakEdges**: reports the nearest transcripts with the smallest
    distance from either their TSS or TES to the nearest peak edge.
 
- * TSSToPeakEdges: reports the nearest transcripts with the smallest distance
+ * **TSSToPeakEdges**: reports the nearest transcripts with the smallest distance
    from their TSS to the nearest peak edge.
 
 For ChIP peaks defined as summits:
 
- * TSSToSummits: reports the nearest transcripts with the smallest distance
+ * **TSSToSummits**: reports the nearest transcripts with the smallest distance
    from the TSS to the nearest peak summit.
 
- * PeaksToTranscripts: reports the nearest peak summits with the smallest
+ * **PeaksToTranscripts**: reports the nearest peak summits with the smallest
    distance to either the TSS or TES of each transcript.
-
-The program was originally written specifically for ChIP-Seq and RNA-Seq data
-but works equally well for ChIP-chip and microarray expression data, and can
-also be used to integrate any set of genomic features (e.g. canonical genes,
-CpG islands) with expression data.
 
 RnaChipIntgerator can be obtained from
 http://fls-bioinformatics-core.github.com/RnaChipIntegrator/
@@ -188,7 +183,31 @@ entire extent of the binding region (with 'start' and 'end' indicating the limit
 
 **Output**
 
-An Excel spreadsheet with one page for each analysis performed.
+The outputs from this tool vary depending on the type of ChIP data that is input (i.e
+summits or peaks), however generally there is one tab-delimited results file for each
+analysis described above in the **What it does** section (some analyses output a second
+file with just the "best" hits).
 
+A history item will be generated for each output file, unless the option to put them
+into a single zip archive is selected; this archive file will have to be downloaded
+and unzipped on your local machine. It is recommended that you refer to the
+RnaChipIntegrator documentation for information on the contents of each output file:
+https://github.com/fls-bioinformatics-core/RnaChipIntegrator/blob/master/doc/MANUAL.markdown
+
+In addition an Excel spreadsheet (with one page for each analysis performed) is always
+produced.
+
+-------------
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed within the Bioinformatics Core Facility at the
+University of Manchester. It runs the RnaChipIntegrator package which has also been
+developed by this group, and is documented at
+http://fls-bioinformatics-core.github.com/RnaChipIntegrator/
+
+Please kindly acknowledge the Bioinformatics Core Facility if you use this tool.
   </help>
 </tool>
