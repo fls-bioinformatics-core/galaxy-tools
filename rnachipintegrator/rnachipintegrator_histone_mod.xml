@@ -1,5 +1,5 @@
-<tool id="fls_rnachipintegrator_histone_mod" name="Analyse gene expression data" version="0.0.4">
-  <description>against histone modifications</description>
+<tool id="fls_rnachipintegrator_histone_mod" name="Analyse gene expression data against histone modifications" version="0.0.4">
+  <description>using RnaChipIntegrator</description>
   <command interpreter="bash">rnachipintegrator_wrapper.sh
   #if str( $edge_cutoff ) != ""
   --edge-cutoff=$edge_cutoff
@@ -97,10 +97,10 @@ and vice versa.
 
 The following analyses are performed:
 
- * TranscriptsToPeakEdges: reports the nearest transcripts with the smallest
+ * **TranscriptsToPeakEdges**: reports the nearest transcripts with the smallest
    distance from either their TSS or TES to the nearest peak edge.
 
- * TSSToPeakEdges: reports the nearest transcripts with the smallest distance
+ * **TSSToPeakEdges**: reports the nearest transcripts with the smallest distance
    from their TSS to the nearest peak edge.
 
 RnaChipIntgerator can be obtained from
@@ -132,7 +132,29 @@ Column Name       Description
 
 **Output**
 
-An Excel spreadsheet with one page for each analysis performed.
+The outputs from this tool consist of one tab-delimited results file for each
+analysis described above in the **What it does** section.
 
+A history item will be generated for each output file, unless the option to put them
+into a single zip archive is selected; this archive file will have to be downloaded
+and unzipped on your local machine. It is recommended that you refer to the
+RnaChipIntegrator documentation for information on the contents of each output file:
+https://github.com/fls-bioinformatics-core/RnaChipIntegrator/blob/master/doc/MANUAL.markdown
+
+In addition an Excel spreadsheet (with one page for each analysis performed) is always
+produced.
+
+-------------
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed within the Bioinformatics Core Facility at the
+University of Manchester. It runs the RnaChipIntegrator package which has also been
+developed by this group, and is documented at
+http://fls-bioinformatics-core.github.com/RnaChipIntegrator/
+
+Please kindly acknowledge the Bioinformatics Core Facility if you use this tool.
   </help>
 </tool>
