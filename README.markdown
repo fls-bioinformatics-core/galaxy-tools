@@ -8,6 +8,7 @@ Tools wrapping 3rd-party software:
  * CEAS
  * fastq_screen
  * pal_finder
+ * SOLiD_preprocess_filter_v2.pl
  * weeder
 
 Tools wrapping in-house scripts and programs:

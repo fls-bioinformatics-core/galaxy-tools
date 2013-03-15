@@ -1,0 +1,91 @@
+<tool id="solid_preprocess_filter_wrapper" name="SOLiD Preprocess Filter" version="0.0.1">
+  <description>Quality filtering of SOLiD data</description>
+  <command interpreter="bash">solid_preprocess_filter_wrapper.sh
+  $csfasta_in $qual_in $csfasta_out $qual_out
+  #if $polyclonal_analysis.polyclonal_analysis_on
+    -x on -p $polyclonal_analysis.polyclonal_number -q $polyclonal_analysis.polyclonal_min_qv
+  #else
+    -x off
+  #end if
+  #if $error_analysis.error_analysis_on
+    -y on -e $error_analysis.max_error_count -d $error_analysis.min_error_qv
+  #else
+    -y off
+  #end if
+  #if $truncation.truncation_on and (str( $truncation.truncation_length ) != "" )
+    -t on -u $truncation.truncation_length
+  #else
+    -t off
+  #end if</command>
+  <inputs>
+    <param name="csfasta_in" type="data" format="csfasta" label="CSFASTA file" />
+    <param name="qual_in" type="data" format="qualsolid" label="QUAL file" />
+  <conditional name="polyclonal_analysis">
+    <param name="polyclonal_analysis_on" type="boolean" label="Perform filtering based on polyclonal analysis" truevalue="on" falsevalue="off" checked="on" />
+    <when value="on">
+      <param name="polyclonal_number" type="integer" label="Number of quality scores that must exceed threshold for polyclonal analysis" value="3" optional="true" help="Polyclonal analysis only looks at first 10 color calls"/>
+      <param name="polyclonal_min_qv" type="integer" label="Minimum quality score for polyclonal analysis" value="22" optional="true" help="This must be in the range 0-34" />
+    </when>
+  </conditional>
+  <conditional name="error_analysis">
+    <param name="error_analysis_on" type="boolean" label="Perform filtering based on error analysis" truevalue="on" falsevalue="off" checked="on" />
+    <when value="on">
+      <param name="max_error_count" type="integer" label="Maximum number of errors allowed per read" value="10" optional="true" help="Error analysis considers all color calls in the read" />
+      <param name="min_error_qv" type="integer" label="Minimum quality score for error analysis" value="9" optional="true" help="This must be in the range 0-34" />
+    </when>
+  </conditional>
+  <conditional name="truncation">
+    <param name="truncation_on" type="boolean" label="Truncate the 3' end of the read" truevalue="on" falsevalue="off" checked="off" />
+    <when value="on">
+      <param name="truncation_length" type="integer" label="Length of read after after truncation" value="" optional="true" help="Any color calls after this length will be removed" />
+    </when>
+  </conditional>
+  </inputs>
+  <outputs>
+    <data format="csfasta" name="csfasta_out" label="${tool.name} on ${on_string} [csfasta]" />
+    <data format="qualsolid" name="qual_out" label="${tool.name} on ${on_string} [qual]" />
+  </outputs>
+  <tests>
+  </tests>
+  <help>
+.. class:: infomark
+
+**What it does**
+
+SOLiD_preprocess_filter is a script that filters reads from a SOLiD csfasta and qual
+(QV) file pair based on polyclonal and error tests. It can also perform read
+truncation.
+
+This Galaxy tool only implements the filtering functionality for "fragment" type
+input i.e. single csfasta/qual pair for the forward read. The following operations
+are supported:
+
+**Polyclonal analysis** filters based on the quality scores of the first 10 color
+calls of the read. To pass the filter the specified number (or more) of the quality
+scores must exceed the supplied minimum value.
+
+**Error analysis** filters based on the quality scores for all color calls in the
+read. To pass this filter no more than the specified number (or fewer) of the
+quality scores must fall below the supplied minimum value.
+
+**Truncation** of the reads from the 3' end.
+
+-------------
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed within the Bioinformatics Core Facility at the
+University of Manchester. It runs the SOLiD_preprocess_filter_v2.pl program which has
+been developed by the High-Throughput Sequencing (HTS) Group at Rutgers University.
+
+.. class:: warningmark
+
+**The HTS website no longer works and the SOLiD_preprocess_filter_v2.pl script
+cannot be obtained from there.**
+
+Please kindly acknowledge both this Galaxy tool and the SOLiD_preprocess_filter_v2.pl
+script if you use it.
+  </help>
+</tool>
