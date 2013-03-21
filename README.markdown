@@ -13,6 +13,7 @@ Tools wrapping 3rd-party software:
 
 Tools wrapping in-house scripts and programs:
 
+ * motif_tools
  * qc_boxplotter
  * RnaChipIntegrator
  * SamStats
