@@ -1,0 +1,38 @@
+<tool id="gff_unique_count" name="Count unique seq in GFF" version="1.0.0">
+  <description>Gives the non-redundant count of sequences</description>
+  <command interpreter="perl">CountUniqueIDs.pl $input $output</command>
+  <inputs>
+    <param format="gff" name="input" type="data" label="GFF file" help="Select a GFF file."/>
+  </inputs>
+  <outputs>
+    <data format="txt" name="output" />
+  </outputs>
+
+  <help>
+.. class:: infomark
+
+**What it does**
+
+This tool counts the number non-redundant sequence identifiers (seqname) in a GFF file.  The tool was originally written to read a GFF file containing set of motif matches and report the number of sequences that contain one or more instances of the scanned motif.
+
+----
+
+.. class:: infomark
+
+**Options**
+
+A GFF formated file is required.
+
+----
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed within the Bioinformatics Core Facility at the University of Manchester. It runs the CountUniqueIDs.pl Perl script that was written by Ian Donaldson.
+
+Please kindly acknowledge both this Galaxy tool and CountUniqueIDs.pl if you use it.
+  </help>
+
+</tool>
+

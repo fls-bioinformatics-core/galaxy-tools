@@ -1,0 +1,120 @@
+<tool id="tfbscluster3" name="TFBScluster three TFBS" version="1.0.0">
+  <description>Identifies clusters of three TFBS</description>
+  <command interpreter="perl">
+    TFBScluster_candidates.pl 
+
+    ##TF libraries (comma delimited NO SPACES)           
+    $lib1,$lib2,$lib3
+
+    ##Number of flanking 'N's for subject files (comma delimited NO SPACES)        
+    0,0,0
+
+    ##Minimum number of occurences (comma delimited NO SPACES)
+    $occ1,$occ2,$occ3
+
+    ##TF IDs (comma delimited NO SPACES)
+    $id1,$id2,$id3
+
+    ##Single range value in bp (+/-) query start and end values
+    $range
+
+    ##Include overlapping TFBSs (include/exclude)
+    $overlap
+
+    ##Output file
+    $output
+
+    > $output_log 
+
+  </command>
+  <inputs>
+    <!-- TFBS GFF libraries -->
+    <param format="gff" name="lib1" type="data" label="TFBS #1 GFF file" help="Select the first GFF file containing TFBS positions."/>
+    <param format="gff" name="lib2" type="data" label="TFBS #2 GFF file" help="Select the second GFF file containing TFBS positions."/>
+    <param format="gff" name="lib3" type="data" label="TFBS #3 GFF file" help="Select the third GFF file containing TFBS positions."/>
+
+    <!-- Min occurrences -->
+    <param name="occ1" type="select" label="Minimum occurrence of TFBS #1" help="Select the minimum number of times that an instance of TFBS #1 should be present in a cluster.">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </param>
+    <param name="occ2" type="select" label="Minimum occurrence of TFBS #2" help="Select the minimum number of times that an instance of TFBS #2 should be present in a cluster.">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </param>
+    <param name="occ3" type="select" label="Minimum occurrence of TFBS #3" help="Select the minimum number of times that an instance of TFBS #3 should be present in a cluster.">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </param>
+  
+    <!-- TFBS identifiers -->
+    <param name="id1" type="text" label="Identifier for TFBS #1" value="TFBS1" help="Enter an identifier for TFBS #1." size="20"/>
+    <param name="id2" type="text" label="Identifier for TFBS #2" value="TFBS2" help="Enter an identifier for TFBS #2." size="20"/>
+    <param name="id3" type="text" label="Identifier for TFBS #3" value="TFBS3" help="Enter an identifier for TFBS #3." size="20"/>
+
+    <!-- Cluster length -->
+    <param name="range" type="text" label="Minimum length of clusters" value="50" help="Enter a number for the minimum length of the clusters, for example 50bp (start to end)" size="5"/>
+
+    <!-- Allow overlapping TFBS? -->
+    <param name="overlap" type="select" label="Include or exclude overlapping TFBS" help="Decide whether to allow TFBS binding sites to overlap.">
+      <option value="exclude">Exclude overlapping TFBS</option>
+      <option value="include">Include overlapping TFBS</option>
+    </param>
+  </inputs>
+
+  <outputs>
+    <data format="gff" name="output" label="TFBScluster on ${on_string} (clusters)"/>
+    <data format="txt" name="output_log" label="TFBScluster on ${on_string} (log file)"/>
+  </outputs>
+
+  <help>
+.. class:: infomark
+
+**What it does**
+
+This tool takes three GFF files containing the positions genomic features, typically transcription factor binding sites (TFBS) and looks for clusters with certain properties.  The GFF file input could be different TFBS (e.g. combinatorial binding of different factors) or the same TFBS (clustering of multiple instances of the same factor).  
+
+The cluster properties are explained in more detail in the **Options** section.
+ 
+----
+
+.. class:: infomark
+
+**Options**
+
+'TFBS GFF files' - Each file contains genomic coordinates, typically matches between an IUPAC string representing a TFBS and a set of target sequences, such as those from a ChIP-seq experiment.  However, the positions could be for any genomic feature over the whole genome.  The important thing is that the different files have the same genome build in common.
+
+'Minimum occurrence of TFBS' - When clusters are determined you can ensure that a minimum number off occurrences from each TFBS are present.
+
+'Identifier for TFBS' - This allows information about the different TFBS sets to be propogated through to the output.  The identifier could be the TFBS name or the IUPAC used to search for the sites, this should only include letters/numbers, but without spaces.
+
+'Minimum length of clusters' - The length is a window of sequence in which the specified number of TFBS must be located.  Initially TFBScluster will identify all cluster matching the input criteria.  It will then merge any overlapping clusters, which can result in lengths greater than the input length.
+
+'Include or exclude overlapping TFBS' - You can choose to exclude any TFBS that overlaps with another when counting the number of co-occurring TFBS.  By default such TFBS are excluded as a basic assumption about co-occuring/cooperative TFBS in a module is that both factors can bind at the same time, which they are unlikely to do if their binding sites overlap.
+
+----
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed within the Bioinformatics Core Facility at the University of Manchester. It runs the TFBScluster_candidate.pl Perl script that was written by Ian Donaldson, which is a modification of the script from the original web tool.  Articles below:
+
+http://www.ncbi.nlm.nih.gov/pubmed/15855248
+
+http://www.ncbi.nlm.nih.gov/pubmed/16845063
+
+Please kindly acknowledge both this Galaxy tool and TFBScluster articles if you use it.
+  </help>
+
+</tool>
+

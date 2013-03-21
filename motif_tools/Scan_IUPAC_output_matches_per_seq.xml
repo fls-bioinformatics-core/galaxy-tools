@@ -1,0 +1,77 @@
+<tool id="fasta_scan_iupac_per_seq" name="IUPAC scan and output matches per seq" version="1.0.0">
+  <description>Counts the matches to a given IUPAC</description>
+  <command interpreter="perl">Scan_IUPAC_output_matches_per_seq.pl $iupac $fasta $output $strand</command>
+  <inputs>
+    <param name="iupac" type="text" label="IUPAC string" value="e.g. WGATAR" help="Enter an IUPAC string." size="20"/>
+    <param format="fasta" name="fasta" type="data" label="FASTA file" help="Select a FASTA file containing the sequences to be scanned."/>
+    <param name="strand" type="select" label="Select sequence strands to scan" help="Scan either both strands or only the forward strand.">
+      <option value="0">Scan both strands</option>
+      <option value="1">Only scan forward strand</option>
+    </param>
+  </inputs>
+  <outputs>
+    <data format="tabular" name="output" />
+  </outputs>
+
+  <help>
+.. class:: infomark
+
+**What it does**
+
+This tool will find all matches to a DNA pattern in the input DNA sequence, represented by an IUPAC string. The matches are non-overlapping, so searching with 'TTTT' in 'TTTTTTTT' will find two hits to the IUPAC. The output is a table that gives the seqname and the number of matches to the IUPAC per sequence.  This version is useful if you want to get a count of IUPAC matches per sequence (e.g. a binding region) and paste the numbers back into a spreadsheet.
+
+IUPAC = Nucleotide(s):
+
+A = A
+ 
+C = C
+
+G = G
+
+T = T
+
+M = A/C
+
+R = A/G
+
+W = A/T
+
+S = C/G
+
+Y = C/T
+
+K = G/T
+
+V = A/C/G
+
+H = A/C/T
+
+D = A/G/T
+
+B = C/G/T
+
+N = A/C/G/T
+ 
+----
+
+.. class:: infomark
+
+**Options**
+
+'IUPAC string' - can be entered as upper- or lower-case as the tool will force them to become upper-case, but will only accept the IUPAC codes listed above.
+
+'Select sequence strands to scan' - Only scanning the forward strand if the input sequence is useful if the IUPAC is a palindrome (e.g. CANNTG).
+
+----
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed within the Bioinformatics Core Facility at the University of Manchester. It runs the Scan_IUPAC_output_matches_per_seq.pl Perl script that was written by Ian Donaldson.
+
+Please kindly acknowledge both this Galaxy tool and Scan_IUPAC_output_matches_per_seq.pl if you use it.
+  </help>
+
+</tool>
+
