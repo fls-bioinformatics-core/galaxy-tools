@@ -1,6 +1,6 @@
-<tool id="ceas" name="CEAS" version="0.0.2">
+<tool id="ceas" name="CEAS" version="0.1.0">
   <description>Annotate intervals and scores with genome features</description>
-  <command interpreter="bash">ceas_wrapper.sh $bed_file $gdb_file $wig_file $extra_bed_file $log_output $pdf_report
+  <command interpreter="bash">ceas_wrapper.sh $bed_file $gdb_file $wig_file $extra_bed_file $log_output $pdf_report $xls_output
   #if (str($span) and int(str($span)) > 0)
     --span $span
   #end if
@@ -34,6 +34,7 @@
   <outputs>
     <data name="log_output" format="txt" label="CEAS on ${on_string} (log output)" />
     <data name="pdf_report" format="pdf" label="CEAS on ${on_string} (PDF report)" />
+    <data name="xls_output" format="interval" label="CEAS on ${on_string} (XLS output)" />
   </outputs>
   <help>
 **What it does**

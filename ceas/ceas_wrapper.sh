@@ -2,7 +2,7 @@
 #
 # Wrapper script to run CEAS as a Galaxy tool
 #
-# Usage: ceas_wrapper.sh $BED_IN $GDB_IN $WIG_IN $EXTRA_BED_IN $LOG_OUT $PDF_OUT
+# Usage: ceas_wrapper.sh $BED_IN $GDB_IN $WIG_IN $EXTRA_BED_IN $LOG_OUT $PDF_OUT $XLS_OUT
 #
 # Process command line
 echo $*
@@ -12,11 +12,12 @@ WIG_IN=$3
 EXTRA_BED_IN=$4
 LOG_OUT=$5
 PDF_OUT=$6
+XLS_OUT=$7
 #
 # Collect remaining args
 OPTIONS=
-while [ ! -z "$7" ] ; do
-    OPTIONS="$OPTIONS $7"
+while [ ! -z "$8" ] ; do
+    OPTIONS="$OPTIONS $8"
     shift
 done
 #
@@ -25,6 +26,7 @@ base_name="ceas"
 log_file=${base_name}.log
 r_script=${base_name}.R
 pdf_report=${base_name}.pdf
+xls_file=${base_name}.xls
 #
 # Get CEAS version
 ceas --version > $log_file
@@ -54,6 +56,10 @@ fi
 if [ -e $pdf_report ] ; then
     echo "Moving $pdf_report to $PDF_OUT"
     /bin/mv $pdf_report $PDF_OUT
+fi
+if [ -e $xls_file ] ; then
+    echo "Moving $xls_file to $XLS_OUT"
+    /bin/mv $xls_file $XLS_OUT
 fi
 #
 # Done
