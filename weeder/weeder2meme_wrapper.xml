@@ -1,0 +1,34 @@
+<tool id="motiffinding_weeder2meme" name="Weeder2Meme" version="0.0.1">
+  <description>Convert Weeder motif matrices to MEME format</description>
+  <command interpreter="bash">weeder2meme_wrapper.sh $wee_file $output_all_meme $output_best_meme</command>
+  <requirements>
+    <requirement type="package">weeder2meme</requirement>
+  </requirements>
+  <inputs>
+    <param name="wee_file" type="data" format="txt" label="'Wee' output from Weeder" />
+  </inputs>
+  <outputs>
+    <data name="output_all_meme" format="txt" label="Weeder2Meme on ${on_string} ('all' motifs in MEME format)" />
+    <data name="output_best_meme" format="txt" label="Weeder2Meme on ${on_string} ('best' motifs in MEME format)" />
+  </outputs>
+  <help>
+.. class:: infomark
+
+**What it does**
+
+Weeder2Meme extracts the 'all' matrices and 'best' matrices from the Weeder output
+and converts them to MEME format.
+
+-------------
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed within the Bioinformatics Core Facility at the
+University of Manchester. It runs the weeder2motif utility script written by Tim
+Burgis at the University of Manchester.
+
+Please kindly acknowledge this Galaxy tool if you use it in your work.
+  </help>
+</tool>
