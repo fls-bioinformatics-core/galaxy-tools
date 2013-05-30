@@ -1,0 +1,82 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+weeder2meme
+
+=head1 DESCRIPTION
+
+Grabs the matrices in weeder output and writes them to MEME format
+
+=head1 AUTHOR
+
+Tim Burgis, tim.burgis@manchester.ac.uk
+
+=head1 USAGE
+
+./weeder2meme -i weederOutputFile -o outputName [-f 0.25,0.25,0.25,0.25]
+
+NB - writes 2 output files, one for the 'best' matrix and one for the 'all'
+matrix so -o is an input root name. For example if you specify -o myOutput
+you will end up with these 2 files:
+
+myOutput_all.meme
+myOutput_best.meme
+
+-f optional specifies the background nucleotide freqencies for the MEME file
+header as a comma-separated list of four values (for A,C,G and T). By default
+these are all 0.25.
+
+=cut
+
+
+use strict;
+use warnings;
+
+use FileHandle;
+use Getopt::Long;
+
+#use lib '/path/to/perl/lib/dir';
+use MotifMatrix;
+use MotifMatrix::Readers;
+
+
+my $weederFile = undef;
+my $outputRoot = 'weeder2meme';
+my $userFreqs = undef;
+my @baseFreqs = undef;
+
+GetOptions(
+	'input=s' => \$weederFile,
+	'output:s' => \$outputRoot,
+	'frequencies:s' => \$userFreqs);
+
+if(!defined($weederFile)) {
+die "Must specify a weeder file using -i\n";
+}
+if(defined($userFreqs)) {
+	my @userFreqs = split(/,/,$userFreqs);
+	if(scalar(@userFreqs) == 4) { 
+		@baseFreqs = @userFreqs;	
+	}
+}
+open(WEEDER_IN,'<',$weederFile) or die "Unable to open '$weederFile' for reading: $!\n";
+my($bestRef,$allRef) = MotifMatrix::Readers::read_weeder(\*WEEDER_IN,'test');
+close(WEEDER_IN);
+
+my $allOut = $outputRoot.'_all.meme';
+my $bestOut = $outputRoot.'_best.meme';
+my $allFH = FileHandle->new($allOut,'w');
+my $bestFH = FileHandle->new($bestOut,'w');
+MotifMatrix::write_meme_header($bestFH,\@baseFreqs);
+foreach my $matrix(@$bestRef) {
+	my $newMatrix = $matrix->matrix_to_frequency();
+	$newMatrix->write_meme($bestFH);
+}
+
+MotifMatrix::write_meme_header($allFH,\@baseFreqs);
+foreach my $matrix(@$allRef) {
+	my $newMatrix = $matrix->matrix_to_frequency();
+	$newMatrix->write_meme($allFH);
+}
+
