@@ -1,6 +1,10 @@
-<tool id="motiffinding_weeder" name="Weeder" version="0.0.4">
+<tool id="motiffinding_weeder" name="Weeder" version="0.0.5">
   <description>Motif discovery in sequences from coregulated genes of a single species</description>
-  <command interpreter="bash">weeder_wrapper.sh $sequence_file $output_mix_file $output_wee_file $output_all_matrices $output_best_matrices $species_code $analysis_type $strands $repeat_motif $assume_all T$n_motifs</command>
+  <command interpreter="bash">weeder_wrapper.sh $sequence_file $output_mix_file $output_wee_file $output_all_matrices $output_best_matrices $species_code $analysis_type $strands $repeat_motif $assume_all T$n_motifs
+  #if $weeder_to_meme
+  --weeder2meme $output_all_meme $output_best_meme
+  #end if
+</command>
   <requirements>
     <requirement type="package">weederlauncher.out</requirement>
     <requirement type="package">weederTFBS.out</requirement>
@@ -41,14 +45,24 @@
     <param name="repeat_motif" label="Allow multiple motif occurances in each sequence" type="boolean" truevalue="M" falsevalue=""/>
     <param name="assume_all" label="Assume that motifs appear in all sequences of the set" type="boolean" truevalue="A" falsevalue=""/>
     <param name="n_motifs" type="integer" label="Number of discovered motifs to report" value="20"/>
+    <param name="weeder_to_meme" type="boolean" label="Also output weeder motifs in MEME format" checked="True" />
   </inputs>
   <outputs>
     <data name="output_mix_file" format="txt" label="Weeder on ${on_string} ('mix' output)" />
     <data name="output_wee_file" format="txt" label="Weeder on ${on_string} ('wee' output)" />
     <data name="output_all_matrices" format="txt" label="Weeder on ${on_string} ('all' motifs)" />
     <data name="output_best_matrices" format="txt" label="Weeder on ${on_string} ('best' motifs)" />
+    <data name="output_all_meme" format="txt" label="Weeder on ${on_string} ('all' motifs in MEME format)">
+      <filter>weeder_to_meme is True</filter>
+    </data>
+    <data name="output_best_meme" format="txt" label="Weeder on ${on_string} ('best' motifs in MEME format)">
+      <filter>weeder_to_meme is True</filter>
+    </data>
   </outputs>
   <help>
+
+.. class:: infomark
+
 **What it does**
 
 Weeder is a program for finding novel motifs (transcription factor binding sites) conserved in a
@@ -56,7 +70,23 @@ set of regulatory regions of related genes.
 
 In addition this tool extracts 'all' matrices and 'best' matrices from the Weeder output.
 
+-------------
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed within the Bioinformatics Core Facility at the
+University of Manchester. It runs the Weeder motif finding package which has
+been developed by Giulio Pavesi at the University of Milan, Italy.
+
 This tool is compatible with Weeder 1.4.2. Weeder can be obtained from
 http://159.149.160.51/modtools/downloads/weeder.html
+
+In addition it uses utility scripts developed by Ian Donaldson and Tim Burgis at the
+University of Manchester, to extract and motif matrices.
+
+Please kindly acknowledge both this Galaxy tool, the Weeder package and the utility
+scripts if you use it in your work.
   </help>
 </tool>

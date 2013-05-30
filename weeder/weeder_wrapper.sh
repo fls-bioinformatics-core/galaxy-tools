@@ -12,11 +12,20 @@ MIX_OUT=$2
 WEE_OUT=$3
 MATRICES_ALL=$4
 MATRICES_BEST=$5
+MEME_ALL=
+MEME_BEST=
 #
 # Other arguments
 ARGS=""
+weeder2meme=
 while [ ! -z "$6" ] ; do
-    ARGS="$ARGS $6"
+    if [ "$6" == "--weeder2meme" ] ; then
+	weeder2meme=yes
+	shift; MEME_ALL=$6
+	shift; MEME_BEST=$6
+    else
+	ARGS="$ARGS $6"
+    fi
     shift
 done
 #
@@ -79,6 +88,23 @@ if [ -e $wee ] ; then
     perl ${TOOL_DIR}/ExtractWeederMatrices.pl $wee
 fi
 #
+# Also convert outputs to MEME format
+if [ "$weeder2meme" == "yes" ] ; then
+    # Construct expected names
+    meme_all=${fasta}_all.meme
+    meme_best=${fasta}_best.meme
+    # Set up PERL5LIB to locate Perl modules for weeder2meme
+    if [ ! -z "$PERL5LIB" ] ; then
+	export PERL5LIB=$PERL5LIB:$TOOL_DIR/lib
+    else
+	export PERL5LIB=$TOOL_DIR/lib
+    fi
+    # Run the weeder2meme program
+    weeder2meme_cmd="$TOOL_DIR/weeder2meme -i $wee -o $fasta"
+    echo "Running $weeder2meme_cmd"
+    $weeder2meme_cmd 2>&1
+fi
+#
 # Move outputs to final destinations
 if [ -e $mix ] ; then
     /bin/mv $mix $MIX_OUT
@@ -91,6 +117,14 @@ if [ -e ${wee}_ALL_matrix.txt ] ; then
 fi
 if [ -e ${wee}_BEST_matrix.txt ] ; then
     /bin/mv ${wee}_BEST_matrix.txt $MATRICES_BEST
-fi  
+fi
+if [ "$weeder2meme" == "yes" ] ; then
+    if [ -e ${meme_all} ] ; then
+	/bin/mv ${meme_all} $MEME_ALL
+    fi
+    if [ -e ${meme_best} ] ; then
+	/bin/mv ${meme_best} $MEME_BEST
+    fi
+fi
 #
 # Done
