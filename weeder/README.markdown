@@ -1,6 +1,11 @@
 weeder
 ======
 
+Utilities for running motif discovery using weeder.
+
+weeder_wrapper
+--------------
+
 XML and wrapper script for weeder motif discovery package.
 
 The tool assumes that the weeder programs `weederlauncher.out`,
@@ -8,14 +13,23 @@ The tool assumes that the weeder programs `weederlauncher.out`,
 
 `weeder` can be obtained from [http://159.149.160.51/modtools/downloads/weeder.html]().
 
-The tool includes an additional script `ExtractWeederMatrices.pl` which extracts
-the motif matrices from the weeder `.wee` file and puts them into separate files.
+The tool includes additional scripts:
+
+ *  `ExtractWeederMatrices.pl`: extract the motif matrices from the weeder
+    `.wee` file and puts them into separate files.
+
+ *  `weeder2meme`: convert the motif matrices to MEME format (includes Perl
+     modules under the `lib` directory).
+
+`weeder2meme` also has its own dedicated Galaxy tool.
 
 To add to Galaxy add the following to tool_conf.xml:
 
     <tool file="weeder/weeder_wrapper.xml" />
 
 ### Changes ###
+
+0.0.5: add option to convert
 
 0.0.4: run ExtractWeederMatrices.pl to get matrices from .wee output;
        add weeder `A` option; comment out link to FreqFiles (doesn't
@@ -26,3 +40,15 @@ To add to Galaxy add the following to tool_conf.xml:
 
 0.0.2: add full list of organisms and update output data items names
        and types (so they can be displayed within the browser)
+
+
+weeder2meme_wrapper
+-------------------
+
+XML and wrapper script for weeder2meme program.
+
+    <tool file="weeder/weeder2meme_wrapper.xml" />
+
+### Changes ###
+
+0.0.1: initial version
