@@ -5,6 +5,7 @@ FLS tools and tool-wrappers for Galaxy.
 
 Tools wrapping 3rd-party software:
 
+ * BLAT
  * CEAS
  * fastq_screen
  * pal_finder
