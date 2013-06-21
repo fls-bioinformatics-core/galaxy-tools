@@ -1,15 +1,26 @@
-<tool id="alignment_blat" name="BLAT" version="0.0.1">
+<tool id="alignment_blat" name="BLAT" version="0.0.2">
   <description>Fast sequence search/alignment</description>
-  <command>blat $database $query $output_psl</command>
+  <command interpreter="bash">blat_wrapper.sh $database $query $output_psl
+  #if $get_best_hits
+  --run_pslReps $output_best_psl $output_psr
+  #end if
+  </command>
   <requirements>
     <requirement type="package">blat</requirement>
   </requirements>
   <inputs>
     <param name="database" type="data" format="fasta" label="'Database' of sequences to search against (fasta)" />
     <param name="query" type="data" format="fasta" label="Sequences to search for in database (fasta)" />
+    <param name="get_best_hits" type="boolean" truevalue="True" falsevalue="False" checked="True" label="Get best hits and repeats" help="Runs pslReps to extract best alignments and repeats from BLAT output" />
   </inputs>
   <outputs>
-    <data name="output_psl" format="tabular" label="BLAT results for ${query.name} in ${database.name}" />
+    <data name="output_psl" format="tabular" label="BLAT all alignments for ${query.name} in ${database.name}" />
+    <data name="output_best_psl" format="tabular" label="BLAT best alignments for ${query.name} in ${database.name}">
+      <filter>get_best_hits is True</filter>
+    </data>
+    <data name="output_psr" format="tabular" label="BLAT repeats for ${query.name} in ${database.name}">
+      <filter>get_best_hits is True</filter>
+    </data>
   </outputs>
   <help>
 .. class:: infomark
@@ -22,6 +33,9 @@ for mRNA/DNA alignments and 50 times faster for protein alignments at sensitivit
 typically used when comparing vertebrate sequences.
 
 Documentation for BLAT can be found here http://genome.ucsc.edu/goldenPath/help/blatSpec.html
+
+Additionally the tool extracts and sorts the best hits from the BLAT output using the
+pslReps program.
 
 -------------
 

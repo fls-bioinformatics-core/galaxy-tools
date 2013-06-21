@@ -16,4 +16,7 @@ To add to Galaxy add the following to tool_conf.xml:
 
 ### Changes ###
 
+0.0.2: Add optional `pslReps` step after BLAT to get the best alignments plus a
+       list of repeats.
+
 0.0.1: Initial version
