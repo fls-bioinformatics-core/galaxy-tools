@@ -1,4 +1,4 @@
-<tool id="alignment_blat" name="BLAT" version="0.0.2">
+<tool id="alignment_blat" name="BLAT" version="0.0.3">
   <description>Fast sequence search/alignment</description>
   <command interpreter="bash">blat_wrapper.sh $database $query $output_psl
   #if $get_best_hits
@@ -15,10 +15,10 @@
   </inputs>
   <outputs>
     <data name="output_psl" format="tabular" label="BLAT all alignments for ${query.name} in ${database.name}" />
-    <data name="output_best_psl" format="tabular" label="BLAT best alignments for ${query.name} in ${database.name}">
+    <data name="output_best_psl" format="tabular" label="BLAT pslReps best alignments for ${query.name} in ${database.name}">
       <filter>get_best_hits is True</filter>
     </data>
-    <data name="output_psr" format="tabular" label="BLAT repeats for ${query.name} in ${database.name}">
+    <data name="output_psr" format="tabular" label="BLAT pslReps repeats for ${query.name} in ${database.name}">
       <filter>get_best_hits is True</filter>
     </data>
   </outputs>
