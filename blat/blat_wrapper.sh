@@ -16,6 +16,10 @@ PSL_OUT=$3
 # Process optional arguments
 BEST_PSL_OUT=
 PSR_OUT=
+PSLREPS_MIN_COVER=0.15
+PSLREPS_MIN_ALI=0.96
+PSLREPS_NEAR_TOP=0.001
+#
 while [ ! -z "$4" ] ; do
     case $4 in
 	--run_pslReps)
@@ -23,6 +27,18 @@ while [ ! -z "$4" ] ; do
 	    BEST_PSL_OUT=$4
 	    shift
 	    PSR_OUT=$4
+	    ;;
+	--minCover)
+	    shift
+	    PSLREPS_MIN_COVER=$4
+	    ;;
+	--minAli)
+	    shift
+	    PSLREPS_MIN_ALI=$4
+	    ;;
+	--nearTop)
+	    shift
+	    PSLREPS_NEAR_TOP=$4
 	    ;;
     esac
     shift
@@ -39,7 +55,7 @@ fi
 #
 # Run pslReps (to get the best/repeated alignments)
 if [ ! -z "$BEST_PSL_OUT" ] ; then
-    pslReps_cmd="pslReps -minCover=0.15 -minAli=0.96 -nearTop=0.001 aligned.psl aligned_best.psl repeats.psr"
+    pslReps_cmd="pslReps -minCover=$PSLREPS_MIN_COVER -minAli=$PSLREPS_MIN_ALI -nearTop=$PSLREPS_NEAR_TOP aligned.psl aligned_best.psl repeats.psr"
     echo Running $pslReps_cmd
     $pslReps_cmd
     if [ ! -f aligned_best.psl ] || [ ! -f repeats.psr ] ; then

@@ -1,8 +1,11 @@
-<tool id="alignment_blat" name="BLAT" version="0.0.3">
+<tool id="alignment_blat" name="BLAT" version="0.0.4">
   <description>Fast sequence search/alignment</description>
   <command interpreter="bash">blat_wrapper.sh $database $query $output_psl
-  #if $get_best_hits
+  #if $pslReps_options.get_best_hits
   --run_pslReps $output_best_psl $output_psr
+  --minCover $pslReps_options.min_coverage
+  --minAli   $pslReps_options.min_alignment_ratio
+  --nearTop  $pslReps_options.near_top
   #end if
   </command>
   <requirements>
@@ -11,7 +14,14 @@
   <inputs>
     <param name="database" type="data" format="fasta" label="'Database' of sequences to search against (fasta)" />
     <param name="query" type="data" format="fasta" label="Sequences to search for in database (fasta)" />
-    <param name="get_best_hits" type="boolean" truevalue="True" falsevalue="False" checked="True" label="Get best hits and repeats" help="Runs pslReps to extract best alignments and repeats from BLAT output" />
+    <conditional name="pslReps_options">
+      <param name="get_best_hits" type="boolean" truevalue="True" falsevalue="False" checked="True" label="Get best hits and repeats" help="Runs pslReps to extract best alignments and repeats from BLAT output" />
+      <when value="True">
+	<param name="min_coverage" type="float" label="Minimum coverage to output" help="Recommended value is 0.15 if the gene sequences are from the same organism" value="0.15" />
+	<param name="min_alignment_ratio" type="float" label="Minimum alignment ratio" help="Recommended value is 0.96 if the gene sequences are from the same organism" value="0.96" />
+	<param name="near_top" type="float" label="How much an alignment can deviate from top hit" help="Recommended value is 0.001 if the gene sequences are from the same organism" value="0.001" />
+      </when>
+    </conditional>
   </inputs>
   <outputs>
     <data name="output_psl" format="tabular" label="BLAT all alignments for ${query.name} in ${database.name}" />
