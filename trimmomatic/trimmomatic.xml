@@ -1,0 +1,127 @@
+<tool id="trimmomatic" name="Trimmomatic" version="0.0.1">
+  <description>flexible read trimming tool for Illumina NGS data</description>
+  <command interpreter="bash">trimmomatic.sh
+  -jar "${GALAXY_DATA_INDEX_DIR}/shared/jars/trimmomatic.jar"
+  #if $paired_end.is_paired_end
+    PE -phred33 $fastq_r1_in $paired_end.fastq_r2_in $fastq_out_r1_paired $fastq_out_r1_unpaired $fastq_out_r2_paired $fastq_out_r2_unpaired 
+  #else
+    SE -phred33 $fastq_in $fastq_out
+  #end if
+  ## ILLUMINACLIP option
+  #if $illuminaclip.do_illuminaclip
+    ILLUMINACLIP:$illuminaclip.fasta_with_adapters:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
+  #end if
+  ## Other operations
+  #for $op in $operations
+    ## SLIDINGWINDOW
+    #if str( $op.operation.name ) == "SLIDINGWINDOW"
+      SLIDINGWINDOW:$op.operation.window_size:$op.operation.required_quality
+    #end if
+    ## MINLEN:36
+    #if str( $op.operation.name ) == "MINLEN"
+      MINLEN:$op.operation.minlen
+    #end if
+  #end for
+  </command>
+  <inputs>
+    <conditional name="paired_end">
+    <param name="is_paired_end" type="boolean" label="Paired end data?" truevalue="yes" falsevalue="no" checked="on" />
+    <when value="no">
+      <param name="fastq_in" type="data" format="fastqsanger" label="Input FASTQ file" />
+    </when>
+    <when value="yes">
+      <param name="fastq_r1_in" type="data" format="fastqsanger" label="Input FASTQ file (R1)" />
+      <param name="fastq_r2_in" type="data" format="fastqsanger" label="Input FASTQ file (R2)" />
+    </when>
+    </conditional>
+    <conditional name="illuminaclip">
+    <param name="do_illuminaclip" type="boolean" label="Perform initial ILLUMINACLIP step?" help="Cut adapter and other illumina-specific sequences from the read" truevalue="yes" falsevalue="no" checked="off" />
+    <when value="yes">
+      <param name="fasta_with_adapters" type="data" format="fasta" label="Fasta file containing all the adapters, PCR sequences etc" />
+      <param name="seed_mismatches" type="integer" label="Maximum mismatch count which will still allow a full match to be performed" value="2" />
+      <param name="palindrome_clip_threshold" type="integer" label="How accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment" value="30" />
+      <param name="simple_clip_threshold" type="integer" label="How accurate the match between any adapter etc. sequence must be against a read" value="10" />
+    </when>
+    </conditional>
+    <repeat name="operations" title="Trimmomatic Operation" min="1">
+      <conditional name="operation">
+	<param name="name" type="select" label="Select Trimmomatic operation to perform">
+	  <option value="SLIDINGWINDOW">Sliding window trimming (SLIDINGWINDOW)</option>
+	  <option value="MINLEN">Drop reads below a specified length (MINLEN)</option>
+	</param>
+	<when value="SLIDINGWINDOW">
+	  <param name="window_size" type="integer" label="Number of bases to average across" value="4" />
+	  <param name="required_quality" type="integer" label="Average quality required" value="20" />
+	</when>
+	<when value="MINLEN">
+	  <param name="minlen" type="integer" label="Minimum length of reads to be kept" value="20" />
+	</when>
+      </conditional>
+    </repeat>
+  </inputs>
+  <outputs>
+    <data format="fastqsanger" name="fastq_out_r1_paired" label="${tool.name} on ${on_string} (R1 paired)">
+      <filter>paired_end['is_paired_end']</filter>
+    </data>
+    <data format="fastqsanger" name="fastq_out_r1_unpaired" label="${tool.name} on ${on_string} (R1 unpaired)">
+      <filter>paired_end['is_paired_end']</filter>
+    </data>
+    <data format="fastqsanger" name="fastq_out_r2_paired" label="${tool.name} on ${on_string} (R2 paired)">
+      <filter>paired_end['is_paired_end']</filter>
+    </data>
+    <data format="fastqsanger" name="fastq_out_r2_unpaired" label="${tool.name} on ${on_string} (R2 unpaired)">
+      <filter>paired_end['is_paired_end']</filter>
+    </data>
+    <data format="fastqsanger" name="fastq_out" label="${tool.name} on ${on_string}">
+      <filter>not paired_end['is_paired_end']</filter>
+    </data>
+  </outputs>
+  <tests>
+  </tests>
+  <help>
+.. class:: infomark
+
+**What it does**
+
+Trimmomatic performs a variety of useful trimming tasks for illumina paired-end and
+single ended data.
+
+This tool allows the following trimming steps to be performed:
+
+ * **ILLUMINACLIP:** Cut adapter and other illumina-specific sequences from the read
+ * **SLIDINGWINDOW:** Perform a sliding window trimming, cutting once the average
+   quality within the window falls below a threshold
+ * **MINLEN:** Drop the read if it is below a specified length
+
+If ILLUMINACLIP is requested then it is always performed first; subsequent options
+can be mixed and matched and will be performed in the order that they have been
+specified.
+
+.. class:: warningmark
+
+Note that trimming operation order is important.
+
+-------------
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed within the Bioinformatics Core Facility at the
+University of Manchester. It runs the Trimmomatic program which has been developed
+within Bjorn Usadel's group at RWTH Aachen university.
+
+Trimmomatic website (including documentation):
+
+ * http://www.usadellab.org/cms/index.php?page=trimmomatic 
+
+The reference for Trimmomatic is:
+
+ * Lohse M, Bolger AM, Nagel A, Fernie AR, Lunn JE, Stitt M, Usadel B. RobiNA: a
+   user-friendly, integrated software solution for RNA-Seq-based transcriptomics.
+   Nucleic Acids Res. 2012 Jul;40(Web Server issue):W622-7)
+
+Please kindly acknowledge both this Galaxy tool and the Trimmomatic program if you
+use it.
+  </help>
+</tool>
