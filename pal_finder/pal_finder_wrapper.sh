@@ -12,7 +12,17 @@
 # --4merMinReps N
 # --5merMinReps N
 # --6merMinReps N
+# --primer-opt-size VALUE: optimum primer length
+# --primer-min-size VALUE: minimum acceptable primer length
+# --primer-max-size VALUE: maximum acceptable primer length
+# --primer-min-gc VALUE: minimum allowable percentage of Gs and Cs in any primer
+# --primer-max-gc VALUE: maximum allowable percentage of Gs and Cs
+# --primer-gc-clamp VALUE: number of consecutive Gs and Cs at 3' end of both left and right primer
+# --primer-max-end-gc VALUE: max number of Gs or Cs in last five 3' bases of left or right primer
 # --primer-min-tm VALUE: minimum acceptable melting temperature (Celsius) for a primer oligo
+# --primer-max-tm VALUE: maximum acceptable melting temperature (Celsius)
+# --primer-opt-tm VALUE: optimum melting temperature (Celsius)
+# --primer-pair-max-diff-tm VALUE: max difference between melting temps of left & right primers
 # --output_config_file FNAME: write a copy of the config.txt file to FNAME
 #
 # pal_finder is available from http://sourceforge.net/projects/palfinder/
@@ -70,7 +80,17 @@ MIN_4_MER_REPS=0
 MIN_5_MER_REPS=0
 MIN_6_MER_REPS=0
 PRIMER_MISPRIMING_LIBRARY=$PALFINDER_DATA_DIR/simple.ref
+PRIMER_OPT_SIZE=
+PRIMER_MAX_SIZE=
+PRIMER_MIN_SIZE=
+PRIMER_MAX_GC=
+PRIMER_MIN_GC=
+PRIMER_GC_CLAMP=
+PRIMER_MAX_END_GC=
+PRIMER_OPT_TM=
+PRIMER_MAX_TM=
 PRIMER_MIN_TM=
+PRIMER_PAIR_MAX_DIFF_TM=
 OUTPUT_CONFIG_FILE=
 #
 # Collect command line arguments
@@ -114,9 +134,49 @@ while [ ! -z "$5" ] ; do
 	    shift
 	    PRIMER_MISPRIMING_LIBRARY=$5
 	    ;;
+	--primer-opt-size)
+	    shift
+	    PRIMER_OPT_SIZE=$5
+	    ;;
+	--primer-max-size)
+	    shift
+	    PRIMER_MAX_SIZE=$5
+	    ;;
+	--primer-min-size)
+	    shift
+	    PRIMER_MIN_SIZE=$5
+	    ;;
+	--primer-max-gc)
+	    shift
+	    PRIMER_MAX_GC=$5
+	    ;;
+	--primer-min-gc)
+	    shift
+	    PRIMER_MIN_GC=$5
+	    ;;
+	--primer-gc-clamp)
+	    shift
+	    PRIMER_GC_CLAMP=$5
+	    ;;
+	--primer-max-end-gc)
+	    shift
+	    PRIMER_MAX_END_GC=$5
+	    ;;
+	--primer-opt-tm)
+	    shift
+	    PRIMER_OPT_TM=$5
+	    ;;
+	--primer-max-tm)
+	    shift
+	    PRIMER_MAX_TM=$5
+	    ;;
 	--primer-min-tm)
 	    shift
 	    PRIMER_MIN_TM=$5
+	    ;;
+	--primer-pair-max-diff-tm)
+	    shift
+	    PRIMER_PAIR_MAX_DIFF_TM=$5
 	    ;;
 	--output_config_file)
 	    shift
@@ -152,8 +212,12 @@ function set_config_value() {
     local key=$1
     local value=$2
     local config_txt=$3
-    echo Setting "$key" to "$value"
-    sed -i 's,^'"$key"' .*,'"$key"'  '"$value"',' $config_txt
+    if [ -z "$value" ] ; then
+	echo "No value for $key, left as default"
+    else
+	echo Setting "$key" to "$value"
+	sed -i 's,^'"$key"' .*,'"$key"'  '"$value"',' $config_txt
+    fi
 }
 # Input files
 set_config_value inputReadFile $fastq_r1 config.txt
@@ -172,10 +236,18 @@ set_config_value primer3input Output/pr3in.txt config.txt
 set_config_value primer3output Output/pr3out.txt config.txt
 set_config_value primer3executable $PRIMER3_CORE_EXE config.txt
 set_config_value prNamePrefix ${PRIMER_PREFIX}_ config.txt
-set_config_value PRIMER_MISPRIMING_LIBRARY $PRIMER_MISPRIMING_LIBRARY config.txt
-if [ ! -z "$PRIMER_MIN_TM" ] ; then
-    set_config_value PRIMER_MIN_TM $PRIMER_MIN_TM config.txt
-fi
+set_config_value PRIMER_MISPRIMING_LIBRARY "$PRIMER_MISPRIMING_LIBRARY" config.txt
+set_config_value PRIMER_OPT_SIZE "$PRIMER_OPT_SIZE" config.txt
+set_config_value PRIMER_MIN_SIZE "$PRIMER_MIN_SIZE" config.txt
+set_config_value PRIMER_MAX_SIZE "$PRIMER_MAX_SIZE" config.txt
+set_config_value PRIMER_MIN_GC "$PRIMER_MIN_GC" config.txt
+set_config_value PRIMER_MAX_GC "$PRIMER_MAX_GC" config.txt
+set_config_value PRIMER_GC_CLAMP "$PRIMER_GC_CLAMP" config.txt
+set_config_value PRIMER_MAX_END_GC "$PRIMER_MAX_END_GC" config.txt
+set_config_value PRIMER_MIN_TM "$PRIMER_MIN_TM" config.txt
+set_config_value PRIMER_MAX_TM "$PRIMER_MAX_TM" config.txt
+set_config_value PRIMER_OPT_TM "$PRIMER_OPT_TM" config.txt
+set_config_value PRIMER_PAIR_MAX_DIFF_TM "$PRIMER_PAIR_MAX_DIFF_TM" config.txt
 #
 # Run pal_finder
 perl $PALFINDER_SCRIPT_DIR/pal_finder_v0.02.04.pl config.txt 2>&1

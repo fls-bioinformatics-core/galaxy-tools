@@ -25,6 +25,9 @@ To add to Galaxy add the following to tool_conf.xml:
 
 ### Changes ###
 
+0.0.4: added more custom options for primer3_core for selecting primers on size, GC and
+       melting temperature criteria.
+
 0.0.3: check that pal_finder script & config file, and primer3_core executable are all
        available; move PRIMER_MIN_TM parameter to new "custom" section for primer3
        settings
