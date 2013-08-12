@@ -25,6 +25,10 @@ To add to Galaxy add the following to tool_conf.xml:
 
 ### Changes ###
 
+0.0.3: check that pal_finder script & config file, and primer3_core executable are all
+       available; move PRIMER_MIN_TM parameter to new "custom" section for primer3
+       settings
+
 0.0.2: updated pal_finder_wrapper.sh to allow locations of pal_finder Perl script, data
        files and primer_core3 program to be set via environment variables
 

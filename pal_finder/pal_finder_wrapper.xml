@@ -1,4 +1,4 @@
-<tool id="microsat_pal_finder" name="pal_finder" version="0.0.2">
+<tool id="microsat_pal_finder" name="pal_finder" version="0.0.3">
   <description>Find microsatellite repeat elements sequencing reads and design PCR primers to amplify them</description>
   <command interpreter="bash">pal_finder_wrapper.sh $input_fastq_r1 $input_fastq_r2 $output_microsat_summary $output_pal_summary
   #if $keep_config_file
@@ -10,11 +10,13 @@
   --4merMinReps $min_4mer_repeats
   --5merMinReps $min_5mer_repeats
   --6merMinReps $min_6mer_repeats
-  --primer-min-tm $primer_min_tm
+  #if str( $primer.primer_options ) == "custom"
+  --primer-min-tm $primer.primer_min_tm
+  #end if
   </command>
   <requirements>
-    <requirement type="package">pal_finder.pl</requirement>
-    <requirement type="package">primer3_core</requirement>
+    <requirement type="package" version="0.02.04">pal_finder</requirement>
+    <requirement type="package" version="2.0.0">primer3_core</requirement>
   </requirements>
   <inputs>
     <param name="primer_prefix" type="text" value="test" size="25" label="Primer prefix" help="This prefix will be added to the beginning of all primer names" />
@@ -25,8 +27,16 @@
     <param name="min_4mer_repeats" type="integer" value="0" label="Minimum number of 4-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_5mer_repeats" type="integer" value="0" label="Minimum number of 5-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_6mer_repeats" type="integer" value="0" label="Minimum number of 6-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
-    <param name="primer_min_tm" type="float" value="58.0" label="Minimum acceptable melting temperature for a primer oligo" help="Temperature should be in degrees Celsius" />
     <param name="keep_config_file" type="boolean" truevalue="True" falsevalue="False" label="Output the config file to the history" />
+    <conditional name="primer">
+      <param name="primer_options" type="select" label="Primer settings to use" help="Advanced users can customise the settings for primer3 for more control">
+	<option value="default">Defaults for pal_finder</option>
+	<option value="custom">Custom</option>
+      </param>
+      <when value="custom">
+	<param name="primer_min_tm" type="float" value="58.0" label="Minimum acceptable melting temperature for a primer oligo (PRIMER_MIN_TM)" help="Temperature should be in degrees Celsius" />
+      </when>
+    </conditional>
   </inputs>
   <outputs>
     <data name="output_microsat_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellite types)" />
