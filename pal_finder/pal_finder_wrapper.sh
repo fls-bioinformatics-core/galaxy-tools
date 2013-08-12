@@ -39,6 +39,29 @@ echo $*
 : ${PALFINDER_DATA_DIR:=/usr/share/pal_finder_v0.02.04}
 : ${PRIMER3_CORE_EXE:=primer3_core}
 #
+# Check that we have all the components
+function have_program() {
+    local program=$1
+    local got_program=$(which $program 2>&1 | grep "no $(basename $program) in")
+    if [ -z "$got_program" ] ; then
+	echo yes
+    else
+	echo no
+    fi	
+}
+if [ "$(have_program $PRIMER3_CORE_EXE)" == "no" ] ; then
+    echo "ERROR primer3_core missing: ${PRIMER3_CORE_EXE} not found" >&2
+    exit 1
+fi
+if [ ! -f "${PALFINDER_DATA_DIR}/config.txt" ] ; then
+    echo "ERROR pal_finder config.txt not found in ${PALFINDER_DATA_DIR}" >&2
+    exit 1
+fi
+if [ ! -f "${PALFINDER_SCRIPT_DIR}/pal_finder_v0.02.04.pl" ] ; then
+    echo "ERROR pal_finder_v0.02.04.pl not found in ${PALFINDER_SCRIPT_DIR}" >&2
+    exit 1
+fi
+#
 # Initialise parameters used in the config.txt file
 PRIMER_PREFIX="test"
 MIN_2_MER_REPS=6
