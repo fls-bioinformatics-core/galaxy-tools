@@ -1,0 +1,23 @@
+#This is a sample file distributed with Galaxy that is used by the
+#trimmomatic tool. The file has this format (white space 
+#characters are TAB characters):
+#
+#<Description>	<Type>	<PathToAdapterFastaFile>
+#
+#For example:
+#
+#TruSeq2 (for Illumina GAII)	SE	/home/galaxy/trimmomatic/adapters/TruSeq2-SE.fa
+#TruSeq3 (for MiSeq and HiSeq)	SE	/home/galaxy/trimmomatic/adapters/TruSeq3-SE.fa
+#TruSeq2 (for Illumina GAII)	PE	/home/galaxy/trimmomatic/adapters/TruSeq2-PE.fa
+#TruSeq3 (for MiSeq and HiSeq)	PE	/home/galaxy/trimmomatic/adapters/TruSeq3-PE.fa
+#...etc...
+#
+#"Description" is text displayed to the user. "Type" should either "SE" or "PE"
+#indicating whether the adapter files are to be used with single end or paired end
+#data. "Path..." is the path to the actual FASTA file with the adapter sequences.
+#
+#Note that Trimmomatic itself is distributed with FASTA files for standard Illumina
+#adapter sequences.
+#
+#This file should be placed in galaxy's tool-data directory when the
+#trimmomatic tool is installed.

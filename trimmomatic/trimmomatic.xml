@@ -1,4 +1,4 @@
-<tool id="trimmomatic" name="Trimmomatic" version="0.0.1">
+<tool id="trimmomatic" name="Trimmomatic" version="0.0.2">
   <description>flexible read trimming tool for Illumina NGS data</description>
   <command interpreter="bash">trimmomatic.sh
   -jar "${GALAXY_DATA_INDEX_DIR}/shared/jars/trimmomatic.jar"
@@ -9,7 +9,7 @@
   #end if
   ## ILLUMINACLIP option
   #if $illuminaclip.do_illuminaclip
-    ILLUMINACLIP:$illuminaclip.fasta_with_adapters:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
+    ILLUMINACLIP:$illuminaclip.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
   #end if
   ## Other operations
   #for $op in $operations
@@ -30,14 +30,21 @@
       <param name="fastq_in" type="data" format="fastqsanger" label="Input FASTQ file" />
     </when>
     <when value="yes">
-      <param name="fastq_r1_in" type="data" format="fastqsanger" label="Input FASTQ file (R1)" />
-      <param name="fastq_r2_in" type="data" format="fastqsanger" label="Input FASTQ file (R2)" />
+      <param name="fastq_r1_in" type="data" format="fastqsanger"
+	     label="Input FASTQ file (R1/first of pair)" />
+      <param name="fastq_r2_in" type="data" format="fastqsanger"
+	     label="Input FASTQ file (R2/second of pair)" />
     </when>
     </conditional>
     <conditional name="illuminaclip">
     <param name="do_illuminaclip" type="boolean" label="Perform initial ILLUMINACLIP step?" help="Cut adapter and other illumina-specific sequences from the read" truevalue="yes" falsevalue="no" checked="off" />
     <when value="yes">
-      <param name="fasta_with_adapters" type="data" format="fasta" label="Fasta file containing all the adapters, PCR sequences etc" />
+      <param name="adapter_fasta" type="select" label="Adapter sequences to use">
+	<options from_file="trimmomatic_adapters.loc">
+	  <column name="name" index="0"/>
+	  <column name="value" index="2"/>
+	</options>
+      </param>
       <param name="seed_mismatches" type="integer" label="Maximum mismatch count which will still allow a full match to be performed" value="2" />
       <param name="palindrome_clip_threshold" type="integer" label="How accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment" value="30" />
       <param name="simple_clip_threshold" type="integer" label="How accurate the match between any adapter etc. sequence must be against a read" value="10" />
@@ -100,6 +107,26 @@ specified.
 .. class:: warningmark
 
 Note that trimming operation order is important.
+
+-------------
+
+.. class:: infomark
+
+**Outputs**
+
+For paired-end data a particular strength of Trimmomatic is that it retains the
+pairing of reads (from R1 and R2) in the filtered output files:
+
+ * Two FASTQ files (R1-paired and R2-paired) contain one read from each pair where
+   both have survived filtering.
+ * Additionally two FASTQ files (R1-unpaired and R2-unpaired) contain reads where
+   one of the pair failed the filtering steps.
+
+Retaining the same order and number of reads in the filtered output fastq files is
+essential for many downstream analysis tools.
+
+For single-end data the output is a single FASTQ file containing just the filtered
+reads.
 
 -------------
 
