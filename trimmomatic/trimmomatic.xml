@@ -1,4 +1,4 @@
-<tool id="trimmomatic" name="Trimmomatic" version="0.0.2">
+<tool id="trimmomatic" name="Trimmomatic" version="0.0.3">
   <description>flexible read trimming tool for Illumina NGS data</description>
   <command interpreter="bash">trimmomatic.sh
   -jar "${GALAXY_DATA_INDEX_DIR}/shared/jars/trimmomatic.jar"
@@ -20,6 +20,18 @@
     ## MINLEN:36
     #if str( $op.operation.name ) == "MINLEN"
       MINLEN:$op.operation.minlen
+    #end if
+    #if str( $op.operation.name ) == "LEADING"
+      LEADING:$op.operation.leading
+    #end if
+    #if str( $op.operation.name ) == "TRAILING"
+      TRAILING:$op.operation.trailing
+    #end if
+    #if str( $op.operation.name ) == "CROP"
+      CROP:$op.operation.crop
+    #end if
+    #if str( $op.operation.name ) == "HEADCROP"
+      HEADCROP:$op.operation.headcrop
     #end if
   #end for
   </command>
@@ -55,6 +67,10 @@
 	<param name="name" type="select" label="Select Trimmomatic operation to perform">
 	  <option value="SLIDINGWINDOW">Sliding window trimming (SLIDINGWINDOW)</option>
 	  <option value="MINLEN">Drop reads below a specified length (MINLEN)</option>
+	  <option value="LEADING">Cut bases off the start of a read, if below a threshold quality (LEADING)</option>
+	  <option value="TRAILING">Cut bases off the end of a read, if below a threshold quality (TRAILING)</option>
+	  <option value="CROP">Cut the read to a specified length (CROP)</option>
+	  <option value="HEADCROP">Cut the specified number of bases from the start of the read (HEADCROP)</option>
 	</param>
 	<when value="SLIDINGWINDOW">
 	  <param name="window_size" type="integer" label="Number of bases to average across" value="4" />
@@ -62,6 +78,18 @@
 	</when>
 	<when value="MINLEN">
 	  <param name="minlen" type="integer" label="Minimum length of reads to be kept" value="20" />
+	</when>
+	<when value="LEADING">
+	  <param name="leading" type="integer" label="Minimum quality required to keep a base" value="3" help="Bases at the start of the read with quality below the threshold will be removed" />
+	</when>
+	<when value="TRAILING">
+	  <param name="trailing" type="integer" label="Minimum quality required to keep a base" value="3" help="Bases at the end of the read with quality below the threshold will be removed" />
+	</when>
+	<when value="CROP">
+	  <param name="crop" type="integer" label="Number of bases to keep from the start of the read" value="" />
+	</when>
+	<when value="HEADCROP">
+	  <param name="headcrop" type="integer" label="Number of bases to remove from the start of the read" value="" />
 	</when>
       </conditional>
     </repeat>
@@ -99,6 +127,10 @@ This tool allows the following trimming steps to be performed:
  * **SLIDINGWINDOW:** Perform a sliding window trimming, cutting once the average
    quality within the window falls below a threshold
  * **MINLEN:** Drop the read if it is below a specified length
+ * **LEADING:** Cut bases off the start of a read, if below a threshold quality
+ * **TRAILING:** Cut bases off the end of a read, if below a threshold quality
+ * **CROP:** Cut the read to a specified length
+ * **HEADCROP:** Cut the specified number of bases from the start of the read
 
 If ILLUMINACLIP is requested then it is always performed first; subsequent options
 can be mixed and matched and will be performed in the order that they have been

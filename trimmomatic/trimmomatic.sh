@@ -1,7 +1,10 @@
 #!/bin/sh
 #
 # Shell wrapper to run Trimmomatic jar file as a Galaxy tool
-echo $@
+echo Arguments:
+for i in $@ ; do
+    echo "*" $i
+done
 java $@ 2>&1 | tee trimmomatic.log
 status=$?
 echo "Exit status: $status"
