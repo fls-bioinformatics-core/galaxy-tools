@@ -12,6 +12,7 @@ Tools wrapping 3rd-party software:
  * SOLiD_preprocess_filter_v2.pl
  * trimmomatic
  * weeder
+ * bedgraph_to_wig converter
 
 Tools wrapping in-house scripts and programs:
 
