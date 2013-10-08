@@ -9,9 +9,10 @@
 use strict;
 use warnings;
 
-my $usage = "Usage: $0 <infile.bedgraph> <outfile.wig>\n";
+my $usage = "Usage: $0 <infile.bedgraph> <outfile.wig> <step>\n";
 my $infile = shift or die $usage;
 my $outfile = shift or die $usage;
+my $step = shift or die $usage;
 
 if ($infile =~ /\.gz$/){
    open(IN,'-|',"gunzip -c $infile") || die "Could not open $infile: $!\n";
@@ -32,8 +33,8 @@ while(<IN>){
    #1
    #1
    my $length = $end - $start;
-   print OUT "fixedStep chrom=$chr start=$start step=10 span=1\n";
-   for (my $i = 0; $i <= $length; $i += 10) {
+   print OUT "fixedStep chrom=$chr start=$start step=$step span=1\n";
+   for (my $i = 0; $i <= $length; $i += $step) {
       print OUT "$data\n";
    }
 }

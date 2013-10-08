@@ -1,0 +1,32 @@
+<tool id="bedgraph_to_wig" name="BEDGraph-to-wig" version="1.0.0">
+  <description>converter</description>
+  <command interpreter="perl">bedgraph_to_wig.pl $input $output $step_size</command>
+  <inputs>
+    <param format="bedgraph" name="input" type="data" label="BedGraph file" help="Will be convered to wig format"/>
+    <param type="integer" name="step_size" value="10" label="Specify step size to use in output wig file"/>
+  </inputs>
+  <outputs>
+    <data format="wig" name="output" />
+  </outputs>
+
+  <help>
+.. class:: infomark
+
+**What it does**
+
+This tool converts a bedGraph format file into fixedStep wig format.
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed within the Bioinformatics Core Facility at the University
+of Manchester. It runs the bedgraph_to_wig.pl Perl script originally written by Dave Tang
+http://www.davetang.org/wiki/tiki-index.php?page=wig and subsequently modified by Peter
+Briggs to change the step size.
+
+Please kindly acknowledge both this Galaxy tool and bedgraph_to_wig.pl if you use it.
+  </help>
+
+</tool>
+
