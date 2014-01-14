@@ -1,6 +1,7 @@
 <tool id="trimmomatic" name="Trimmomatic" version="0.0.3">
   <description>flexible read trimming tool for Illumina NGS data</description>
   <command interpreter="bash">trimmomatic.sh
+  -mx8G
   -jar "${GALAXY_DATA_INDEX_DIR}/shared/jars/trimmomatic.jar"
   #if $paired_end.is_paired_end
     PE -phred33 $fastq_r1_in $paired_end.fastq_r2_in $fastq_out_r1_paired $fastq_out_r1_unpaired $fastq_out_r2_paired $fastq_out_r2_unpaired 
