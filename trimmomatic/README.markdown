@@ -32,6 +32,8 @@ sequences.
 
 ### Changes ###
 
+0.0.4: Specify '-threads 6' in <command> section.
+
 0.0.3: Added MINLEN, LEADING, TRAILING, CROP and HEADCROP options of trimmomatic.
 
 0.0.2: Updated ILLUMINACLIP option to use standard adapter sequences (requires the
