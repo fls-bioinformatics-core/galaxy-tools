@@ -1,5 +1,8 @@
-<tool id="fls_rnachipintegrator_canonical_genes" name="Analyse canonical genes against ChIP data" version="0.0.2">
+<tool id="fls_rnachipintegrator_canonical_genes" name="Analyse canonical genes against ChIP data" version="0.0.3">
   <description>using RnaChipIntegrator</description>
+  <requirements>
+    <requirement type="package">rnachipintegrator</requirement>
+  </requirements>
   <command interpreter="bash">rnachipintegrator_wrapper.sh
   #if str( $analysis_options.peak_type ) == "summits"
     #if str( $analysis_options.window ) != ""

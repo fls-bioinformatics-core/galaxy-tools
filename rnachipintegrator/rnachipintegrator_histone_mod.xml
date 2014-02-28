@@ -1,5 +1,8 @@
 <tool id="fls_rnachipintegrator_histone_mod" name="Analyse gene expression data against histone modifications" version="0.0.4">
   <description>using RnaChipIntegrator</description>
+  <requirements>
+    <requirement type="package">rnachipintegrator</requirement>
+  </requirements>
   <command interpreter="bash">rnachipintegrator_wrapper.sh
   #if str( $edge_cutoff ) != ""
   --edge-cutoff=$edge_cutoff
