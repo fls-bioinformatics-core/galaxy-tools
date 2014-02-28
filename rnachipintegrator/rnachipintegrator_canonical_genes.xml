@@ -22,6 +22,9 @@
     #if (str( $analysis_options.promoter_start ) != "" and str( $analysis_options.promoter_end ))
     --promoter_region=$analysis_options.promoter_start,$analysis_options.promoter_end
     #end if
+    #if $analysis_options.pad_output
+    --pad
+    #end if
   #end if
   $canonical_genes.value $chipseq
   --output_xls $xls_output
@@ -65,7 +68,8 @@
     <when value="regions">
       <param name="edge_cutoff" type="integer" value="10000" optional="true"
 	     label="Maximum distance a transcript edge can be from the
-		    peak edge before being omitted from the analysis" />
+		    peak edge before being omitted from the analysis"
+	     help="Set to zero to indicate that no cut off should be applied" />
       <param name="number" type="integer" value="4" optional="true"
 	     label="Maximum number of transcripts per peak to report from
 		    from the analysis" />
@@ -73,6 +77,10 @@
 	     label="Start of promoter region with respect to gene TSS" />
       <param name="promoter_end" type="integer" value="2500" optional="true"
 	     label="End of promoter region with respect to gene TSS" />
+      <param name="pad_output" type="boolean" checked="false" truevalue="yes"
+	     label="Output same number of lines for each peak (--pad)"
+	     help="Add blank lines in output for peaks with fewer than maximum number
+		   of hits" />
     </when>
   </conditional>
     <param name="results_as_zip" type="boolean" checked="false" truevalue="yes"
