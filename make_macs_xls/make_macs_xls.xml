@@ -1,0 +1,36 @@
+<tool id="make_macs_xls" name="Convert MACS XLS output" version="0.0.1">
+  <description>to Excel spreadsheet</description>
+  <command>make_macs2_xls.py $input $output</command>
+  <stdio>
+    <exit_code range="1:" level="fatal" description="Failure" />
+  </stdio>
+  <inputs>
+    <param format="xls" name="input" type="data" label="Generate boxplot plot from SOLiD qual file" />
+  </inputs>
+  <outputs>
+    <data format="xls" name="output" label="Spreadsheet for ${on_string} (Excel format)" />
+  </outputs>
+  <tests>
+  </tests>
+  <help>
+.. class:: infomark
+
+**What it does**
+
+This tool converts the XLS output file from MACS2 into an Excel spreadsheet,
+by running the make_macs2_xls.py program.
+
+-------------
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed within the Bioinformatics Core Facility at the
+University of Manchester, and runs the qc_boxplotter program also developed by this
+group. The make_macs2_xls.py program can be obtained from 
+https://github.com/fls-bioinformatics-core/genomics/tree/master/ChIP-seq
+
+Please kindly acknowledge the Bioinformatics Core Facility if you use this tool.
+  </help>
+</tool>
