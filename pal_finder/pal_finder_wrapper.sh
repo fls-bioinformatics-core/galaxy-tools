@@ -12,6 +12,7 @@
 # --4merMinReps N
 # --5merMinReps N
 # --6merMinReps N
+# --primer-mispriming-library FASTA: specify a Fasta file with sequences to avoid amplifying
 # --primer-opt-size VALUE: optimum primer length
 # --primer-min-size VALUE: minimum acceptable primer length
 # --primer-max-size VALUE: maximum acceptable primer length
