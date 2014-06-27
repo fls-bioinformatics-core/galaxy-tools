@@ -40,11 +40,10 @@
     <param name="min_4mer_repeats" type="integer" value="0" label="Minimum number of 4-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_5mer_repeats" type="integer" value="0" label="Minimum number of 5-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_6mer_repeats" type="integer" value="0" label="Minimum number of 6-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
-    <param name="keep_config_file" type="boolean" truevalue="True" falsevalue="False" label="Output the config file to the history" />
     <conditional name="mispriming">
       <param name="mispriming_options" type="select" label="Mispriming library to use" help="Specify file of nucleotide sequences to avoid amplifying (PRIMER_MISPRIMING_LIBRARY)">
-	<option value="default">Default</option>
-	<option value="custom">Custom</option>
+	<option value="default">Default from pal_finder</option>
+	<option value="custom">Custom sequences from history</option>
       </param>
       <when value="default">
       </when>
@@ -89,6 +88,7 @@
 	       help="Temperature should be in degrees Celsius" />
       </when>
     </conditional>
+    <param name="keep_config_file" type="boolean" truevalue="True" falsevalue="False" label="Output the config file to the history" help="Can be used to run pal_finder outside of Galaxy" />
   </inputs>
   <outputs>
     <data name="output_microsat_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellite types)" />
