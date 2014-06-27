@@ -1,6 +1,12 @@
-<tool id="microsat_pal_finder" name="pal_finder" version="0.0.5">
+<tool id="microsat_pal_finder" name="pal_finder" version="0.0.6">
   <description>Find microsatellite repeat elements sequencing reads and design PCR primers to amplify them</description>
-  <command interpreter="bash">pal_finder_wrapper.sh $input_fastq_r1 $input_fastq_r2 $output_microsat_summary $output_pal_summary
+  <command interpreter="bash">pal_finder_wrapper.sh
+  #if str( $platform.platform_type ) == "illumina"
+    $platform.input_fastq_r1 $platform.input_fastq_r2
+  #else
+    --454 $platform.input_fasta
+  #end if
+  $output_microsat_summary $output_pal_summary
   #if $keep_config_file
     --output_config_file $output_config_file
   #end if
@@ -33,8 +39,19 @@
   </requirements>
   <inputs>
     <param name="primer_prefix" type="text" value="test" size="25" label="Primer prefix" help="This prefix will be added to the beginning of all primer names" />
-    <param name="input_fastq_r1" type="data" format="fastqsanger" label="Illumina fastq file (read 1)" />
-    <param name="input_fastq_r2" type="data" format="fastqsanger" label="Illumina fastq file (read 2)" />
+    <conditional name="platform">
+      <param name="platform_type" type="select" label="Sequencing platform used to generate data" help="Currently pal_findert only handles Illumina paired-end reads and 454 single-end reads" >
+	<option value="illumina">Illumina</option>
+	<option value="454">454</option>
+      </param>
+      <when value="illumina">
+	<param name="input_fastq_r1" type="data" format="fastqsanger" label="Illumina fastq file (read 1)" />
+	<param name="input_fastq_r2" type="data" format="fastqsanger" label="Illumina fastq file (read 2)" />
+      </when>
+      <when value="454">
+	<param name="input_fasta" type="data" format="fasta" label="454 fasta file with raw reads" />
+      </when>
+    </conditional>
     <param name="min_2mer_repeats" type="integer" value="6" label="Minimum number of 2-mer repeat units to detect" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_3mer_repeats" type="integer" value="0" label="Minimum number of 3-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_4mer_repeats" type="integer" value="0" label="Minimum number of 4-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />

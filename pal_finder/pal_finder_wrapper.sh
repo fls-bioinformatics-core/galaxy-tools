@@ -3,6 +3,7 @@
 # pal_finder_wrapper.sh: run pal_finder perl script as a Galaxy tool
 #
 # Usage: run_palfinder.sh FASTQ_R1 FASTQ_R2 MICROSAT_SUMMARY PAL_SUMMARY [OPTIONS]
+#        run_palfinder.sh --454    FASTA    MICROSAT_SUMMARY PAL_SUMMARY [OPTIONS]
 #
 # Options:
 #
@@ -97,10 +98,17 @@ OUTPUT_CONFIG_FILE=
 # Collect command line arguments
 if [ $# -lt 2 ] ; then
   echo "Usage: $0 FASTQ_R1 FASTQ_R2 MICROSAT_SUMMARY PAL_SUMMARY [OPTIONS]"
+  echo "       $0 --454    FASTA    MICROSAT_SUMMARY PAL_SUMMARY [OPTIONS]"
   exit
 fi
-FASTQ_R1=$1
-FASTQ_R2=$2
+if [ "$1" == "--454" ] ; then
+    PLATFORM="454"
+    FNA=$2
+else
+    PLATFORM="Illumina"
+    FASTQ_R1=$1
+    FASTQ_R2=$2
+fi
 MICROSAT_SUMMARY=$3
 PAL_SUMMARY=$4
 #
@@ -199,11 +207,24 @@ if [ -z "$got_primer3" ] ; then
 fi
 #
 # Set up the working dir
-ln -s $FASTQ_R1
-ln -s $FASTQ_R2
+if [ "$PLATFORM" == "Illumina" ] ; then
+    # Paired end Illumina data as input
+    if [ $FASTQ_R1 == $FASTQ_R2 ] ; then
+	echo ERROR R1 and R2 fastqs are the same file >&2
+	exit 1
+    fi
+    ln -s $FASTQ_R1
+    ln -s $FASTQ_R2
+    fastq_r1=$(basename $FASTQ_R1)
+    fastq_r2=$(basename $FASTQ_R2)
+else
+    # 454 data as input
+    ln -s $FNA
+    fna=$(basename $FNA)
+fi
+ln -s $PRIMER_MISPRIMING_LIBRARY
+PRIMER_MISPRIMING_LIBRARY=$(basename $PRIMER_MISPRIMING_LIBRARY)
 mkdir Output
-fastq_r1=`basename $FASTQ_R1`
-fastq_r2=`basename $FASTQ_R2`
 #
 # Copy in the default config.txt file
 /bin/cp $PALFINDER_DATA_DIR/config.txt .
@@ -221,8 +242,17 @@ function set_config_value() {
     fi
 }
 # Input files
-set_config_value inputReadFile $fastq_r1 config.txt
-set_config_value pairedReadFile $fastq_r2 config.txt
+set_config_value platform $PLATFORM config.txt
+if [ "$PLATFORM" == "Illumina" ] ; then
+    set_config_value inputFormat fastq config.txt
+    set_config_value pairedEnd 1 config.txt
+    set_config_value inputReadFile $fastq_r1 config.txt
+    set_config_value pairedReadFile $fastq_r2 config.txt
+else
+    set_config_value inputFormat fasta config.txt
+    set_config_value pairedEnd 0 config.txt
+    set_config_value input454reads $fna config.txt
+fi
 # Output files
 set_config_value MicrosatSumOut Output/microsat_summary.txt config.txt
 set_config_value PALsummaryOut Output/PAL_summary.txt config.txt

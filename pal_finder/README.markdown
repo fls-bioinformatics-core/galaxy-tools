@@ -25,6 +25,9 @@ To add to Galaxy add the following to tool_conf.xml:
 
 ### Changes ###
 
+0.0.6: allow input data to be either Illumina paired-end data in fastq format or
+       single-end 454 data in fasta format.
+
 0.0.5: allow custom mispriming library to be specified; added tool_dependencies.xml file
        to install pal_finder and primer3 programs  and configure environment for Galaxy
        automatically.
