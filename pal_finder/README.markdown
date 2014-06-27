@@ -25,6 +25,10 @@ To add to Galaxy add the following to tool_conf.xml:
 
 ### Changes ###
 
+0.0.5: allow custom mispriming library to be specified; added tool_dependencies.xml file
+       to install pal_finder and primer3 programs  and configure environment for Galaxy
+       automatically.
+
 0.0.4: added more custom options for primer3_core for selecting primers on size, GC and
        melting temperature criteria.
 
