@@ -194,7 +194,7 @@ done
 # Check that primer3_core is available
 got_primer3=`which $PRIMER3_CORE_EXE 2>&1 | grep -v "no primer3_core in"`
 if [ -z "$got_primer3" ] ; then
-  echo ERROR primer3_core not found
+  echo ERROR primer3_core not found >&2
   exit 1
 fi
 #
@@ -251,7 +251,13 @@ set_config_value PRIMER_OPT_TM "$PRIMER_OPT_TM" config.txt
 set_config_value PRIMER_PAIR_MAX_DIFF_TM "$PRIMER_PAIR_MAX_DIFF_TM" config.txt
 #
 # Run pal_finder
-perl $PALFINDER_SCRIPT_DIR/pal_finder_v0.02.04.pl config.txt 2>&1
+perl $PALFINDER_SCRIPT_DIR/pal_finder_v0.02.04.pl config.txt 2>&1 | tee pal_finder.log
+#
+# Check that log ends with "Done!!" message
+if [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
+    echo ERROR pal_finder failed to complete successfully >&2
+    exit 1
+fi
 #
 # Clean up
 if [ -f Output/microsat_summary.txt ] ; then
