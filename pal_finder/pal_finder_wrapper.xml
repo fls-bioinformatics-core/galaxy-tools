@@ -1,4 +1,4 @@
-<tool id="microsat_pal_finder" name="pal_finder" version="0.0.4">
+<tool id="microsat_pal_finder" name="pal_finder" version="0.0.5">
   <description>Find microsatellite repeat elements sequencing reads and design PCR primers to amplify them</description>
   <command interpreter="bash">pal_finder_wrapper.sh $input_fastq_r1 $input_fastq_r2 $output_microsat_summary $output_pal_summary
   #if $keep_config_file
@@ -23,6 +23,9 @@
   --primer-opt-tm $primer.primer_opt_tm
   --primer-pair-max-diff-tm $primer.primer_pair_max_diff_tm
   #end if
+  #if str( $mispriming.mispriming_options ) == "custom"
+  --primer-mispriming-library $mispriming.mispriming_library
+  #end if
   </command>
   <requirements>
     <requirement type="package" version="0.02.04">pal_finder</requirement>
@@ -38,6 +41,17 @@
     <param name="min_5mer_repeats" type="integer" value="0" label="Minimum number of 5-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_6mer_repeats" type="integer" value="0" label="Minimum number of 6-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="keep_config_file" type="boolean" truevalue="True" falsevalue="False" label="Output the config file to the history" />
+    <conditional name="mispriming">
+      <param name="mispriming_options" type="select" label="Mispriming library to use" help="Specify file of nucleotide sequences to avoid amplifying (PRIMER_MISPRIMING_LIBRARY)">
+	<option value="default">Default</option>
+	<option value="custom">Custom</option>
+      </param>
+      <when value="default">
+      </when>
+      <when value="custom">
+	<param name="mispriming_library" type="data" format="fasta" label="Select mispriming library from history" help="Fasta file containing sequences to avoid amplifying" />
+      </when>
+    </conditional>
     <conditional name="primer">
       <param name="primer_options" type="select" label="Primer settings to use" help="Advanced users can customise the settings for primer3 for more control">
 	<option value="default">Defaults for pal_finder</option>
