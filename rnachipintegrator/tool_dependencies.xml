@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<tool_dependency>
+  <package name="python_xlwt" version="0.7.5">
+    <install version="1.0">
+      <actions>
+	<action type="download_by_url">https://pypi.python.org/packages/source/x/xlwt/xlwt-0.7.5.tar.gz</action>
+        <action type="make_directory">$INSTALL_DIR/lib/python</action>
+        <action type="shell_command">
+          export PYTHONPATH=$PYTHONPATH:$INSTALL_DIR/lib/python &amp;&amp; 
+          python setup.py install --install-lib $INSTALL_DIR/lib/python --install-scripts $INSTALL_DIR/bin
+        </action>
+        <action type="set_environment">
+          <environment_variable action="prepend_to" name="PYTHONPATH">$INSTALL_DIR/lib/python</environment_variable>
+          <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR/bin</environment_variable>
+        </action>
+      </actions>
+    </install>
+    <readme>Installs Python module xlwt 0.7.5</readme>
+  </package>
+  <package name="python_xlrd" version="0.9.3">
+    <install version="1.0">
+      <actions>
+	<action type="download_by_url">https://pypi.python.org/packages/source/x/xlrd/xlrd-0.9.3.tar.gz</action>
+        <action type="make_directory">$INSTALL_DIR/lib/python</action>
+        <action type="shell_command">
+          export PYTHONPATH=$PYTHONPATH:$INSTALL_DIR/lib/python &amp;&amp; 
+          python setup.py install --install-lib $INSTALL_DIR/lib/python --install-scripts $INSTALL_DIR/bin
+        </action>
+        <action type="set_environment">
+          <environment_variable action="prepend_to" name="PYTHONPATH">$INSTALL_DIR/lib/python</environment_variable>
+          <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR/bin</environment_variable>
+        </action>
+      </actions>
+    </install>
+    <readme>Installs Python module xlrd 0.9.3</readme>
+  </package>
+  <package name="python_xlutils" version="1.7.1">
+    <install version="1.0">
+      <actions>
+	<action type="download_by_url">https://pypi.python.org/packages/source/x/xlutils/xlutils-1.7.1.tar.gz</action>
+        <action type="make_directory">$INSTALL_DIR/lib/python</action>
+        <action type="shell_command">
+          export PYTHONPATH=$PYTHONPATH:$INSTALL_DIR/lib/python &amp;&amp; 
+          python setup.py install --install-lib $INSTALL_DIR/lib/python --install-scripts $INSTALL_DIR/bin
+        </action>
+        <action type="set_environment">
+          <environment_variable action="prepend_to" name="PYTHONPATH">$INSTALL_DIR/lib/python</environment_variable>
+          <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR/bin</environment_variable>
+        </action>
+      </actions>
+    </install>
+    <readme>Installs Python module xlutils 1.7.1</readme>
+  </package>
+  <package name="rnachipintegrator" version="0.4.3">
+    <install version="1.0">
+      <actions>
+	<action type="download_by_url">https://github.com/fls-bioinformatics-core/RnaChipIntegrator/archive/v0.4.3.tar.gz</action>
+	<action type="move_file">
+	  <source>RnaChipIntegrator.py</source>
+	  <destination>$INSTALL_DIR</destination>
+	</action>
+	<action type="move_file">
+	  <source>Spreadsheet.py</source>
+	  <destination>$INSTALL_DIR</destination>
+	</action>
+        <action type="set_environment">
+          <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR</environment_variable>
+          <environment_variable action="prepend_to" name="PYTHONPATH">$INSTALL_DIR</environment_variable>
+	</action>
+      </actions>
+    </install>
+    <readme>Installs RnaChipIntegrator 0.4.3</readme>
+  </package>
+</tool_dependency>
