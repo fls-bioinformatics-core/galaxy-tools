@@ -12,4 +12,9 @@ file.
 As the test framework needs to create a fresh database each time, it can be quite
 time-consuming to run the tests (especially if there aren't many). You can set the
 `GALAXY_TEST_DB_TEMPLATE` environment variable to point to a previously created
-SQLite database to bootstrap this part of the process (making it a lot quicker). 
+SQLite database to bootstrap this part of the process (making it a lot quicker).
+
+To use one from this repo do:
+
+    export GALAXY_TEST_DB_TEMPLATE=https://github.com/fls-bioinformatics-core/galaxy-tools/raw/master/testing/db_galaxy_rev_0120.sqlite
+ 
