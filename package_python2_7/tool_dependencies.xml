@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<tool_dependency>
+  <!--
+  <package name="openssl" version="1.0.1g">
+    <repository changeset_revision="3b19041c651c" name="package_openssl_1_0" owner="iuc" prior_installation_required="True" toolshed="http://toolshed.g2.bx.psu.edu" />
+  </package>
+  
+  <package name="zlib" version="1.2.8">
+    <repository changeset_revision="31f1e69aae89" name="package_zlib_1_2_8" owner="iuc" prior_installation_required="True" toolshed="http://toolshed.g2.bx.psu.edu" />
+  </package>
+
+  <package name="sqlite" version="3.8.3">
+    <repository changeset_revision="706b1f3b1fc0" name="package_sqlite_3_8_3" owner="iuc" prior_installation_required="True" toolshed="http://toolshed.g2.bx.psu.edu" />
+  </package>
+  -->
+  <package name="python2" version="2.7.2">
+    <install version="1.0">
+      <actions>
+	<action type="download_by_url">https://www.python.org/ftp/python/2.7.7/Python-2.7.7.tgz</action>
+	<!--
+	<action type="set_environment_for_install">
+          <repository changeset_revision="31f1e69aae89" name="package_zlib_1_2_8" owner="iuc" toolshed="http://toolshed.g2.bx.psu.edu">
+            <package name="zlib" version="1.2.8" />
+          </repository>
+          <repository changeset_revision="3b19041c651c" name="package_openssl_1_0" owner="iuc" toolshed="http://toolshed.g2.bx.psu.edu">
+            <package name="openssl" version="1.0.1g" />
+          </repository>
+          <repository changeset_revision="706b1f3b1fc0" name="package_sqlite_3_8_3" owner="iuc" toolshed="http://toolshed.g2.bx.psu.edu">
+            <package name="sqlite" version="3.8.3" />
+          </repository>
+	</action>
+	-->
+	<action type="shell_command">
+	  ./configure --prefix="$INSTALL_DIR" \
+          &amp;&amp; make \
+          &amp;&amp; make install
+	</action>
+	<action type="set_environment">
+          <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR/bin</environment_variable>
+          <environment_variable action="set_to" name="PYTHONPATH" />
+          <environment_variable action="set_to" name="PYTHONHOME">$INSTALL_DIR</environment_variable>
+          <environment_variable action="prepend_to" name="PKG_CONFIG_PATH">$INSTALL_DIR/lib/pkgconfig</environment_variable>
+	</action>
+      </actions>
+    </install>
+    <readme>
+      Python 2.7.7
+
+      The Python programming language version 2.
+
+      http://www.python.org
+
+      This build of python is configured with default settings. This includes ssl, zlib and sqlite.
+    </readme>
+  </package>
+</tool_dependency>
+
