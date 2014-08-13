@@ -95,7 +95,7 @@
       <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="tss_to_summits_out"
-	  label="Nearest summits to TSS for ${rnaseq.name} vs ${chipseq.name}" >
+	  label="Nearest TSS to summits for ${rnaseq.name} vs ${chipseq.name}" >
       <filter>analysis_options['peak_type'] == "summits"</filter>
       <filter>results_as_zip is False</filter>
     </data>
