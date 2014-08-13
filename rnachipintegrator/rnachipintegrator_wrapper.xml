@@ -127,14 +127,35 @@
   </outputs>
   <tests>
     <test>
-      <param name="rnaseq" value="ExpressionData.txt" />
-      <param name="chipseq" value="ChIP_peaks.txt" />
-      <output name="xls_output" file="peaks.xls" compare="sim_size" />
+      <param name="rnaseq" value="ExpressionData.txt" ftype="tabular" />
+      <param name="chipseq" value="ChIP_summits.txt" ftype="tabular" />
+      <param name="peak_type" value="summits" />
+      <param name="window" value="20000" />
+      <param name="cutoff" value="130000" />
+      <!-- 
+      **NB** outputs have to be specified in order that they appear in the
+      tool (which is the order they will be written to the history) - the
+      test framework seems to use the order and ignores the "name" attribute
+      -->
+      <output name="xls_output" file="summits.xls" compare="sim_size" />
+      <output name="peaks_to_transcripts_out" file="peaks_to_transcripts.out" ftype="tabular" />
+      <output name="tss_to_summits_out" file="tss_to_summits.out" ftype="tabular" />
     </test>
     <test>
-      <param name="rnaseq" value="ExpressionData.txt" />
-      <param name="chipseq" value="ChIP_edges.txt" />
+      <param name="rnaseq" value="ExpressionData.txt" ftype="tabular" />
+      <param name="chipseq" value="ChIP_peaks.txt" ftype="tabular" />
+      <param name="peak_type" value="regions" />
+      <param name="edge_cutoff" value="130000" />
+      <!-- 
+      **NB** outputs have to be specified in order that they appear in the
+      tool (which is the order they will be written to the history) - the
+      test framework seems to use the order and ignores the "name" attribute
+      -->
       <output name="xls_output" file="peaks.xls" compare="sim_size" />
+      <output name="transcripts_to_edges_out" file="transcripts_to_edges.out" ftype="tabular" />
+      <output name="transcripts_to_edges_summary" file="transcripts_to_edges.summary" ftype="tabular" />
+      <output name="tss_to_edges_out" file="tss_to_edges.out" ftype="tabular" />
+      <output name="tss_to_edges_summary" file="tss_to_edges.summary" ftype="tabular" />
     </test>
   </tests>
   <help>
