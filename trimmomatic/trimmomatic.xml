@@ -1,8 +1,8 @@
-<tool id="trimmomatic" name="Trimmomatic" version="0.0.4">
+<tool id="trimmomatic" name="Trimmomatic" version="0.32.0">
   <description>flexible read trimming tool for Illumina NGS data</description>
   <command interpreter="bash">trimmomatic.sh
   -mx8G
-  -jar "${GALAXY_DATA_INDEX_DIR}/shared/jars/trimmomatic.jar"
+  -jar \$TRIMMOMATIC_DIR/trimmomatic-0.32.jar
   #if $paired_end.is_paired_end
     PE -threads 6 -phred33 $fastq_r1_in $paired_end.fastq_r2_in $fastq_out_r1_paired $fastq_out_r1_unpaired $fastq_out_r2_paired $fastq_out_r2_unpaired 
   #else
@@ -36,6 +36,9 @@
     #end if
   #end for
   </command>
+  <requirements>
+    <requirement type="package" version="0.32">trimmomatic</requirement>
+  </requirements>
   <inputs>
     <conditional name="paired_end">
     <param name="is_paired_end" type="boolean" label="Paired end data?" truevalue="yes" falsevalue="no" checked="on" />
