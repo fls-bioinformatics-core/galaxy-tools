@@ -18,25 +18,31 @@ Trimmomatic 0.32 can be obtained from:
 
  * <http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.32.zip>
 
-The tool assumes that the environment variable `TRIMMOMATIC_DIR` has been set which
-points to the directory holding the `trimmomatic-0.32.jar` file (this variable
-should be set automatically if installing the tool dependencies e.g. via a toolshed).
+The tool assumes that two environment variables have been set, in order to find the
+appropriate files:
 
-Also the tool needs to know where to find the fasta files with the adapter sequences
-used by the `ILLUMINACLIP` option, by updating the `trimmomatic_adapters.loc` file.
-Note that the adapter sequences are supplied as part of the trimmomatic package.
+ * `TRIMMOMATIC_DIR` should point to the directory holding the
+   `trimmomatic-0.32.jar` file, and
+
+ * `TRIMMOMATIC_ADAPTERS_DIR` should point to the directory holding the adapter
+    sequence files (used by the `ILLUMINACLIP` option).
+
+Both variables will be set automatically if installing the tool dependencies e.g. via
+a toolshed; otherwise they will need to be set manually in the Galaxy environment.
 
 To add to Galaxy add the following to tool_conf.xml:
 
     <tool file="trimmomatic/trimmomatic.xml" />
 
-and copy `trimmomatic_adapters.loc.sample` to `trimmomatic_adapters.loc` in the
-`tool-data` directory, then edit to point to the local copies of the adapter
-sequences.
+(The tool no longer uses a `.loc` file to point to the location of the adapter
+sequence files)
 
 ### Changes ###
 
-0.32.1: Add tool_dependencies.xml to install Trimmomatic 0.32 automatically and
+0.32.1: Remove `trimmomatic_adapters.loc.sample` and hard-code adapter files into
+        the XML wrapper.
+
+0.32.0: Add tool_dependencies.xml to install Trimmomatic 0.32 automatically and
         (set the environment). Update tool versioning to use Trimmomatic version
 	number (i.e. `0.32`) with tool iteration appended (i.e. `.1`).
 

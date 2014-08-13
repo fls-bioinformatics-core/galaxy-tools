@@ -1,4 +1,4 @@
-<tool id="trimmomatic" name="Trimmomatic" version="0.32.0">
+<tool id="trimmomatic" name="Trimmomatic" version="0.32.1">
   <description>flexible read trimming tool for Illumina NGS data</description>
   <command interpreter="bash">trimmomatic.sh
   -mx8G
@@ -10,7 +10,7 @@
   #end if
   ## ILLUMINACLIP option
   #if $illuminaclip.do_illuminaclip
-    ILLUMINACLIP:$illuminaclip.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
+    ILLUMINACLIP:\$TRIMMOMATIC_ADAPTERS_DIR/$illuminaclip.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
   #end if
   ## Other operations
   #for $op in $operations
@@ -56,10 +56,12 @@
     <param name="do_illuminaclip" type="boolean" label="Perform initial ILLUMINACLIP step?" help="Cut adapter and other illumina-specific sequences from the read" truevalue="yes" falsevalue="no" checked="off" />
     <when value="yes">
       <param name="adapter_fasta" type="select" label="Adapter sequences to use">
-	<options from_file="trimmomatic_adapters.loc">
-	  <column name="name" index="0"/>
-	  <column name="value" index="2"/>
-	</options>
+	<option value="TruSeq2-SE.fa">TruSeq2 (single-ended, for Illumina GAII)</option>
+	<option value="TruSeq3-SE.fa">TruSeq3 (single-ended, for MiSeq and HiSeq)</option>
+	<option value="TruSeq2-PE.fa">TruSeq2 (paired-ended, for Illumina GAII)</option>
+	<option value="TruSeq3-PE.fa">TruSeq3 (paired-ended, for MiSeq and HiSeq)</option>
+	<option value="TruSeq3-PE-2.fa">TruSeq3 (additional seqs) (paired-ended, for MiSeq and HiSeq)</option>
+	<option value="NexteraPE-PE.fa">Nextera (paired-ended)</option>
       </param>
       <param name="seed_mismatches" type="integer" label="Maximum mismatch count which will still allow a full match to be performed" value="2" />
       <param name="palindrome_clip_threshold" type="integer" label="How accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment" value="30" />
