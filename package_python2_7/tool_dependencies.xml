@@ -13,7 +13,7 @@
     <repository changeset_revision="706b1f3b1fc0" name="package_sqlite_3_8_3" owner="iuc" prior_installation_required="True" toolshed="http://toolshed.g2.bx.psu.edu" />
   </package>
   -->
-  <package name="python2" version="2.7.2">
+  <package name="python2" version="2.7.7">
     <install version="1.0">
       <actions>
 	<action type="download_by_url">https://www.python.org/ftp/python/2.7.7/Python-2.7.7.tgz</action>
