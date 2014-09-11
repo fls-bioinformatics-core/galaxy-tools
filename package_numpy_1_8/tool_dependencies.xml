@@ -9,7 +9,7 @@
 	<action type="download_by_url">https://pypi.python.org/packages/source/n/numpy/numpy-1.8.1.tar.gz</action>
         <action type="set_environment_for_install">
           <repository name="package_python2_7" owner="pjbriggs">
-            <package name="python27" version="2.7.7" />
+            <package name="python2" version="2.7.7" />
           </repository>
 	</action>
         <action type="make_directory">$INSTALL_DIR/lib/python</action>
