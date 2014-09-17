@@ -114,6 +114,33 @@
       <filter>keep_config_file is True</filter>
     </data>
   </outputs>
+  <tests>
+    <test>
+      <!-- Test with Illumina input -->
+      <param name="platform_type" value="illumina" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <!-- 
+      **NB** outputs have to be specified in order that they appear in the
+      tool (which is the order they will be written to the history) - the
+      test framework seems to use the order and ignores the "name" attribute
+      -->
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+    </test>
+    <test>
+      <!-- Test with 454 input -->
+      <param name="platform_type" value="454" />
+      <param name="input_fasta" value="454_in.fa" ftype="fasta" />
+      <!-- 
+      **NB** outputs have to be specified in order that they appear in the
+      tool (which is the order they will be written to the history) - the
+      test framework seems to use the order and ignores the "name" attribute
+      -->
+      <output name="output_microsat_summary" file="454_microsat_types.out" />
+      <output name="output_pal_summary" file="454_microsats.out" />
+    </test>
+  </tests>
   <help>
 .. class:: infomark
 
