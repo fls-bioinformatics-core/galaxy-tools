@@ -12,7 +12,8 @@ tar cvzf $TGZ \
     README.markdown \
     trimmomatic.xml \
     trimmomatic.sh \
-    tool_dependencies.xml
+    tool_dependencies.xml \
+    test-data
 if [ -f $TGZ ] ; then
     echo Created $TGZ
 else
