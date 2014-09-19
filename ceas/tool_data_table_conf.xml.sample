@@ -1,0 +1,6 @@
+<tables>
+    <table name="ceas_annotations" comment_char="#">
+        <columns>dbkey, name, value</columns>
+        <file path="tool-data/ceas.loc" />
+    </table>
+</tables>

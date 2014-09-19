@@ -17,9 +17,7 @@
     <param name="wig_file" type="data" format="wig" label="WIG file for wig profiling or genome background annotation" optional="true" />
     <param name="extra_bed_file" type="data" format="bed" label="BED file with extra regions of interest (e.g. non-coding regions)" optional="true" />
     <param name="gdb_file" type="select" label="Gene annotation table">
-      <options from_file="ceas.loc">
-	<column name="name" index="1"/>
-	<column name="value" index="2"/>
+      <options from_data_table="ceas_annotations">
         <validator type="no_options" message="No tables are available for the selected input"/>
       </options>
     </param>
