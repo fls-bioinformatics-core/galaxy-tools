@@ -29,7 +29,7 @@ pdf_report=${base_name}.pdf
 xls_file=${base_name}.xls
 #
 # Get CEAS version
-ceas --version > $log_file
+ceas --version >$log_file 2>/dev/null
 #
 # Construct and run CEAS command line
 ceas_cmd="ceas --name $base_name $OPTIONS -g $GDB_IN -b $BED_IN"
@@ -40,7 +40,7 @@ if [ "$EXTRA_BED_IN" != "None" ] ; then
     ceas_cmd="$ceas_cmd -e $EXTRA_BED_IN"
 fi
 echo "Running $ceas_cmd"
-$ceas_cmd >> $log_file 2>&1
+$ceas_cmd >>$log_file 2>&1
 #
 # Run the R script to generate the PDF report
 if [ -e $r_script ] ; then
