@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<data_managers>
+    <data_manager tool_file="data_manager/data_manager_ceas_fetch_annotations.xml" id="ceas_fetch_annotations">
+        <data_table name="ceas_annotations">
+            <output>
+	      <!--
+              <column name="value" />
+	      -->
+              <column name="dbkey" />
+              <column name="name" />
+              <column name="value" output_ref="out_file" >
+                <move type="file">
+                  <source>${value}</source>
+                  <target base="${GALAXY_DATA_MANAGER_DATA_PATH}">ceas/${dbkey}/${value}</target>
+                </move>
+                <value_translation>${GALAXY_DATA_MANAGER_DATA_PATH}/ceas/${dbkey}/${value}</value_translation>
+                <value_translation type="function">abspath</value_translation>
+              </column>
+            </output>
+        </data_table>
+    </data_manager>
+</data_managers>

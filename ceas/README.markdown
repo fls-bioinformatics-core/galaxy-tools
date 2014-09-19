@@ -26,3 +26,4 @@ installation.
 
 ### Changes ###
 
+1.0.2.0: first version with basic data manager for annotation files.
