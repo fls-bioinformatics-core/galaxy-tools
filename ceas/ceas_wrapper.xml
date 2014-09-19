@@ -9,7 +9,7 @@
   --pf-res $profiling_resolution
   --rel-dist $relative_distance</command>
   <requirements>
-    <requirement type="package">ceas</requirement>
+    <requirement type="package" version="1.0.2">ceas</requirement>
   </requirements>
   <inputs>
     <param name="bed_file" type="data" format="bed" label="BED file with ChIP regions" />
