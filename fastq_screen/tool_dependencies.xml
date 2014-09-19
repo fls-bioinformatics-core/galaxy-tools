@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<tool_dependency>
+  <package name="bowtie" version="0.12.7">
+    <repository name="package_bowtie_0_12_7" prior_installation_required="True" owner="devteam" />
+  </package>
+  <package name="fastq_screen" version="0.3.1">
+    <install version="1.0">
+      <actions>
+	<action type="download_by_url">http://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/fastq_screen_v0.3.1.tar.gz</action>
+	<action type="move_file">
+	  <source>fastq_screen</source>
+	  <destination>$INSTALL_DIR</destination>
+	</action>
+	<action type="set_environment">
+	  <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR</environment_variable>
+	</action>
+      </actions>
+    </install>
+    <readme>Installs the fastq_screen program version 0.3.1
+    
+    Fastq_screen is developed at the Babraham Institute, see the project website at
+    http://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/
+
+    Fastq_screen also requires bowtie at runtime.
+    </readme>
+  </package>
+</tool_dependency>
+
