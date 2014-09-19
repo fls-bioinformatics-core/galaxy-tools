@@ -9,6 +9,7 @@
   --pf-res $profiling_resolution
   --rel-dist $relative_distance</command>
   <requirements>
+    <requirement type="package" version="1.2.5">python_mysqldb</requirement>
     <requirement type="package" version="1.0.2">ceas</requirement>
   </requirements>
   <inputs>
