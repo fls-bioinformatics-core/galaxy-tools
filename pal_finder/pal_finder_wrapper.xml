@@ -1,4 +1,4 @@
-<tool id="microsat_pal_finder" name="pal_finder" version="0.0.6">
+<tool id="microsat_pal_finder" name="pal_finder" version="0.0.7">
   <description>Find microsatellite repeat elements sequencing reads and design PCR primers to amplify them</description>
   <command interpreter="bash">pal_finder_wrapper.sh
   #if str( $platform.platform_type ) == "illumina"
@@ -41,7 +41,7 @@
     <param name="primer_prefix" type="text" value="test" size="25" label="Primer prefix" help="This prefix will be added to the beginning of all primer names" />
     <conditional name="platform">
       <param name="platform_type" type="select" label="Sequencing platform used to generate data" help="Currently pal_findert only handles Illumina paired-end reads and 454 single-end reads" >
-	<option value="illumina">Illumina</option>
+	<option value="illumina" selected="true">Illumina</option>
 	<option value="454">454</option>
       </param>
       <when value="illumina">
