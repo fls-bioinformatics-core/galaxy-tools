@@ -72,10 +72,4 @@ if __name__ == '__main__':
 
     #save info to json file
     open(jsonfile,'wb').write(to_json_string(data_manager_dict))
-        
-        
-        
-        
-        
-        
-    
+
