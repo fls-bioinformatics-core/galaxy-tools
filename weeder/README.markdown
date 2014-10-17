@@ -6,12 +6,12 @@ Utilities for running motif discovery using weeder.
 weeder_wrapper
 --------------
 
-XML and wrapper script for weeder motif discovery package.
+XML and wrapper script for weeder motif discovery package version 1.4.2.
 
 The tool assumes that the weeder programs `weederlauncher.out`,
 `weederTBFS.out` and `adviser.out` are on the Galaxy user's path.
 
-`weeder` can be obtained from [http://159.149.160.51/modtools/downloads/weeder.html]().
+`weeder` can be obtained from <http://159.149.160.51/modtools/downloads/weeder.html>.
 
 The tool includes additional scripts:
 
@@ -28,6 +28,10 @@ To add to Galaxy add the following to tool_conf.xml:
     <tool file="weeder/weeder_wrapper.xml" />
 
 ### Changes ###
+
+0.1.0: add tool_dependencies.xml to install Weeder automatically;
+       required modifications to script to link to executables and
+       FreqFiles.
 
 0.0.5: add option to convert
 

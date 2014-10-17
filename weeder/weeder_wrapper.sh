@@ -40,27 +40,25 @@ ln -s $FASTA_IN
 # working directory - this hack is ugly but seems to be
 # necessary in order to get the weeder pipeline to run
 for prog in weederlauncher.out weederTFBS.out adviser.out ; do
-    exe=`which $prog 2>&1 | grep -v "no $prog"`
-    if [ ! -z "$exe" ] ; then
-	echo "Linking $prog to $exe"
-	ln -s $exe $prog
+    if [ -x $WEEDER_DIR/bin/$prog ] ; then
+	echo "Linking to $prog"
+	ln -s $WEEDER_DIR/bin/$prog
     else
-	echo "ERROR $0 cannot locate executable for $prog"
+	echo "ERROR $0 cannot locate executable for $prog" >&2
 	exit 1
     fi
 done
 #
-# Also link to the FreqFiles directory
-# PJB actually this doesn't appear to be necessary for our local
-# RPM install so commented out for now
-##freqfiles_dir=/usr/share/weeder-1.4.2/FreqFiles
-##if [ -d $freqfiles_dir ] ; then
-##    echo "Linking to FreqFiles directory"
-##    ln -s $freqfiles_dir FreqFiles
-##else
-##    echo "ERROR FreqFiles directory not found" >&2
-##    exit 1
-##fi
+# Link to the FreqFiles directory as weeder executables
+# expect it to be the same directory
+freqfiles_dir=$WEEDER_FREQFILES_DIR
+if [ -d $freqfiles_dir ] ; then
+    echo "Linking to FreqFiles directory"
+    ln -s $freqfiles_dir FreqFiles
+else
+    echo "ERROR FreqFiles directory not found" >&2
+    exit 1
+fi
 #
 # Construct names of input and output files
 fasta=`basename $FASTA_IN`
