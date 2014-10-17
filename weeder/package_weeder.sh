@@ -1,20 +1,22 @@
 #!/bin/sh
 #
-# Package fastq_screen tool files into tgz file for upload to
+# Package weeder tool files into tgz file for upload to
 # Galaxy toolshed
 #
-TGZ=fastq_screen.tgz
+TGZ=weeder.tgz
 if [ -f $TGZ ] ; then
     echo $TGZ: already exists, please remove >&2
     exit 1
 fi
 tar cvzf $TGZ \
     README.markdown \
-    fastq_screen.xml \
-    fastq_screen.sh \
-    tool_data_table_conf.xml.sample \
-    tool-data/fastq_screen.loc.sample \
-    tool_dependencies.xml
+    weeder_wrapper.sh \
+    weeder_wrapper.xml \
+    weeder2meme \
+    weeder2meme_wrapper.sh \
+    weeder2meme_wrapper.xml \
+    tool_dependencies.xml \
+    lib
 if [ -f $TGZ ] ; then
     echo Created $TGZ
 else

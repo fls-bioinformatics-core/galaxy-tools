@@ -1,0 +1,6 @@
+<tables>
+  <table name="fastq_screen" comment_char="#">
+    <columns>name, format, value</columns>
+    <file path="tool-data/fastq_screen.loc" />
+  </table>
+</tables>
