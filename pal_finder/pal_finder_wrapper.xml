@@ -40,7 +40,7 @@
   <inputs>
     <param name="primer_prefix" type="text" value="test" size="25" label="Primer prefix" help="This prefix will be added to the beginning of all primer names" />
     <conditional name="platform">
-      <param name="platform_type" type="select" label="Sequencing platform used to generate data" help="Currently pal_findert only handles Illumina paired-end reads and 454 single-end reads" >
+      <param name="platform_type" type="select" label="Sequencing platform used to generate data" help="Currently pal_finder only handles Illumina paired-end reads and 454 single-end reads" >
 	<option value="illumina" selected="true">Illumina</option>
 	<option value="454">454</option>
       </param>
