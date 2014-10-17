@@ -12,6 +12,7 @@ tar cvzf $TGZ \
     README.markdown \
     fastq_screen.xml \
     fastq_screen.sh \
+    tool_data_table_conf.xml.sample \
     tool-data/fastq_screen.loc.sample \
     tool_dependencies.xml
 if [ -f $TGZ ] ; then
