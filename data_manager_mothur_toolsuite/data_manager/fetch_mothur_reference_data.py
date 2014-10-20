@@ -30,31 +30,36 @@ MOTHUR_FILE_TYPES = { ".map": "map",
 # http://www.mothur.org/wiki/Secondary_structure_map
 # http://www.mothur.org/wiki/Lane_mask
 MOTHUR_REFERENCE_DATA = {
-    "lookup": ["http://www.mothur.org/w/images/9/96/LookUp_Titanium.zip",
-               "http://www.mothur.org/w/images/8/84/LookUp_GSFLX.zip",
-               "http://www.mothur.org/w/images/7/7b/LookUp_GS20.zip",],
-
-    "RDP": ["http://www.mothur.org/w/images/2/29/Trainset7_112011.rdp.zip",
-            "http://www.mothur.org/w/images/4/4a/Trainset7_112011.pds.zip",
-            "http://www.mothur.org/w/images/3/36/FungiLSU_train_v7.zip",],
-
-    "silva": ["http://www.mothur.org/w/images/9/98/Silva.bacteria.zip",
-              "http://www.mothur.org/w/images/3/3c/Silva.archaea.zip",
-              "http://www.mothur.org/w/images/1/1a/Silva.eukarya.zip",
-              "http://www.mothur.org/w/images/f/f1/Silva.gold.bacteria.zip",],
-
-    "greengenes":  ["http://www.mothur.org/w/images/7/72/Greengenes.alignment.zip",
-                    "http://www.mothur.org/w/images/2/21/Greengenes.gold.alignment.zip",
-                    "http://www.mothur.org/w/images/1/16/Greengenes.tax.tgz",],
-
-    "secondary_structure_maps": ["http://www.mothur.org/w/images/6/6d/Silva_ss_map.zip",
-                                 "http://www.mothur.org/w/images/4/4b/Gg_ss_map.zip",],
-
+    "lookup_titanium": ["http://www.mothur.org/w/images/9/96/LookUp_Titanium.zip",],
+    "lookup_gsflx": ["http://www.mothur.org/w/images/8/84/LookUp_GSFLX.zip",],
+    "lookup_gs20": ["http://www.mothur.org/w/images/7/7b/LookUp_GS20.zip",],
+    "RDP_v9": ["http://www.mothur.org/w/images/7/72/Trainset9_032012.rdp.zip",
+               "http://www.mothur.org/w/images/5/59/Trainset9_032012.pds.zip",],
+    "RDP_v7": ["http://www.mothur.org/w/images/2/29/Trainset7_112011.rdp.zip",
+               "http://www.mothur.org/w/images/4/4a/Trainset7_112011.pds.zip",
+               "http://www.mothur.org/w/images/3/36/FungiLSU_train_v7.zip",],
+    "RDP_v6": ["http://www.mothur.org/w/images/4/49/RDPTrainingSet.zip",],
+    "silva_release_119": ["http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz",
+                          "http://www.mothur.org/w/images/5/56/Silva.seed_v119.tgz",
+                          "http://www.mothur.org/w/images/f/f1/Silva.gold.bacteria.zip",],
+    "silva_release_102": ["http://www.mothur.org/w/images/9/98/Silva.bacteria.zip",
+                         "http://www.mothur.org/w/images/3/3c/Silva.archaea.zip",
+                         "http://www.mothur.org/w/images/1/1a/Silva.eukarya.zip",
+                         "http://www.mothur.org/w/images/f/f1/Silva.gold.bacteria.zip",],
+    "greengenes_August2013": ["http://www.mothur.org/w/images/1/19/Gg_13_8_99.refalign.tgz",
+                              "http://www.mothur.org/w/images/6/68/Gg_13_8_99.taxonomy.tgz",],
+    "greengenes_May2013": ["http://www.mothur.org/w/images/c/cd/Gg_13_5_99.refalign.tgz",
+                           "http://www.mothur.org/w/images/9/9d/Gg_13_5_99.taxonomy.tgz",],
+    "greengenes_old": ["http://www.mothur.org/w/images/7/72/Greengenes.alignment.zip",
+                       "http://www.mothur.org/w/images/1/16/Greengenes.tax.tgz",],
+    "greengenes_gold_alignments": ["http://www.mothur.org/w/images/2/21/Greengenes.gold.alignment.zip",],
+    "secondary_structure_maps_silva": ["http://www.mothur.org/w/images/6/6d/Silva_ss_map.zip",],
+    "secondary_structure_maps_greengenes": ["http://www.mothur.org/w/images/4/4b/Gg_ss_map.zip",],
     "lane_masks": ["http://www.mothur.org/w/images/2/2a/Lane1241.gg.filter",
                    "http://www.mothur.org/w/images/a/a0/Lane1287.gg.filter",
                    "http://www.mothur.org/w/images/3/3d/Lane1349.gg.filter",
                    "http://www.mothur.org/w/images/6/6d/Lane1349.silva.filter",]
-    }
+}
 
 # Utility functions for interacting with Galaxy JSON
 
@@ -306,7 +311,7 @@ if __name__ == "__main__":
     if len(args) != 2:
         p.error("Need to supply JSON file name and a dataset name")
     jsonfile = args[0]
-    dataset = args[1]
+    datasets = args[1].split(',')
 
     # Read the input JSON
     param_dict,target_dir = read_input_json(jsonfile)
@@ -326,8 +331,9 @@ if __name__ == "__main__":
     wd = tempfile.mkdtemp(suffix=".mothur",dir=os.getcwd())
     print "Working dir %s" % wd
     # Iterate over all requested reference data URLs
-    for data_type in (dataset,):
-        for f in fetch_files(MOTHUR_REFERENCE_DATA[data_type],wd=wd):
+    for dataset in datasets:
+        print "Handling dataset '%s'" % dataset
+        for f in fetch_files(MOTHUR_REFERENCE_DATA[dataset],wd=wd):
             type_ = identify_type(f)
             print "%s\t\'%s'\t.../%s" % (type_,
                                          get_name(f),

@@ -1,14 +1,24 @@
-<tool id="data_manager_fetch_mothur_reference_data" name="Fetch Mothur toolsuite reference data" version="0.0.1" tool_type="manage_data">
+<tool id="data_manager_fetch_mothur_reference_data" name="Fetch Mothur toolsuite reference data" version="0.0.2" tool_type="manage_data">
     <description>Fetch and install reference data for Mothur</description>
-    <command interpreter="python">fetch_mothur_reference_data.py "${out_file}" $ref_data
+    <command interpreter="python">fetch_mothur_reference_data.py "${out_file}" "${ref_data}"
     </command>
     <inputs>
-      <param name="ref_data" type="select" label="Reference dataset to install">
-	<option value="lookup">Lookup files</option>
-	<option value="RDP">RDP reference files</option>
-	<option value="silva">Silva reference files</option>
-	<option value="greengenes">Greengenes-formatted databases</option>
-	<option value="secondary_structure_maps">Secondary structure maps</option>
+      <param name="ref_data" type="select" display="checkboxes" multiple="true"
+	     label="Reference dataset to install">
+	<option value="lookup_titanium">GS FLX Titanium lookup files</option>
+	<option value="lookup_gsflx">GSFLX lookup files</option>
+	<option value="lookup_gs20">GS20 lookup files</option>
+	<option value="RDP_v9">RDP reference files (version 9)</option>
+	<option value="RDP_v7">RDP reference files (version 7)</option>
+	<option value="RDP_v6">RDP reference files (version 6)</option>
+	<option value="silva_release_119">Silva reference files (release 119)</option>
+	<option value="silva_release_102">Silva reference files (release 102)</option>
+	<option value="greengenes_August2013">Greengenes reference taxonomy and alignment (August 2013)</option>
+	<option value="greengenes_May2013">Greengenes reference taxonomy and alignment (May 2013)</option>
+	<option value="greengenes_old">Greengenes reference taxonomy and alignment (pre-May 2013)</option>
+	<option value="greengenes_gold_alignments">Greengenes gold alignments</option>
+	<option value="secondary_structure_maps_silva">Silva secondary structure maps</option>
+	<option value="secondary_structure_maps_greengenes">Greengenes secondary structure maps</option>
       </param>
     </inputs>
     <outputs>
@@ -24,11 +34,11 @@ set of Galaxy tools.
 
 Reference data URLS found via:
 
-* Lookup data:        http://www.mothur.org/wiki/Lookup_files
-* RDP reference data: http://www.mothur.org/wiki/RDP_reference_files
-* Silva data:         http://www.mothur.org/wiki/Silva_reference_files
-* Greengenes data:    http://www.mothur.org/wiki/Greengenes-formatted_databases
-* Secondary structure maps: http://www.mothur.org/wiki/Secondary_structure_map
+ * Lookup data:        http://www.mothur.org/wiki/Lookup_files
+ * RDP reference data: http://www.mothur.org/wiki/RDP_reference_files
+ * Silva data:         http://www.mothur.org/wiki/Silva_reference_files
+ * Greengenes data:    http://www.mothur.org/wiki/Greengenes-formatted_databases
+ * Secondary structure maps: http://www.mothur.org/wiki/Secondary_structure_map
 
 Lane mask information (not currently used): http://www.mothur.org/wiki/Lane_mask
 
