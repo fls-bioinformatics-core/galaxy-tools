@@ -8,16 +8,16 @@
 	<option value="lookup_titanium">GS FLX Titanium lookup files</option>
 	<option value="lookup_gsflx">GSFLX lookup files</option>
 	<option value="lookup_gs20">GS20 lookup files</option>
-	<option value="RDP_v9">RDP reference files (version 9)</option>
-	<option value="RDP_v7">RDP reference files (version 7)</option>
-	<option value="RDP_v6">RDP reference files (version 6)</option>
-	<option value="silva_release_119">Silva reference files (release 119)</option>
-	<option value="silva_release_102">Silva reference files (release 102)</option>
+	<option value="RDP_v9">RDP reference files (training set version 9)</option>
+	<option value="RDP_v7">RDP reference files (training set version 7)</option>
+	<option value="RDP_v6">RDP reference files (training set version 6)</option>
+	<option value="silva_release_119">SILVA reference files (release 119)</option>
+	<option value="silva_release_102">SILVA reference files (release 102)</option>
 	<option value="greengenes_August2013">Greengenes reference taxonomy and alignment (August 2013)</option>
 	<option value="greengenes_May2013">Greengenes reference taxonomy and alignment (May 2013)</option>
 	<option value="greengenes_old">Greengenes reference taxonomy and alignment (pre-May 2013)</option>
-	<option value="greengenes_gold_alignments">Greengenes gold alignments</option>
-	<option value="secondary_structure_maps_silva">Silva secondary structure maps</option>
+	<option value="greengenes_gold_alignment">Greengenes gold alignment</option>
+	<option value="secondary_structure_maps_silva">SILVA secondary structure maps</option>
 	<option value="secondary_structure_maps_greengenes">Greengenes secondary structure maps</option>
       </param>
     </inputs>
@@ -26,6 +26,15 @@
 	     label="${tool.name}: ${ref_data.value}" />
     </outputs>
     <tests>
+      <test>
+	<param name="ref_data" value="lookup_titanium"/>
+	<output name="out_file">
+	  <assert_contents>
+	    <has_text text="GS FLX Titanium" />
+	    <has_text text="LookUp_Titanium.pat" />
+	  </assert_contents>
+	</output>
+      </test>
     </tests>
     <help>
 

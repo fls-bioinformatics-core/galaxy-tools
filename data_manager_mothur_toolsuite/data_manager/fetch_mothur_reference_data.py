@@ -21,40 +21,94 @@ MOTHUR_FILE_TYPES = { ".map": "map",
                       ".pat": "lookup",
                       ".tax": "taxonomy" }
 
-# Reference data URLS found via:
-#
-# http://www.mothur.org/wiki/Lookup_files
-# http://www.mothur.org/wiki/RDP_reference_files
-# http://www.mothur.org/wiki/Silva_reference_files
-# http://www.mothur.org/wiki/Greengenes-formatted_databases
-# http://www.mothur.org/wiki/Secondary_structure_map
-# http://www.mothur.org/wiki/Lane_mask
+# Reference data URLs
 MOTHUR_REFERENCE_DATA = {
-    "lookup_titanium": ["http://www.mothur.org/w/images/9/96/LookUp_Titanium.zip",],
-    "lookup_gsflx": ["http://www.mothur.org/w/images/8/84/LookUp_GSFLX.zip",],
-    "lookup_gs20": ["http://www.mothur.org/w/images/7/7b/LookUp_GS20.zip",],
-    "RDP_v9": ["http://www.mothur.org/w/images/7/72/Trainset9_032012.rdp.zip",
-               "http://www.mothur.org/w/images/5/59/Trainset9_032012.pds.zip",],
-    "RDP_v7": ["http://www.mothur.org/w/images/2/29/Trainset7_112011.rdp.zip",
-               "http://www.mothur.org/w/images/4/4a/Trainset7_112011.pds.zip",
-               "http://www.mothur.org/w/images/3/36/FungiLSU_train_v7.zip",],
-    "RDP_v6": ["http://www.mothur.org/w/images/4/49/RDPTrainingSet.zip",],
-    "silva_release_119": ["http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz",
-                          "http://www.mothur.org/w/images/5/56/Silva.seed_v119.tgz",
-                          "http://www.mothur.org/w/images/f/f1/Silva.gold.bacteria.zip",],
-    "silva_release_102": ["http://www.mothur.org/w/images/9/98/Silva.bacteria.zip",
-                         "http://www.mothur.org/w/images/3/3c/Silva.archaea.zip",
-                         "http://www.mothur.org/w/images/1/1a/Silva.eukarya.zip",
-                         "http://www.mothur.org/w/images/f/f1/Silva.gold.bacteria.zip",],
-    "greengenes_August2013": ["http://www.mothur.org/w/images/1/19/Gg_13_8_99.refalign.tgz",
-                              "http://www.mothur.org/w/images/6/68/Gg_13_8_99.taxonomy.tgz",],
-    "greengenes_May2013": ["http://www.mothur.org/w/images/c/cd/Gg_13_5_99.refalign.tgz",
-                           "http://www.mothur.org/w/images/9/9d/Gg_13_5_99.taxonomy.tgz",],
-    "greengenes_old": ["http://www.mothur.org/w/images/7/72/Greengenes.alignment.zip",
-                       "http://www.mothur.org/w/images/1/16/Greengenes.tax.tgz",],
-    "greengenes_gold_alignments": ["http://www.mothur.org/w/images/2/21/Greengenes.gold.alignment.zip",],
-    "secondary_structure_maps_silva": ["http://www.mothur.org/w/images/6/6d/Silva_ss_map.zip",],
-    "secondary_structure_maps_greengenes": ["http://www.mothur.org/w/images/4/4b/Gg_ss_map.zip",],
+    # Look up data
+    # http://www.mothur.org/wiki/Lookup_files
+    "lookup_titanium": {
+        "GS FLX Titanium": ["http://www.mothur.org/w/images/9/96/LookUp_Titanium.zip",]
+    },
+    "lookup_gsflx": {
+        "GSFLX": ["http://www.mothur.org/w/images/8/84/LookUp_GSFLX.zip",]
+    },
+    "lookup_gs20": {
+        "GS20": ["http://www.mothur.org/w/images/7/7b/LookUp_GS20.zip",]
+    },
+    # RDP reference files
+    # http://www.mothur.org/wiki/RDP_reference_files
+    "RDP_v9": {
+        "16S rRNA reference (RDP) (training set v9)":
+        ["http://www.mothur.org/w/images/7/72/Trainset9_032012.rdp.zip",],
+        "16S rRNA reference (PDS) (training set v9)":
+        ["http://www.mothur.org/w/images/5/59/Trainset9_032012.pds.zip",],
+    },
+    "RDP_v7": {
+        "16S rRNA reference (RDP) (training set v7)":
+        ["http://www.mothur.org/w/images/2/29/Trainset7_112011.rdp.zip",],
+        "16S rRNA reference (PDS) (training set v7)":
+        ["http://www.mothur.org/w/images/4/4a/Trainset7_112011.pds.zip",],
+        "8S rRNA reference (RDP) (Fungi, training set v7)":
+        ["http://www.mothur.org/w/images/3/36/FungiLSU_train_v7.zip",],
+    },
+    "RDP_v6": {
+        "RDP training set version 6":
+        ["http://www.mothur.org/w/images/4/49/RDPTrainingSet.zip",],
+    },
+    # Silva reference files
+    # http://www.mothur.org/wiki/Silva_reference_files
+    "silva_release_119": {
+        "SILVA bacterial, archaea and eukarya references (release 119)":
+        ["http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz",],
+        "SILVA recreated SEED database (release 119)":
+        ["http://www.mothur.org/w/images/5/56/Silva.seed_v119.tgz",],
+    },
+    "silva_release_102": {
+        "SILVA bacterial references (release 102)":
+        ["http://www.mothur.org/w/images/9/98/Silva.bacteria.zip",],
+        "SILVA archaeal references (release 102)":
+        ["http://www.mothur.org/w/images/3/3c/Silva.archaea.zip",],
+        "SILVA Eukaryotic references (release 102)":
+        ["http://www.mothur.org/w/images/1/1a/Silva.eukarya.zip",],
+    },
+    "silva_gold_bacteria": {
+        "SILVA-based alignment for chimera.slayer (gold.bacteria)":
+        ["http://www.mothur.org/w/images/f/f1/Silva.gold.bacteria.zip",],
+    },
+    # Greengenes
+    # http://www.mothur.org/wiki/Greengenes-formatted_databases
+    "greengenes_August2013": {
+        "Greengenes reference alignment (gg_13_8_99 August 2013 release)":
+        ["http://www.mothur.org/w/images/1/19/Gg_13_8_99.refalign.tgz",],
+        "Greengenes reference taxonomy (gg_13_8_99 August 2013 release)":
+        ["http://www.mothur.org/w/images/6/68/Gg_13_8_99.taxonomy.tgz",],
+    },
+    "greengenes_May2013": {
+        "Greengenes reference alignment (gg_13_5_99 May 2013 release)":
+        ["http://www.mothur.org/w/images/c/cd/Gg_13_5_99.refalign.tgz",],
+        "Greengenes reference taxonomy (gg_13_5_99 May 2013 release)":
+        ["http://www.mothur.org/w/images/9/9d/Gg_13_5_99.taxonomy.tgz",],
+    },
+    "greengenes_old": {
+        "Greengenes reference alignment (pre-May 2013)":
+        ["http://www.mothur.org/w/images/7/72/Greengenes.alignment.zip",],
+        "Greengenes reference taxonomy (pre-May 2013)":
+        ["http://www.mothur.org/w/images/1/16/Greengenes.tax.tgz",],
+    },
+    "greengenes_gold_alignment": {
+        "greengenes gold alignment":
+        ["http://www.mothur.org/w/images/2/21/Greengenes.gold.alignment.zip",],
+    },
+    # Secondary structure maps
+    # http://www.mothur.org/wiki/Secondary_structure_map
+    "secondary_structure_maps_silva": {
+        "SILVA secondary structure mapping files":
+        ["http://www.mothur.org/w/images/6/6d/Silva_ss_map.zip",],
+    },
+    "secondary_structure_maps_greengenes": {
+        "Greengenes secondary structure mapping files":
+        ["http://www.mothur.org/w/images/4/4b/Gg_ss_map.zip",],
+    },
+    # Lane masks: not used here?
     "lane_masks": ["http://www.mothur.org/w/images/2/2a/Lane1241.gg.filter",
                    "http://www.mothur.org/w/images/a/a0/Lane1287.gg.filter",
                    "http://www.mothur.org/w/images/3/3d/Lane1349.gg.filter",
@@ -333,21 +387,22 @@ if __name__ == "__main__":
     # Iterate over all requested reference data URLs
     for dataset in datasets:
         print "Handling dataset '%s'" % dataset
-        for f in fetch_files(MOTHUR_REFERENCE_DATA[dataset],wd=wd):
-            type_ = identify_type(f)
-            print "%s\t\'%s'\t.../%s" % (type_,
-                                         get_name(f),
-                                         os.path.basename(f))
-            if type_ is not None:
-                # Move to target dir
-                ref_data_file = os.path.basename(f)
-                f1 = os.path.join(target_dir,ref_data_file)
-                print "Moving %s to %s" % (f,f1)
-                os.rename(f,f1)
-                # Add entry to data table
-                table_name = "mothur_%s" % type_
-                add_data_table_entry(data_tables,table_name,dict(name=get_name(f),
-                                                                 value=ref_data_file))
+        for name in MOTHUR_REFERENCE_DATA[dataset]:
+            for f in fetch_files(MOTHUR_REFERENCE_DATA[dataset][name],wd=wd):
+                type_ = identify_type(f)
+                print "%s\t\'%s'\t.../%s" % (type_,
+                                             name,
+                                             os.path.basename(f))
+                if type_ is not None:
+                    # Move to target dir
+                    ref_data_file = os.path.basename(f)
+                    f1 = os.path.join(target_dir,ref_data_file)
+                    print "Moving %s to %s" % (f,f1)
+                    os.rename(f,f1)
+                    # Add entry to data table
+                    table_name = "mothur_%s" % type_
+                    add_data_table_entry(data_tables,table_name,dict(name=name,
+                                                                     value=ref_data_file))
     # Remove working dir
     print "Removing %s" % wd
     shutil.rmtree(wd)
