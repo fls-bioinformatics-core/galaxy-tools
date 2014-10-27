@@ -26,8 +26,8 @@ To add to Galaxy add the following to tool_conf.xml:
 ### Changes ###
 
 0.02.04.1: add option to run Graeme Fox's `pal_finder_filter.pl` script to filter and
-       sort the pal_finder output. Update version number to match the pal_finder
-       version.
+       sort the pal_finder output (Illumina input data only). Update version number to
+       match the pal_finder version.
 
 0.0.6: allow input data to be either Illumina paired-end data in fastq format or
        single-end 454 data in fasta format.
