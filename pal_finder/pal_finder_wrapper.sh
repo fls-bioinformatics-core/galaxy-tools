@@ -2,7 +2,7 @@
 #
 # pal_finder_wrapper.sh: run pal_finder perl script as a Galaxy tool
 #
-# Usage: run_palfinder.sh FASTQ_R1 FASTQ_R2 MICROSAT_SUMMARY PAL_SUMMARY [OPTIONS]
+# Usage: run_palfinder.sh FASTQ_R1 FASTQ_R2 MICROSAT_SUMMARY PAL_SUMMARY FILTERED_MICROSATS [OPTIONS]
 #        run_palfinder.sh --454    FASTA    MICROSAT_SUMMARY PAL_SUMMARY [OPTIONS]
 #
 # Options:
@@ -26,6 +26,8 @@
 # --primer-opt-tm VALUE: optimum melting temperature (Celsius)
 # --primer-pair-max-diff-tm VALUE: max difference between melting temps of left & right primers
 # --output_config_file FNAME: write a copy of the config.txt file to FNAME
+# --filter_microsats FNAME: run Graeme Fox's Perl script to filter and sort the
+#                           microsatellites from pal_finder and write to FNAME
 #
 # pal_finder is available from http://sourceforge.net/projects/palfinder/
 #
@@ -50,6 +52,13 @@ echo $*
 : ${PALFINDER_SCRIPT_DIR:=/usr/bin}
 : ${PALFINDER_DATA_DIR:=/usr/share/pal_finder_v0.02.04}
 : ${PRIMER3_CORE_EXE:=primer3_core}
+#
+# Filter script is in the same directory as this script
+PALFINDER_FILTER_PL=$(dirname $0)/pal_finder_filter.pl
+if [ ! -f $PALFINDER_FILTER_PL ] ; then
+    echo No pal_finder_filter.pl script >&2
+    exit 1
+fi
 #
 # Check that we have all the components
 function have_program() {
@@ -94,6 +103,7 @@ PRIMER_MAX_TM=
 PRIMER_MIN_TM=
 PRIMER_PAIR_MAX_DIFF_TM=
 OUTPUT_CONFIG_FILE=
+FILTERED_MICROSATS=
 #
 # Collect command line arguments
 if [ $# -lt 2 ] ; then
@@ -111,88 +121,93 @@ else
 fi
 MICROSAT_SUMMARY=$3
 PAL_SUMMARY=$4
+shift; shift; shift; shift
 #
 # Collect command line options
-while [ ! -z "$5" ] ; do
-    case "$5" in
+while [ ! -z "$1" ] ; do
+    case "$1" in
 	--primer-prefix)
 	    shift
-	    PRIMER_PREFIX=$5
+	    PRIMER_PREFIX=$1
 	    ;;
 	--2merMinReps)
 	    shift
-	    MIN_2_MER_REPS=$5
+	    MIN_2_MER_REPS=$1
 	    ;;
 	--3merMinReps)
 	    shift
-	    MIN_3_MER_REPS=$5
+	    MIN_3_MER_REPS=$1
 	    ;;
 	--4merMinReps)
 	    shift
-	    MIN_4_MER_REPS=$5
+	    MIN_4_MER_REPS=$1
 	    ;;
 	--5merMinReps)
 	    shift
-	    MIN_5_MER_REPS=$5
+	    MIN_5_MER_REPS=$1
 	    ;;
 	--6merMinReps)
 	    shift
-	    MIN_6_MER_REPS=$5
+	    MIN_6_MER_REPS=$1
 	    ;;
 	--primer-mispriming-library)
 	    shift
-	    PRIMER_MISPRIMING_LIBRARY=$5
+	    PRIMER_MISPRIMING_LIBRARY=$1
 	    ;;
 	--primer-opt-size)
 	    shift
-	    PRIMER_OPT_SIZE=$5
+	    PRIMER_OPT_SIZE=$1
 	    ;;
 	--primer-max-size)
 	    shift
-	    PRIMER_MAX_SIZE=$5
+	    PRIMER_MAX_SIZE=$1
 	    ;;
 	--primer-min-size)
 	    shift
-	    PRIMER_MIN_SIZE=$5
+	    PRIMER_MIN_SIZE=$1
 	    ;;
 	--primer-max-gc)
 	    shift
-	    PRIMER_MAX_GC=$5
+	    PRIMER_MAX_GC=$1
 	    ;;
 	--primer-min-gc)
 	    shift
-	    PRIMER_MIN_GC=$5
+	    PRIMER_MIN_GC=$1
 	    ;;
 	--primer-gc-clamp)
 	    shift
-	    PRIMER_GC_CLAMP=$5
+	    PRIMER_GC_CLAMP=$1
 	    ;;
 	--primer-max-end-gc)
 	    shift
-	    PRIMER_MAX_END_GC=$5
+	    PRIMER_MAX_END_GC=$1
 	    ;;
 	--primer-opt-tm)
 	    shift
-	    PRIMER_OPT_TM=$5
+	    PRIMER_OPT_TM=$1
 	    ;;
 	--primer-max-tm)
 	    shift
-	    PRIMER_MAX_TM=$5
+	    PRIMER_MAX_TM=$1
 	    ;;
 	--primer-min-tm)
 	    shift
-	    PRIMER_MIN_TM=$5
+	    PRIMER_MIN_TM=$1
 	    ;;
 	--primer-pair-max-diff-tm)
 	    shift
-	    PRIMER_PAIR_MAX_DIFF_TM=$5
+	    PRIMER_PAIR_MAX_DIFF_TM=$1
 	    ;;
 	--output_config_file)
 	    shift
-	    OUTPUT_CONFIG_FILE=$5
+	    OUTPUT_CONFIG_FILE=$1
+	    ;;
+	--filter_microsats)
+	    shift
+	    FILTERED_MICROSATS=$1
 	    ;;
 	*)
-	    echo Unknown option: $5 >&2
+	    echo Unknown option: $1 >&2
 	    exit 1
 	    ;;
     esac
@@ -289,12 +304,28 @@ if [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
     exit 1
 fi
 #
+# Run the pal_finder_filter.pl script from Graeme Fox
+if [ ! -z "$FILTERED_MICROSATS" ] ; then
+    perl $PALFINDER_FILTER_PL Output/PAL_summary.txt 2>&1
+    if [ $? -ne 0 ] ; then
+	echo ERROR pal_finder_filter.pl exited with non-zero status >&2
+	exit 1
+    elif [ ! -f pal_finder_filter_output.txt ] ; then
+	echo ERROR no output from pal_finder_filter.pl >&2
+	exit 1
+    fi
+fi
+#
 # Clean up
 if [ -f Output/microsat_summary.txt ] ; then
     /bin/mv Output/microsat_summary.txt $MICROSAT_SUMMARY
 fi
 if [ -f Output/PAL_summary.txt ] ; then
     /bin/mv Output/PAL_summary.txt $PAL_SUMMARY
+fi
+if [ ! -z "$FILTERED_MICROSATS" ] && [ -f pal_finder_filter_output.txt ] ; then
+    echo Moving pal_finder_filter_output.txt to $FILTERED_MICROSATS
+    /bin/mv pal_finder_filter_output.txt $FILTERED_MICROSATS
 fi
 if [ ! -z "$OUTPUT_CONFIG_FILE" ] && [ -f config.txt ] ; then
     /bin/mv config.txt $OUTPUT_CONFIG_FILE

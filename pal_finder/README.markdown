@@ -2,7 +2,7 @@ pal_finder
 ==========
 XML and wrapper script for the pal_finder microsatellite and PCR primer design script.
 
-pal_finder can be obtained from [http://sourceforge.net/projects/palfinder/](). It also
+pal_finder can be obtained from <http://sourceforge.net/projects/palfinder/>. It also
 requires Primer3 version 2 (see the pal_finder installation notes) - version 2.0.0-alpha
 can be obtained from [http://primer3.sourceforge.net/releases.php]().
 
@@ -24,6 +24,10 @@ To add to Galaxy add the following to tool_conf.xml:
     <tool file="pal_finder/pal_finder_wrapper.xml" />
 
 ### Changes ###
+
+0.02.04.1: add option to run Graeme Fox's `pal_finder_filter.pl` script to filter and
+       sort the pal_finder output. Update version number to match the pal_finder
+       version.
 
 0.0.6: allow input data to be either Illumina paired-end data in fastq format or
        single-end 454 data in fasta format.

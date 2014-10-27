@@ -1,4 +1,4 @@
-<tool id="microsat_pal_finder" name="pal_finder" version="0.0.7">
+<tool id="microsat_pal_finder" name="pal_finder" version="0.02.04.1">
   <description>Find microsatellite repeat elements sequencing reads and design PCR primers to amplify them</description>
   <command interpreter="bash">pal_finder_wrapper.sh
   #if str( $platform.platform_type ) == "illumina"
@@ -7,6 +7,9 @@
     --454 $platform.input_fasta
   #end if
   $output_microsat_summary $output_pal_summary
+  #if str( $platform.platform_type ) == "illumina" and $platform.filter_microsats
+    --filter_microsats $output_filtered_microsats
+  #end if
   #if $keep_config_file
     --output_config_file $output_config_file
   #end if
@@ -47,6 +50,9 @@
       <when value="illumina">
 	<param name="input_fastq_r1" type="data" format="fastqsanger" label="Illumina fastq file (read 1)" />
 	<param name="input_fastq_r2" type="data" format="fastqsanger" label="Illumina fastq file (read 2)" />
+	<param name="filter_microsats" type="boolean" truevalue="True" falsevalue="False"
+	       label="Filter and sort the microsatellites" checked="True"
+	       help="Filter pal_finder results to only include lines with primer sequences and remove non-perfect repeats" />
       </when>
       <when value="454">
 	<param name="input_fasta" type="data" format="fasta" label="454 fasta file with raw reads" />
@@ -105,11 +111,17 @@
 	       help="Temperature should be in degrees Celsius" />
       </when>
     </conditional>
-    <param name="keep_config_file" type="boolean" truevalue="True" falsevalue="False" label="Output the config file to the history" help="Can be used to run pal_finder outside of Galaxy" />
+    <param name="keep_config_file" type="boolean" truevalue="True" falsevalue="False"
+	   label="Output the config file to the history"
+	   help="Can be used to run pal_finder outside of Galaxy" />
   </inputs>
   <outputs>
     <data name="output_microsat_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellite types)" />
-    <data name="output_pal_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellites with read IDs and primer pairs)" />
+    <data name="output_pal_summary" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellites with read IDs and primer pairs)" />
+    <data name="output_filtered_microsats" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix} (filtered and sorted microsatellites)">
+      <filter>platform['platform_type'] == 'illumina'</filter>
+      <filter>filter_microsats is True</filter>
+    </data>
     <data name="output_config_file" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (config file)">
       <filter>keep_config_file is True</filter>
     </data>
@@ -127,6 +139,7 @@
       -->
       <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
       <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats.out" />
     </test>
     <test>
       <!-- Test with 454 input -->
@@ -146,10 +159,16 @@
 
 **What it does**
 
-pal_finder finds microsatellite repeat elements directly from raw 454 or Illumina paired-end
-sequencing reads. It then designs PCR primers to amplify these repeat loci (Potentially Amplifiable Loci: PAL).
+This tool runs the pal_finder program, which finds microsatellite repeat elements
+directly from raw 454 or Illumina paired-end sequencing reads. It then designs PCR
+primers to amplify these repeat loci (Potentially Amplifiable Loci: PAL).
 
-Information on the settings used in primer3_core can be found in the Primer3 manual at
+Optionally for Illumina data, the output from pal_finder can also be filtered to
+remove any motifs without primer sequences, and with non-perfect microsatellites.
+The microsatellites are then ranked by motif size (largest to smallest).
+
+Pal_finder runs the primer3_core program; information on the settings used in
+primer3_core can be found in the Primer3 manual at
 http://primer3.sourceforge.net/primer3_manual.htm
 
 -------------
@@ -158,26 +177,33 @@ http://primer3.sourceforge.net/primer3_manual.htm
 
 **Credits**
 
-This Galaxy tool has been developed within the Bioinformatics Core Facility at the
-University of Manchester. It runs the pal_finder package which can be obtained from
-http://sourceforge.net/projects/palfinder/:
+This Galaxy tool has been developed by Peter Briggs within the Bioinformatics Core
+Facility at the University of Manchester. It runs the pal_finder package which can be
+obtained from http://sourceforge.net/projects/palfinder/:
 
  * PLoS One. 2012; 7(2): e30953 "Rapid Microsatellite Identification from Illumina Paired-End
    Genomic Sequencing in Two Birds and a Snake" Todd A. Castoe, Alexander W. Poole, A. P.
-   Jason de Koning, Kenneth L. Jones, Diana F. Tomback, Sara J. Oyler-McCance, Jennifer A. Fike,
-   Stacey L. Lance, Jeffrey W. Streicher, Eric N. Smith, and David D. Pollock
+   Jason de Koning, Kenneth L. Jones, Diana F. Tomback, Sara J. Oyler-McCance, Jennifer A.
+   Fike, Stacey L. Lance, Jeffrey W. Streicher, Eric N. Smith, and David D. Pollock
 
 The paper is available at http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3279355/
 
-This tool is compatible with pal_finder version 0.02.04.
-
-pal_finder runs the primer3_core program (version 2.0.0-alpha is required), which is available from
-http://primer3.sourceforge.net/releases.php:
+This tool is compatible with pal_finder version 0.02.04, which in turn runs the
+primer3_core program (version 2.0.0-alpha is required, available from
+http://primer3.sourceforge.net/releases.php):
 
  * Steve Rozen and Helen J. Skaletsky (2000) "Primer3 on the WWW for general users and for
    biologist programmers". In: Krawetz S, Misener S (eds) Bioinformatics Methods and
    Protocols: Methods in Molecular Biology. Humana Press, Totowa, NJ, pp 365-386
 
-The paper is available at http://purl.com/STEVEROZEN/papers/rozen-and-skaletsky-2000-primer3.pdf
+The paper is available at
+http://purl.com/STEVEROZEN/papers/rozen-and-skaletsky-2000-primer3.pdf
+
+The filtering and sorting of the pal_finder output for Illumina data is performed
+using a Perl script written by Graeme Fox at the University of Manchester, and which
+is included with this tool.
+
+Please kindly acknowledge both this Galaxy tool, the pal_finder and primer3 packages, and
+the utility scripts if you use it in your work.
   </help>
 </tool>
