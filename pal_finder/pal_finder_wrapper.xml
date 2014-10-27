@@ -119,8 +119,7 @@
     <data name="output_microsat_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellite types)" />
     <data name="output_pal_summary" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellites with read IDs and primer pairs)" />
     <data name="output_filtered_microsats" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix} (filtered and sorted microsatellites)">
-      <filter>platform['platform_type'] == 'illumina'</filter>
-      <filter>filter_microsats is True</filter>
+      <filter>platform['platform_type'] == 'illumina' and platform['filter_microsats']</filter>
     </data>
     <data name="output_config_file" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (config file)">
       <filter>keep_config_file is True</filter>
