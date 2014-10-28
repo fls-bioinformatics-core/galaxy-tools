@@ -29,6 +29,8 @@ To add to Galaxy add the following to tool_conf.xml:
 
 ### Changes ###
 
+1.4.2.0: synchronise tool version with Weeder version (1.4.2).
+
 0.1.0: add tool_dependencies.xml to install Weeder automatically;
        required modifications to script to link to executables and
        FreqFiles.

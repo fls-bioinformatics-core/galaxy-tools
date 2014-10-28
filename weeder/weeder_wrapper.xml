@@ -1,4 +1,4 @@
-<tool id="motiffinding_weeder" name="Weeder" version="0.1.0">
+<tool id="motiffinding_weeder" name="Weeder" version="1.4.2.0">
   <description>Motif discovery in sequences from coregulated genes of a single species</description>
   <command interpreter="bash">weeder_wrapper.sh $sequence_file $output_mix_file $output_wee_file $output_all_matrices $output_best_matrices $species_code $analysis_type $strands $repeat_motif $assume_all T$n_motifs
   #if $weeder_to_meme
