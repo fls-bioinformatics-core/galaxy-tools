@@ -16,6 +16,7 @@ tar cvzf $TGZ \
     weeder2meme_wrapper.sh \
     weeder2meme_wrapper.xml \
     tool_dependencies.xml \
+    ExtractWeederMatrices.pl \
     lib
 if [ -f $TGZ ] ; then
     echo Created $TGZ
