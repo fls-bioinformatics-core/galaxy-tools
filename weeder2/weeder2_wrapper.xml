@@ -4,12 +4,12 @@
   $sequence_file $species_code
   $output_motifs_file $output_matrix_file
   $strands
-  #if str( $chipseq.use_chipseq ) == "yes"
+  #if $chipseq.use_chipseq
      -chipseq -top $chipseq.top
   #end if
   #if str( $advanced_options.advanced_options_selector ) == "on"
      -maxm $advanced_options.n_motifs_report
-     -b $advanced_options.n_mofifs_build
+     -b $advanced_options.n_motifs_build
      -sim $advanced_options.sim_threshold
      -em $advanced_options.em_cycles
   #end if
@@ -53,15 +53,15 @@
       <when value="on">
 	<param name="n_motifs_report" type="integer" value="25"
 	       label="Number of discovered motifs to report" help="(-maxm)" />
-	<param name="b_motifs_build" type="integer" value="50"
+	<param name="n_motifs_build" type="integer" value="50"
 	       label="Number of top scoring motifs to build occurrences matrix profiles and outputs for"
 	       help="(-b)" />
 	<param name="sim_threshold" type="float" min="0.0" max="1.0" value="0.95"
 	       label="Similarity threshold for the redundancy filter"
-	       help="Remove motifs that are too similar, with lower values imposing a stricter filter (-sim)" />
+	       help="Remove motifs that are too similar, with lower values imposing a stricter filter. Must be between 0.0 and 1.0 (-sim)" />
 	<param name="em_cycles" type="integer" min="0" max="100" value="1"
 	       label="Number of expectation maximization (EM) cycles to perform"
-	       help="(-em)" />
+	       help="Number of cycles must be between 0 and 100 (-em)" />
       </when>
       <when value="off">
       </when>
@@ -72,10 +72,6 @@
     <data name="output_matrix_file" format="txt" label="Weeder2 on ${on_string} (matrix)" />
   </outputs>
   <help>
-
-.. class:: warningmark
-
-**IAN D to update help text etc**
 
 .. class:: infomark
 
@@ -96,7 +92,7 @@ been developed by Giulio Pavesi at the University of Milan, Italy.
 
 This tool is compatible with Weeder 2.0:
 
-* http://159.149.160.51/modtools/downloads/weeder.html
+ * http://159.149.160.51/modtools/downloads/weeder2.html
 
 Please kindly acknowledge both this Galaxy tool, the Weeder package and the utility
 scripts if you use it in your work.
