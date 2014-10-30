@@ -1,0 +1,81 @@
+
+
+NEW: Starting a small job
+
+Organism code: MM
+
+Processing *both* strands
+weederlauncher.out weeder_in.fa MM small S 20 
+
+
+
+NEW: Starting a small job
+
+Organism code: MM
+
+Processing *both* strands
+/usr/bin/weederlauncher.out weeder_in.fa MM small S 20 
+
+
+
+NEW: Starting a small job
+
+Organism code: MM
+
+Processing *both* strands
+./weederlauncher.out weeder_in.fa MM small S 20 
+
+
+Searching for motifs of length 6 with 1 mutations.....
+(Actual commandline is : 
+./weederTFBS.out -f weeder_in.fa -R 50 -O MM -W 6 -e 1 -N -S -T 20 )
+1) ATTACT 0.73 
+2) GTAATT 0.72 
+3) TCACAT 0.72 
+4) CTGTCA 0.69 
+5) TTGACA 0.66 
+6) ACATTG 0.65 
+7) TAATTC 0.63 
+8) CTGACA 0.58 
+9) ATGACT 0.57 
+10) TGACAA 0.57 
+11) ATGTCA 0.55 
+12) TGTCAT 0.55 
+13) TTGAGT 0.54 
+14) GTTAAA 0.53 
+15) ACGATT 0.53 
+16) ATGATT 0.53 
+17) GTTTAA 0.53 
+18) TTCACA 0.52 
+19) TTACGT 0.51 
+20) GTGAAT 0.51 
+
+Elapsed time : 0 min. 0 sec.
+
+
+Searching for motifs of length 8 with 2 mutations.....
+(Actual commandline is : 
+./weederTFBS.out -f weeder_in.fa -R 50 -O MM -W 8 -e 2 -N -S -T 20 )
+1) TGATTGAT 0.76 
+2) GTTAATCA 0.75 
+3) TTGATTGA 0.68 
+4) TTAATCAA 0.68 
+5) TGACAAGT 0.68 
+6) TCAATCAT 0.67 
+7) TCACATTG 0.67 
+8) TCAATCAC 0.67 
+9) AATTACTC 0.66 
+10) TTCAATCA 0.65 
+11) GTTGAAAC 0.65 
+12) AGATTACT 0.64 
+13) GTGAATTA 0.64 
+14) ACGTGTCA 0.64 
+15) GACTAGTT 0.63 
+16) AAGTAATC 0.63 
+17) ATTCACAT 0.63 
+18) TGATTAAT 0.61 
+19) TTGAGTGA 0.61 
+20) GTACAGTA 0.61 
+
+Elapsed time : 0 min. 6 sec.
+

@@ -36,6 +36,9 @@
 	<action type="set_environment">
 	  <environment_variable name="WEEDER_FREQFILES_DIR" action="set_to">$INSTALL_DIR/FreqFiles</environment_variable>
 	</action>
+        <action type="set_environment">
+          <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR/bin</environment_variable>
+        </action>
       </actions>
     </install>
     <readme>Installs Weeder 1.4.2

@@ -57,6 +57,17 @@
       <filter>weeder_to_meme is True</filter>
     </data>
   </outputs>
+  <tests>
+    <test>
+      <param name="sequence_file" value="weeder_in.fa" ftype="fasta" />
+      <param name="species_code" value="MM" />
+      <param name="weeder_to_meme" value="False" />
+      <output name="output_mix_file" file="weeder_mix.out" />
+      <output name="output_wee_file" file="weeder_wee.out" />
+      <output name="output_all_matrices" file="weeder_all_matrices.out" />
+      <output name="output_best_matrices" file="weeder_best_matrices.out" />
+    </test>
+  </tests>
   <help>
 
 .. class:: infomark
@@ -74,12 +85,21 @@ In addition this tool extracts 'all' matrices and 'best' matrices from the Weede
 
 **Credits**
 
-This Galaxy tool has been developed within the Bioinformatics Core Facility at the
-University of Manchester. It runs the Weeder motif finding package which has
-been developed by Giulio Pavesi at the University of Milan, Italy.
+This Galaxy tool has been developed by Peter Briggs and Ian Donaldson within the
+Bioinformatics Core Facility at the University of Manchester, and runs the Weeder
+motif discovery package:
 
-This tool is compatible with Weeder 1.4.2. Weeder can be obtained from
-http://159.149.160.51/modtools/downloads/weeder.html
+ * Giulio Pavesi, Paolo Mereghetti, Giancarlo Mauri and Graziano Pesole,
+   Weeder Web: discovery of transcription factor binding sites in a set of sequences
+   from co-regulated genes,
+   Nucl. Acids Res. (2004) 32 (suppl 2): W199-W203.
+ * doi: 10.1093/nar/gkh465
+   http://nar.oxfordjournals.org/content/32/suppl_2/W199.full
+   PMID: 15215380
+
+This tool is compatible with Weeder 1.4.2:
+
+ * http://159.149.160.51/modtools/downloads/weeder.html
 
 In addition it uses utility scripts developed by Ian Donaldson and Tim Burgis at the
 University of Manchester, to extract and motif matrices.
