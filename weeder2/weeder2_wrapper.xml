@@ -86,9 +86,14 @@ conserved in a set of regulatory regions of related genes.
 
 **Credits**
 
-This Galaxy tool has been developed within the Bioinformatics Core Facility at the
-University of Manchester. It runs the Weeder motif finding package which has
-been developed by Giulio Pavesi at the University of Milan, Italy.
+This Galaxy tool has been developed by Peter Briggs and Ian Donaldson within the
+Bioinformatics Core Facility at the University of Manchester, and runs the Weeder2
+motif discovery package:
+
+ * Zambelli, F., Pesole, G. and Pavesi, G. 2014. Using Weeder, Pscan, and PscanChIP
+   for the Discovery of Enriched Transcription Factor Binding Site Motifs in
+   Nucleotide Sequences. Current Protocols in Bioinformatics. 47:2.11:2.11.1–2.11.31.
+ * http://onlinelibrary.wiley.com/doi/10.1002/0471250953.bi0211s47/full
 
 This tool is compatible with Weeder 2.0:
 
