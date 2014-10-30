@@ -71,6 +71,14 @@
     <data name="output_motifs_file" format="txt" label="Weeder2 on ${on_string} (motifs)" />
     <data name="output_matrix_file" format="txt" label="Weeder2 on ${on_string} (matrix)" />
   </outputs>
+  <tests>
+    <test>
+      <param name="sequence_file" value="weeder_in.fa" ftype="fasta" />
+      <param name="species_code" value="MM" />
+      <output name="output_motifs_file" file="weeder2_motifs.out" />
+      <output name="output_matrix_file" file="weeder2_matrix.out" />
+    </test>
+  </tests>
   <help>
 
 .. class:: infomark
