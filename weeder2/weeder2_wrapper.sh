@@ -22,19 +22,8 @@ done
 # Link to input file
 ln -s $FASTA_IN
 #
-# Make link to weeder2 executable and data files in the
-# working directory - this hack is ugly but seems to be
-# necessary in order to get the weeder pipeline to run
-if [ -x $WEEDER_DIR/bin/weeder2 ] ; then
-    echo "Linking to weeder2 executable"
-    ln -s $WEEDER_DIR/bin/weeder2
-else
-    echo "ERROR $0 cannot locate weeder2 executable" >&2
-    exit 1
-fi
-#
-# Link to the FreqFiles directory as weeder executables
-# expect it to be the same directory
+# Link to the FreqFiles directory as weeder2 executable
+# expects it to be the same directory
 freqfiles_dir=$WEEDER_FREQFILES_DIR
 if [ -d $freqfiles_dir ] ; then
     echo "Linking to FreqFiles directory"
@@ -50,9 +39,9 @@ motifs_out=$fasta.w2
 matrix_out=$fasta.matrix.w2
 #
 # Construct and run weeder command
-# NB weeder logs output to stderr eso redirect to stdout
+# NB weeder logs output to stderr so redirect to stdout
 # to prevent the Galaxy tool reporting failure
-weeder_cmd="./weeder2 -f $fasta -O $SPECIES_CODE $ARGS"
+weeder_cmd="weeder2 -f $fasta -O $SPECIES_CODE $ARGS"
 echo "Running $weeder_cmd"
 $weeder_cmd 2>&1 | tee weeder.log
 #
