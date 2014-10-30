@@ -1,12 +1,12 @@
-<tool id="data_manager_fetch_mothur_reference_data" name="Fetch Mothur toolsuite reference data" version="0.1.0" tool_type="manage_data">
+<tool id="data_manager_fetch_mothur_reference_data" name="Fetch Mothur toolsuite reference data" version="0.1.1" tool_type="manage_data">
     <description>Fetch and install reference data for Mothur</description>
     <command interpreter="python">fetch_mothur_reference_data.py
     --source=$data_source.data_source_selector
     #if str( $data_source.data_source_selector ) == "mothur_website"
        --datasets "${data_source.ref_data}"
-    #elif str( $data_source.data_source_selector ) == "file"
+    #elif str( $data_source.data_source_selector ) == "filesystem_paths"
        --description "${data_source.description}"
-       --file "${data_source.filename}"
+       --paths "${data_source.paths}"
        #if $data_source.create_symlink
          --link
        #end if
@@ -18,7 +18,7 @@
 	<param name="data_source_selector" type="select"
 	       label="Choose the source for the reference data">
 	  <option value="mothur_website">Mothur website</option>
-	  <option value="file">File on local server</option>
+	  <option value="filesystem_paths">Filesystem paths</option>
 	</param>
 	<when value="mothur_website">
 	  <param name="ref_data" type="select" display="checkboxes" multiple="true"
@@ -39,14 +39,15 @@
 	    <option value="secondary_structure_maps_greengenes">Greengenes secondary structure maps</option>
 	  </param>
 	</when>
-	<when value="file">
+	<when value="filesystem_paths">
 	  <param name="description" type="text" value="" size="50"
 		 label="Description of the data" optional="False" />
-	  <param name="filename" type="text" value="" size="50"
-		 label="Full path to reference data file on disk" optional="False" />
+	  <param name="paths" type="text" value="" area="True" size="10x50"
+		 label="Paths to upload" optional="False"
+		 help="Upload all files pasted in the box. The (recursive) contents of any pasted directories will be added as well." />
           <param type="boolean" name="create_symlink" truevalue="create_symlink"
 		 falsevalue="copy_file"
-		 label="Create symlink to orignal data instead of copying" checked="on" />
+		 label="Create symlinks to data instead of copying into Galaxy" checked="on" />
 	</when>
       </conditional>
     </inputs>
@@ -65,11 +66,30 @@
       </test>
     </tests>
     <help>
+**What it does**
 
-This tool downloads and installs reference data used by the mothur_toolsuite
-set of Galaxy tools.
+This tool fetches reference data used by the mothur_toolsuite set of Galaxy tools,
+and populates the appropriate data tables.
 
-Reference data URLS found via:
+The reference data can be imported directly from the Mothur website, or from files
+in a server directory.
+
+Files are added to the following data tables based on file extension:
+
+ * **mothur_lookup**: for .pat files
+ * **mothur_aligndb**: for .fasta files
+ * **mothur_map**: for .map files
+ * **mothur_taxonomy**: for .tax files
+
+------
+
+.. class:: infomark
+
+**Importing from Mothur website**
+
+Reference data sets provided by the Mothur developers can be downloaded from the
+Mothur website. See the following pages to get more information about each dataset
+(where there URLS found via:
 
  * Lookup data:        http://www.mothur.org/wiki/Lookup_files
  * RDP reference data: http://www.mothur.org/wiki/RDP_reference_files
@@ -77,7 +97,28 @@ Reference data URLS found via:
  * Greengenes data:    http://www.mothur.org/wiki/Greengenes-formatted_databases
  * Secondary structure maps: http://www.mothur.org/wiki/Secondary_structure_map
 
-Lane mask information (not currently used): http://www.mothur.org/wiki/Lane_mask
+.. class:: infomark
+
+**Importing from file system paths**
+
+If reference data is already on the server filesystem then use this option to
+import it into the Mothur data tables. The appropriate data tables are determined
+based on the file extensions.
+
+------
+
+.. class:: warningmark
+
+**Lane masks**
+
+Lane mask data is also available via the Mothur website (files ending in ".filter"):
+
+ * http://www.mothur.org/wiki/Lane_mask
+
+but as these data are not currently used in the toolsuite, they cannot be imported
+using this data manager.
+
+
 
     </help>
 </tool>

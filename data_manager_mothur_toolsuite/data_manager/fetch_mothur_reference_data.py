@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #
 # Data manager for reference data for the 'mothur_toolsuite' Galaxy tools
+import sys
 import os
 import optparse
 import tempfile
@@ -404,11 +405,35 @@ def fetch_from_mothur_website(data_tables,target_dir,datasets):
     print "Removing %s" % wd
     shutil.rmtree(wd)
 
-def import_from_server(data_tables,target_dir,filename,description,
-                       link_to_data=False):
-    """Import a reference file from the server
+def files_from_filesystem_paths(paths):
+    """Return list of file paths from arbitrary input paths
 
-    Creates a reference to the specified file on the Galaxy
+    Given a list of filesystem paths, return a list of
+    full paths corresponding to all files found recursively
+    from under those paths.
+
+    """
+    # Collect files to add
+    files = []
+    for path in paths:
+        path = os.path.abspath(path)
+        print "Examining '%s'..." % path
+        if os.path.isfile(path):
+            # Store full path for file
+            files.append(path)
+        elif os.path.isdir(path):
+            # Descend into directory and collect the files
+            for f in os.listdir(path):
+                files.extend(files_from_filesystem_paths((os.path.join(path,f),)))
+        else:
+            print "Not a file or directory, ignored"
+    return files
+
+def import_from_server(data_tables,target_dir,paths,description,
+                       link_to_data=False):
+    """Import reference data from filesystem paths
+
+    Creates references to the specified file(s) on the Galaxy
     server in the appropriate data table (determined from the
     file extension).
 
@@ -418,31 +443,34 @@ def import_from_server(data_tables,target_dir,filename,description,
     Arguments:
       data_tables: a dictionary containing the data table info
       target_dir: directory to put copy or link to the data file
-      filename: the path of the file to import
-      description: text to associate with the file
+      paths: list of file and/or directory paths to import
+      description: text to associate with the files
       link_to_data: boolean, if False then copy the data file
         into Galaxy (default); if True then make a symlink to
         the data file
 
     """
-    if not os.path.isfile(filename):
-        raise OSError("No file '%s'" % filename)
-    f = os.path.abspath(filename)
-    ref_data_file = os.path.basename(f)
-    target_file = os.path.join(target_dir,ref_data_file)
-    type_ = identify_type(f)
-    print "%s\t\'%s'\t.../%s" % (type_,
-                                 description,
-                                 ref_data_file)
-    # Link to or copy the data
-    if link_to_data:
-        os.symlink(f,target_file)
-    else:
-        shutil.copyfile(f,target_file)
-    # Add entry to data table
-    table_name = "mothur_%s" % type_
-    add_data_table_entry(data_tables,table_name,dict(name=description,
-                                                     value=ref_data_file))
+    # Collect list of files based on input paths
+    files = files_from_filesystem_paths(paths)
+    # Handle each file individually
+    for f in files:
+        type_ = identify_type(f)
+        if type_ is None:
+            print "%s: unrecognised type, skipped" % f
+        ref_data_file = os.path.basename(f)
+        target_file = os.path.join(target_dir,ref_data_file)
+        print "%s\t\'%s'\t.../%s" % (type_,
+                                     description,
+                                     ref_data_file)
+        # Link to or copy the data
+        if link_to_data:
+            os.symlink(f,target_file)
+        else:
+            shutil.copyfile(f,target_file)
+        # Add entry to data table
+        table_name = "mothur_%s" % type_
+        add_data_table_entry(data_tables,table_name,dict(name=description,
+                                                         value=ref_data_file))
 
 if __name__ == "__main__":
     print "Starting..."
@@ -451,8 +479,8 @@ if __name__ == "__main__":
     parser = optparse.OptionParser()
     parser.add_option('--source',action='store',dest='data_source')
     parser.add_option('--datasets',action='store',dest='datasets',default='')
-    parser.add_option('--file',action='store',dest='filename')
-    parser.add_option('--description',action='store',dest='description')
+    parser.add_option('--paths',action='store',dest='paths',default=[])
+    parser.add_option('--description',action='store',dest='description',default='')
     parser.add_option('--link',action='store_true',dest='link_to_data')
     options,args = parser.parse_args()
     print "options: %s" % options
@@ -464,7 +492,7 @@ if __name__ == "__main__":
     jsonfile = args[0]
 
     # Read the input JSON
-    param_dict,target_dir = read_input_json(jsonfile)
+    params,target_dir = read_input_json(jsonfile)
 
     # Make the target directory
     print "Making %s" % target_dir
@@ -481,9 +509,16 @@ if __name__ == "__main__":
     if options.data_source == 'mothur_website':
         datasets = options.datasets.split(',')
         fetch_from_mothur_website(data_tables,target_dir,datasets)
-    elif options.data_source == 'file':
-        import_from_server(data_tables,target_dir,
-                           options.filename,options.description,
+    elif options.data_source == 'filesystem_paths':
+        # Check description text
+        description = options.description.strip()
+        if not description:
+            sys.stderr.write("Description cannot be blank\n")
+            sys.exit(1)
+        # Get list of paths (need to remove any escapes for '\n' and '\r'
+        # that might have been inserted by Galaxy)
+        paths = options.paths.replace('__cn__','\n').replace('__cr__','\r').split()
+        import_from_server(data_tables,target_dir,paths,description,
                            link_to_data=options.link_to_data)
     # Write output JSON
     print "Outputting JSON"
