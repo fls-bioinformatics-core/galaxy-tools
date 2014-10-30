@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Fetch reference data for the Galaxy 'mothur_toolsuite'
+# Data manager for reference data for the 'mothur_toolsuite' Galaxy tools
 import os
 import optparse
 import tempfile
@@ -173,8 +173,14 @@ def add_data_table_entry(d,table,entry):
     should be a dictionary where the keys are the names of
     columns in the data table.
 
+    Raises an exception if the named data table doesn't
+    exist.
+
     """
-    d['data_tables'][table].append(entry)
+    try:
+        d['data_tables'][table].append(entry)
+    except KeyError:
+        raise Exception("add_data_table_entry: no table '%s'" % table)
 
 # Utility functions for downloading and unpacking archive files
 
@@ -354,33 +360,24 @@ def get_name(filen):
         name = name.replace(delim,' ')
     return name
 
-if __name__ == "__main__":
-    print "Starting..."
+def fetch_from_mothur_website(data_tables,target_dir,datasets):
+    """Fetch reference data from the Mothur website
 
-    # Read command line
-    parser = optparse.OptionParser()
-    options,args = parser.parse_args()
-    print "options: %s" % options
-    print "args   : %s" % args
-    if len(args) != 2:
-        p.error("Need to supply JSON file name and a dataset name")
-    jsonfile = args[0]
-    datasets = args[1].split(',')
+    For each dataset in the list 'datasets', download (and if
+    necessary unpack) the related files from the Mothur website,
+    copy them to the data manager's target directory, and add
+    references to the files to the appropriate data table.
 
-    # Read the input JSON
-    param_dict,target_dir = read_input_json(jsonfile)
+    The 'data_tables' dictionary should have been created using
+    the 'create_data_tables_dict' and 'add_data_table' functions.
 
-    # Make the target directory
-    print "Making %s" % target_dir
-    os.mkdir(target_dir)
-
-    # Set up data tables dictionary
-    data_tables = create_data_tables_dict()
-    add_data_table(data_tables,'mothur_lookup')
-    add_data_table(data_tables,'mothur_aligndb')
-    add_data_table(data_tables,'mothur_map')
-    add_data_table(data_tables,'mothur_taxonomy')
-
+    Arguments:
+      data_tables: a dictionary containing the data table info
+      target_dir: directory to put the downloaded files
+      datasets: a list of dataset names corresponding to keys in
+        the MOTHUR_REFERENCE_DATA dictionary
+      
+    """
     # Make working dir
     wd = tempfile.mkdtemp(suffix=".mothur",dir=os.getcwd())
     print "Working dir %s" % wd
@@ -406,6 +403,88 @@ if __name__ == "__main__":
     # Remove working dir
     print "Removing %s" % wd
     shutil.rmtree(wd)
+
+def import_from_server(data_tables,target_dir,filename,description,
+                       link_to_data=False):
+    """Import a reference file from the server
+
+    Creates a reference to the specified file on the Galaxy
+    server in the appropriate data table (determined from the
+    file extension).
+
+    The 'data_tables' dictionary should have been created using
+    the 'create_data_tables_dict' and 'add_data_table' functions.
+
+    Arguments:
+      data_tables: a dictionary containing the data table info
+      target_dir: directory to put copy or link to the data file
+      filename: the path of the file to import
+      description: text to associate with the file
+      link_to_data: boolean, if False then copy the data file
+        into Galaxy (default); if True then make a symlink to
+        the data file
+
+    """
+    if not os.path.isfile(filename):
+        raise OSError("No file '%s'" % filename)
+    f = os.path.abspath(filename)
+    ref_data_file = os.path.basename(f)
+    target_file = os.path.join(target_dir,ref_data_file)
+    type_ = identify_type(f)
+    print "%s\t\'%s'\t.../%s" % (type_,
+                                 description,
+                                 ref_data_file)
+    # Link to or copy the data
+    if link_to_data:
+        os.symlink(f,target_file)
+    else:
+        shutil.copyfile(f,target_file)
+    # Add entry to data table
+    table_name = "mothur_%s" % type_
+    add_data_table_entry(data_tables,table_name,dict(name=description,
+                                                     value=ref_data_file))
+
+if __name__ == "__main__":
+    print "Starting..."
+
+    # Read command line
+    parser = optparse.OptionParser()
+    parser.add_option('--source',action='store',dest='data_source')
+    parser.add_option('--datasets',action='store',dest='datasets',default='')
+    parser.add_option('--file',action='store',dest='filename')
+    parser.add_option('--description',action='store',dest='description')
+    parser.add_option('--link',action='store_true',dest='link_to_data')
+    options,args = parser.parse_args()
+    print "options: %s" % options
+    print "args   : %s" % args
+
+    # Check for JSON file
+    if len(args) != 1:
+        p.error("Need to supply JSON file name")
+    jsonfile = args[0]
+
+    # Read the input JSON
+    param_dict,target_dir = read_input_json(jsonfile)
+
+    # Make the target directory
+    print "Making %s" % target_dir
+    os.mkdir(target_dir)
+
+    # Set up data tables dictionary
+    data_tables = create_data_tables_dict()
+    add_data_table(data_tables,'mothur_lookup')
+    add_data_table(data_tables,'mothur_aligndb')
+    add_data_table(data_tables,'mothur_map')
+    add_data_table(data_tables,'mothur_taxonomy')
+
+    # Fetch data from specified data sources
+    if options.data_source == 'mothur_website':
+        datasets = options.datasets.split(',')
+        fetch_from_mothur_website(data_tables,target_dir,datasets)
+    elif options.data_source == 'file':
+        import_from_server(data_tables,target_dir,
+                           options.filename,options.description,
+                           link_to_data=options.link_to_data)
     # Write output JSON
     print "Outputting JSON"
     print str(to_json_string(data_tables))
