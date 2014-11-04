@@ -92,6 +92,69 @@ conserved in a set of regulatory regions of related genes.
 
 .. class:: infomark
 
+**Usage advice**
+
+Guidelines on how to use this tool can be seen in Zambelli et al. 2014 (see link
+below), but the following is a brief guide. Please note that **motifs** are a model
+or matrix that describes a set of sequences that may differ in the base composition.
+**Oligos** are specific sequences found within the input sequences or genomic
+background.
+
+**Input sequence** (in FASTA format) should be short (100-200bp) and be reasonably
+expected to contain an enriched motif(s).  This is not generally an issue with
+transcription factor ChIP-seq derived sequences centred on the summit of binding
+regions that are expected to contain a dominant motif and possibly secondary motifs.
+
+There is **no need to mask sequence for repetitive sequence** as factors may
+legitimately bind repetitive sequence.
+
+**Use both strands of sequence** by default, unless there is a specific reason not
+to do so.
+
+**Species to use for background comparison** should match the genome used to
+generate the **input sequence**. The background genome motif frequencies are
+generated from within the promoter regions of annotated genes and are shown to be a
+good background for both promoter and other regulatory regions. 
+ 
+**Use the ChIP-seq heuristic** (-chipseq) when there are a large number input
+sequences (hundreds or thousands). By default Weeder scans for the occurrence of
+oligos only in the first 100 sequences, so you should order sequences by their
+significance, e.g. fold enrichment or Pvalue.  For large data sets (-top) can be set
+to interrogate number if sequences equating to the top 10 to 20% of input sequences
+(as recommended by the author).
+
+**Number of discovered motifs to report** (-maxm) limits the number of reported
+motifs even if there are more than -maxm. **Number of top scoring motifs to build
+occurrences matrix profiles and outputs for** (-b) changes the number of top scoring
+motifs of length 6, 8 and 10. Therefore changing -b increases or decreases the
+"pool" of motifs analysed by Weeder.  A large pool means a potentially larger number
+of reported motifs, but with potentially more of low signifiance.
+
+**Similarity threshold for the redundancy filter** (-sim) default setting is
+recommended.
+
+**Number of expectation maximization (EM) cycles to perform** (-em) default is
+recommended.  The option is included to help "clean up" the resulting motif matrices.
+In this version the number of EM steps can be increased, which can be useful for
+motifs with highly redundant stretches of sequence.
+
+-------------
+
+.. class:: infomark
+
+**A note on the results**
+
+The resulting matrices are the result of scanning (by default both strands) for
+oligos of length 6, 8 and 8, allowing 1, 2 and 3 substitutions respectively. The
+matrices within the matrix.w2 file can be input into other tools. The recommended
+next step is to use **STAMP** (http://www.benoslab.pitt.edu/stamp/), which displays
+the motifs as logos and identifies matches with libraries of known DNA binding
+motifs, such as TRANSFAC or JASPAR.
+
+-------------
+
+.. class:: infomark
+
 **Credits**
 
 This Galaxy tool has been developed by Peter Briggs and Ian Donaldson within the
