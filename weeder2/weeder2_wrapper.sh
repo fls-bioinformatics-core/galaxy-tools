@@ -43,7 +43,13 @@ matrix_out=$fasta.matrix.w2
 # to prevent the Galaxy tool reporting failure
 weeder_cmd="weeder2 -f $fasta -O $SPECIES_CODE $ARGS"
 echo "Running $weeder_cmd"
-$weeder_cmd 2>&1 | tee weeder.log
+$weeder_cmd 2>&1
+status=$?
+if [ $status -ne 0 ] ; then
+    echo weeder2 command finished with nonzero exit code $status >&2
+    echo Command was: $weeder_cmd
+    exit $status
+fi
 #
 # Move outputs to final destinations
 if [ -e $motifs_out ] ; then
