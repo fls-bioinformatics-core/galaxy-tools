@@ -1,4 +1,4 @@
-<tool id="data_manager_fetch_mothur_reference_data" name="Fetch Mothur toolsuite reference data" version="0.1.1" tool_type="manage_data">
+<tool id="data_manager_fetch_mothur_reference_data" name="Fetch Mothur toolsuite reference data" version="0.1.2" tool_type="manage_data">
     <description>Fetch and install reference data for Mothur</description>
     <command interpreter="python">fetch_mothur_reference_data.py
     --source=$data_source.data_source_selector
@@ -26,6 +26,7 @@
 	    <option value="lookup_titanium">GS FLX Titanium lookup files</option>
 	    <option value="lookup_gsflx">GSFLX lookup files</option>
 	    <option value="lookup_gs20">GS20 lookup files</option>
+	    <option value="RDP_v10">RDP reference files (training set version 10)</option>
 	    <option value="RDP_v9">RDP reference files (training set version 9)</option>
 	    <option value="RDP_v7">RDP reference files (training set version 7)</option>
 	    <option value="RDP_v6">RDP reference files (training set version 6)</option>
@@ -66,6 +67,8 @@
       </test>
     </tests>
     <help>
+.. class:: infomark
+
 **What it does**
 
 This tool fetches reference data used by the mothur_toolsuite set of Galaxy tools,
@@ -83,13 +86,10 @@ Files are added to the following data tables based on file extension:
 
 ------
 
-.. class:: infomark
-
 **Importing from Mothur website**
 
 Reference data sets provided by the Mothur developers can be downloaded from the
-Mothur website. See the following pages to get more information about each dataset
-(where there URLS found via:
+Mothur website. See the following pages to get more information about each dataset:
 
  * Lookup data:        http://www.mothur.org/wiki/Lookup_files
  * RDP reference data: http://www.mothur.org/wiki/RDP_reference_files
@@ -97,19 +97,20 @@ Mothur website. See the following pages to get more information about each datas
  * Greengenes data:    http://www.mothur.org/wiki/Greengenes-formatted_databases
  * Secondary structure maps: http://www.mothur.org/wiki/Secondary_structure_map
 
-.. class:: infomark
-
 **Importing from file system paths**
 
 If reference data is already on the server filesystem then use this option to
 import it into the Mothur data tables. The appropriate data tables are determined
 based on the file extensions.
 
+Optionally a description can be added which will appear next to the base of the
+reference file name in the data table entry.
+
 ------
 
 .. class:: warningmark
 
-**Lane masks**
+**A note on Lane masks**
 
 Lane mask data is also available via the Mothur website (files ending in ".filter"):
 
@@ -117,8 +118,6 @@ Lane mask data is also available via the Mothur website (files ending in ".filte
 
 but as these data are not currently used in the toolsuite, they cannot be imported
 using this data manager.
-
-
 
     </help>
 </tool>

@@ -14,7 +14,7 @@ from galaxy.util.json import from_json_string, to_json_string
 
 # When extracting files from archives, skip names that
 # start with the following strings
-IGNORE_PATHS = ('.','__MACOSX/')
+IGNORE_PATHS = ('.','__MACOSX/','__')
 
 # Map file extensions to data table names
 MOTHUR_FILE_TYPES = { ".map": "map",
@@ -37,83 +37,87 @@ MOTHUR_REFERENCE_DATA = {
     },
     # RDP reference files
     # http://www.mothur.org/wiki/RDP_reference_files
+    "RDP_v10": {
+        "16S rRNA RDP training set 10":
+        ["http://www.mothur.org/w/images/b/b5/Trainset10_082014.rdp.tgz",],
+        "16S rRNA PDS training set 10":
+        ["http://www.mothur.org/w/images/2/24/Trainset10_082014.pds.tgz",],
+    },
     "RDP_v9": {
-        "16S rRNA reference (RDP) (training set v9)":
+        "16S rRNA RDP training set 9":
         ["http://www.mothur.org/w/images/7/72/Trainset9_032012.rdp.zip",],
-        "16S rRNA reference (PDS) (training set v9)":
+        "16S rRNA PDS training set 9":
         ["http://www.mothur.org/w/images/5/59/Trainset9_032012.pds.zip",],
     },
     "RDP_v7": {
-        "16S rRNA reference (RDP) (training set v7)":
+        "16S rRNA RDP training set 7":
         ["http://www.mothur.org/w/images/2/29/Trainset7_112011.rdp.zip",],
-        "16S rRNA reference (PDS) (training set v7)":
+        "16S rRNA PDS training set 7":
         ["http://www.mothur.org/w/images/4/4a/Trainset7_112011.pds.zip",],
-        "8S rRNA reference (RDP) (Fungi, training set v7)":
+        "8S rRNA Fungi training set 7":
         ["http://www.mothur.org/w/images/3/36/FungiLSU_train_v7.zip",],
     },
     "RDP_v6": {
-        "RDP training set version 6":
+        "RDP training set 6":
         ["http://www.mothur.org/w/images/4/49/RDPTrainingSet.zip",],
     },
     # Silva reference files
     # http://www.mothur.org/wiki/Silva_reference_files
     "silva_release_119": {
-        "SILVA bacterial, archaea and eukarya references (release 119)":
-        ["http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz",],
-        "SILVA recreated SEED database (release 119)":
-        ["http://www.mothur.org/w/images/5/56/Silva.seed_v119.tgz",],
+        "SILVA release 119":
+        ["http://www.mothur.org/w/images/2/27/Silva.nr_v119.tgz",
+         "http://www.mothur.org/w/images/5/56/Silva.seed_v119.tgz",],
     },
     "silva_release_102": {
-        "SILVA bacterial references (release 102)":
-        ["http://www.mothur.org/w/images/9/98/Silva.bacteria.zip",],
-        "SILVA archaeal references (release 102)":
-        ["http://www.mothur.org/w/images/3/3c/Silva.archaea.zip",],
-        "SILVA Eukaryotic references (release 102)":
-        ["http://www.mothur.org/w/images/1/1a/Silva.eukarya.zip",],
+        "SILVA release 102":
+        ["http://www.mothur.org/w/images/9/98/Silva.bacteria.zip",
+         "http://www.mothur.org/w/images/3/3c/Silva.archaea.zip",
+         "http://www.mothur.org/w/images/1/1a/Silva.eukarya.zip",],
     },
     "silva_gold_bacteria": {
-        "SILVA-based alignment for chimera.slayer (gold.bacteria)":
+        "SILVA gold":
         ["http://www.mothur.org/w/images/f/f1/Silva.gold.bacteria.zip",],
     },
     # Greengenes
     # http://www.mothur.org/wiki/Greengenes-formatted_databases
     "greengenes_August2013": {
-        "Greengenes reference alignment (gg_13_8_99 August 2013 release)":
-        ["http://www.mothur.org/w/images/1/19/Gg_13_8_99.refalign.tgz",],
-        "Greengenes reference taxonomy (gg_13_8_99 August 2013 release)":
-        ["http://www.mothur.org/w/images/6/68/Gg_13_8_99.taxonomy.tgz",],
+        "Greengenes August 2013":
+        ["http://www.mothur.org/w/images/1/19/Gg_13_8_99.refalign.tgz",
+         "http://www.mothur.org/w/images/6/68/Gg_13_8_99.taxonomy.tgz",],
     },
     "greengenes_May2013": {
-        "Greengenes reference alignment (gg_13_5_99 May 2013 release)":
-        ["http://www.mothur.org/w/images/c/cd/Gg_13_5_99.refalign.tgz",],
-        "Greengenes reference taxonomy (gg_13_5_99 May 2013 release)":
-        ["http://www.mothur.org/w/images/9/9d/Gg_13_5_99.taxonomy.tgz",],
+        "Greengenes May 2013":
+        ["http://www.mothur.org/w/images/c/cd/Gg_13_5_99.refalign.tgz",
+         "http://www.mothur.org/w/images/9/9d/Gg_13_5_99.taxonomy.tgz",],
     },
     "greengenes_old": {
-        "Greengenes reference alignment (pre-May 2013)":
-        ["http://www.mothur.org/w/images/7/72/Greengenes.alignment.zip",],
-        "Greengenes reference taxonomy (pre-May 2013)":
-        ["http://www.mothur.org/w/images/1/16/Greengenes.tax.tgz",],
+        "Greengenes pre-May 2013":
+        ["http://www.mothur.org/w/images/7/72/Greengenes.alignment.zip",
+         "http://www.mothur.org/w/images/1/16/Greengenes.tax.tgz",],
     },
     "greengenes_gold_alignment": {
-        "greengenes gold alignment":
+        "Greengenes gold alignment":
         ["http://www.mothur.org/w/images/2/21/Greengenes.gold.alignment.zip",],
     },
     # Secondary structure maps
     # http://www.mothur.org/wiki/Secondary_structure_map
     "secondary_structure_maps_silva": {
-        "SILVA secondary structure mapping files":
+        "SILVA":
         ["http://www.mothur.org/w/images/6/6d/Silva_ss_map.zip",],
     },
     "secondary_structure_maps_greengenes": {
-        "Greengenes secondary structure mapping files":
+        "Greengenes":
         ["http://www.mothur.org/w/images/4/4b/Gg_ss_map.zip",],
     },
     # Lane masks: not used here?
-    "lane_masks": ["http://www.mothur.org/w/images/2/2a/Lane1241.gg.filter",
-                   "http://www.mothur.org/w/images/a/a0/Lane1287.gg.filter",
-                   "http://www.mothur.org/w/images/3/3d/Lane1349.gg.filter",
-                   "http://www.mothur.org/w/images/6/6d/Lane1349.silva.filter",]
+    "lane_masks": {
+        "Greengenes-compatible":
+        ["http://www.mothur.org/w/images/2/2a/Lane1241.gg.filter",
+         "http://www.mothur.org/w/images/a/a0/Lane1287.gg.filter",
+         "http://www.mothur.org/w/images/3/3d/Lane1349.gg.filter",],
+        "SILVA-compatible":
+        ["http://www.mothur.org/w/images/6/6d/Lane1349.silva.filter",]
+    },
 }
 
 # Utility functions for interacting with Galaxy JSON
@@ -269,7 +273,7 @@ def unpack_tar_archive(filen,wd=None):
     the files to, otherwise they are extracted to the
     current working directory.
 
-    Once all the files are extracted the ZIP archive
+    Once all the files are extracted the TAR archive
     file is deleted from the file system.
 
     """
@@ -283,6 +287,10 @@ def unpack_tar_archive(filen,wd=None):
         return [filen]
     t = tarfile.open(filen)
     for name in t.getnames():
+        # Check for unwanted files
+        if reduce(lambda x,y: x or name.startswith(y),IGNORE_PATHS,False):
+            print "Ignoring %s" % name
+            continue
         # Extract file
         print "Extracting %s" % name
         t.extract(name,wd)
@@ -388,8 +396,9 @@ def fetch_from_mothur_website(data_tables,target_dir,datasets):
         for name in MOTHUR_REFERENCE_DATA[dataset]:
             for f in fetch_files(MOTHUR_REFERENCE_DATA[dataset][name],wd=wd):
                 type_ = identify_type(f)
+                entry_name = "%s (%s)" % (os.path.splitext(os.path.basename(f))[0],name)
                 print "%s\t\'%s'\t.../%s" % (type_,
-                                             name,
+                                             entry_name,
                                              os.path.basename(f))
                 if type_ is not None:
                     # Move to target dir
@@ -399,7 +408,7 @@ def fetch_from_mothur_website(data_tables,target_dir,datasets):
                     os.rename(f,f1)
                     # Add entry to data table
                     table_name = "mothur_%s" % type_
-                    add_data_table_entry(data_tables,table_name,dict(name=name,
+                    add_data_table_entry(data_tables,table_name,dict(name=entry_name,
                                                                      value=ref_data_file))
     # Remove working dir
     print "Removing %s" % wd
@@ -459,8 +468,11 @@ def import_from_server(data_tables,target_dir,paths,description,
             print "%s: unrecognised type, skipped" % f
         ref_data_file = os.path.basename(f)
         target_file = os.path.join(target_dir,ref_data_file)
+        entry_name = "%s" % os.path.splitext(ref_data_file)[0]
+        if description:
+            entry_name += " (%s)" % description
         print "%s\t\'%s'\t.../%s" % (type_,
-                                     description,
+                                     entry_name,
                                      ref_data_file)
         # Link to or copy the data
         if link_to_data:
@@ -469,7 +481,7 @@ def import_from_server(data_tables,target_dir,paths,description,
             shutil.copyfile(f,target_file)
         # Add entry to data table
         table_name = "mothur_%s" % type_
-        add_data_table_entry(data_tables,table_name,dict(name=description,
+        add_data_table_entry(data_tables,table_name,dict(name=entry_name,
                                                          value=ref_data_file))
 
 if __name__ == "__main__":
@@ -512,9 +524,6 @@ if __name__ == "__main__":
     elif options.data_source == 'filesystem_paths':
         # Check description text
         description = options.description.strip()
-        if not description:
-            sys.stderr.write("Description cannot be blank\n")
-            sys.exit(1)
         # Get list of paths (need to remove any escapes for '\n' and '\r'
         # that might have been inserted by Galaxy)
         paths = options.paths.replace('__cn__','\n').replace('__cr__','\r').split()
