@@ -466,6 +466,7 @@ def import_from_server(data_tables,target_dir,paths,description,
         type_ = identify_type(f)
         if type_ is None:
             print "%s: unrecognised type, skipped" % f
+            continue
         ref_data_file = os.path.basename(f)
         target_file = os.path.join(target_dir,ref_data_file)
         entry_name = "%s" % os.path.splitext(ref_data_file)[0]
