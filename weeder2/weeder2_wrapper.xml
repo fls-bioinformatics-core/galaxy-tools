@@ -115,20 +115,25 @@ to do so.
 generate the **input sequence**. The background genome motif frequencies are
 generated from within the promoter regions of annotated genes and are shown to be a
 good background for both promoter and other regulatory regions. 
- 
-**Use the ChIP-seq heuristic** (-chipseq) when there are a large number input
-sequences (hundreds or thousands). By default Weeder scans for the occurrence of
-oligos only in the first 100 sequences, so you should order sequences by their
-significance, e.g. fold enrichment or Pvalue.  For large data sets (-top) can be set
-to interrogate number if sequences equating to the top 10 to 20% of input sequences
-(as recommended by the author).
+
+**Use the ChIP-seq heuristic** (-chipseq) when there are a large number of
+input sequences (hundreds or thousands). When -chipseq is used Weeder will use
+only oligos from the first 100 sequences to build motifs with which it scans
+all of the input sequences. This speeds up the computational time without too much
+risk of losing important motifs. Even if not strictly necessary it's advisable to
+order input sequences by their significance, e.g. fold enrichment or Pvalue. For
+large data sets (-top) should be set to a number equating at least 10 to 20% of
+input sequences (as recommended by the authors).
 
 **Number of discovered motifs to report** (-maxm) limits the number of reported
 motifs even if there are more than -maxm. **Number of top scoring motifs to build
-occurrences matrix profiles and outputs for** (-b) changes the number of top scoring
-motifs of length 6, 8 and 10. Therefore changing -b increases or decreases the
-"pool" of motifs analysed by Weeder.  A large pool means a potentially larger number
-of reported motifs, but with potentially more of low signifiance.
+occurrences matrix profiles and outputs for** (-b) changes the number of top
+scoring motifs of length 6, 8 and 10 for which the occurrence matrix is built.
+Increasing -b may result in a larger number of reported motifs, but with potentially
+more of low significance and increases the computational time. If increasing -b does
+not result in more motifs in your results it means that the additional motifs are
+filtered out by the redundancy filter or that the maximum number of reported motifs
+set by -maxm has been reached.
 
 **Similarity threshold for the redundancy filter** (-sim) default setting is
 recommended.
