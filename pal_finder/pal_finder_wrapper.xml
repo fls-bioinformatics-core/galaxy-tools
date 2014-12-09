@@ -203,6 +203,23 @@ using a Perl script written by Graeme Fox at the University of Manchester, and w
 is included with this tool.
 
 Please kindly acknowledge both this Galaxy tool, the pal_finder and primer3 packages, and
-the utility scripts if you use it in your work.
+the utility script if you use it in your work.
   </help>
+  <citations>
+    <!--
+    See https://wiki.galaxyproject.org/Admin/Tools/ToolConfigSyntax#A.3Ccitations.3E_tag_set
+    Can be either DOI or Bibtex
+    Use http://www.bioinformatics.org/texmed/ to convert PubMed to Bibtex
+    -->
+    <citation type="doi">10.1371/journal.pone.0030953</citation>
+    <citation type="bibtex">@Article{pmid10547847,
+    Author="Rozen, S.  and Skaletsky, H. ",
+    Title="{{P}rimer3 on the {W}{W}{W} for general users and for biologist programmers}",
+    Journal="Methods Mol. Biol.",
+    Year="2000",
+    Volume="132",
+    Pages="365--386",
+    URL="{http://purl.com/STEVEROZEN/papers/rozen-and-skaletsky-2000-primer3.pdf}"
+    }</citation>
+  </citations>
 </tool>

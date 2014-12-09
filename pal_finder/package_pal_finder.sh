@@ -9,7 +9,7 @@ if [ -f $TGZ ] ; then
     exit 1
 fi
 tar cvzf $TGZ \
-    README.markdown \
+    README.rst \
     pal_finder_wrapper.sh \
     pal_finder_wrapper.xml \
     pal_finder_filter.pl \
