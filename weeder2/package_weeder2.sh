@@ -9,7 +9,7 @@ if [ -f $TGZ ] ; then
     exit 1
 fi
 tar cvzf $TGZ \
-    README.markdown \
+    README.rst \
     weeder2_wrapper.sh \
     weeder2_wrapper.xml \
     tool_dependencies.xml \

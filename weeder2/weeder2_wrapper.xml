@@ -178,4 +178,12 @@ This tool is compatible with Weeder 2.0:
 Please kindly acknowledge both this Galaxy tool, the Weeder package and the utility
 scripts if you use it in your work.
   </help>
+  <citations>
+    <!--
+    See https://wiki.galaxyproject.org/Admin/Tools/ToolConfigSyntax#A.3Ccitations.3E_tag_set
+    Can be either DOI or Bibtex
+    Use http://www.bioinformatics.org/texmed/ to convert PubMed to Bibtex
+    -->
+    <citation type="doi">10.1002/0471250953.bi0211s47</citation>
+  </citations>
 </tool>
