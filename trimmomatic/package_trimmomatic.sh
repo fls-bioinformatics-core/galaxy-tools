@@ -9,7 +9,7 @@ if [ -f $TGZ ] ; then
     exit 1
 fi
 tar cvzf $TGZ \
-    README.markdown \
+    README.rst \
     trimmomatic.xml \
     trimmomatic.sh \
     tool_dependencies.xml \

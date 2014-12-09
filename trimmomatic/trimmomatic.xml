@@ -223,11 +223,18 @@ Trimmomatic website (including documentation):
 
 The reference for Trimmomatic is:
 
- * Lohse M, Bolger AM, Nagel A, Fernie AR, Lunn JE, Stitt M, Usadel B. RobiNA: a
-   user-friendly, integrated software solution for RNA-Seq-based transcriptomics.
-   Nucleic Acids Res. 2012 Jul;40(Web Server issue):W622-7)
+ * Bolger, A.M., Lohse, M., &amp; Usadel, B. (2014). Trimmomatic: A flexible trimmer
+   for Illumina Sequence Data. Bioinformatics, btu170.
 
 Please kindly acknowledge both this Galaxy tool and the Trimmomatic program if you
 use it.
   </help>
+  <citations>
+    <!--
+    See https://wiki.galaxyproject.org/Admin/Tools/ToolConfigSyntax#A.3Ccitations.3E_tag_set
+    Can be either DOI or Bibtex
+    Use http://www.bioinformatics.org/texmed/ to convert PubMed to Bibtex
+    -->
+    <citation type="doi">10.1093/bioinformatics/btu170</citation>
+  </citations>
 </tool>
