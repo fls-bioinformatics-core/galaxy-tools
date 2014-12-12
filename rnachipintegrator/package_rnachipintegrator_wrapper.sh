@@ -9,7 +9,7 @@ if [ -f $TGZ ] ; then
     exit 1
 fi
 tar cvzf $TGZ \
-    README.markdown \
+    README.rst \
     rnachipintegrator_wrapper.xml \
     rnachipintegrator_canonical_genes.xml \
     rnachipintegrator_wrapper.sh \
