@@ -48,7 +48,7 @@ necessary to copy the .loc.sample files to .loc Galaxy's ``tool-data`` folder:
   ``rnachipintegrator_canonical_genes.loc`` file.
 
 If you want to run the functional tests, copy the sample test files under
-``test-data`` to ``test files under Galaxy's ``test-data/`` directory. Then:
+``test-data`` to Galaxy's ``test-data/`` directory. Then:
 
     ./run_tests.sh -id fls_rnachipintegrator_wrapper
 
