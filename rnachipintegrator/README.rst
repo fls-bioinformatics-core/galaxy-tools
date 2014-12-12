@@ -52,6 +52,38 @@ If you want to run the functional tests, copy the sample test files under
 
     ./run_tests.sh -id fls_rnachipintegrator_wrapper
 
+
+How to get canonical gene data
+==============================
+
+Getting canonical gene info from UCSC is covered in the screencast at
+http://blog.openhelix.eu/?p=6097
+
+In summary:
+
+- **UCSC genome browser:** if multiple versions of each gene are visible (e.g.
+  if you view 'human Feb 2009 GRCh37/hg19' positions chr17:41,100,000-41,300,000)
+  then:
+
+  - Scroll down to the Gene & Gene Prediction section
+  - Click on the UCSC genes link
+  - Uncheck the tickbox next to splice variants and resubmit to view without
+    duplicates.
+
+- **UCSC table browser:** to obtain the canonical set of genes from the table
+  browser:
+
+  - Select knownCanonical from the table menu
+  - Select selected fields from primary & related tables from the output format menu
+  - Click on Get output
+  - Select the fields of interest (e.g. 'chrom', 'chromStart', 'chromEnd' from the
+    'knownCanonical' table plus 'geneSymbol' from the kgXref table.)
+  - Click on Get output to get the data for download
+
+(Hint: to also get strand direction information i.e. +/-, also allow selection
+from the refGene table, and select the strand field.)
+
+
 Note on Excel output files and Galaxy
 =====================================
 

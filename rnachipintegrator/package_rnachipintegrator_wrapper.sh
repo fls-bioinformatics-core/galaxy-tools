@@ -15,6 +15,7 @@ tar cvzf $TGZ \
     rnachipintegrator_wrapper.sh \
     tool_dependencies.xml \
     tool-data \
+    tool_data_table_conf.xml.sample \
     test-data
 if [ -f $TGZ ] ; then
     echo Created $TGZ
