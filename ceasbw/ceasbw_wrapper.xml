@@ -1,14 +1,19 @@
 <tool id="ceasbw" name="CEASbw" version="1.0.2-0">
   <description>Annotate intervals and scores with genome features (cistrome CEAS)</description>
-  <command interpreter="bash">ceasbw_wrapper.sh $bed_file $gdb_file $bigwig_file $extra_bed_file $log_output $pdf_report $xls_output
+  <command interpreter="bash">ceasbw_wrapper.sh $bed_file $gdb_file $extra_bed_file $log_output $pdf_report $xls_output
+  #if (str($wig_file.ext) == 'bigwig')
+    --bigwig $wig_file
+    --length $GALAXY_DATA_INDEX_DIR/shared/ucsc/chrom/${bed_file.dbkey}.len
+  # else
+    --wig $wig_file
+  #end if
   #if (str($span) and int(str($span)) > 0)
     --span $span
   #end if
   --sizes $sizes_lower,$sizes_middle,$sizes_upper
   --bisizes $bisizes_lower,$bisizes_upper
   --pf-res $profiling_resolution
-  --rel-dist $relative_distance
-  --length ${GALAXY_DATA_INDEX_DIR}/shared/ucsc/chrom/${bed_file.dbkey}.len</command>
+  --rel-dist $relative_distance</command>
   <requirements>
     <requirement type="package" version="1.2.5">python_mysqldb</requirement>
     <requirement type="package" version="0.7.1">bx_python</requirement>
@@ -16,7 +21,7 @@
   </requirements>
   <inputs>
     <param name="bed_file" type="data" format="bed" label="BED file with ChIP regions" />
-    <param name="bigwig_file" type="data" format="bigwig" label="BIGWIG file for wig profiling or genome background annotation" optional="true" />
+    <param name="wig_file" type="data" format="wig,bigwig" label="WIG or BIGWIG file for wig profiling or genome background annotation" optional="true" />
     <param name="extra_bed_file" type="data" format="bed" label="BED file with extra regions of interest (e.g. non-coding regions)" optional="true" />
     <param name="gdb_file" type="select" label="Gene annotation table">
       <options from_data_table="ceas_annotations">

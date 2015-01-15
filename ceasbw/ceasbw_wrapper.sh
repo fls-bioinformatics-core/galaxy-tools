@@ -2,22 +2,25 @@
 #
 # Wrapper script to run CEASbw as a Galaxy tool
 #
-# Usage: ceasbw_wrapper.sh $BED_IN $GDB_IN $BIGWIG_IN $EXTRA_BED_IN $LOG_OUT $PDF_OUT $XLS_OUT $DBKEY
+# Usage: ceasbw_wrapper.sh $BED_IN $GDB_IN $EXTRA_BED_IN $LOG_OUT $PDF_OUT $XLS_OUT $DBKEY
 #
 # Process command line
 echo $*
 BED_IN=$1
 GDB_IN=$2
-BIGWIG_IN=$3
-EXTRA_BED_IN=$4
-LOG_OUT=$5
-PDF_OUT=$6
-XLS_OUT=$7
+EXTRA_BED_IN=$3
+LOG_OUT=$4
+PDF_OUT=$5
+XLS_OUT=$6
 #
 # Collect remaining args
+CEAS=ceas
 OPTIONS=
-while [ ! -z "$8" ] ; do
-    OPTIONS="$OPTIONS $8"
+while [ ! -z "$7" ] ; do
+    if [ "$7" == "--bigwig" ] ; then
+	CEAS=ceasBW
+    fi
+    OPTIONS="$OPTIONS $7"
     shift
 done
 #
@@ -29,13 +32,11 @@ pdf_report=${base_name}.pdf
 xls_file=${base_name}.xls
 #
 # Get CEAS version
-ceasBW --version >$log_file 2>/dev/null
+echo Running $CEAS
+$CEAS --version >$log_file 2>/dev/null
 #
 # Construct and run CEAS command line
-ceas_cmd="ceasBW --name $base_name $OPTIONS -g $GDB_IN -b $BED_IN"
-if [ "$BIGWIG_IN" != "None" ] ; then
-    ceas_cmd="$ceas_cmd --bigwig $BIGWIG_IN"
-fi
+ceas_cmd="$CEAS --name $base_name $OPTIONS -g $GDB_IN -b $BED_IN"
 if [ "$EXTRA_BED_IN" != "None" ] ; then
     ceas_cmd="$ceas_cmd -e $EXTRA_BED_IN"
 fi
