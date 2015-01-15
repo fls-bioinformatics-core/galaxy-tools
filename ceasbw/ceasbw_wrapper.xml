@@ -1,0 +1,68 @@
+<tool id="ceasbw" name="CEASbw" version="1.0.2-0">
+  <description>Annotate intervals and scores with genome features (cistrome CEAS)</description>
+  <command interpreter="bash">ceasbw_wrapper.sh $bed_file $gdb_file $bigwig_file $extra_bed_file $log_output $pdf_report $xls_output
+  #if (str($span) and int(str($span)) > 0)
+    --span $span
+  #end if
+  --sizes $sizes_lower,$sizes_middle,$sizes_upper
+  --bisizes $bisizes_lower,$bisizes_upper
+  --pf-res $profiling_resolution
+  --rel-dist $relative_distance
+  --length ${GALAXY_DATA_INDEX_DIR}/shared/ucsc/chrom/${bed_file.dbkey}.len</command>
+  <requirements>
+    <requirement type="package" version="1.2.5">python_mysqldb</requirement>
+    <requirement type="package" version="0.7.1">bx_python</requirement>
+    <requirement type="package" version="1.0.2.d8c0751">cistrome_ceas</requirement>
+  </requirements>
+  <inputs>
+    <param name="bed_file" type="data" format="bed" label="BED file with ChIP regions" />
+    <param name="bigwig_file" type="data" format="bigwig" label="BIGWIG file for wig profiling or genome background annotation" optional="true" />
+    <param name="extra_bed_file" type="data" format="bed" label="BED file with extra regions of interest (e.g. non-coding regions)" optional="true" />
+    <param name="gdb_file" type="select" label="Gene annotation table">
+      <options from_data_table="ceas_annotations">
+	<filter name="dbkey" type="data_meta" ref="bed_file" key="dbkey" column="0" />
+        <validator type="no_options" message="No tables are available for the selected input"/>
+      </options>
+    </param>
+    <param name="span" type="integer" label="Span from TSS and TTS in the gene-centered annotation (bp)" help="ChIP regions within this range from TSS and TTS are considered when calculating the coverage rates of promoter and downstream by ChIP regions" value="3000" />
+    <param name="sizes_lower" type="integer" label="Lower interval for promoter/downstream sizes for ChIP region annotation (bp)" value="1000" />
+    <param name="sizes_middle" type="integer" label="Middle interval for promoter/downstream sizes (bp)" value="2000" help="Values > 10000bp are automatically fixed to 10000bp" />
+    <param name="sizes_upper" type="integer" label="Upper interval for promoter/downstream sizes (bp)" value="3000" help="Values > 10000bp are automatically fixed to 10000bp" />
+    <param name="bisizes_lower" type="integer" label="Lower interval for bidirectional-promoter sizes for ChIP region annotation (bp)" value="2500" />
+    <param name="bisizes_upper" type="integer" label="Upper interval for bidirectional-promoter sizes (bp)" value="5000" help="Values > 20000bp are automatically fixed to 20000bp" />
+    <param name="profiling_resolution" type="integer" label="Wig profiling resolution (bp)" value="50" help="Warning: a number smaller than the wig interval (resolution) may cause aliasing error" />
+    <param name="relative_distance" type="integer" label="Relative distance to TSS/TTS in wig profiling (bp)" value="3000" />
+  </inputs>
+  <outputs>
+    <data name="log_output" format="txt" label="CEAS on ${on_string} (log output)" />
+    <data name="pdf_report" format="pdf" label="CEAS on ${on_string} (PDF report)" />
+    <data name="xls_output" format="interval" label="CEAS on ${on_string} (XLS output)" />
+  </outputs>
+  <help>
+**What it does**
+
+CEAS (Cis-regulatory Element Annotation System) is a tool for characterizing genome-wide
+protein-DNA interaction patterns from ChIP-chip and ChIP-Seq of both sharp and broad
+binding factors. It provides statistics on ChIP enrichment at important genome features
+such as specific chromosome, promoters, gene bodies, or exons, and infers genes most
+likely to be regulated by a binding factor.
+
+CEAS also enables biologists to visualize the average ChIP enrichment signals over
+specific genomic features, allowing continuous and broad ChIP enrichment to be perceived
+which might be too subtle to detect from ChIP peaks alone.
+
+This tool is compatible with the ceasBW version of CEAS from the Cistrome package
+obtained from
+
+https://bitbucket.org/cistrome/cistrome-applications-harvard/overview
+
+(commit id d8c0751, datestamp 20140929). The CEAS code is under the
+published-packages/CEAS/ subdirectory.
+
+Cistrome data files and documentation can be found at
+
+http://liulab.dfci.harvard.edu/CEAS/index.html
+
+The CEAS user manual is available at http://liulab.dfci.harvard.edu/CEAS/usermanual.html
+  </help>
+</tool>
