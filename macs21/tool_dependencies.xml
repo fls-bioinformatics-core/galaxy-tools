@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<tool_dependency>
+  <package name="python2" version="2.7.7">
+    <repository name="package_python2_7" prior_installation_required="True" owner="pjbriggs" />
+  </package>
+  <package name="python_numpy" version="1.8">
+    <repository name="package_numpy_1_8" prior_installation_required="True" owner="pjbriggs" />
+  </package>
+  <package name="macs2" version="2.1.0.20140616">
+      <install version="1.0">
+            <actions>
+              <action type="download_by_url">https://pypi.python.org/packages/source/M/MACS2/MACS2-2.1.0.20140616.tar.gz</action>
+              <action type="set_environment_for_install">
+		<repository name="package_python2_7" owner="pjbriggs">
+		  <package name="python2" version="2.7.7" />
+		</repository>
+		<repository name="package_numpy_1_8" owner="pjbriggs">
+		  <package name="python_numpy" version="1.8" />
+		</repository>
+	      </action>
+              <action type="make_directory">$INSTALL_DIR/lib/python</action>
+              <action type="shell_command">
+                export PYTHONPATH=$PYTHONPATH:$INSTALL_DIR/lib/python &amp;&amp; 
+                python setup.py install --install-lib $INSTALL_DIR/lib/python --install-scripts $INSTALL_DIR/bin
+              </action>
+              <action type="set_environment">
+                <environment_variable action="prepend_to" name="PYTHONPATH">$INSTALL_DIR/lib/python</environment_variable>
+                <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR/bin</environment_variable>
+              </action>
+            </actions>
+      </install>
+      <readme>Macs2.1 depends on having python2.7 and numpy 1.8 installed on all nodes of the work cluster</readme>
+    </package>
+</tool_dependency>
+

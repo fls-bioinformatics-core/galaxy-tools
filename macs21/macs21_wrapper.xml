@@ -1,0 +1,387 @@
+<tool id="fls_modencode_peakcalling_macs2.1" name="MACS2.1.0" version="2">
+  <requirements>
+    <requirement type="package" version="2.7.7">python2</requirement>
+    <requirement type="package" version="1.8">python_numpy</requirement>
+    <requirement type="package" version="2.1.0.20140616">macs2</requirement>
+  </requirements>
+  <description>Model-based Analysis of ChIP-Seq [golem]</description>
+  <command interpreter="python">macs21_wrapper.py $options_file $outputs_file</command>
+  <inputs>
+    <!--experiment name and option of selecting paired or single end will always be present-->
+    <param name="experiment_name" type="text" value="MACS2.1.0 in Galaxy" size="50"
+	   label="Experiment Name"/>
+    <!--select one of the 7 major commands offered by macs2-->
+    <conditional name="major_command">
+      <param name="major_command_selector" type="select" label="Select action to be performed">
+	<option value="callpeak">Peak Calling</option>
+	<!--<option value="filterdup">filterdup</option>
+	<option value="randsample">randsample</option>-->
+	<option value="bdgcmp">Compare .bdg Files</option>
+	<!--<option value="bdgdiff">bdgdiff</option>
+	<option value="bdgpeakcall">bdgpeakcall</option>
+	<option value="bdgbroadcall">bdgbroadcall</option>-->
+      </param>
+      <!--callpeak option of macs2-->
+      <when value="callpeak">
+	<!--choose 'broad' or 'narrow' regions-->
+	<conditional name="broad_options">
+	  <param name="broad_regions" type="select" label="Type of region to call"
+		 help="Broad regions are formed by linking nearby enriched regions">
+	    <option value="" selected="true">Narrow regions</option>
+	    <option value="broad">Broad regions</option>
+	  </param>
+	  <when value="broad">
+	    <param name="broad_cutoff" type="float"
+		   label="Cutoff for broad regions"
+		   value="0.1" help="default: 0.1 (--broad-cutoff)"/>
+	  </when>
+	</conditional>
+	<!--may need to add a few more formats at later time-->
+        <param name="input_chipseq_file1" type="data" format="bed,sam,bam"
+	       label="ChIP-seq read file" />
+        <param name="input_control_file1" type="data" format="bed,sam,bam" optional="True"
+	       label="ChIP-seq control read file" />
+	<conditional name="genome_size">
+	  <param name="gsize" type="select" label="Effective genome size"
+		 help="Either pre-defined (for common organisms), or user-defined (--gsize)">
+	    <option value="hs" selected="true">Human (2.7e9)</option>
+	    <option value="mm">Mouse (1.87e9)</option>
+	    <option value="ce">C. elegans (9e7)</option>
+	    <option value="dm">Fruitfly (1.2e8)</option>
+	    <option value="">User-defined</option>
+	  </param>
+	  <when value="">
+	    <!-- User-defined effective genome size -->
+	    <param name="user_defined_gsize" type="float" value=""
+		   label="Enter effective genome size (number of bases)"
+		   help="e.g. '1.0e+9' or '1000000000'" />
+	  </when>
+	</conditional>
+	<param name="bw" type="integer" label="Band width" value="300" help="(--bw)"/>
+	<param name="xls_to_interval" label="Include XLS file from MACS"
+	       type="boolean" truevalue="True" falsevalue="False" checked="True"
+	       help="MACS2 XLS file will be output to the history in 'interval' format (suitable for subsequent analysis in Galaxy). Note that start positions are 1-based."/>
+
+	<conditional name="bdg_options">
+	  <param name="bdg"
+		 label="Save fragment pileup, control lambda, -log10pvalue/qvalue in bedGraph"
+		 type="boolean" truevalue="-B" falsevalue="" checked="False" />
+	  <when value="-B">
+	    <param name="spmr"
+		   type="boolean" truevalue="--SPMR" falsevalue="" checked="False"
+		   label="Save signal per million reads for fragment pileup profiles"
+		   help="(--SPMR)" />
+	  </when>
+	  <when value="">
+	    <!-- Display nothing -->
+	  </when>
+	</conditional>
+
+	<conditional name="pq_options">
+	  <param name="pq_options_selector" type="select"
+		 label="Select p-value or q-value" help="default uses q-value">
+	    <option value="qvalue">q-value</option>
+	    <option value="pvalue">p-value</option>
+	  </param>
+	  <when value="pvalue">
+	    <param name="pvalue" type="float"
+		   label="p-value cutoff for binding region detection"
+		   value="1e-2" help="default: 1e-2 (--pvalue)"/>
+	  </when>
+	  <when value="qvalue">
+	    <param name="qvalue" type="float"
+		   label="q-value cutoff for binding region detection"
+		   value="0.01" help="default: 0.01 (--qvalue)"/>
+	  </when>
+	</conditional>
+	<conditional name="advanced_options">
+	  <param name="advanced_options_selector" type="select"
+		 label="Display advanced options">
+	    <option value="off">Hide</option>
+	    <option value="on">Display</option>
+	  </param>
+	  <when value="on">
+            <param name="mfoldlo" type="integer"
+		   label="Select the regions with MFOLD high-confidence enrichment ratio against background to build model (lower-limit)"
+		   value="10" help="(--mfold)"/>
+	    <param name="mfoldhi" type="integer"
+		   label="Select the regions with MFOLD high-confidence enrichment ratio against background to build model (upper-limit)"
+		   value="30" help="(--mfold)"/>
+	    <param name="nolambda"
+		   label="Use fixed background lambda as local lambda for every binding region"
+		   type="boolean" truevalue="--nolambda" falsevalue="" checked="False"
+		   help="(--nolambda)"/>
+	    <param name="call_summits"
+		   label="Detect subpeaks within binding region"
+		   type="boolean" truevalue="--call-summits" falsevalue="" checked="False"
+		   help="(--call-summits)"/>
+	    <conditional name="keep_duplicates">
+	      <param name="keep_dup" type="select"
+		     label="Use of duplicate reads">
+		<option value="auto">Automatically calculate maximum number of duplicates to keep (auto)</option>
+		<option value="all">Use all duplicates (all)</option>
+		<option value="" selected="true">Manually specify maxium number of duplicates</option>
+	      </param>
+	      <when value="">
+		<param name="maximum_tags" type="integer" value="1"
+		       label="Maxium number of duplicated tags to keep at each location"/>
+	      </when>
+	    </conditional>
+	  </when>
+	  <when value="off">
+	    <!--display nothing-->
+	  </when>
+	</conditional>
+    	<conditional name="nomodel_type">
+          <param name="nomodel_type_selector" type="select" label="Build Model">
+	   <option value="nomodel">Do not build the shifting model (--nomodel enabled)</option>
+           <option value="create_model" selected="true">Build the shifting model (--nomodel disabled)</option>
+          </param>
+          <when value="nomodel">
+            <param name="extsize" type="integer" label="Arbitrary extension size in bp" value="200" help="Used as fragment size to extend each read towards 3' end (--extsize)"/>
+          </when>
+        </conditional>
+      </when>
+
+      <!--callpeak option of macs2-->
+      <when value="bdgcmp">
+        <param name="input_chipseq_file1" type="data" format="bed,sam,bam"
+	       label="ChIP-seq read file" />
+        <param name="input_control_file1" type="data" format="bed,sam,bam" optional="True"
+	       label="ChIP-seq control read file" />
+	<param name="pseudocount" type="float" label="Set pseudocount" value="0.00001"
+	       help="default: 0.00001 (-p)"/>
+        <conditional name="bdgcmp_options">
+          <param name="bdgcmp_options_selector" type="select"
+		 label="Select action to be performed">
+	    <option value="ppois">ppois</option>
+	    <option value="qpois">qpois</option>
+	    <option value="subtract">subtract</option>
+	    <option value="logFE">logFE</option>
+	    <option value="FE">FE</option>
+	    <option value="logLR">logLR</option>
+          </param>
+	</conditional>
+      </when>
+    </conditional>
+  </inputs>
+
+  <outputs>
+    <!--callpeaks output-->
+    <data name="output_extra_files" format="html"
+	  label="${tool.name}: callpeak on ${on_string} (html report)">
+      <filter>major_command['major_command_selector'] == 'callpeak'</filter>
+    </data>
+    <data name="output_summits_bed_file" format="bed"
+	  label="${tool.name}: callpeak on ${on_string} (summits: bed)">
+      <filter>major_command['major_command_selector'] == 'callpeak'</filter>
+    </data>
+    <data name="output_peaks_file" format="xls"
+	  label="${tool.name}: callpeak on ${on_string} (peaks: xls)">
+      <filter>major_command['major_command_selector'] == 'callpeak'</filter>
+      <filter>major_command['xls_to_interval'] is False</filter>
+    </data>
+    <data name="output_narrowpeaks_file" format="interval"
+	  label="${tool.name}: callpeak on ${on_string} (peaks: narrowPeak)">
+      <filter>major_command['major_command_selector'] == 'callpeak'</filter>
+      <filter>major_command['broad_options']['broad_regions'] == ''</filter>
+    </data>
+    <data name="output_broadpeaks_file" format="interval"
+	  label="${tool.name}: callpeak on ${on_string} (peaks: broadPeak)">
+      <filter>major_command['major_command_selector'] == 'callpeak'</filter>
+      <filter>major_command['broad_options']['broad_regions'] == 'broad'</filter>
+    </data>
+    <data name="output_gappedpeaks_file" format="interval"
+	  label="${tool.name}: callpeak on ${on_string} (peaks: gappedPeak)">
+      <filter>major_command['major_command_selector'] == 'callpeak'</filter>
+      <filter>major_command['broad_options']['broad_regions'] == 'broad'</filter>
+    </data>
+    <data name="output_xls_to_interval_peaks_file" format="interval"
+	  label="${tool.name}: callpeak on ${on_string} (peaks: interval)">
+      <filter>major_command['xls_to_interval'] is True</filter>
+      <filter>major_command['major_command_selector'] == 'callpeak'</filter>
+    </data>
+    <data name="output_treat_pileup_file" format="bedgraph"
+	  label="${tool.name}: callpeak on ${on_string} (treat pileup: bedGraph)">
+      <filter>major_command['bdg_options']['bdg'] is True</filter>
+      <filter>major_command['major_command_selector'] == 'callpeak'</filter>
+    </data>
+    <data name="output_lambda_bedgraph_file" format="bedgraph"
+	  label="${tool.name}: callpeak on ${on_string} (control lambda: bedGraph)">
+      <filter>major_command['bdg_options']['bdg'] is True</filter>
+      <filter>major_command['major_command_selector'] == 'callpeak'</filter>
+    </data>
+    <!--bdgcmp output-->
+    <data name="output_bdgcmp_file" format="bdg"
+	  label="${tool.name}: bdgcmp on ${on_string} (bdg)">
+      <filter>major_command['major_command_selector'] == 'bdgcmp'</filter>
+    </data>
+  </outputs>
+  <configfiles>
+    <configfile name="outputs_file">&lt;%
+import simplejson
+%&gt;
+##=======================================================================================
+#set $__outputs = { 'command':str( $major_command.major_command_selector ) }
+#if str( $major_command.major_command_selector ) == 'callpeak':
+	#set $__outputs['output_summits_bed_file'] = str( $output_summits_bed_file )
+	#set $__outputs['output_extra_file'] = str( $output_extra_files )
+	#set $__outputs['output_extra_file_path'] = str( $output_extra_files.files_path )
+	#set $__outputs['output_peaks_file'] = str( $output_peaks_file )
+	#set $__outputs['output_narrowpeaks_file'] = str( $output_narrowpeaks_file )
+	#set $__outputs['output_broadpeaks_file'] = str( $output_broadpeaks_file )
+	#set $__outputs['output_gappedpeaks_file'] = str( $output_gappedpeaks_file )
+	#set $__outputs['output_xls_to_interval_peaks_file'] = str( $output_xls_to_interval_peaks_file )
+	#set $__outputs['output_treat_pileup_file'] = str( $output_treat_pileup_file )
+	#set $__outputs['output_lambda_bedgraph_file'] = str( $output_lambda_bedgraph_file )
+#end if
+##=======================================================================================
+#if str( $major_command.major_command_selector ) == 'bdgcmp':
+	#set $__outputs['output_bdgcmp_file'] = str( $output_bdgcmp_file )
+#end if
+
+${ simplejson.dumps( __outputs ) }
+    </configfile>
+    <configfile name="options_file">&lt;%
+import simplejson
+%&gt;
+##=======================================================================================
+#set $__options = { 'experiment_name':str( $experiment_name ) }
+##treatment/tag input files and format
+#set $__options['input_chipseq'] = [ str( $major_command.input_chipseq_file1 ) ]
+#set $__options['format'] = $major_command.input_chipseq_file1.extension.upper()
+
+##control/input files
+#set $__options['input_control'] = []
+#if str( $major_command.input_control_file1 ) != 'None':
+	#set $_hole = __options['input_control'].append( str( $major_command.input_control_file1 ) )
+#end if
+
+#if str( $major_command.major_command_selector ) == 'callpeak':
+	#set $__options['command'] = str( "callpeak" )
+	#set $__options['bw'] = str( $major_command.bw )
+	#set $__options['xls_to_interval'] = str( $major_command.xls_to_interval )
+
+	##bdg options
+	#if $major_command.bdg_options.bdg == True:
+		#set $__options['bdg'] = str( "-B" )
+		#set $__options['spmr'] = str( $major_command.bdg_options.spmr )
+	#else:
+		#set $__options['bdg'] = str( "" )
+		#set $__options['spmr'] = str( "" )
+	#end if
+
+	##broad_options
+	#if str( $major_command.broad_options.broad_regions ) == 'broad':
+		#set $__options['broad'] = str( $major_command.broad_options.broad_regions )
+		#set $__options['broad_cutoff'] = str( $major_command.broad_options.broad_cutoff )
+	#else:
+		#set $__options['broad'] = str( "" )
+		#set $__options['broad_cutoff'] = str( "" )
+	#end if
+
+	##genome sizes
+	#if str( $major_command.genome_size.gsize ) == '':
+		#set $__options['gsize'] = int( $major_command.genome_size.user_defined_gsize )
+	#else:
+		#set $__options['gsize'] = str( $major_command.genome_size.gsize )
+	#end if
+
+	##advanced options
+	#if str( $major_command.advanced_options.advanced_options_selector ) == 'on':
+		#set $__options['mfoldlo'] = int( $major_command.advanced_options.mfoldlo )
+		#set $__options['mfoldhi'] = int( $major_command.advanced_options.mfoldhi )
+		#set $__options['nolambda'] = str( $major_command.advanced_options.nolambda )
+		#set $__options['call_summits'] = str( $major_command.advanced_options.call_summits )
+		#if str( $major_command.advanced_options.keep_duplicates.keep_dup ) == '':
+			#set $__options['keep_dup'] = int( $major_command.advanced_options.keep_duplicates.maximum_tags )
+		#else:
+			#set $__options['keep_dup'] = str( $major_command.advanced_options.keep_duplicates.keep_dup )
+		#end if
+	#else:
+		#set $__options['mfoldlo'] = int( "5" )
+		#set $__options['mfoldhi'] = int( "50" )
+		#set $__options['nolambda'] = str( "" )
+		#set $__options['call_summits'] = str( "" )
+		#set $__options['keep_dup'] = int( "1" )
+	#end if
+
+	##enable xls file options
+	##if str( $major_command.xls_to_interval ) == 'create':
+		##set $__options['xls_to_interval'] = { 'peaks_file': str( $output_xls_to_interval_peaks_file ), 'negative_peaks_file': str( $output_xls_to_interval_negative_peaks_file ) }
+	##end if
+	
+	##pq value select options
+	#if str( $major_command.pq_options.pq_options_selector ) == 'qvalue':
+		#set $__options['qvalue'] = str( $major_command.pq_options.qvalue )
+	#else:
+		#set $__options['pvalue'] = str( $major_command.pq_options.pvalue )
+	#end if
+	
+	##model options
+	#if str( $major_command.nomodel_type.nomodel_type_selector ) == 'nomodel':
+		#set $__options['nomodel'] = str( $major_command.nomodel_type.extsize )
+	#end if
+#end if
+##=======================================================================================
+#if str( $major_command.major_command_selector ) == 'bdgcmp':
+	#set $__options['command'] = str( "bdgcmp" )
+	#set $__options['pseudocount'] = float( str( $major_command.pseudocount ) )
+	#set $__options['m'] = str( $major_command.bdgcmp_options.bdgcmp_options_selector )
+#end if
+##=======================================================================================
+
+${ simplejson.dumps( __options ) }
+    </configfile>
+  </configfiles>
+  <tests>
+	<!--none yet for macs2-->
+  </tests>
+  <help>
+
+.. class:: warningmark
+
+**This is a modified version of the standard Galaxy toolshed "MACS2" tool,
+which has been customised for users at the University of Manchester to work
+with MACS 2.1.0.**
+
+It is based on the 16:14f378e35191 revision of the tool at
+
+ *  http://toolshed.g2.bx.psu.edu/view/modencode-dcc/macs2 
+
+------
+
+**What it does**
+
+With the improvement of sequencing techniques, chromatin immunoprecipitation
+followed by high throughput sequencing (ChIP-Seq) is getting popular to study
+genome-wide protein-DNA interactions. To address the lack of powerful ChIP-Seq
+analysis method, we present a novel algorithm, named Model-based Analysis of
+ChIP-Seq (MACS), for identifying transcript factor binding sites. MACS captures
+the influence of genome complexity to evaluate the significance of enriched
+ChIP regions, and MACS improves the spatial resolution of binding sites through
+combining the information of both sequencing tag position and orientation. MACS
+can be easily used for ChIP-Seq data alone, or with control sample with the
+increase of specificity.
+
+View the original MACS2 documentation:
+https://github.com/taoliu/MACS/blob/master/README.rst
+
+------
+
+**Usage**
+
+**Peak Calling**: Main MACS2 Function to Call peaks from alignment results.
+
+**Compare .bdg files**: Deduct noise by comparing two signal tracks in bedGraph.
+
+
+------
+
+**Citation**
+
+For the underlying tool, please cite Zhang Y, Liu T, Meyer CA, Eeckhoute J, Johnson DS, Bernstein BE, Nusbaum C, Myers RM, Brown M, Li W, Liu XS. Model-based analysis of ChIP-Seq (MACS). Genome Biol. 2008;9(9):R137.
+
+Integration of MACS2 with Galaxy performed by Ziru Zhou ( ziruzhou@gmail.com ). Please send your comments/questions to modENCODE DCC at help@modencode.org.
+  </help>
+</tool>
