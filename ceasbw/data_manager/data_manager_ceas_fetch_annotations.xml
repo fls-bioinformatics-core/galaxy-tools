@@ -1,0 +1,73 @@
+<tool id="data_manager_fetch_ceas_annotations" name="Fetch CEAS annotation" version="0.0.1" tool_type="manage_data">
+    <description>Fetch and install annotation databases for CEAS</description>
+    <command interpreter="python">data_manager_ceas_fetch_annotations.py
+    #if str( $reference_source.reference_source_selector ) == "ceas_web"
+      --download=$reference_source.annotation_url
+    #end if
+    "${out_file}"
+    "${description}"</command>
+    <inputs>
+        <param name="dbkey" type="genomebuild" label="DBKEY to assign to data" />
+        <param type="text" name="description" value="" label="Description of annotation" />
+        <conditional name="reference_source">
+          <param name="reference_source_selector" type="select" label="Choose the source for the reference genome">
+            <option value="ceas_web" selected="True">CEAS website</option>
+	    <!-- Not implemented for now
+            <option value="history">History</option>
+	    -->
+            <option value="directory">Directory on Server</option>
+          </param>
+          <when value="ceas_web">
+            <param type="select" name="annotation_url">
+	      <option value="http://liulab.dfci.harvard.edu/CEAS/src/hg18.refGene.gz">hg18</option>
+	      <option value="http://liulab.dfci.harvard.edu/CEAS/src/hg19.refGene.gz">hg19</option>
+	      <option value="http://liulab.dfci.harvard.edu/CEAS/src/mm8.refGene.gz">mm8</option>
+	      <option value="http://liulab.dfci.harvard.edu/CEAS/src/mm9.refGene.gz">mm9</option>
+	      <option value="http://liulab.dfci.harvard.edu/CEAS/src/dm2.refGene.gz">dm2</option>
+	      <option value="http://liulab.dfci.harvard.edu/CEAS/src/dm3.refGene.gz">dm3</option>
+	      <option value="http://liulab.dfci.harvard.edu/CEAS/src/ce4.refGene.gz">ce4</option>
+	      <option value="http://liulab.dfci.harvard.edu/CEAS/src/ce6.refGene.gz">ce6</option>
+	    </param>
+          </when>
+	  <!-- Not implemented for now
+          <when value="history">
+            <param name="input_annotation" type="data" format="fasta" label="Annotation File" multiple="False" optional="False" />
+          </when>
+	  -->
+          <when value="directory">
+            <param type="text" name="annotation_filename" value="" label="Full path to CEAS annotation table file on disk" optional="False" />
+            <param type="boolean" name="create_symlink" truevalue="create_symlink" falsevalue="copy_file" label="Create symlink to orignal data instead of copying" checked="False" />
+          </when>
+        </conditional>
+    </inputs>
+    <outputs>
+        <data name="out_file" format="data_manager_json"/>
+    </outputs>
+    <tests>
+        <test>
+            <param name="dbkey" value="anoGam1"/>
+            <param name="sequence_name" value=""/>
+            <param name="sequence_desc" value=""/>
+            <param name="sequence_id" value=""/>
+            <param name="reference_source_selector" value="history"/>
+            <param name="input_fasta" value="phiX174.fasta"/>
+            <param name="sort_selector" value="as_is"/>
+            <output name="out_file" file="phiX174_as_anoGam1.data_manager_json"/>
+        </test>
+    </tests>
+    <help>
+**What it does**
+
+Fetches an annotation database from the CEAS website, Galaxy history, or a server directory
+and populates the "ceas_annotations" data table.
+
+------
+
+
+
+.. class:: infomark
+
+**Notice:** If you leave name, description, or id blank, it will be generated automatically. 
+
+    </help>
+</tool>
