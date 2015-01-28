@@ -1,4 +1,4 @@
-<tool id="ceasbw" name="CEASbw" version="1.0.2-0">
+<tool id="ceasbw" name="CEAS" version="1.0.2-0">
   <description>Annotate intervals and scores with genome features (cistrome CEAS)</description>
   <command interpreter="bash">ceasbw_wrapper.sh $bed_file $gdb_file $extra_bed_file $log_output $pdf_report $xls_output
   #if (str($wig_file.ext) == 'bigwig')
