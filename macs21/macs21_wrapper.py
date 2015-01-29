@@ -1,208 +1,177 @@
-#purpose: macs2 python wrapper
-#author: Ziru Zhou
-#date: November, 2012
+#!/bin/env python
+#
+# Galaxy wrapper to run MACS 2.1
+#
+# Completely rewritten from the original macs2 wrapped by Ziru Zhou
+# taken from http://toolshed.g2.bx.psu.edu/view/modencode-dcc/macs2
 
-import sys, subprocess, tempfile, shutil, glob, os, os.path, gzip
-from galaxy import eggs
-import pkg_resources
-pkg_resources.require( "simplejson" )
-import simplejson
+import sys
+import os
+import subprocess
+import tempfile
+import shutil
 
-CHUNK_SIZE = 1024
+def move_file(working_dir,name,destination):
+    """Move a file 'name' from 'working_dir' to 'destination'
 
-#==========================================================================================
-#functions
-#==========================================================================================
-def gunzip_cat_glob_path( glob_path, target_filename, delete = False ):
-    out = open( target_filename, 'wb' )
-    for filename in glob.glob( glob_path ):
-        fh = gzip.open( filename, 'rb' )
-        while True:
-            data = fh.read( CHUNK_SIZE )
-            if data:
-                out.write( data )
-            else:
-                break
-        fh.close()
-        if delete:
-            os.unlink( filename )
-    out.close()
+    """
+    if destination is None:
+        # Nothing to do
+        return
+    source = os.path.join(working_dir,name)
+    if os.path.exists(source):
+        shutil.move(source,destination)
 
-def xls_to_interval( xls_file, interval_file, header = None ):
-    out = open( interval_file, 'wb' )
+def convert_xls_to_interval(xls_file,interval_file,header=None):
+    """Convert MACS XLS file to interval
+
+    From the MACS readme: "Coordinates in XLS is 1-based which is different with
+    BED format."
+
+    However this function no longer performs any coordinate conversions, it
+    simply ensures that any blank or non-data lines are commented out
+
+    """
+    fp = open(interval_file,'wb')
     if header:
-        out.write( '#%s\n' % header )
-    wrote_header = False
-    #From macs readme: Coordinates in XLS is 1-based which is different with BED format.
-    #PJB: updated to keep original 'start' coordinate i.e. do not convert to BED
-    for line in open( xls_file ):
-        #keep all existing comment lines
-        if line.startswith( '#' ):
-            out.write( line )
-	#added for macs2 since there is an extra newline 
-        ##elif line.startswith( '\n' ):
-        ##    out.write( line )
-        elif not wrote_header:
-            out.write( '#%s' % line )
-	    print line
-            wrote_header = True
+        fp.write('#%s\n' % header)
+    for line in open(xls_file):
+        # Keep all existing comment lines
+        if line.startswith('#'):
+            fp.write(line)
         else:
-            fields = line.split( '\t' )
-            if len( fields ) > 1:
+            # Split line into fields and test to see if
+            # the 'start' field is actually an integer
+            fields = line.split('\t')
+            if len(fields) > 1:
                 try:
-                    # Try to convert 'start' to int and shift
-                    ##fields[1] = str( int( fields[1] ) - 1 )
-                    # PJB don't correct, just test to see if it's an integer
-                    int( fields[1] )
+                    int(fields[1])
                 except ValueError:
                     # Integer conversion failed so comment out
                     # "bad" line instead
                     fields[0] = "#%s" % fields[0]
-            out.write( '\t'.join( fields ) )
-    out.close()
+            fp.write( '\t'.join( fields ) )
+    fp.close()
 
-#==========================================================================================
-#main
-#==========================================================================================
-def main():
-    #take in options file and output file names
-    options = simplejson.load( open( sys.argv[1] ) )
-    outputs = simplejson.load( open( sys.argv[2] ) )
+if __name__ == "__main__":
 
-    #=================================================================================
-    #parse options and execute macs2
-    #=================================================================================
-    #default inputs that are in every major command
-    experiment_name = '_'.join( options['experiment_name'].split() ) #save experiment name here, it will be used by macs for some file names
-    cmdline = "macs2 %s -t %s" % ( options['command'], ",".join( options['input_chipseq'] ) )
-    if options['input_control']:
-        cmdline = "%s -c %s" % ( cmdline, ",".join( options['input_control'] ) )
+    # Echo the command line
+    print ' '.join(sys.argv)
 
-    #=================================================================================
-    if (options['command'] == "callpeak"):
-    	output_summits_bed = outputs['output_summits_bed_file']
-    	output_extra_html = outputs['output_extra_file']
-    	output_extra_path = outputs['output_extra_file_path']
-    	output_peaks =  outputs['output_peaks_file']
-   	output_narrowpeaks = outputs['output_narrowpeaks_file']
-   	output_broadpeaks = outputs['output_broadpeaks_file']
-   	output_gappedpeaks = outputs['output_gappedpeaks_file']
-	output_xls_to_interval_peaks_file = outputs['output_xls_to_interval_peaks_file']
-        output_treat_pileup = outputs['output_treat_pileup_file']
-        output_lambda_bedgraph = outputs['output_lambda_bedgraph_file']
+    # Initialise output files - values are set by reading from
+    # the command line supplied by the Galaxy wrapper
+    output_extra_html = None
+    output_extra_path = None
+    output_broadpeaks = None
+    output_gappedpeaks = None
+    output_narrowpeaks = None
+    output_treat_pileup = None
+    output_lambda_bedgraph = None
+    output_xls_to_interval_peaks_file = None
+    output_peaks = None
+    output_bdgcmp = None
 
-        cmdline = "%s --format='%s' --name='%s' --gsize='%s' --bw='%s'" % ( cmdline, options['format'], experiment_name, options['gsize'], options['bw'] )
-        if (options['broad'] == 'broad'):
-            cmdline = "%s --broad --broad-cutoff='%s'" % ( cmdline, options['broad_cutoff'] )
-	if 'pvalue' in options:
-            cmdline = "%s --pvalue='%s'" % ( cmdline, options['pvalue'] )
-	elif 'qvalue' in options:
-            cmdline = "%s --qvalue='%s'" % ( cmdline, options['qvalue'] )
-        cmdline = "%s --mfold %s %s %s %s %s %s --keep-dup %s" % (cmdline, options['mfoldlo'], options['mfoldhi'], options['nolambda'], options['bdg'], options['spmr'], options['call_summits'], options['keep_dup'] )
-		
-	if 'nomodel' in options:
-        	cmdline = "%s --nomodel --extsize='%s'" % ( cmdline, options['nomodel'] )
-    #=================================================================================
-    if (options['command'] == "bdgcmp"):
-	output_bdgcmp = outputs['output_bdgcmp_file']
+    # Build the MACS 2.1 command line
+    # Initial arguments are always the same: command & input ChIP-seq file name
+    cmdline = ["macs2 %s -t %s" % (sys.argv[1],sys.argv[2])]
 
-	cmdline = "%s -m %s -p %s -o bdgcmp_out.bdg" % ( cmdline, options['m'], options['pseudocount'] )
-    #=================================================================================
-
-    tmp_dir = tempfile.mkdtemp() #macs makes very messy output, need to contain it into a temp dir, then provide to user
-    stderr_name = tempfile.NamedTemporaryFile().name # redirect stderr here, macs provides lots of info via stderr, make it into a report
-    proc = subprocess.Popen( args=cmdline, shell=True, cwd=tmp_dir, stderr=open( stderr_name, 'wb' ) )
-    proc.wait()
-    #We don't want to set tool run to error state if only warnings or info, e.g. mfold could be decreased to improve model, but let user view macs log
-    #Do not terminate if error code, allow dataset (e.g. log) creation and cleanup
-    if proc.returncode:
-        stderr_f = open( stderr_name )
-        while True:
-            chunk = stderr_f.read( CHUNK_SIZE )
-            if not chunk:
-                stderr_f.close()
-                break
-            sys.stderr.write( chunk )
+    # Process remaining args
+    for arg in sys.argv[3:]:
+        if arg.startswith('--format='):
+            # Convert format to uppercase
+            format_ = arg.split('=')[1].upper()
+            cmdline.append("--format=%s" % format_)
+        elif arg.startswith('--name='):
+            # Replace whitespace in name with underscores
+            experiment_name = '_'.join(arg.split('=')[1].split())
+            cmdline.append("--name=%s" % experiment_name)
+        elif arg.startswith('--output-'):
+            # Handle destinations for output files
+            arg0,filen = arg.split('=')
+            if arg0 == '--output-summits':
+                output_summits = filen
+            elif arg0 == '--output-extra-files':
+                output_extra_html = filen
+            elif  arg0 == '--output-extra-files-path':
+                output_extra_path = filen
+            elif  arg0 == '--output-broadpeaks':
+                output_broadpeaks = filen
+            elif  arg0 == '--output-gappedpeaks':
+                output_gappedpeaks = filen
+            elif  arg0 == '--output-narrowpeaks':
+                output_narrowpeaks = filen
+            elif  arg0 == '--output-pileup':
+                output_treat_pileup = filen
+            elif  arg0 == '--output-lambda-bedgraph':
+                output_lambda_bedgraph = filen
+            elif  arg0 == '--output-xls-to-interval':
+                output_xls_to_interval_peaks_file = filen
+            elif  arg0 == '--output-peaks':
+                output_peaks = filen
+        else:
+            # Pass remaining args directly to MACS
+            # command line
+            cmdline.append(arg)
     
-    #=================================================================================
-    #copy files created by macs2 to appripriate directory with the provided names
-    #=================================================================================
+    cmdline = ' '.join(cmdline)
+    print "Generated command line:\n%s" % cmdline
 
-    #=================================================================================
-    #move files generated by callpeak command 
-    if (options['command'] == "callpeak"):
-    	#run R to create pdf from model script
-    	if os.path.exists( os.path.join( tmp_dir, "%s_model.r" % experiment_name ) ):
-     	   	cmdline = 'R --vanilla --slave < "%s_model.r" > "%s_model.r.log"' % ( experiment_name, experiment_name )
-     	   	proc = subprocess.Popen( args=cmdline, shell=True, cwd=tmp_dir )
-		proc.wait()
+    # Execute MACS2
+    #
+    # Make a working directory
+    working_dir = tempfile.mkdtemp()
+    #
+    # Collect stderr in a file for reporting later
+    stderr_filen = tempfile.NamedTemporaryFile().name
+    #
+    # Run MACS2
+    proc = subprocess.Popen(args=cmdline,shell=True,cwd=working_dir,
+                            stderr=open(stderr_filen,'wb'))
+    proc.wait()
+    
+    # Run R script to create PDF from model script
+    if os.path.exists(os.path.join(working_dir,"%s_model.r" % experiment_name)):
+        cmdline = 'R --vanilla --slave < "%s_model.r" > "%s_model.r.log"' % \
+                  (experiment_name, experiment_name)
+        proc = subprocess.Popen(args=cmdline,shell=True,cwd=working_dir)
+        proc.wait()
+
+    # Convert XLS to interval, if requested
+    if output_xls_to_interval_peaks_file is not None:
+        peaks_xls_file = os.path.join(working_dir,'%s_peaks.xls' % experiment_name )
+        if os.path.exists(peaks_xls_file):
+            convert_xls_to_interval(peaks_xls_file,output_xls_to_interval_peaks_file,
+                                    header='peaks file')
         
-    	#move bed out to proper output file
-    	created_bed_name =  os.path.join( tmp_dir, "%s_summits.bed" % experiment_name )
-    	if os.path.exists( created_bed_name ):
-        	shutil.move( created_bed_name, output_summits_bed )
+    # Move MACS2 output files from working dir to their final destinations
+    move_file(working_dir,"%s_summits.bed" % experiment_name,output_summits)
+    move_file(working_dir,"%s_peaks.xls" % experiment_name,output_peaks)
+    move_file(working_dir,"%s_peaks.narrowPeak" % experiment_name,output_narrowpeaks)
+    move_file(working_dir,"%s_peaks.broadPeak" % experiment_name,output_broadpeaks)
+    move_file(working_dir,"%s_peaks.gappedPeak" % experiment_name,output_gappedpeaks)
+    move_file(working_dir,"%s_treat_pileup.bdg" % experiment_name,output_treat_pileup)
+    move_file(working_dir,"%s_control_lambda.bdg" % experiment_name,output_lambda_bedgraph)
+    move_file(working_dir,"bdgcmp_out.bdg",output_bdgcmp)
 
-    	#OICR peak_xls file
-    	created_peak_xls_file =  os.path.join( tmp_dir, "%s_peaks.xls" % experiment_name )
-    	if os.path.exists( created_peak_xls_file ):
-        	# shutil.copy( created_peak_xls_file, os.path.join ( "/mnt/galaxyData/tmp/", "%s_peaks.xls" % ( os.path.basename(output_extra_path) )))
-		shutil.copyfile( created_peak_xls_file, output_peaks )   
+    # Move remaining file to the 'extra files' path and link from the HTML
+    # file to allow user to access them from within Galaxy
+    html_file = open(output_extra_html,'wb')
+    html_file.write('<html><head><title>Additional output created by MACS (%s)</title></head><body><h3>Additional Files:</h3><p><ul>\n' % experiment_name)
+    # Make the 'extra files' directory
+    os.mkdir(output_extra_path)
+    # Move the files
+    for filen in sorted(os.listdir(working_dir)):
+        shutil.move(os.path.join(working_dir,filen),
+                    os.path.join(output_extra_path,filen))
+        html_file.write( '<li><a href="%s">%s</a></li>\n' % (filen,filen))
+    # All files moved, close out HTML
+    html_file.write( '</ul></p>\n' )
+    # Append any stderr output
+    html_file.write('<h3>Messages from MACS:</h3>\n<p><pre>%s</pre></p>\n' %
+                    open(stderr_filen,'rb').read())
+    html_file.write('</body></html>\n')
+    html_file.close()
 
-    	#peaks.encodepeaks (narrowpeaks) file
-    	created_narrowpeak_file = os.path.join (tmp_dir, "%s_peaks.narrowPeak" % experiment_name )
-    	if os.path.exists( created_narrowpeak_file ):
-		shutil.move (created_narrowpeak_file, output_narrowpeaks )
-
-        #peaks.broadpeaks file
-    	created_broadpeak_file = os.path.join (tmp_dir, "%s_peaks.broadPeak" % experiment_name )
-    	if os.path.exists( created_broadpeak_file ):
-		shutil.move (created_broadpeak_file, output_broadpeaks )
-
-        #peaks.gappedpeaks file
-    	created_gappedpeak_file = os.path.join (tmp_dir, "%s_peaks.gappedPeak" % experiment_name )
-    	if os.path.exists( created_gappedpeak_file ):
-		shutil.move (created_gappedpeak_file, output_gappedpeaks )
-
- 	#parse xls files to interval files as needed
-   	#if 'xls_to_interval' in options:
-    	if (options['xls_to_interval'] == "True"):
-        	create_peak_xls_file = os.path.join( tmp_dir, '%s_peaks.xls' % experiment_name )
-        	if os.path.exists( create_peak_xls_file ):
-            		xls_to_interval( create_peak_xls_file, output_xls_to_interval_peaks_file, header = 'peaks file' )
-
-        #bedgraph bedgraph files
-        if (options['bdg']):
-            created_treat_pileup_file = os.path.join (tmp_dir, "%s_treat_pileup.bdg" % experiment_name )
-            if os.path.exists( created_treat_pileup_file ):
-		shutil.move (created_treat_pileup_file, output_treat_pileup )
-            created_lambda_bedgraph_file = os.path.join (tmp_dir, "%s_control_lambda.bdg" % experiment_name )
-            if os.path.exists( created_lambda_bedgraph_file ):
-		shutil.move (created_lambda_bedgraph_file, output_lambda_bedgraph )
-
-    	#move all remaining files to extra files path of html file output to allow user download
-    	out_html = open( output_extra_html, 'wb' )
-    	out_html.write( '<html><head><title>Additional output created by MACS (%s)</title></head><body><h3>Additional Files:</h3><p><ul>\n' % experiment_name )
-    	os.mkdir( output_extra_path )
-    	for filename in sorted( os.listdir( tmp_dir ) ):
-    		shutil.move( os.path.join( tmp_dir, filename ), os.path.join( output_extra_path, filename ) )
-        	out_html.write( '<li><a href="%s">%s</a></li>\n' % ( filename, filename ) )
-		#out_html.write( '<li><a href="%s">%s</a>peakxls %s SomethingDifferent tmp_dir %s path %s exp_name %s</li>\n' % ( created_peak_xls_file, filename, filename, tmp_dir, output_extra_path, experiment_name ) )
-    	out_html.write( '</ul></p>\n' )
-    	out_html.write( '<h3>Messages from MACS:</h3>\n<p><pre>%s</pre></p>\n' % open( stderr_name, 'rb' ).read() )
-    	out_html.write( '</body></html>\n' )
-    	out_html.close()
-
-    #=================================================================================
-    #move files generated by bdgcmp command
-    if (options['command'] == "bdgcmp"):
-    	created_bdgcmp_file = os.path.join (tmp_dir, "bdgcmp_out.bdg" )
-    	if os.path.exists( created_bdgcmp_file ):
-		shutil.move (created_bdgcmp_file, output_bdgcmp )
-     
-    #=================================================================================    
-    #cleanup
-    #=================================================================================    
-    os.unlink( stderr_name )
-    os.rmdir( tmp_dir )
-
-if __name__ == "__main__": main()
+    # Clean up the working directory and files
+    os.unlink(stderr_filen)
+    os.rmdir(working_dir)

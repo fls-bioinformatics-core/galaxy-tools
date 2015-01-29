@@ -1,25 +1,115 @@
-<tool id="fls_modencode_peakcalling_macs2.1" name="MACS2.1.0" version="2">
+<tool id="macs2_1_peakcalling" name="MACS2.1.0" version="2.1.0-1">
   <requirements>
     <requirement type="package" version="2.7">python</requirement>
     <requirement type="package" version="1.8.1">numpy</requirement>
     <requirement type="package" version="2.1.0.20140616">macs2</requirement>
   </requirements>
-  <description>Model-based Analysis of ChIP-Seq [golem]</description>
-  <command interpreter="python">macs21_wrapper.py $options_file $outputs_file</command>
+  <description>Model-based Analysis of ChIP-Seq</description>
+  <command interpreter="python">
+    macs21_wrapper.py
+    ##
+    ## Major command
+    $major_command.major_command_selector
+    ##
+    ## ChIP-seq input
+    $major_command.input_chipseq_file1
+    ##
+    ## ChIP-seq control
+    #if str($major_command.input_control_file1) != 'None'
+       -c $major_command.input_control_file1
+    #end if
+    ##
+    ## Call peaks
+    #if str($major_command.major_command_selector) == 'callpeak'
+       --format=$major_command.input_chipseq_file1.extension
+       --name="$experiment_name"
+       --bw=$major_command.bw
+       ##
+       ## Genome size
+       #if str($major_command.genome_size.gsize) == ''
+	  --gsize=$major_command.genome_size.user_defined_gsize
+       #else:
+          --gsize=$major_command.genome_size.gsize
+       #end if
+       ##
+       ## Broad peaks
+       #if str($major_command.broad_options.broad_regions) == 'broad'
+          --broad --broad-cutoff=$major_command.broad_options.broad_cutoff
+       #end if
+       ##
+       ## (no)model options
+       #if str($major_command.nomodel_type.nomodel_type_selector) == 'nomodel'
+          --nomodel --extsize=$major_command.nomodel_type.extsize
+       #end if
+       ##
+       ## pq value select options
+       #if str($major_command.pq_options.pq_options_selector) == 'qvalue'
+          --qvalue=$major_command.pq_options.qvalue
+       #else
+          --pvalue=$major_command.pq_options.pvalue
+       #end if
+       ##
+       ## Advanced options
+       #if str($major_command.advanced_options.advanced_options_selector) == 'on'
+          --mfold $major_command.advanced_options.mfoldlo $major_command.advanced_options.mfoldhi
+          $major_command.advanced_options.nolambda
+	  #if $major_command.bdg_options.bdg == True
+             -B $major_command.bdg_options.spmr
+	  #end if
+          $major_command.advanced_options.call_summits
+          #if str($major_command.advanced_options.keep_duplicates.keep_dup) == ''
+             --keep-dup $major_command.advanced_options.keep_duplicates.maximum_tags
+          #else
+             --keep-dup $major_command.advanced_options.keep_duplicates.keep_dup
+          #end if
+       #else
+          ## Defaults if advanced options not set
+          --mfold 5 50 --keep-dup 1
+       #end if
+       ##
+       ## Output files
+       --output-summits=$output_summits_bed_file
+       --output-extra-files=$output_extra_files
+       --output-extra-files-path=$output_extra_files.files_path
+       ##
+       ## Narrow/broad peak outputs
+       #if str($major_command.broad_options.broad_regions) == 'broad'
+          --output-broadpeaks=$output_broadpeaks_file
+          --output-gappedpeaks=$output_gappedpeaks_file
+       #else
+          --output-narrowpeaks=$output_narrowpeaks_file
+       #end if
+       ##
+       ## Bedgraph outputs
+       #if str($major_command.bdg_options.bdg) == 'True'
+          --output-pileup $output_treat_pileup_file 
+          --output-lambda-bedgraph=$output_lambda_bedgraph_file
+       #end if
+       ##
+       ## XLS/interval output
+       #if str($major_command.xls_to_interval) == 'True'
+          --output-xls-to-interval=$output_xls_to_interval_peaks_file
+       #else
+          --output-peaks=$output_peaks_file
+       #end if
+    #end if
+    ##
+    ## Compare .bdg files
+    #if str($major_command.major_command_selector) == 'bdgcmp'
+       -m $major_command.bdgcmp_options.bdgcmp_options_selector
+       -p $major_command.pseudocount
+       --output-bdgcmp $output_bdgcmp_file
+    #end if
+  </command>
   <inputs>
-    <!--experiment name and option of selecting paired or single end will always be present-->
+    <!--experiment name used as base for output file names -->
     <param name="experiment_name" type="text" value="MACS2.1.0 in Galaxy" size="50"
 	   label="Experiment Name"/>
-    <!--select one of the 7 major commands offered by macs2-->
+    <!--select a major MACS2 command-->
     <conditional name="major_command">
       <param name="major_command_selector" type="select" label="Select action to be performed">
 	<option value="callpeak">Peak Calling</option>
-	<!--<option value="filterdup">filterdup</option>
-	<option value="randsample">randsample</option>-->
 	<option value="bdgcmp">Compare .bdg Files</option>
-	<!--<option value="bdgdiff">bdgdiff</option>
-	<option value="bdgpeakcall">bdgpeakcall</option>
-	<option value="bdgbroadcall">bdgbroadcall</option>-->
       </param>
       <!--callpeak option of macs2-->
       <when value="callpeak">
@@ -36,7 +126,6 @@
 		   value="0.1" help="default: 0.1 (--broad-cutoff)"/>
 	  </when>
 	</conditional>
-	<!--may need to add a few more formats at later time-->
         <param name="input_chipseq_file1" type="data" format="bed,sam,bam"
 	       label="ChIP-seq read file" />
         <param name="input_control_file1" type="data" format="bed,sam,bam" optional="True"
@@ -217,123 +306,6 @@
       <filter>major_command['major_command_selector'] == 'bdgcmp'</filter>
     </data>
   </outputs>
-  <configfiles>
-    <configfile name="outputs_file">&lt;%
-import simplejson
-%&gt;
-##=======================================================================================
-#set $__outputs = { 'command':str( $major_command.major_command_selector ) }
-#if str( $major_command.major_command_selector ) == 'callpeak':
-	#set $__outputs['output_summits_bed_file'] = str( $output_summits_bed_file )
-	#set $__outputs['output_extra_file'] = str( $output_extra_files )
-	#set $__outputs['output_extra_file_path'] = str( $output_extra_files.files_path )
-	#set $__outputs['output_peaks_file'] = str( $output_peaks_file )
-	#set $__outputs['output_narrowpeaks_file'] = str( $output_narrowpeaks_file )
-	#set $__outputs['output_broadpeaks_file'] = str( $output_broadpeaks_file )
-	#set $__outputs['output_gappedpeaks_file'] = str( $output_gappedpeaks_file )
-	#set $__outputs['output_xls_to_interval_peaks_file'] = str( $output_xls_to_interval_peaks_file )
-	#set $__outputs['output_treat_pileup_file'] = str( $output_treat_pileup_file )
-	#set $__outputs['output_lambda_bedgraph_file'] = str( $output_lambda_bedgraph_file )
-#end if
-##=======================================================================================
-#if str( $major_command.major_command_selector ) == 'bdgcmp':
-	#set $__outputs['output_bdgcmp_file'] = str( $output_bdgcmp_file )
-#end if
-
-${ simplejson.dumps( __outputs ) }
-    </configfile>
-    <configfile name="options_file">&lt;%
-import simplejson
-%&gt;
-##=======================================================================================
-#set $__options = { 'experiment_name':str( $experiment_name ) }
-##treatment/tag input files and format
-#set $__options['input_chipseq'] = [ str( $major_command.input_chipseq_file1 ) ]
-#set $__options['format'] = $major_command.input_chipseq_file1.extension.upper()
-
-##control/input files
-#set $__options['input_control'] = []
-#if str( $major_command.input_control_file1 ) != 'None':
-	#set $_hole = __options['input_control'].append( str( $major_command.input_control_file1 ) )
-#end if
-
-#if str( $major_command.major_command_selector ) == 'callpeak':
-	#set $__options['command'] = str( "callpeak" )
-	#set $__options['bw'] = str( $major_command.bw )
-	#set $__options['xls_to_interval'] = str( $major_command.xls_to_interval )
-
-	##bdg options
-	#if $major_command.bdg_options.bdg == True:
-		#set $__options['bdg'] = str( "-B" )
-		#set $__options['spmr'] = str( $major_command.bdg_options.spmr )
-	#else:
-		#set $__options['bdg'] = str( "" )
-		#set $__options['spmr'] = str( "" )
-	#end if
-
-	##broad_options
-	#if str( $major_command.broad_options.broad_regions ) == 'broad':
-		#set $__options['broad'] = str( $major_command.broad_options.broad_regions )
-		#set $__options['broad_cutoff'] = str( $major_command.broad_options.broad_cutoff )
-	#else:
-		#set $__options['broad'] = str( "" )
-		#set $__options['broad_cutoff'] = str( "" )
-	#end if
-
-	##genome sizes
-	#if str( $major_command.genome_size.gsize ) == '':
-		#set $__options['gsize'] = int( $major_command.genome_size.user_defined_gsize )
-	#else:
-		#set $__options['gsize'] = str( $major_command.genome_size.gsize )
-	#end if
-
-	##advanced options
-	#if str( $major_command.advanced_options.advanced_options_selector ) == 'on':
-		#set $__options['mfoldlo'] = int( $major_command.advanced_options.mfoldlo )
-		#set $__options['mfoldhi'] = int( $major_command.advanced_options.mfoldhi )
-		#set $__options['nolambda'] = str( $major_command.advanced_options.nolambda )
-		#set $__options['call_summits'] = str( $major_command.advanced_options.call_summits )
-		#if str( $major_command.advanced_options.keep_duplicates.keep_dup ) == '':
-			#set $__options['keep_dup'] = int( $major_command.advanced_options.keep_duplicates.maximum_tags )
-		#else:
-			#set $__options['keep_dup'] = str( $major_command.advanced_options.keep_duplicates.keep_dup )
-		#end if
-	#else:
-		#set $__options['mfoldlo'] = int( "5" )
-		#set $__options['mfoldhi'] = int( "50" )
-		#set $__options['nolambda'] = str( "" )
-		#set $__options['call_summits'] = str( "" )
-		#set $__options['keep_dup'] = int( "1" )
-	#end if
-
-	##enable xls file options
-	##if str( $major_command.xls_to_interval ) == 'create':
-		##set $__options['xls_to_interval'] = { 'peaks_file': str( $output_xls_to_interval_peaks_file ), 'negative_peaks_file': str( $output_xls_to_interval_negative_peaks_file ) }
-	##end if
-	
-	##pq value select options
-	#if str( $major_command.pq_options.pq_options_selector ) == 'qvalue':
-		#set $__options['qvalue'] = str( $major_command.pq_options.qvalue )
-	#else:
-		#set $__options['pvalue'] = str( $major_command.pq_options.pvalue )
-	#end if
-	
-	##model options
-	#if str( $major_command.nomodel_type.nomodel_type_selector ) == 'nomodel':
-		#set $__options['nomodel'] = str( $major_command.nomodel_type.extsize )
-	#end if
-#end if
-##=======================================================================================
-#if str( $major_command.major_command_selector ) == 'bdgcmp':
-	#set $__options['command'] = str( "bdgcmp" )
-	#set $__options['pseudocount'] = float( str( $major_command.pseudocount ) )
-	#set $__options['m'] = str( $major_command.bdgcmp_options.bdgcmp_options_selector )
-#end if
-##=======================================================================================
-
-${ simplejson.dumps( __options ) }
-    </configfile>
-  </configfiles>
   <tests>
 	<!--none yet for macs2-->
   </tests>
