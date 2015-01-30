@@ -53,6 +53,43 @@ def convert_xls_to_interval(xls_file,interval_file,header=None):
             fp.write( '\t'.join( fields ) )
     fp.close()
 
+def make_bigwig_from_bedgraph(bedgraph_file,bigwig_file,
+                              chrom_size_file,working_dir=None):
+    """Make bigWig file from a bedGraph
+
+    The protocol is:
+
+    $ fetchChromSizes.sh mm9 > mm9.chrom.sizes
+    $ bedClip treat.bedgraph mm9.chrom.sizes treat.clipped
+    $ bedGraphToBigWig treat.clipped mm9.chrom.sizes treat.bw
+
+    Get the binaries from
+    http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/
+
+    We skip the fetchChromSizes step and assume that the
+    chromosome sizes for the genome build in question are
+    supplied via the 'chrom_size_file' argument.
+
+    """
+    print "Generating bigWig from bedGraph..."
+    # Run bedClip
+    treat_clipped = "%s.clipped" % os.path.basename(bedgraph_file)
+    cmd = "bedClip %s %s %s" % (bedgraph_file,chrom_size_file,treat_clipped)
+    print "Running %s" % cmd
+    proc = subprocess.Popen(args=cmd,shell=True,cwd=working_dir)
+    proc.wait()
+    # Check that clipped file exists
+    treat_clipped = os.path.join(working_dir,treat_clipped)
+    if not os.path.exists(treat_clipped):
+        sys.stderr.write("Failed to create clipped bed file")
+        sys.exit(1)
+    # Run bedGraphToBigWig
+    cmd = "bedGraphToBigWig %s %s %s" % (treat_clipped,chrom_size_file,
+                                         bigwig_file)
+    print "Running %s" % cmd
+    proc = subprocess.Popen(args=cmd,shell=True,cwd=working_dir)
+    proc.wait()
+
 if __name__ == "__main__":
 
     # Echo the command line
@@ -67,6 +104,7 @@ if __name__ == "__main__":
     output_narrowpeaks = None
     output_treat_pileup = None
     output_lambda_bedgraph = None
+    output_bigwig = None
     output_xls_to_interval_peaks_file = None
     output_peaks = None
     output_bdgcmp = None
@@ -85,6 +123,9 @@ if __name__ == "__main__":
             # Replace whitespace in name with underscores
             experiment_name = '_'.join(arg.split('=')[1].split())
             cmdline.append("--name=%s" % experiment_name)
+        elif arg.startswith('--length='):
+            # Extract chromosome size file
+            chrom_sizes = arg.split('=')[1]
         elif arg.startswith('--output-'):
             # Handle destinations for output files
             arg0,filen = arg.split('=')
@@ -104,6 +145,8 @@ if __name__ == "__main__":
                 output_treat_pileup = filen
             elif  arg0 == '--output-lambda-bedgraph':
                 output_lambda_bedgraph = filen
+            elif  arg0 == '--output-bigwig':
+                output_bigwig = filen
             elif  arg0 == '--output-xls-to-interval':
                 output_xls_to_interval_peaks_file = filen
             elif  arg0 == '--output-peaks':
@@ -142,6 +185,13 @@ if __name__ == "__main__":
         if os.path.exists(peaks_xls_file):
             convert_xls_to_interval(peaks_xls_file,output_xls_to_interval_peaks_file,
                                     header='peaks file')
+
+    # Create bigWig from bedGraph, if requested
+    if output_bigwig is not None:
+        treat_bedgraph_file = os.path.join(working_dir,'%s_treat_pileup.bdg' % experiment_name)
+        if os.path.exists(treat_bedgraph_file):
+            make_bigwig_from_bedgraph(treat_bedgraph_file,output_bigwig,
+                                      chrom_sizes,working_dir)
         
     # Move MACS2 output files from working dir to their final destinations
     move_file(working_dir,"%s_summits.bed" % experiment_name,output_summits)
