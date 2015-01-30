@@ -82,7 +82,7 @@
        ##
        ## Bedgraph outputs
        #if str($major_command.bdg_options.bdg) == 'True'
-          --output-pileup $output_treat_pileup_file 
+          --output-pileup=$output_treat_pileup_file 
           --output-lambda-bedgraph=$output_lambda_bedgraph_file
        #end if
        ##
