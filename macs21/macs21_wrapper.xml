@@ -155,7 +155,7 @@
 
 	<conditional name="bdg_options">
 	  <param name="bdg"
-		 label="Save fragment pileup, control lambda, -log10pvalue/qvalue in bedGraph"
+		 label="Save treatment and control lambda pileups in bedGraph"
 		 type="boolean" truevalue="-B" falsevalue="" checked="False" />
 	  <when value="-B">
 	    <param name="spmr"
