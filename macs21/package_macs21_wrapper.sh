@@ -9,6 +9,7 @@ if [ -f $TGZ ] ; then
     exit 1
 fi
 tar cvzf $TGZ \
+    README.rst \
     macs21_wrapper.xml \
     macs21_wrapper.py \
     tool_dependencies.xml
