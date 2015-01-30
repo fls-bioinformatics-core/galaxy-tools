@@ -42,7 +42,7 @@ sample test files under Galaxy's ``test-data/`` directory. Then:
 
     ./run_tests.sh -id macs2_wrapper
 
-(Currently however there are no tests defined.)
+(However there are no tests defined at present.)
 
 History
 =======
@@ -71,7 +71,7 @@ This tool is developed on the following GitHub repository:
 https://github.com/fls-bioinformatics-core/galaxy-tools/tree/master/macs21
 
 For making the "Galaxy Tool Shed" http://toolshed.g2.bx.psu.edu/ tarball I use
-the ``package_trimmomatic.sh`` script.
+the ``package_macs21_wrapper.sh`` script.
 
 
 Licence (MIT)
