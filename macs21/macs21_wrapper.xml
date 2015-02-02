@@ -66,7 +66,7 @@
           #end if
        #else
           ## Defaults if advanced options not set
-          --mfold 5 50 --keep-dup 1
+          --mfold 10 30 --keep-dup 1
        #end if
        ##
        ## Output files
