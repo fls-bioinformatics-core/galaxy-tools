@@ -54,7 +54,7 @@ def convert_xls_to_interval(xls_file,interval_file,header=None):
     fp.close()
 
 def make_bigwig_from_bedgraph(bedgraph_file,bigwig_file,
-                              chrom_size_file,working_dir=None):
+                              chrom_sizes,working_dir=None):
     """Make bigWig file from a bedGraph
 
     The protocol is:
@@ -66,15 +66,37 @@ def make_bigwig_from_bedgraph(bedgraph_file,bigwig_file,
     Get the binaries from
     http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/
 
-    We skip the fetchChromSizes step and assume that the
-    chromosome sizes for the genome build in question are
-    supplied via the 'chrom_size_file' argument.
+    We skip the fetchChromSizes step if the 'chrom_sizes'
+    argument supplied a valid file with the chromosome sizes
+    for the genome build in question.
 
     """
     print "Generating bigWig from bedGraph..."
+    # Check for chromosome sizes
+    if not os.path.exists(chrom_sizes):
+        # Determine genome build
+        chrom_sizes = os.path.basename(chrom_sizes)
+        genome_build = chrom_sizes.split('.')[0]
+        print "Missing chrom sizes file, attempting to fetch for '%s'" % genome_build
+        # Run fetchChromSizes
+        chrom_sizes = os.path.join(working_dir,chrom_sizes)
+        stderr_file = os.path.join(working_dir,"fetchChromSizes.stderr")
+        cmd = "fetchChromSizes %s" % genome_build
+        print "Running %s" % cmd
+        proc = subprocess.Popen(args=cmd,shell=True,cwd=working_dir,
+                                stdout=open(chrom_sizes,'wb'),
+                                stderr=open(stderr_file,'wb'))
+        proc.wait()
+        # Copy stderr from fetchChromSizes for information only
+        for line in open(stderr_file,'r'):
+            print line.strip()
+        # Check that the sizes file was downloaded
+        if not os.path.exists(chrom_sizes):
+            sys.stderr.write("Failed to download chrom sizes for '%s'" % genome_build)
+            sys.exit(1)
     # Run bedClip
     treat_clipped = "%s.clipped" % os.path.basename(bedgraph_file)
-    cmd = "bedClip %s %s %s" % (bedgraph_file,chrom_size_file,treat_clipped)
+    cmd = "bedClip %s %s %s" % (bedgraph_file,chrom_sizes,treat_clipped)
     print "Running %s" % cmd
     proc = subprocess.Popen(args=cmd,shell=True,cwd=working_dir)
     proc.wait()
@@ -84,7 +106,7 @@ def make_bigwig_from_bedgraph(bedgraph_file,bigwig_file,
         sys.stderr.write("Failed to create clipped bed file")
         sys.exit(1)
     # Run bedGraphToBigWig
-    cmd = "bedGraphToBigWig %s %s %s" % (treat_clipped,chrom_size_file,
+    cmd = "bedGraphToBigWig %s %s %s" % (treat_clipped,chrom_sizes,
                                          bigwig_file)
     print "Running %s" % cmd
     proc = subprocess.Popen(args=cmd,shell=True,cwd=working_dir)
@@ -109,6 +131,9 @@ if __name__ == "__main__":
     output_peaks = None
     output_bdgcmp = None
 
+    # Other initialisations
+    chrom_sizes_file = None
+
     # Build the MACS 2.1 command line
     # Initial arguments are always the same: command & input ChIP-seq file name
     cmdline = ["macs2 %s -t %s" % (sys.argv[1],sys.argv[2])]
@@ -125,7 +150,7 @@ if __name__ == "__main__":
             cmdline.append("--name=%s" % experiment_name)
         elif arg.startswith('--length='):
             # Extract chromosome size file
-            chrom_sizes = arg.split('=')[1]
+            chrom_sizes_file = arg.split('=')[1]
         elif arg.startswith('--output-'):
             # Handle destinations for output files
             arg0,filen = arg.split('=')
@@ -191,7 +216,7 @@ if __name__ == "__main__":
         treat_bedgraph_file = os.path.join(working_dir,'%s_treat_pileup.bdg' % experiment_name)
         if os.path.exists(treat_bedgraph_file):
             make_bigwig_from_bedgraph(treat_bedgraph_file,output_bigwig,
-                                      chrom_sizes,working_dir)
+                                      chrom_sizes_file,working_dir)
         
     # Move MACS2 output files from working dir to their final destinations
     move_file(working_dir,"%s_summits.bed" % experiment_name,output_summits)
