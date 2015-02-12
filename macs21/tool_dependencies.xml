@@ -1,19 +1,41 @@
 <?xml version="1.0"?>
 <tool_dependency>
   <!-- Dependencies from local toolshed
-  <package name="python2" version="2.7.7">
-    <repository name="package_python2_7" prior_installation_required="True" owner="pjbriggs" />
-  </package>
-  <package name="python_numpy" version="1.8">
-    <repository name="package_numpy_1_8" prior_installation_required="True" owner="pjbriggs" />
+  <package name="numpy" version="1.9">
+    <repository name="package_numpy_1_9" prior_installation_required="True" owner="pjbriggs" />
   </package>
   -->
-  <!-- Dependencies from test toolshed -->
-  <package name="python" version="2.7">
-    <repository name="package_python_2_7" prior_installation_required="True" owner="iuc" />
+  <!-- Dependencies from main/test toolsheds -->
+  <package name="numpy" version="1.9">
+    <repository name="package_numpy_1_9" prior_installation_required="True" owner="iuc" />
   </package>
-  <package name="numpy" version="1.8.1">
-    <repository name="package_numpy_1_8" prior_installation_required="True" owner="iuc" />
+  <!-- Subset of UCSC tools -->
+  <package name="ucsc_tools" version="1.0">
+      <install version="1.0">
+            <actions>
+	      <!-- fetchChromSizes -->
+              <action type="download_binary">
+                <url_template architecture="x86_64" os="linux">http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/fetchChromSizes</url_template>
+              </action>
+              <action type="chmod">
+                <file mode="755">$INSTALL_DIR/fetchChromSizes</file>
+              </action>
+	      <!-- bedClip -->
+              <action type="download_binary">
+                <url_template architecture="x86_64" os="linux">http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedClip</url_template>
+              </action>
+              <action type="chmod">
+                <file mode="755">$INSTALL_DIR/bedClip</file>
+              </action>
+	      <!-- bedGraphToBigWig -->
+              <action type="download_binary">
+                <url_template architecture="x86_64" os="linux">http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig</url_template>
+              </action>
+              <action type="chmod">
+                <file mode="755">$INSTALL_DIR/bedGraphToBigWig</file>
+              </action>
+	    </actions>
+      </install>
   </package>
   <!-- MACS 2.1.0 -->
   <package name="macs2" version="2.1.0.20140616">
@@ -21,24 +43,18 @@
             <actions>
               <action type="download_by_url">https://pypi.python.org/packages/source/M/MACS2/MACS2-2.1.0.20140616.tar.gz</action>
 	      <!-- Install environment for local toolshed
-              <action type="set_environment_for_install">
-		<repository name="package_python2_7" owner="pjbriggs">
-		  <package name="python2" version="2.7.7" />
-		</repository>
-		<repository name="package_numpy_1_8" owner="pjbriggs">
-		  <package name="python_numpy" version="1.8" />
+		<repository name="package_numpy_1_9" owner="pjbriggs">
+		  <package name="python_numpy" version="1.9" />
 		</repository>
 	      </action>
 	      -->
-	      <!-- Install environment for test toolshed -->
+	      <!-- Install environment for main & test toolsheds -->
               <action type="set_environment_for_install">
-		<repository name="package_python_2_7" owner="iuc">
-		  <package name="python2" version="2.7.7" />
-		</repository>
-		<repository name="package_numpy_1_8" owner="iuc">
-		  <package name="python_numpy" version="1.8.1" />
+		<repository name="package_numpy_1_9" owner="iuc">
+		  <package name="numpy" version="1.9" />
 		</repository>
 	      </action>
+	      -->
               <action type="make_directory">$INSTALL_DIR/lib/python</action>
               <action type="shell_command">
                 export PYTHONPATH=$PYTHONPATH:$INSTALL_DIR/lib/python &amp;&amp; 
