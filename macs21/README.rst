@@ -61,7 +61,7 @@ in invoking commands from Galaxy.
 Version    Changes
 ---------- ----------------------------------------------------------------------
 2.1.0-2    - Add option to create bigWig file from bedGraphs; fix bug with -B
-             option.
+             option; make --mfold defaults consistent.
 2.1.0-1    - Initial version
 ========== ======================================================================
 
