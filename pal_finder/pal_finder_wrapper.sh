@@ -44,6 +44,7 @@
 #  * PRIMER3_CORE_EXE: name of the primer3_core program, which should include the
 #    full path if it's not on the Galaxy user's PATH (defaults to primer3_core)
 #
+echo "### $(basename $0) ###"
 echo $*
 #
 # Initialise locations of scripts, data and executables
@@ -243,6 +244,7 @@ PRIMER_MISPRIMING_LIBRARY=$(basename $PRIMER_MISPRIMING_LIBRARY)
 mkdir Output
 #
 # Copy in the default config.txt file
+echo "### Creating config.txt file for pal_finder run ###"
 /bin/cp $PALFINDER_DATA_DIR/config.txt .
 #
 # Update the config.txt file with new values
@@ -297,7 +299,9 @@ set_config_value PRIMER_OPT_TM "$PRIMER_OPT_TM" config.txt
 set_config_value PRIMER_PAIR_MAX_DIFF_TM "$PRIMER_PAIR_MAX_DIFF_TM" config.txt
 #
 # Run pal_finder
+echo "### Running pal_finder ###"
 perl $PALFINDER_SCRIPT_DIR/pal_finder_v0.02.04.pl config.txt 2>&1 | tee pal_finder.log
+echo "### pal_finder finised ###"
 #
 # Check that log ends with "Done!!" message
 if [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
@@ -307,6 +311,7 @@ fi
 #
 # Run the pal_finder_filter.pl script from Graeme Fox
 if [ ! -z "$FILTERED_MICROSATS" ] ; then
+    echo "### Running filtering script ###"
     perl $PALFINDER_FILTER_PL Output/PAL_summary.txt 2>&1
     if [ $? -ne 0 ] ; then
 	echo ERROR pal_finder_filter.pl exited with non-zero status >&2
@@ -318,6 +323,7 @@ if [ ! -z "$FILTERED_MICROSATS" ] ; then
 fi
 #
 # Clean up
+echo "### Handling output files ###"
 if [ -f Output/microsat_summary.txt ] ; then
     /bin/mv Output/microsat_summary.txt $MICROSAT_SUMMARY
 fi
@@ -325,7 +331,6 @@ if [ -f Output/PAL_summary.txt ] ; then
     /bin/mv Output/PAL_summary.txt $PAL_SUMMARY
 fi
 if [ ! -z "$FILTERED_MICROSATS" ] && [ -f pal_finder_filter_output.txt ] ; then
-    echo Moving pal_finder_filter_output.txt to $FILTERED_MICROSATS
     /bin/mv pal_finder_filter_output.txt $FILTERED_MICROSATS
 fi
 if [ ! -z "$OUTPUT_CONFIG_FILE" ] && [ -f config.txt ] ; then
