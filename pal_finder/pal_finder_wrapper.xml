@@ -13,7 +13,7 @@
   #if $keep_config_file
     --output_config_file $output_config_file
   #end if
-  --primer-prefix $primer_prefix
+  --primer-prefix "$primer_prefix"
   --2merMinReps $min_2mer_repeats
   --3merMinReps $min_3mer_repeats
   --4merMinReps $min_4mer_repeats

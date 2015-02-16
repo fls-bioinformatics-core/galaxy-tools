@@ -128,7 +128,8 @@ while [ ! -z "$1" ] ; do
     case "$1" in
 	--primer-prefix)
 	    shift
-	    PRIMER_PREFIX=$1
+	    # Convert spaces to underscores in prefix
+	    PRIMER_PREFIX=$(echo $1 | tr " " "_")
 	    ;;
 	--2merMinReps)
 	    shift
