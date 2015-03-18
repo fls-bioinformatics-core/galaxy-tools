@@ -54,7 +54,8 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
-0.02.04.2  - Fix bug that causes tool to fail when prefix includes spaces.
+0.02.04.2  - Fix bug that causes tool to fail when prefix includes spaces;
+             add explicit dependency on Perl 5.16.3.
 0.02.04.1  - Add option to run Graeme Fox's ``pal_finder_filter.pl`` script to
              filter and sort the pal_finder output (Illumina input data only).
              Update version number to reflect the pal_finder version.
