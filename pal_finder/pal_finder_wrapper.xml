@@ -1,4 +1,4 @@
-<tool id="microsat_pal_finder" name="pal_finder" version="0.02.04.1">
+<tool id="microsat_pal_finder" name="pal_finder" version="0.02.04.2">
   <description>Find microsatellite repeat elements sequencing reads and design PCR primers to amplify them</description>
   <command interpreter="bash">pal_finder_wrapper.sh
   #if str( $platform.platform_type ) == "illumina"
@@ -13,7 +13,7 @@
   #if $keep_config_file
     --output_config_file $output_config_file
   #end if
-  --primer-prefix $primer_prefix
+  --primer-prefix "$primer_prefix"
   --2merMinReps $min_2mer_repeats
   --3merMinReps $min_3mer_repeats
   --4merMinReps $min_4mer_repeats
@@ -37,6 +37,7 @@
   #end if
   </command>
   <requirements>
+    <requirement type="package" version="5.16.3">perl</requirement>
     <requirement type="package" version="0.02.04">pal_finder</requirement>
     <requirement type="package" version="2.0.0">primer3_core</requirement>
   </requirements>

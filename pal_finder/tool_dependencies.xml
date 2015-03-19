@@ -29,6 +29,25 @@
       </install>
       <readme>pal_finder also needs Perl</readme>
     </package>
+    <package name="perl" version="5.16.3">
+      <install version="1.0">
+        <actions>
+          <!-- install perl -->
+          <action type="download_by_url">http://www.cpan.org/src/5.0/perl-5.16.3.tar.gz</action>
+          <action type="shell_command">./Configure -des -Dprefix=$INSTALL_DIR -Dstartperl='#!/usr/bin/env perl'</action>
+          <action type="make_install" />
+          <action type="set_environment">
+            <environment_variable name="PATH" action="prepend_to">$INSTALL_DIR/bin</environment_variable>
+          </action>
+        </actions>
+      </install>
+      <readme>
+        Perl 5 is a highly capable, feature-rich programming language with over 25 years of
+	development:
+
+        http://www.perl.org/
+      </readme>
+    </package>
     <package name="primer3_core" version="2.0.0">
       <install version="1.0">
 	<actions>
