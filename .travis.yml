@@ -10,3 +10,6 @@ before_install:
 script:
 # Trimmomatic
   - "trimmomatic/run_planemo_tests.sh"
+# Palfinder
+  - "pal_finder/run_planemo_tests.sh"
+
