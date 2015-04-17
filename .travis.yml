@@ -1,0 +1,12 @@
+# Config file for Travis CI
+language: python
+python:
+  - "2.7"
+
+before_install:
+  - "sudo apt-get java-common"
+  - "pip install planemo"
+
+script:
+# Trimmomatic
+  - "trimmomatic/run_planemo_tests.sh"
