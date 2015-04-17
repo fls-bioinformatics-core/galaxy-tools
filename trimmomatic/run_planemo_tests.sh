@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Install dependencies and set up environment for
 # trimmomatic tool
