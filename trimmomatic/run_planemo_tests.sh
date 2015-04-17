@@ -25,6 +25,6 @@ popd
 export TRIMMOMATIC_DIR=$INSTALL_DIR
 export TRIMMOMATIC_ADAPTERS_DIR=$INSTALL_DIR/adapters
 # Run the planemo testsls
-planemo test --install_galaxy trimmomatic.xml
+planemo test --install_galaxy $(dirname $0)/trimmomatic.xml
 ##
 #
