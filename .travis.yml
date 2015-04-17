@@ -4,7 +4,7 @@ python:
   - "2.7"
 
 before_install:
-  - "sudo apt-get java-common"
+  - "sudo apt-get install java-common"
   - "pip install planemo"
 
 script:
