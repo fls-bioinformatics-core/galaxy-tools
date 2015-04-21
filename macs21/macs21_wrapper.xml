@@ -328,50 +328,56 @@
 	<!--none yet for macs2-->
   </tests>
   <help>
-
-.. class:: warningmark
-
-**This is a modified version of the standard Galaxy toolshed "MACS2" tool,
-which has been customised for users at the University of Manchester to work
-with MACS 2.1.0.**
-
-It is based on the 16:14f378e35191 revision of the tool at
-
- *  http://toolshed.g2.bx.psu.edu/view/modencode-dcc/macs2 
-
-------
-
 **What it does**
 
-With the improvement of sequencing techniques, chromatin immunoprecipitation
-followed by high throughput sequencing (ChIP-Seq) is getting popular to study
-genome-wide protein-DNA interactions. To address the lack of powerful ChIP-Seq
-analysis method, we present a novel algorithm, named Model-based Analysis of
-ChIP-Seq (MACS), for identifying transcript factor binding sites. MACS captures
-the influence of genome complexity to evaluate the significance of enriched
-ChIP regions, and MACS improves the spatial resolution of binding sites through
-combining the information of both sequencing tag position and orientation. MACS
-can be easily used for ChIP-Seq data alone, or with control sample with the
-increase of specificity.
+MACS (Model-based Analysis of ChIP-seq) provides algorithms for transcript
+factor binding sites. The program can be used either for ChIP-Seq data alone,
+or with control sample datat to improve specificity.
 
-View the original MACS2 documentation:
+View the MACS2 documentation at:
 https://github.com/taoliu/MACS/blob/master/README.rst
 
 ------
 
 **Usage**
 
-**Peak Calling**: Main MACS2 Function to Call peaks from alignment results.
+The tool interfaces with two main functions in MACS:
 
-**Compare .bdg files**: Deduct noise by comparing two signal tracks in bedGraph.
-
+ * **callpeaks** (the main function) calls peaks from alignment results
+ * **bdgcmp** deducts noise by comparing two signal tracks in bedGraph format.
 
 ------
 
-**Citation**
+**Credits**
 
-For the underlying tool, please cite Zhang Y, Liu T, Meyer CA, Eeckhoute J, Johnson DS, Bernstein BE, Nusbaum C, Myers RM, Brown M, Li W, Liu XS. Model-based analysis of ChIP-Seq (MACS). Genome Biol. 2008;9(9):R137.
+This Galaxy tool was based on the MACS2 tool hosted in the Galaxy toolshed at
 
-Integration of MACS2 with Galaxy performed by Ziru Zhou ( ziruzhou@gmail.com ). Please send your comments/questions to modENCODE DCC at help@modencode.org.
+ * http://toolshed.g2.bx.psu.edu/view/modencode-dcc/macs2
+
+(specifically the 16:14f378e35191 revision of the tool) which is credited to Ziru
+Zhou. This version is a reimplemented version developed within the Bioinformatics
+Core Facility at the University of Manchester, which uses more up-to-date Galaxy
+syntax and adds some extra features.
+
+The tool runs Tao Liu's MACS2 software:
+
+ * https://github.com/taoliu/MACS
+
+The reference for MACS is:
+
+ * Zhang Y, Liu T, Meyer CA, Eeckhoute J, Johnson DS, Bernstein BE, Nusbaum C,
+   Myers RM, Brown M, Li W, Liu XS. Model-based analysis of ChIP-Seq (MACS).
+   Genome Biol. 2008;9(9):R137.
+
+Please kindly acknowledge both this Galaxy tool and the MACS2 package if you
+use it.
   </help>
+  <citations>
+    <!--
+    See https://wiki.galaxyproject.org/Admin/Tools/ToolConfigSyntax#A.3Ccitations.3E_tag_set
+    Can be either DOI or Bibtex
+    Use http://www.bioinformatics.org/texmed/ to convert PubMed to Bibtex
+    -->
+    <citation type="doi">10.1186/gb-2008-9-9-r137</citation>
+  </citations>
 </tool>
