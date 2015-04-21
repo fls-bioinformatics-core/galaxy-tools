@@ -1,16 +1,14 @@
 <?xml version="1.0"?>
 <tool_dependency>
-  <!-- Dependencies from local toolshed
-  <package name="numpy" version="1.9">
-    <repository name="package_numpy_1_9" prior_installation_required="True" owner="pjbriggs" />
-  </package>
-  -->
   <!-- Dependencies from main/test toolsheds -->
   <package name="numpy" version="1.9">
     <repository name="package_numpy_1_9" prior_installation_required="True" owner="iuc" />
   </package>
+  <package name="R" version="3.1.2">
+    <repository name="package_r_3_1_2" prior_installation_required="True" owner="iuc" />
+  </package>
   <!-- Subset of UCSC tools -->
-  <package name="ucsc_tools" version="1.0">
+  <package name="ucsc_tools_for_macs21" version="1.0">
       <install version="1.0">
             <actions>
 	      <!-- fetchChromSizes -->
@@ -34,6 +32,9 @@
               <action type="chmod">
                 <file mode="755">$INSTALL_DIR/bedGraphToBigWig</file>
               </action>
+              <action type="set_environment">
+                <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR</environment_variable>
+              </action>
 	    </actions>
       </install>
   </package>
@@ -42,19 +43,12 @@
       <install version="1.0">
             <actions>
               <action type="download_by_url">https://pypi.python.org/packages/source/M/MACS2/MACS2-2.1.0.20140616.tar.gz</action>
-	      <!-- Install environment for local toolshed
-		<repository name="package_numpy_1_9" owner="pjbriggs">
-		  <package name="python_numpy" version="1.9" />
-		</repository>
-	      </action>
-	      -->
 	      <!-- Install environment for main & test toolsheds -->
               <action type="set_environment_for_install">
 		<repository name="package_numpy_1_9" owner="iuc">
 		  <package name="numpy" version="1.9" />
 		</repository>
 	      </action>
-	      -->
               <action type="make_directory">$INSTALL_DIR/lib/python</action>
               <action type="shell_command">
                 export PYTHONPATH=$PYTHONPATH:$INSTALL_DIR/lib/python &amp;&amp; 

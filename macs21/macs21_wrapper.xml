@@ -3,6 +3,8 @@
     <requirement type="package" version="2.7">python</requirement>
     <requirement type="package" version="1.9">numpy</requirement>
     <requirement type="package" version="2.1.0.20140616">macs2</requirement>
+    <requirement type="package" version="3.1.2">R</requirement>
+    <requirement type="package" version="1.0">ucsc_tools_for_macs21</requirement>
   </requirements>
   <description>Model-based Analysis of ChIP-Seq</description>
   <command interpreter="python">
