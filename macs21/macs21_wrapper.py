@@ -77,6 +77,11 @@ def make_bigwig_from_bedgraph(bedgraph_file,bigwig_file,
         # Determine genome build
         chrom_sizes = os.path.basename(chrom_sizes)
         genome_build = chrom_sizes.split('.')[0]
+        if genome_build == '?':
+            # No genome build set
+            sys.stderr.write("ERROR genome build not set, cannot get sizes for '?'\n")
+            sys.stderr.write("Assign a genome build to your input dataset and rerun\n")
+            sys.exit(1)
         print "Missing chrom sizes file, attempting to fetch for '%s'" % genome_build
         # Run fetchChromSizes
         chrom_sizes = os.path.join(working_dir,chrom_sizes)
@@ -90,9 +95,10 @@ def make_bigwig_from_bedgraph(bedgraph_file,bigwig_file,
         # Copy stderr from fetchChromSizes for information only
         for line in open(stderr_file,'r'):
             print line.strip()
+        os.remove(stderr_file)
         # Check that the sizes file was downloaded
         if not os.path.exists(chrom_sizes):
-            sys.stderr.write("Failed to download chrom sizes for '%s'" % genome_build)
+            sys.stderr.write("Failed to download chrom sizes for '%s'\n" % genome_build)
             sys.exit(1)
     # Run bedClip
     treat_clipped = "%s.clipped" % os.path.basename(bedgraph_file)
@@ -103,7 +109,7 @@ def make_bigwig_from_bedgraph(bedgraph_file,bigwig_file,
     # Check that clipped file exists
     treat_clipped = os.path.join(working_dir,treat_clipped)
     if not os.path.exists(treat_clipped):
-        sys.stderr.write("Failed to create clipped bed file")
+        sys.stderr.write("Failed to create clipped bed file\n")
         sys.exit(1)
     # Run bedGraphToBigWig
     cmd = "bedGraphToBigWig %s %s %s" % (treat_clipped,chrom_sizes,
@@ -111,6 +117,10 @@ def make_bigwig_from_bedgraph(bedgraph_file,bigwig_file,
     print "Running %s" % cmd
     proc = subprocess.Popen(args=cmd,shell=True,cwd=working_dir)
     proc.wait()
+    # Clean up temporary chrom length file
+    if os.path.dirname(chrom_sizes) == working_dir:
+        print "Removing temporary chrom sizes file"
+        os.remove(chrom_sizes)
 
 if __name__ == "__main__":
 
