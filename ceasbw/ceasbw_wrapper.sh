@@ -20,6 +20,13 @@ while [ ! -z "$7" ] ; do
     if [ "$7" == "--bigwig" ] ; then
 	CEAS=ceasBW
     fi
+    if [ "$7" == "--length" ] ; then
+	chrom_sizes=$8
+	if [ ! -f "$chrom_sizes" ] ; then
+	    echo "ERROR no file $chrom_sizes, stopping" >&2
+	    exit 1
+	fi
+    fi
     OPTIONS="$OPTIONS $7"
     shift
 done
