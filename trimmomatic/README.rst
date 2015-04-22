@@ -15,8 +15,9 @@ The reference for Trimmomatic is:
 Automated installation
 ======================
 
-Installation via the Galaxy Tool Shed will take of installing the tool wrapper and
-the trimmomatic program and data, and setting the appropriate environment variables.
+Installation via the Galaxy Tool Shed will take care of installing the tool wrapper
+and the trimmomatic program and data, and setting the appropriate environment
+variables.
 
 Manual Installation
 ===================
@@ -57,6 +58,8 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.32.2     - Use ``GALAXY_SLOTS`` to set the appropriate number of threads to use
+             at runtime (default is 6).
 0.32.1     - Remove ``trimmomatic_adapters.loc.sample`` and hard-code adapter files
              into the XML wrapper.
 0.32.0     - Add tool_dependencies.xml to install Trimmomatic 0.32 automatically and
