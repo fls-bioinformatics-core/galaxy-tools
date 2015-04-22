@@ -1,18 +1,22 @@
-CEASbw
-======
+CEAS
+====
 
-XML and wrapper script for the Cistrome version of the CEAS package, which can be
-used to annotate intervals and scores with genome features.
+XML and wrapper script for the CEAS package, which can be used to annotate intervals
+and scores with genome features.
 
-In addition to the `ceas` program, the Cistrome version of the package includes the
-`ceasBW` program which can handle
+This tool uses the Cistrome version of the package, which provides two versions of
+the `ceas` program: in addition to the `ceas` program (the same as that available
+from the main CEAS website), it also includes the `ceasBW` program (which can handle
+bigwig input).
 
 The tool assumes that the `ceas` and `ceasBW` programs are on the Galaxy user's
-path. The official CEAS website is at
+path.
+
+The official CEAS website is at:
 
 <http://liulab.dfci.harvard.edu/CEAS/index.html>
 
-the Cistrome version can be found via
+The Cistrome version can be found via
 
 <https://bitbucket.org/cistrome/cistrome-applications-harvard/overview>
 
