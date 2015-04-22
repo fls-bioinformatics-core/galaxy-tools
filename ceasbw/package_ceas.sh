@@ -1,17 +1,17 @@
 #!/bin/sh
 #
-# Package ceasbw tool files into tgz file for upload to
+# Package CEAS tool files into tgz file for upload to
 # Galaxy toolshed
 #
-TGZ=ceasbw.tgz
+TGZ=ceas.tgz
 if [ -f $TGZ ] ; then
     echo $TGZ: already exists, please remove >&2
     exit 1
 fi
 tar cvzf $TGZ \
     README.markdown \
-    ceasbw_wrapper.xml \
-    ceasbw_wrapper.sh \
+    ceas_wrapper.xml \
+    ceas_wrapper.sh \
     tool_data_table_conf.xml.sample \
     tool-data/ceas.loc.sample \
     tool_dependencies.xml \

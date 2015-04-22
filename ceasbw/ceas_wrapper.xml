@@ -1,12 +1,12 @@
-<tool id="ceasbw" name="CEAS" version="1.0.2-0">
+<tool id="ceas" name="CEAS" version="1.0.2-1">
   <requirements>
     <requirement type="package" version="1.2.5">python_mysqldb</requirement>
     <requirement type="package" version="0.7.1">bx_python</requirement>
     <requirement type="package" version="1.0.2.d8c0751">cistrome_ceas</requirement>
     <requirement type="package" version="3.1.2">R</requirement>
   </requirements>
-  <description>Annotate intervals and scores with genome features (cistrome CEAS)</description>
-  <command interpreter="bash">ceasbw_wrapper.sh $bed_file $gdb_file $extra_bed_file $log_output $pdf_report $xls_output
+  <description>Annotate intervals and scores with genome features</description>
+  <command interpreter="bash">ceas_wrapper.sh $bed_file $gdb_file $extra_bed_file $log_output $pdf_report $xls_output
   #if (str($wig_file.ext) == 'bigwig')
     --bigwig $wig_file
     --length $GALAXY_DATA_INDEX_DIR/shared/ucsc/chrom/${bed_file.dbkey}.len

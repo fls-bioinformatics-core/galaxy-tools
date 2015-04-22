@@ -1,8 +1,12 @@
 #!/bin/sh -e
 #
-# Wrapper script to run CEASbw as a Galaxy tool
+# Wrapper script to run CEAS as a Galaxy tool
 #
-# Usage: ceasbw_wrapper.sh $BED_IN $GDB_IN $EXTRA_BED_IN $LOG_OUT $PDF_OUT $XLS_OUT $DBKEY
+# This runs the Cistrome versions of CEAS, which provides two executables:
+# - ceas (same as the "official" version)
+# - ceasBW (modified version that accepts a bigwig file as input)
+#
+# Usage: ceas_wrapper.sh $BED_IN $GDB_IN $EXTRA_BED_IN $LOG_OUT $PDF_OUT $XLS_OUT $DBKEY
 #
 # Process command line
 echo $*
@@ -23,7 +27,8 @@ while [ ! -z "$7" ] ; do
     if [ "$7" == "--length" ] ; then
 	chrom_sizes=$8
 	if [ ! -f "$chrom_sizes" ] ; then
-	    echo "ERROR no file $chrom_sizes, stopping" >&2
+	    echo "ERROR no file $chrom_sizes" >&2
+	    echo "Please update your Galaxy instance to include this file"
 	    exit 1
 	fi
     fi
