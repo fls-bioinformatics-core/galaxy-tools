@@ -6,8 +6,9 @@ python:
 before_install:
 # Java needed for Trimmomatic
   - "sudo apt-get install java-common"
-# pwgen needed for Galaxy installer
+# Dependencies needed for Galaxy installer
   - sudo apt-get install pwgen
+  - sudo apt-get install r-base
 
 install:
 # Bootstrap Galaxy instance for tests
