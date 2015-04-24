@@ -13,6 +13,9 @@ before_install:
 install:
 # Bootstrap Galaxy instance for tests
   - "git clone https://github.com/pjbriggs/bioinf-software-install.git"
+  - "wget http://sourceforge.net/projects/samtools/files/samtools/0.1.18/samtools-0.1.18.tar.bz2"
+  - "bioinf-software-install/install_samtools.sh samtools-0.1.18.tar.bz apps"
+  - "export PATH=$PATH:$PWD/apps/samtools/0.1.18/"
   - "bioinf-software-install/install_galaxy.sh travis"
   - ". travis/galaxy_venv/bin/activate"
 # Install planemo to do the testing
