@@ -6,13 +6,18 @@ python:
 before_install:
 # Java needed for Trimmomatic
   - "sudo apt-get install java-common"
-# Use planemo to do the testing
-  - "pip install planemo"
+
+install:
 # Bootstrap Galaxy instance for tests
-  - git clone https://github.com/pjbriggs/bioinf-software-install.git
-  - bioinf-software-install/install_galaxy.sh travis
+  - "git clone https://github.com/pjbriggs/bioinf-software-install.git"
+  - "bioinf-software-install/install_galaxy.sh travis"
+  - ". travis/galaxy_venv/bin/activate"
+# Install planemo to do the testing
+  - "pip install planemo"
 
 script:
+# Use the Galaxy virtualenv
+  - ". travis/galaxy_venv/bin/activate"
 # Trimmomatic
   - "trimmomatic/run_planemo_tests.sh --galaxy_root travis/galaxy-dist"
 # Palfinder
