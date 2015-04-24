@@ -10,11 +10,11 @@ before_install:
   - "pip install planemo"
 # Bootstrap Galaxy instance for tests
   - git clone https://github.com/pjbriggs/bioinf-software-install.git
-  - bioinf-software-install/install_galaxy.sh galaxy-dist
+  - bioinf-software-install/install_galaxy.sh travis
 
 script:
 # Trimmomatic
-  - "trimmomatic/run_planemo_tests.sh --galaxy_root galaxy-dist"
+  - "trimmomatic/run_planemo_tests.sh --galaxy_root travis/galaxy-dist"
 # Palfinder
-  - "pal_finder/run_planemo_tests.sh --galaxy_root galaxy-dist"
+  - "pal_finder/run_planemo_tests.sh --galaxy_root travis/galaxy-dist"
 
