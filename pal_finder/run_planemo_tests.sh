@@ -22,7 +22,8 @@ else
     echo Moving to $wd
     pushd $wd
     # pal_finder
-    wget http://sourceforge.net/projects/palfinder/files/pal_finder_v0.02.04.tar.gz
+    echo Installing pal_finder
+    wget -q http://sourceforge.net/projects/palfinder/files/pal_finder_v0.02.04.tar.gz
     tar xzf pal_finder_v0.02.04.tar.gz
     mkdir $INSTALL_DIR/bin
     mv pal_finder_v0.02.04/pal_finder_v0.02.04.pl $INSTALL_DIR/bin
@@ -30,18 +31,20 @@ else
     mv pal_finder_v0.02.04/config.txt $INSTALL_DIR/data/
     mv pal_finder_v0.02.04/simple.ref $INSTALL_DIR/data/
     # primer3_core
-    wget https://sourceforge.net/projects/primer3/files/primer3/2.0.0-alpha/primer3-2.0.0-alpha.tar.gz
+    echo Installing primer3_core
+    wget -q https://sourceforge.net/projects/primer3/files/primer3/2.0.0-alpha/primer3-2.0.0-alpha.tar.gz
     tar xzf primer3-2.0.0-alpha.tar.gz
     cd primer3-2.0.0-alpha
-    make -C src -f Makefile
+    make -C src -f Makefile >/dev/null 2>&1
     mv src/primer3_core $INSTALL_DIR/bin
     cd ..
     # Perl 5.16.3
-    wget http://www.cpan.org/src/5.0/perl-5.16.3.tar.gz
-    tar xvf perl-5.16.3.tar.gz
+    echo Installing Perl
+    wget -q http://www.cpan.org/src/5.0/perl-5.16.3.tar.gz
+    tar xzf perl-5.16.3.tar.gz
     cd perl-5.16.3
-    ./Configure -des -Dprefix=$INSTALL_DIR -D startperl='#!/usr/bin/env perl'
-    make install
+    ./Configure -des -Dprefix=$INSTALL_DIR -D startperl='#!/usr/bin/env perl' >/dev/null 2>&1
+    make install >/dev/null 2>&1
     popd
     rm -rf $wd/*
     rmdir $wd

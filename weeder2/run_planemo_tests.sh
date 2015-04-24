@@ -21,8 +21,9 @@ else
     wd=$(mktemp -d)
     echo Moving to $wd
     pushd $wd
-    wget http://159.149.160.51/modtools/downloads/weeder2.0.tar.gz
-    tar xvfz weeder2.0.tar.gz
+    echo Installing weeder2
+    wget -q http://159.149.160.51/modtools/downloads/weeder2.0.tar.gz
+    tar xfz weeder2.0.tar.gz
     g++ weeder2.cpp -o weeder2 -O3
     mkdir $INSTALL_DIR/bin
     mv weeder2 $INSTALL_DIR/bin

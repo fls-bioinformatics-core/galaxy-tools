@@ -21,8 +21,9 @@ else
     wd=$(mktemp -d)
     echo Moving to $wd
     pushd $wd
-    wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.32.zip
-    unzip Trimmomatic-0.32.zip
+    echo Installing trimmomatic
+    wget -q http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.32.zip
+    unzip -qq Trimmomatic-0.32.zip
     mv Trimmomatic-0.32/trimmomatic-0.32.jar $INSTALL_DIR/
     mv Trimmomatic-0.32/adapters/ $INSTALL_DIR/
     popd
