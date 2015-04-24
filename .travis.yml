@@ -30,4 +30,5 @@ script:
   - "trimmomatic/run_planemo_tests.sh --galaxy_root travis/galaxy-dist"
 # Palfinder
   - "pal_finder/run_planemo_tests.sh --galaxy_root travis/galaxy-dist"
-
+# Weeder2
+  - "pal_finder/run_planemo_tests.sh --galaxy_root travis/galaxy-dist"
