@@ -11,11 +11,13 @@ before_install:
   - sudo apt-get install r-base
 
 install:
-# Bootstrap Galaxy instance for tests
+# Get the installer scripts
   - "git clone https://github.com/pjbriggs/bioinf-software-install.git"
+# Install Samtools 0.1.18
   - "wget http://sourceforge.net/projects/samtools/files/samtools/0.1.18/samtools-0.1.18.tar.bz2"
   - "bioinf-software-install/install_samtools.sh samtools-0.1.18.tar.bz apps"
   - "export PATH=$PATH:$PWD/apps/samtools/0.1.18/"
+# Bootstrap Galaxy instance for tests
   - "bioinf-software-install/install_galaxy.sh travis"
   - ". travis/galaxy_venv/bin/activate"
 # Install planemo to do the testing
