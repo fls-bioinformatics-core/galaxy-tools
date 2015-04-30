@@ -31,7 +31,7 @@ by adding the line:
 
     <tool file="macs21/macs21_wrapper.xml" />
 
-You will also need to install MACS 2.1.0:
+You will also need to install MACS 2.1.0 and its dependencies:
 
 - https://pypi.python.org/pypi/MACS2
 
