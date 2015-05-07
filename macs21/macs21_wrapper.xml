@@ -1,4 +1,5 @@
 <tool id="macs2_1_peakcalling" name="MACS2.1.0" version="2.1.0-2">
+  <description>Model-based Analysis of ChIP-Seq</description>
   <requirements>
     <requirement type="package" version="2.7">python</requirement>
     <requirement type="package" version="1.9">numpy</requirement>
@@ -6,7 +7,7 @@
     <requirement type="package" version="3.1.2">R</requirement>
     <requirement type="package" version="1.0">ucsc_tools_for_macs21</requirement>
   </requirements>
-  <description>Model-based Analysis of ChIP-Seq</description>
+  <version_command>macs2 --version</version_command>
   <command interpreter="python">
     macs21_wrapper.py
     ##
