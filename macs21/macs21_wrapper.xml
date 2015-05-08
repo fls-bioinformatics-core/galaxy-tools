@@ -326,7 +326,42 @@
     </data>
   </outputs>
   <tests>
-	<!--none yet for macs2-->
+    <test>
+      <!-- Inputs -->
+      <param name="experiment_name" value="test_MACS2.1.0" />
+      <param name="major_command_selector" value="callpeak" />
+      <param name="broad_regions" value="" />
+      <param name="input_chipseq_file1" value="test_region_Input.bed"
+	     ftype="bed" />
+      <param name="input_control_file1" value="test_region_IP.bed"
+	     ftype="bed" />
+      <param name="gsize" value="" />
+      <param name="user_defined_gsize" value="775000000.0" />
+      <param name="bw" value="300" />
+      <param name="xls_to_interval" value="true" />
+      <param name="bdg_options|bdg" value="true" />
+      <param name="bdg_options|spmr" value="true" />
+      <param name="bdg_options|make_bigwig" value="false" />
+      <param name="pq_options_selector" value="qvalue" />
+      <param name="qvalue" value="0.05" />
+      <param name="advanced_options_selector" value="on" />
+      <param name="advanced_options|mfoldlo" value="5" />
+      <param name="advanced_options|mfoldhi" value="50" />
+      <param name="advanced_options|nolambda" value="" />
+      <param name="advanced_options|call_summits" value="" />
+      <param name="advanced_options|keep_duplicates" value="" />
+      <param name="advanced_options|maximum_tags" value="1" />
+      <param name="nomodel_type_selector" value="nomodel" />
+      <param name="nomodel_type|extsize" value="243" />
+      <!-- Outputs -->
+      <output name="output_extra_files" file="test_MACS2.1.0_html_report.zip" />
+      <output name="output_summits_bed_file" file="test_MACS2.1.0_summits.bed" />
+      <output name="output_peaks_file" file="test_MACS2.1.0_peaks.xls" />
+      <output name="output_narrowpeaks_file" file="test_MACS2.1.0_peaks_narrowPeak.interval" />
+      <output name="output_xls_to_interval_peaks_file" file="test_MACS2.1.0_peaks.xls" />
+      <output name="output_treat_pileup_file" file="test_MACS2.1.0_treat_pileup.bdg" />
+      <output name="output_lambda_bedgraph_file" file="test_MACS2.1.0_control_lambda.bdg" />
+    </test>
   </tests>
   <help>
 **What it does**
