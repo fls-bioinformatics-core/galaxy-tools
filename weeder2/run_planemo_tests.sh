@@ -12,31 +12,27 @@
 #      --galaxy_root DIR (to run tests using existing
 #                         Galaxy instance)
 #
-INSTALL_DIR=$(pwd)/test.tool_dependencies/weeder2
-if [ -e $INSTALL_DIR ] ; then
-    echo $INSTALL_DIR already exists >&2
-else
-    # Download and install weeder2
-    mkdir -p $INSTALL_DIR
-    wd=$(mktemp -d)
-    echo Moving to $wd
-    pushd $wd
-    echo Installing weeder2
-    wget -q http://159.149.160.51/modtools/downloads/weeder2.0.tar.gz
-    tar xfz weeder2.0.tar.gz
-    g++ weeder2.cpp -o weeder2 -O3
-    mkdir $INSTALL_DIR/bin
-    mv weeder2 $INSTALL_DIR/bin
-    mv FreqFiles $INSTALL_DIR/
-    cd ..
-    popd
-    rm -rf $wd/*
-    rmdir $wd
+# List of dependencies
+TOOL_DEPENDENCIES="weeder/2.0"
+# Where to find them
+TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies
+if [ ! -d $TOOL_DEPENDENCIES_DIR ] ; then
+    echo WARNING $TOOL_DEPENDENCIES_DIR not found >&2
+    echo Creating tool dependencies dir
+    mkdir -p $TOOL_DEPENDENCIES_DIR
+    echo Installing tool dependencies
+    $(dirname $0)/install_tool_deps.sh $TOOL_DEPENDENCIES_DIR
 fi
-# Set up the environment
-export PATH=$INSTALL_DIR/bin:$PATH
-export WEEDER_DIR=$INSTALL_DIR
-export WEEDER_FREQFILES_DIR=$INSTALL_DIR/FreqFiles
+# Load dependencies
+for dep in $TOOL_DEPENDENCIES ; do
+    env_file=$TOOL_DEPENDENCIES_DIR/$dep/env.sh
+    if [ -e $env_file ] ; then
+	. $env_file
+    else
+	echo ERROR no env.sh file found for $dep >&2
+	exit 1
+    fi
+done
 # Run the planemo tests
 planemo test $@ $(dirname $0)/weeder2_wrapper.xml
 ##
