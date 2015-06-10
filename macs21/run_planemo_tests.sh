@@ -23,7 +23,7 @@ if [ ! -d $TOOL_DEPENDENCIES_DIR ] ; then
     echo Creating tool dependencies dir
     mkdir -p $TOOL_DEPENDENCIES_DIR
     echo Installing tool dependencies
-    ./install_tool_deps.sh $TOOL_DEPENDENCIES_DIR
+    $(dirname $0)/install_tool_deps.sh $TOOL_DEPENDENCIES_DIR
 fi
 # Load dependencies
 for dep in $TOOL_DEPENDENCIES ; do
