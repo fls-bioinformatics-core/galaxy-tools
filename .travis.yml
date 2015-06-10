@@ -32,3 +32,5 @@ script:
   - "pal_finder/run_planemo_tests.sh --galaxy_root travis/galaxy"
 # Weeder2
   - "weeder2/run_planemo_tests.sh --galaxy_root travis/galaxy"
+# RnaChipIntegrator
+  - "rnachipintegrator/run_planemo_tests.sh --galaxy_root travis/galaxy"
