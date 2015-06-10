@@ -408,8 +408,8 @@
   <help>
 **What it does**
 
-MACS (Model-based Analysis of ChIP-seq) provides algorithms for transcript
-factor binding sites. The program can be used either for ChIP-Seq data alone,
+MACS (Model-based Analysis of ChIP-seq) 2.1.0 provides algorithms for identifying
+transcript factor binding sites. The program can be used either for ChIP-Seq data alone,
 or with control sample data to improve specificity.
 
 View the MACS2 documentation at:
