@@ -324,12 +324,13 @@
     </data>
   </outputs>
   <tests>
+    <!-- Peak calling without bigwig output -->
     <test>
       <!-- Inputs -->
       <param name="experiment_name" value="test_MACS2.1.0" />
       <param name="major_command_selector" value="callpeak" />
       <param name="broad_regions" value="" />
-      <param name="input_chipseq_file1" value="test_region_IP.bed"
+      <param name="input_chipseq_file1" value="test_region_IP.bed" dbkey="galGal3"
 	     ftype="bed" />
       <param name="input_control_file1" value="test_region_Input.bed"
 	     ftype="bed" />
@@ -353,7 +354,7 @@
       <param name="nomodel_type|extsize" value="243" />
       <!-- Outputs -->
       <output name="output_extra_files" file="test_MACS2.1.0_html_report.zip"
-	   compare="sim_size" delta="1500" />
+	      compare="sim_size" delta="1500" />
       <output name="output_summits_bed_file" file="test_MACS2.1.0_summits.bed" />
       <output name="output_narrowpeaks_file" file="test_MACS2.1.0_peaks_narrowPeak.interval" />
       <output name="output_xls_to_interval_peaks_file"
@@ -361,6 +362,47 @@
 	      compare="re_match" lines_diff="1" />
       <output name="output_treat_pileup_file" file="test_MACS2.1.0_treat_pileup.bdg" />
       <output name="output_lambda_bedgraph_file" file="test_MACS2.1.0_control_lambda.bdg" />
+    </test>
+    <!-- Peak calling with bigwig output -->
+    <test>
+      <!-- Inputs -->
+      <param name="experiment_name" value="test_MACS2.1.0" />
+      <param name="major_command_selector" value="callpeak" />
+      <param name="broad_regions" value="" />
+      <param name="input_chipseq_file1" value="test_region_IP.bed" dbkey="galGal3"
+	     ftype="bed" />
+      <param name="input_control_file1" value="test_region_Input.bed"
+	     ftype="bed" />
+      <param name="gsize" value="" />
+      <param name="user_defined_gsize" value="775000000.0" />
+      <param name="bw" value="300" />
+      <param name="xls_to_interval" value="true" />
+      <param name="bdg_options|bdg" value="-B" />
+      <param name="bdg_options|spmr" value="--SPMR" />
+      <param name="bdg_options|make_bigwig" value="true" />
+      <param name="pq_options_selector" value="qvalue" />
+      <param name="qvalue" value="0.05" />
+      <param name="advanced_options_selector" value="true" />
+      <param name="advanced_options|mfoldlo" value="5" />
+      <param name="advanced_options|mfoldhi" value="50" />
+      <param name="advanced_options|nolambda" value="" />
+      <param name="advanced_options|call_summits" value="" />
+      <param name="advanced_options|keep_duplicates" value="" />
+      <param name="advanced_options|maximum_tags" value="1" />
+      <param name="nomodel_type_selector" value="nomodel" />
+      <param name="nomodel_type|extsize" value="243" />
+      <!-- Outputs -->
+      <output name="output_extra_files" file="test_MACS2.1.0_bw_html_report.zip"
+	      compare="sim_size" delta="2500" />
+      <output name="output_summits_bed_file" file="test_MACS2.1.0_summits.bed" />
+      <output name="output_narrowpeaks_file" file="test_MACS2.1.0_peaks_narrowPeak.interval" />
+      <output name="output_xls_to_interval_peaks_file"
+	      file="test_MACS2.1.0_peaks.xls.re_match"
+	      compare="re_match" lines_diff="1" />
+      <output name="output_treat_pileup_file" file="test_MACS2.1.0_treat_pileup.bdg" />
+      <output name="output_lambda_bedgraph_file" file="test_MACS2.1.0_control_lambda.bdg" />
+      <output name="output_bigwig_file" file="test_MACS2.1.0_treat_pileup.bw"
+	      compare="sim_size" />
     </test>
   </tests>
   <help>
