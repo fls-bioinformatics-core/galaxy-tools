@@ -15,7 +15,7 @@
 # List of dependencies
 TOOL_DEPENDENCIES="weeder/2.0"
 # Where to find them
-TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies
+TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.weeder2
 if [ ! -d $TOOL_DEPENDENCIES_DIR ] ; then
     echo WARNING $TOOL_DEPENDENCIES_DIR not found >&2
     echo Creating tool dependencies dir
