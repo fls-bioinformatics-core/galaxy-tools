@@ -1,48 +1,41 @@
 #!/bin/bash
 #
 # Install dependencies and set up environment for
-# pal_finder tool
+# pal_finder tool, then run tests using planemo
 #
-INSTALL_DIR=$(pwd)/tool_dependencies/pal_finder/0.02.04
-if [ -e $INSTALL_DIR ] ; then
-    echo $INSTALL_DIR already exists >&2
-    exit 1
+# Note that any arguments supplied to the script are
+# passed directly to the "planemo test..." invocation
+#
+# e.g. --install_galaxy (to get planemo to create a
+#                        Galaxy instance to run tests)
+#
+#      --galaxy_root DIR (to run tests using existing
+#                         Galaxy instance)
+#
+# List of dependencies
+TOOL_DEPENDENCIES="perl/5.16.3
+ primer3_core/2.0.0
+ pal_finder/0.02.04"
+# Where to find them
+TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.pal_finder
+if [ ! -d $TOOL_DEPENDENCIES_DIR ] ; then
+    echo WARNING $TOOL_DEPENDENCIES_DIR not found >&2
+    echo Creating tool dependencies dir
+    mkdir -p $TOOL_DEPENDENCIES_DIR
+    echo Installing tool dependencies
+    $(dirname $0)/install_tool_deps.sh $TOOL_DEPENDENCIES_DIR
 fi
-mkdir -p $INSTALL_DIR
-#
-# Download and install pal_finder and primer3_core
-wd=$(mktemp -d)
-echo Moving to $wd
-pushd $wd
-# pal_finder
-wget http://sourceforge.net/projects/palfinder/files/pal_finder_v0.02.04.tar.gz
-tar xzf pal_finder_v0.02.04.tar.gz
-mkdir $INSTALL_DIR/bin
-mv pal_finder_v0.02.04/pal_finder_v0.02.04.pl $INSTALL_DIR/bin
-mkdir $INSTALL_DIR/data
-mv pal_finder_v0.02.04/config.txt $INSTALL_DIR/data/
-mv pal_finder_v0.02.04/simple.ref $INSTALL_DIR/data/
-# primer3_core
-wget https://sourceforge.net/projects/primer3/files/primer3/2.0.0-alpha/primer3-2.0.0-alpha.tar.gz
-tar xzf primer3-2.0.0-alpha.tar.gz
-cd primer3-2.0.0-alpha
-make -C src -f Makefile
-mv src/primer3_core $INSTALL_DIR/bin
-cd ..
-# Perl
-wget http://www.cpan.org/src/5.0/perl-5.16.3.tar.gz
-tar xvf perl-5.16.3.tar.gz
-cd perl-5.16.3
-./Configure -des -Dprefix=$INSTALL_DIR -D startperl='#!/usr/bin/env perl'
-make install
-popd
-#rm -rf $wd/*
-#rmdir $wd
-# Set up the environment
-export PATH=$INSTALL_DIR/bin:$PATH
-export PALFINDER_SCRIPT_DIR=$INSTALL_DIR/bin
-export PALFINDER_DATA_DIR=$INSTALL_DIR/data
+# Load dependencies
+for dep in $TOOL_DEPENDENCIES ; do
+    env_file=$TOOL_DEPENDENCIES_DIR/$dep/env.sh
+    if [ -e $env_file ] ; then
+	. $env_file
+    else
+	echo ERROR no env.sh file found for $dep >&2
+	exit 1
+    fi
+done
 # Run the planemo tests
-planemo test --install_galaxy $(dirname $0)/pal_finder_wrapper.xml
+planemo test $@ $(dirname $0)/pal_finder_wrapper.xml
 ##
 #

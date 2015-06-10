@@ -4,12 +4,33 @@ python:
   - "2.7"
 
 before_install:
+# Java needed for Trimmomatic
   - "sudo apt-get install java-common"
+# Dependencies needed for Galaxy installer
+  - sudo apt-get install pwgen
+  - sudo apt-get install r-base
+
+install:
+# Get the installer scripts
+  - "git clone https://github.com/pjbriggs/bioinf-software-install.git"
+# Install Samtools 0.1.18
+  - "wget http://sourceforge.net/projects/samtools/files/samtools/0.1.18/samtools-0.1.18.tar.bz2"
+  - "bioinf-software-install/install_samtools.sh samtools-0.1.18.tar.bz2 apps"
+  - "export PATH=$PATH:$PWD/apps/samtools/0.1.18/"
+# Bootstrap Galaxy instance for tests
+  - "bioinf-software-install/install_galaxy.sh --repo https://github.com/galaxyproject/galaxy/ travis"
+  - ". travis/galaxy_venv/bin/activate"
+# Install planemo to do the testing
   - "pip install planemo"
 
 script:
+# Use the Galaxy virtualenv
+  - ". travis/galaxy_venv/bin/activate"
 # Trimmomatic
-  - "trimmomatic/run_planemo_tests.sh"
+  - "trimmomatic/run_planemo_tests.sh --galaxy_root travis/galaxy"
 # Palfinder
-  - "pal_finder/run_planemo_tests.sh"
-
+  - "pal_finder/run_planemo_tests.sh --galaxy_root travis/galaxy"
+# Weeder2
+  - "weeder2/run_planemo_tests.sh --galaxy_root travis/galaxy"
+# RnaChipIntegrator
+  - "rnachipintegrator/run_planemo_tests.sh --galaxy_root travis/galaxy"

@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Install dependencies and set up environment for
-# trimmomatic tool, then run tests using planemo
+# weeder2 tool, then run tests using planemo
 #
 # Note that any arguments supplied to the script are
 # passed directly to the "planemo test..." invocation
@@ -13,9 +13,9 @@
 #                         Galaxy instance)
 #
 # List of dependencies
-TOOL_DEPENDENCIES="trimmomatic/0.32"
+TOOL_DEPENDENCIES="weeder/2.0"
 # Where to find them
-TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.trimmomatic
+TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.weeder2
 if [ ! -d $TOOL_DEPENDENCIES_DIR ] ; then
     echo WARNING $TOOL_DEPENDENCIES_DIR not found >&2
     echo Creating tool dependencies dir
@@ -34,6 +34,6 @@ for dep in $TOOL_DEPENDENCIES ; do
     fi
 done
 # Run the planemo tests
-planemo test $@ $(dirname $0)/trimmomatic.xml
+planemo test $@ $(dirname $0)/weeder2_wrapper.xml
 ##
 #
