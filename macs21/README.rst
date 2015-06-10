@@ -42,24 +42,24 @@ sample test files under Galaxy's ``test-data/`` directory. Then:
 
     ./run_tests.sh -id macs2_wrapper
 
-(However there are no tests defined at present.)
 
 History
 =======
 
-This tool is based on the ``modencode-dcc`` MACS2 tool developed by Ziru Zhou
-(ziruzhou@gmail.com), specifically the ``16:14f378e35191`` revision of the
-tool at
+This tool was originally based on the ``modencode-dcc`` MACS2 tool developed
+by Ziru Zhou (ziruzhou@gmail.com), specifically the ``16:14f378e35191``
+revision of the tool available via
 
 - http://toolshed.g2.bx.psu.edu/view/modencode-dcc/macs2 
 
-It has been substantially modified both to adapt it to MACS 2.1.0, and to
-re-implement the internal workings of the tool to conform with current practices
-in invoking commands from Galaxy.
+This version has been substantially modified both to adapt it to MACS 2.1.0, and
+to re-implement the internal workings of the tool to conform with current
+practices in invoking commands from Galaxy, and to add new functionality.
 
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+2.1.0-3    - Add tool tests
 2.1.0-2    - Add option to create bigWig file from bedGraphs; fix bug with -B
              option; make --mfold defaults consistent.
 2.1.0-1    - Initial version
