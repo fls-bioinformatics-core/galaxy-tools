@@ -17,7 +17,7 @@ TOOL_DEPENDENCIES="numpy/1.9
  macs/2.1.0.20140616 
  ucsc_tools_for_macs21/1.0"
 # Where to find them
-TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies
+TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.macs21
 if [ ! -d $TOOL_DEPENDENCIES_DIR ] ; then
     echo WARNING $TOOL_DEPENDENCIES_DIR not found >&2
     echo Creating tool dependencies dir
