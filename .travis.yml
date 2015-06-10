@@ -34,3 +34,6 @@ script:
   - "weeder2/run_planemo_tests.sh --galaxy_root travis/galaxy"
 # RnaChipIntegrator
   - "rnachipintegrator/run_planemo_tests.sh --galaxy_root travis/galaxy"
+# Macs21
+  - "macs21/run_planemo_tests.sh --galaxy_root travis/galaxy"
+
