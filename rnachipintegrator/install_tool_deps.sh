@@ -15,22 +15,22 @@ if [ ! -d "$TOP_DIR" ] ; then
     mkdir -p $TOP_DIR
 fi
 cd $TOP_DIR
-# RnaChipIntegrator 0.4.3
-INSTALL_DIR=$TOP_DIR/rnachipintegrator/0.4.3
+# RnaChipIntegrator 0.4.4
+INSTALL_DIR=$TOP_DIR/rnachipintegrator/0.4.4
 mkdir -p $INSTALL_DIR
 wd=$(mktemp -d)
 pushd $wd
-wget https://github.com/fls-bioinformatics-core/RnaChipIntegrator/archive/v0.4.3.tar.gz
-tar zxf v0.4.3.tar.gz
-mv RnaChipIntegrator-0.4.3/RnaChipIntegrator.py $INSTALL_DIR
-mv RnaChipIntegrator-0.4.3/Spreadsheet.py $INSTALL_DIR
+wget https://github.com/fls-bioinformatics-core/RnaChipIntegrator/archive/v0.4.4.tar.gz
+tar zxf v0.4.4.tar.gz
+mv RnaChipIntegrator-0.4.4/RnaChipIntegrator.py $INSTALL_DIR
+mv RnaChipIntegrator-0.4.4/Spreadsheet.py $INSTALL_DIR
 popd
 rm -rf $wd/*
 rmdir $wd
-cat > rnachipintegrator/0.4.3/env.sh <<EOF
+cat > rnachipintegrator/0.4.4/env.sh <<EOF
 #!/bin/sh
-# Source this to setup rnachipintegrator/0.4.3
-echo Setting up RnaChipIntegrator 0.4.3
+# Source this to setup rnachipintegrator/0.4.4
+echo Setting up RnaChipIntegrator 0.4.4
 export PATH=$INSTALL_DIR:\$PATH
 #
 EOF

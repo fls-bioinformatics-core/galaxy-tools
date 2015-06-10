@@ -13,7 +13,7 @@
 #                         Galaxy instance)
 #
 # List of dependencies
-TOOL_DEPENDENCIES="rnachipintegrator/0.4.3
+TOOL_DEPENDENCIES="rnachipintegrator/0.4.4
  xlwt/0.7.5
  xlrd/0.9.3
  xlutils/1.7.1"
