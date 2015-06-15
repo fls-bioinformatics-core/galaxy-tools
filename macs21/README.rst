@@ -1,7 +1,7 @@
-MACS21: Model-based Analysis of ChIP-Seq (MACS 2.1.0)
-=====================================================
+MACS21: Model-based Analysis of ChIP-Seq (MACS 2.1.0) peak calling
+==================================================================
 
-Galaxy tool wrapper for the MACS 2.1.0 ChIP-seq peak calling program. MACS has been
+Galaxy tool wrapper for the peak calling function of MACS 2.1.0. MACS has been
 developed by Tao Lui
 https://github.com/taoliu/MACS/
 
@@ -59,6 +59,7 @@ practices in invoking commands from Galaxy, and to add new functionality.
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+2.1.0-4    - Remove 'bdgcmp' functionality.
 2.1.0-3    - Add tool tests
 2.1.0-2    - Add option to create bigWig file from bedGraphs; fix bug with -B
              option; make --mfold defaults consistent.
