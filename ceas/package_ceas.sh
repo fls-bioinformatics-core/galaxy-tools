@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Package ceas tool files into tgz file for upload to
+# Package CEAS tool files into tgz file for upload to
 # Galaxy toolshed
 #
 TGZ=ceas.tgz

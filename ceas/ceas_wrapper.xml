@@ -1,6 +1,18 @@
-<tool id="ceas" name="CEAS" version="1.0.2.0">
+<tool id="ceas" name="CEAS" version="1.0.2-1">
+  <requirements>
+    <requirement type="package" version="1.2.5">python_mysqldb</requirement>
+    <requirement type="package" version="0.7.1">bx_python</requirement>
+    <requirement type="package" version="1.0.2.d8c0751">cistrome_ceas</requirement>
+    <requirement type="package" version="3.1.2">R</requirement>
+  </requirements>
   <description>Annotate intervals and scores with genome features</description>
-  <command interpreter="bash">ceas_wrapper.sh $bed_file $gdb_file $wig_file $extra_bed_file $log_output $pdf_report $xls_output
+  <command interpreter="bash">ceas_wrapper.sh $bed_file $gdb_file $extra_bed_file $log_output $pdf_report $xls_output
+  #if (str($wig_file.ext) == 'bigwig')
+    --bigwig $wig_file
+    --length $GALAXY_DATA_INDEX_DIR/shared/ucsc/chrom/${bed_file.dbkey}.len
+  # else
+    --wig $wig_file
+  #end if
   #if (str($span) and int(str($span)) > 0)
     --span $span
   #end if
@@ -8,16 +20,13 @@
   --bisizes $bisizes_lower,$bisizes_upper
   --pf-res $profiling_resolution
   --rel-dist $relative_distance</command>
-  <requirements>
-    <requirement type="package" version="1.2.5">python_mysqldb</requirement>
-    <requirement type="package" version="1.0.2">ceas</requirement>
-  </requirements>
   <inputs>
     <param name="bed_file" type="data" format="bed" label="BED file with ChIP regions" />
-    <param name="wig_file" type="data" format="wig" label="WIG file for wig profiling or genome background annotation" optional="true" />
+    <param name="wig_file" type="data" format="wig,bigwig" label="WIG or BIGWIG file for wig profiling or genome background annotation" optional="true" />
     <param name="extra_bed_file" type="data" format="bed" label="BED file with extra regions of interest (e.g. non-coding regions)" optional="true" />
     <param name="gdb_file" type="select" label="Gene annotation table">
       <options from_data_table="ceas_annotations">
+	<filter name="dbkey" type="data_meta" ref="bed_file" key="dbkey" column="0" />
         <validator type="no_options" message="No tables are available for the selected input"/>
       </options>
     </param>
@@ -48,7 +57,16 @@ CEAS also enables biologists to visualize the average ChIP enrichment signals ov
 specific genomic features, allowing continuous and broad ChIP enrichment to be perceived
 which might be too subtle to detect from ChIP peaks alone.
 
-This tool is compatible with CEAS 1.0.2. CEAS can be obtained from
+This tool is compatible with the ceasBW version of CEAS from the Cistrome package
+obtained from
+
+https://bitbucket.org/cistrome/cistrome-applications-harvard/overview
+
+(commit id d8c0751, datestamp 20140929). The CEAS code is under the
+published-packages/CEAS/ subdirectory.
+
+Cistrome data files and documentation can be found at
+
 http://liulab.dfci.harvard.edu/CEAS/index.html
 
 The CEAS user manual is available at http://liulab.dfci.harvard.edu/CEAS/usermanual.html
