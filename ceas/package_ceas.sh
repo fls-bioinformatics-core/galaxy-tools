@@ -10,7 +10,7 @@ if [ -f $TGZ ] ; then
     exit 1
 fi
 tar cvzf $TGZ \
-    README.markdown \
+    README.rst \
     ceas_wrapper.xml \
     ceas_wrapper.sh \
     tool_data_table_conf.xml.sample \
