@@ -1,0 +1,61 @@
+<tool id="data_manager_rnachipintegrator_fetch_canonical_genes" name="Fetch RnaChipIntegrator canonical genes" version="0.0.1" tool_type="manage_data">
+    <description>Fetch and install canonical gene lists for RnaChipIntegrator</description>
+    <command interpreter="python">data_manager_rnachipintegrator_fetch_canonical_genes.py
+    "${out_file}"
+    "${description}"</command>
+    <inputs>
+        <param name="dbkey" type="genomebuild" label="DBKEY to assign to data" />
+        <param type="text" name="description" value=""
+	       label="Description of canonical gene list" size="50"
+	       help="Text that will appear in the list of canonical genes" />
+        <conditional name="reference_source">
+          <param name="reference_source_selector" type="select" label="Choose the source for the reference genome">
+	    <!--
+            <option value="upload" selected="True">Upload file from your computer</option>
+	    -->
+            <option value="server">File on the server</option>
+          </param>
+	  <when value="upload">
+            <param type="file" name="gene_list_upload" value=""
+		   label="Canonical gene file" multiple="False" optional="False" />
+          </when>
+          <when value="server">
+            <param type="text" name="gene_list_filename" value="" size="50"
+		   label="Full path to the canonical genes file on disk" optional="False" />
+            <param type="boolean" name="create_symlink"
+		   truevalue="create_symlink" falsevalue="copy_file"
+		   label="Create symlink to orignal data instead of copying" checked="False" />
+          </when>
+        </conditional>
+    </inputs>
+    <outputs>
+        <data name="out_file" format="data_manager_json"/>
+    </outputs>
+    <tests>
+        <test>
+            <param name="dbkey" value="anoGam1"/>
+            <param name="sequence_name" value=""/>
+            <param name="sequence_desc" value=""/>
+            <param name="sequence_id" value=""/>
+            <param name="reference_source_selector" value="history"/>
+            <param name="input_fasta" value="phiX174.fasta"/>
+            <param name="sort_selector" value="as_is"/>
+            <output name="out_file" file="phiX174_as_anoGam1.data_manager_json"/>
+        </test>
+    </tests>
+    <help>
+**What it does**
+
+Fetches a canonical gene list file and populates the "rnachipintegrator_canonical_genes"
+data table.
+
+------
+
+
+
+.. class:: infomark
+
+**Notice:** If you leave name, description, or id blank, it will be generated automatically. 
+
+    </help>
+</tool>
