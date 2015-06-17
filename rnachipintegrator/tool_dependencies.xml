@@ -51,10 +51,10 @@
     </install>
     <readme>Installs Python module xlutils 1.7.1</readme>
   </package>
-  <package name="rnachipintegrator" version="0.4.3">
+  <package name="rnachipintegrator" version="0.4.4">
     <install version="1.0">
       <actions>
-	<action type="download_by_url">https://github.com/fls-bioinformatics-core/RnaChipIntegrator/archive/v0.4.3.tar.gz</action>
+	<action type="download_by_url">https://github.com/fls-bioinformatics-core/RnaChipIntegrator/archive/v0.4.4.tar.gz</action>
 	<action type="move_file">
 	  <source>RnaChipIntegrator.py</source>
 	  <destination>$INSTALL_DIR</destination>
