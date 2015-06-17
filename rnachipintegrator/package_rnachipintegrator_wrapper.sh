@@ -3,7 +3,8 @@
 # Package RnaChipIntegrator files into tgz file for upload to
 # Galaxy toolshed
 #
-TGZ=rnachipintegrator_wrapper.tgz
+VERSION=$(grep "^<tool" rnachipintegrator_wrapper.xml | grep -o -e version=\".*\" | cut -d= -f2 | tr -d \")
+TGZ=rnachipintegrator_wrapper-${VERSION}.tgz
 if [ -f $TGZ ] ; then
     echo $TGZ: already exists, please remove >&2
     exit 1
@@ -18,7 +19,8 @@ tar cvzf $TGZ \
     data_manager_conf.xml \
     tool-data \
     tool_data_table_conf.xml.sample \
-    test-data
+    test-data \
+    --exclude=*~
 if [ -f $TGZ ] ; then
     echo Created $TGZ
 else
