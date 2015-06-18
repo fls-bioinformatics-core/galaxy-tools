@@ -35,7 +35,7 @@ if __name__ == '__main__':
     #
     # We want the values set in the data manager XML
     dbkey = params['param_dict']['dbkey']
-    description = params['param_dict']['description']
+    description = params['param_dict']['description'].strip()
     # Where to put the output file
     # Nb we have to make this ourselves, it doesn't exist by default
     target_dir = params['output_data'][0]['extra_files_path']
@@ -60,6 +60,9 @@ if __name__ == '__main__':
             os.remove(annotation_file_path)
             annotation_file_name = os.path.basename(uncompressed_file)
             annotation_file_path = uncompressed_file
+        # Update the description
+        if not description:
+            description = "%s (%s)" % (os.path.splitext(annotation_file_name)[0],dbkey)
         # Update the output dictionary
         data_manager_dict['data_tables'] = dict()
         data_manager_dict['data_tables']['ceas_annotations'] = {
