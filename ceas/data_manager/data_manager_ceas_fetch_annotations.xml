@@ -8,7 +8,9 @@
     "${description}"</command>
     <inputs>
         <param name="dbkey" type="genomebuild" label="DBKEY to assign to data" />
-        <param type="text" name="description" value="" label="Description of annotation" />
+        <param type="text" name="description" value="" size="50"
+	       label="Description of annotation"
+	       help="Text that will be displayed to the user when selecting which annotation to use" />
         <conditional name="reference_source">
           <param name="reference_source_selector" type="select" label="Choose the source for the reference genome">
             <option value="ceas_web" selected="True">CEAS website</option>
@@ -35,7 +37,8 @@
           </when>
 	  -->
           <when value="directory">
-            <param type="text" name="annotation_filename" value="" label="Full path to CEAS annotation table file on disk" optional="False" />
+            <param type="text" name="annotation_filename" value="" size="50"
+		   label="Full path to CEAS annotation table file on disk" optional="False" />
             <param type="boolean" name="create_symlink" truevalue="create_symlink" falsevalue="copy_file" label="Create symlink to orignal data instead of copying" checked="False" />
           </when>
         </conditional>
