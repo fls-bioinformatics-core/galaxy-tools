@@ -124,4 +124,12 @@ http://liulab.dfci.harvard.edu/CEAS/index.html
 
 The CEAS user manual is available at http://liulab.dfci.harvard.edu/CEAS/usermanual.html
   </help>
+  <citations>
+    <!--
+    See https://wiki.galaxyproject.org/Admin/Tools/ToolConfigSyntax#A.3Ccitations.3E_tag_set
+    Can be either DOI or Bibtex
+    Use http://www.bioinformatics.org/texmed/ to convert PubMed to Bibtex
+    -->
+    <citation type="doi">10.1093/bioinformatics/btp479</citation>
+  </citations>
 </tool>
