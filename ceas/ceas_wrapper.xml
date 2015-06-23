@@ -92,7 +92,7 @@
       <param name="bed_file" value="ceas_in.bed" ftype="bed" dbkey="galGal3" />
       <param name="wig_file" value="ceas_in.bigwig" ftype="bigwig" />
       <param name="gdb_file" value="galGal3_test" />
-      <output name="log_output" file="ceas_out3.log.re_match" compare="re_match" lines_diff="4"/>
+      <output name="log_output" file="ceas_out3.log.re_match" compare="re_match"/>
       <output name="pdf_report" file="ceas_out3.pdf" />
       <output name="xls_output" file="ceas_out3.xls" />
     </test>

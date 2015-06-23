@@ -29,7 +29,7 @@ INFO\ \ \@\ .*\ \#9\ append\ an\ R\ script\ of\ wig\ profiling\.\.\.\
 
 R\ version\ 3\.1\.2\ \(2014\-10\-31\)\ \-\-\ \"Pumpkin\ Helmet\"
 Copyright\ \(C\)\ 2014\ The\ R\ Foundation\ for\ Statistical\ Computing
-Platform\:\ x86\_64\-redhat\-linux\-gnu\ \(64\-bit\)
+Platform\:\ .*
 
 R\ is\ free\ software\ and\ comes\ with\ ABSOLUTELY\ NO\ WARRANTY\.
 You\ are\ welcome\ to\ redistribute\ it\ under\ certain\ conditions\.
