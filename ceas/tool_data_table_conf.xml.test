@@ -1,6 +1,6 @@
 <tables>
     <table name="ceas_annotations" comment_char="#">
         <columns>value, dbkey, name, path</columns>
-        <file path="tool-data/ceas.loc" />
+	<file path="${__HERE__}/test-data/ceas.loc" />
     </table>
 </tables>

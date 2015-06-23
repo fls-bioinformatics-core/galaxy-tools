@@ -6,40 +6,65 @@
 # - ceas (same as the "official" version)
 # - ceasBW (modified version that accepts a bigwig file as input)
 #
-# Usage: ceas_wrapper.sh $BED_IN $GDB_IN $EXTRA_BED_IN $LOG_OUT $PDF_OUT $XLS_OUT $DBKEY
+# Usage: ceas_wrapper.sh $BED_IN $GDB_IN $LOG_OUT $PDF_OUT $XLS_OUT [OPTIONS]
+#
+# Initialise
+CEAS=ceas
 #
 # Process command line
 echo $*
 BED_IN=$1
 GDB_IN=$2
-EXTRA_BED_IN=$3
-LOG_OUT=$4
-PDF_OUT=$5
-XLS_OUT=$6
+LOG_OUT=$3
+PDF_OUT=$4
+XLS_OUT=$5
+#
+# Initialise other variables
+EXTRA_BED_IN=
 #
 # Collect remaining args
-CEAS=ceas
 OPTIONS=
-while [ ! -z "$7" ] ; do
-    if [ "$7" == "--bigwig" ] ; then
+while [ ! -z "$6" ] ; do
+    if [ "$6" == "--bigwig" ] ; then
+	# Bigwig input, need to use 'ceasBW'
 	CEAS=ceasBW
-    fi
-    if [ "$7" == "--length" ] ; then
-	chrom_sizes=$8
+	OPTIONS="$OPTIONS --bigwig"
+    elif [ "$6" == "--length" ] ; then
+	# Need a chrom sizes file
+	chrom_sizes=$7
 	if [ ! -f "$chrom_sizes" ] ; then
-	    echo "ERROR no file $chrom_sizes" >&2
-	    echo "Please update your Galaxy instance to include this file"
-	    exit 1
+	    # If chrom sizes file doesn't already exist then attempt to
+	    # download the data from UCSC
+	    echo "WARNING no file $chrom_sizes"
+	    dbkey=$(echo $(basename $chrom_sizes) | cut -d'.' -f1)
+	    if [ $dbkey == '?' ] ; then
+		# DBkey not set, this is fatal
+		echo "ERROR genome build not set, cannot get sizes for '?'" >&2
+		echo "Assign a genome build to your input dataset and rerun" >&2
+		exit 1
+	    fi
+	    # Fetch the sizes using fetchChromSizes
+	    echo "Attempting to download chromosome sizes for $dbkey"
+	    chrom_sizes=$(basename $chrom_sizes)
+	    fetchChromSizes $dbkey >$chrom_sizes 2>/dev/null
+	    if [ $? -ne 0 ] ; then
+		echo "ERROR unable to fetch data for ${dbkey}" >&2
+		echo "Please check the genome build associated with your input dataset" >&2
+		echo "or update your Galaxy instance to include an appropriate .len file" >&2
+		exit 1
+	    fi
 	fi
+	OPTIONS="$OPTIONS --length $chrom_sizes"
+	shift
+    else
+	OPTIONS="$OPTIONS $6"
     fi
-    OPTIONS="$OPTIONS $7"
     shift
 done
 #
 # Convenience variables for local files
 base_name="ceas"
 log_file=${base_name}.log
-r_script=${base_name}.R
 pdf_report=${base_name}.pdf
 xls_file=${base_name}.xls
 #
@@ -49,11 +74,13 @@ $CEAS --version >$log_file 2>/dev/null
 #
 # Construct and run CEAS command line
 ceas_cmd="$CEAS --name $base_name $OPTIONS -g $GDB_IN -b $BED_IN"
-if [ "$EXTRA_BED_IN" != "None" ] ; then
-    ceas_cmd="$ceas_cmd -e $EXTRA_BED_IN"
-fi
 echo "Running $ceas_cmd"
 $ceas_cmd >>$log_file 2>&1
+status=$?
+if [ $status -ne 0 ] ; then
+    echo "ERROR $CEAS exited with non-zero code: $status" >&2
+    exit $status
+fi
 #
 # Move outputs to final destination
 if [ -e $log_file ] ; then
@@ -70,20 +97,11 @@ else
     echo ERROR failed to generate XLS file >&2
     exit 1
 fi
-#
-# Run the R script to generate the PDF report
-if [ -e $r_script ] ; then
-    echo "Running $r_script to generate $pdf_report"
-    R --vanilla < $r_script
-    if [ -e $pdf_report ] ; then
-	echo "Moving $xls_file to $XLS_OUT"
-	/bin/mv $pdf_report $PDF_OUT
-    else
-	echo ERROR failed to generate PDF report >&2
-	exit 1
-    fi
+if [ -e $pdf_report ] ; then
+    echo "Moving $pdf_report to $PDF_OUT"
+    /bin/mv $pdf_report $PDF_OUT
 else
-    echo ERROR no R script to generate PDF report >&2
+    echo ERROR failed to generate PDF report >&2
     exit 1
 fi
 #

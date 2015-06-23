@@ -66,9 +66,10 @@ if __name__ == '__main__':
         # Update the output dictionary
         data_manager_dict['data_tables'] = dict()
         data_manager_dict['data_tables']['ceas_annotations'] = {
+            'value': "%s_ceas_web" % dbkey,
             'dbkey': dbkey,
             'name': description,
-            'value': annotation_file_name,
+            'path': annotation_file_name,
         }
     else:
         raise NotImplementedError("Non-download options not implemented")

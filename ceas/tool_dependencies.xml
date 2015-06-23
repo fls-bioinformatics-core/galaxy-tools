@@ -83,4 +83,20 @@ bx-python==0.7.1
     http://liulab.dfci.harvard.edu/CEAS/index.html
     </readme>
   </package>
+  <!-- fetchChromSize from UCSC tools -->
+  <package name="ucsc_fetchChromSizes" version="1.0">
+      <install version="1.0">
+        <actions>
+          <action type="download_binary">
+            <url_template architecture="x86_64" os="linux">http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/fetchChromSizes</url_template>
+          </action>
+          <action type="chmod">
+            <file mode="755">$INSTALL_DIR/fetchChromSizes</file>
+          </action>
+	</actions>
+      </install>
+    <readme>Installs the binary executable for the fetchChromSizes utility
+    from UCSC tools
+    </readme>
+  </package>
 </tool_dependency>

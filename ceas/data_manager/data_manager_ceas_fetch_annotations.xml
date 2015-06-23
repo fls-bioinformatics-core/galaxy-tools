@@ -1,4 +1,9 @@
 <tool id="data_manager_fetch_ceas_annotations" name="Fetch CEAS annotation" version="0.0.1" tool_type="manage_data">
+    <requirements>
+      <requirement type="package" version="1.2.5">python_mysqldb</requirement>
+      <requirement type="package" version="0.7.1">bx_python</requirement>
+      <requirement type="package" version="1.0.2.d8c0751">cistrome_ceas</requirement>
+    </requirements>
     <description>Fetch and install annotation databases for CEAS</description>
     <command interpreter="python">data_manager_ceas_fetch_annotations.py
     #if str( $reference_source.reference_source_selector ) == "ceas_web"
@@ -14,9 +19,6 @@
         <conditional name="reference_source">
           <param name="reference_source_selector" type="select" label="Choose the source for the reference genome">
             <option value="ceas_web" selected="True">CEAS website</option>
-	    <!-- Not implemented for now
-            <option value="history">History</option>
-	    -->
             <option value="directory">Directory on Server</option>
           </param>
           <when value="ceas_web">
@@ -31,11 +33,6 @@
 	      <option value="http://liulab.dfci.harvard.edu/CEAS/src/ce6.refGene.gz">ce6</option>
 	    </param>
           </when>
-	  <!-- Not implemented for now
-          <when value="history">
-            <param name="input_annotation" type="data" format="fasta" label="Annotation File" multiple="False" optional="False" />
-          </when>
-	  -->
           <when value="directory">
             <param type="text" name="annotation_filename" value="" size="50"
 		   label="Full path to CEAS annotation table file on disk" optional="False" />

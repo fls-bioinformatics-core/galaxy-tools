@@ -101,5 +101,20 @@ export TCL_LIBRARY=$INSTALL_DIR/lib/libtcl8.4.so
 export TK_LIBRARY=$INSTALL_DIR/lib/libtk8.4.so
 #
 EOF
+# fetchChromSizes (UCSC tool)
+INSTALL_DIR=$TOP_DIR/ucsc_fetchChromSizes/1.0
+mkdir -p $INSTALL_DIR/bin
+cd $INSTALL_DIR/bin
+wget -q http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/fetchChromSizes
+chmod 755 fetchChromSizes
+cd $TOP_DIR
+# Make setup file
+cat > ucsc_fetchChromSizes/1.0/env.sh <<EOF
+#!/bin/sh
+# Source this to setup fetchChromSizes/1.0
+echo Setting up fetchChromSizes 1.0
+export PATH=$INSTALL_DIR/bin:\$PATH
+#
+EOF
 ##
 #
