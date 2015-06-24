@@ -83,10 +83,16 @@ INSTALL_DIR=$TOP_DIR/R/3.1.2
 mkdir -p $INSTALL_DIR
 wd=$(mktemp -d)
 pushd $wd
-wget -q https://depot.galaxyproject.org/package/linux/x86_64/R/R-3.1.2-Linux-x84_64.tgz
-tar xzf R-3.1.2-Linux-x84_64.tgz
-rm -f R-3.1.2-Linux-x84_64.tgz
-mv * $INSTALL_DIR
+##wget -q https://depot.galaxyproject.org/package/linux/x86_64/R/R-3.1.2-Linux-x84_64.tgz
+##tar xzf R-3.1.2-Linux-x84_64.tgz
+##rm -f R-3.1.2-Linux-x84_64.tgz
+##mv * $INSTALL_DIR
+wget -q http://cran.r-project.org/src/base/R-3/R-3.1.2.tar.gz
+tar xzf R-3.1.2.tar.gz
+cd R-3.1.2
+./configure --prefix=$INSTALL_DIR
+make
+make install
 popd
 # Clean up
 rm -rf $wd/*
