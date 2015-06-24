@@ -1,8 +1,23 @@
 <?xml version="1.0"?>
 <tool_dependency>
   <!-- Dependencies from main/test toolsheds -->
+  <!--
   <package name="R" version="3.1.2">
     <repository name="package_r_3_1_2" prior_installation_required="True" owner="iuc" />
+  </package>
+  -->
+  <!-- Local version of R 3.1.2 dependency -->
+  <package name="R" version="3.1.2">
+    <install version="1.0">
+      <actions>
+	<action type="download_by_url">http://cran.r-project.org/src/base/R-3/R-3.1.2.tar.gz</action>
+        <action type="shell_command">./configure --prefix=$INSTALL_DIR</action>
+        <action type="make_install" />
+        <action type="set_environment">
+          <environment_variable name="PATH" action="prepend_to">$INSTALL_DIR/bin</environment_variable>
+        </action>
+      </actions>
+    </install>
   </package>
   <!-- Python mysqldb package -->
   <package name="python_mysqldb" version="1.2.5">
