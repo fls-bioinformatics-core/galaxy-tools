@@ -44,14 +44,17 @@ while [ ! -z "$6" ] ; do
 		exit 1
 	    fi
 	    # Fetch the sizes using fetchChromSizes
-	    echo "Attempting to download chromosome sizes for $dbkey"
+	    echo -n "Attempting to download chromosome sizes for $dbkey..."
 	    chrom_sizes=$(basename $chrom_sizes)
 	    fetchChromSizes $dbkey >$chrom_sizes 2>/dev/null
 	    if [ $? -ne 0 ] ; then
+		echo "failed"
 		echo "ERROR unable to fetch data for ${dbkey}" >&2
 		echo "Please check the genome build associated with your input dataset" >&2
 		echo "or update your Galaxy instance to include an appropriate .len file" >&2
 		exit 1
+	    else
+		echo "ok"
 	    fi
 	fi
 	OPTIONS="$OPTIONS --length $chrom_sizes"
@@ -78,6 +81,8 @@ echo "Running $ceas_cmd"
 $ceas_cmd >>$log_file 2>&1
 status=$?
 if [ $status -ne 0 ] ; then
+    echo "Error: log file tail:"
+    tail $log_file
     echo "ERROR $CEAS exited with non-zero code: $status" >&2
     exit $status
 fi
