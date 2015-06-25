@@ -10,15 +10,8 @@
 	       help="Text that will appear in the list of canonical genes" />
         <conditional name="reference_source">
           <param name="reference_source_selector" type="select" label="Choose the source for the reference genome">
-	    <!--
-            <option value="upload" selected="True">Upload file from your computer</option>
-	    -->
             <option value="server">File on the server</option>
           </param>
-	  <when value="upload">
-            <param type="file" name="gene_list_upload" value=""
-		   label="Canonical gene file" multiple="False" optional="False" />
-          </when>
           <when value="server">
             <param type="text" name="gene_list_filename" value="" size="50"
 		   label="Full path to the canonical genes file on disk" optional="False" />
@@ -33,29 +26,57 @@
     </outputs>
     <tests>
         <test>
-            <param name="dbkey" value="anoGam1"/>
-            <param name="sequence_name" value=""/>
-            <param name="sequence_desc" value=""/>
-            <param name="sequence_id" value=""/>
-            <param name="reference_source_selector" value="history"/>
-            <param name="input_fasta" value="phiX174.fasta"/>
-            <param name="sort_selector" value="as_is"/>
-            <output name="out_file" file="phiX174_as_anoGam1.data_manager_json"/>
+          <param name="dbkey" value="anoGam1"/>
+	  <param name="description" value=""/>
+          <param name="reference_source_selector" value="history"/>
+          <output name="out_file" file="phiX174_as_anoGam1.data_manager_json"/>
         </test>
     </tests>
     <help>
-**What it does**
-
-Fetches a canonical gene list file and populates the "rnachipintegrator_canonical_genes"
-data table.
-
-------
-
-
 
 .. class:: infomark
 
-**Notice:** If you leave name, description, or id blank, it will be generated automatically. 
+**What it does**
 
+Adds a canonical gene list file to the *rnachipintegrator_canonical_genes*
+data table, so that it can be used in the *Analyse canonical genes against ChIP
+data* tool.
+
+At present the gene list files must be created manually and placed on the
+Galaxy server; see below for information on how to obtain canonical gene lists
+from UCSC.
+
+**Notice:** If you leave the description blank then it will be generated
+automatically. 
+
+------
+
+.. class:: infomark
+
+**Obtaining canonical gene lists**
+
+Getting canonical gene info from UCSC is covered in the screencast at
+http://blog.openhelix.eu/?p=6097
+
+**UCSC genome browser:** if multiple versions of each gene are visible (e.g.
+if you view 'human Feb 2009 GRCh37/hg19' positions chr17:41,100,000-41,300,000)
+then:
+
+ - Scroll down to the *Gene &amp; Gene Prediction* section
+ - Click on the *UCSC genes* link
+ - Uncheck the tickbox next to *splice variants* and resubmit to view without
+   duplicates.
+
+**UCSC table browser:** to obtain the canonical set of genes from the table  browser:
+
+ - Select *knownCanonical* from the table menu
+ - Select selected fields from primary &amp; related tables from the output format menu
+ - Click on *Get output*
+ - Select the fields of interest (e.g. 'chrom', 'chromStart', 'chromEnd' from the
+   'knownCanonical' table plus 'geneSymbol' from the *kgXref* table.)
+ - Click on Get output to get the data for download
+
+**Hint:** to also get strand direction information i.e. +/-, also allow selection
+from the refGene table, and select the strand field.)
     </help>
 </tool>
