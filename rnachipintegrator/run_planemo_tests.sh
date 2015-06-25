@@ -37,6 +37,8 @@ for dep in $TOOL_DEPENDENCIES ; do
     fi
 done
 # Run the planemo tests
-planemo test $@ $(dirname $0)/rnachipintegrator_wrapper.xml
+planemo test $@ \
+    $(dirname $0)/rnachipintegrator_wrapper.xml \
+    $(dirname $0)/data_manager/data_manager_rnachipintegrator_fetch_canonical_genes.xml
 ##
 #

@@ -32,7 +32,7 @@ if __name__ == '__main__':
     #
     # We want the values set in the data manager XML
     dbkey = params['param_dict']['dbkey']
-    description = params['param_dict']['description'].strip()
+    description = args[1].strip()
     # Where to put the output file
     # Nb we have to make this ourselves, it doesn't exist by default
     target_dir = params['output_data'][0]['extra_files_path']
@@ -54,6 +54,22 @@ if __name__ == '__main__':
             shutil.copyfile(filename,target_filename)
         else:
             os.symlink(filename,target_filename)
+        # Check description
+        if not description:
+            description = "%s: %s" % (dbkey,
+                                      os.path.splitext(os.path.basename(filename))[0])
+        # Update the output dictionary
+        data_manager_dict['data_tables'] = dict()
+        data_manager_dict['data_tables']['rnachipintegrator_canonical_genes'] = {
+            'dbkey': dbkey,
+            'name': description,
+            'value': os.path.basename(filename),
+        }
+    elif method == 'history':
+        # Copy file from history
+        filename = params['param_dict']['reference_source']['input_gene_list']
+        target_filename = os.path.join(target_dir,os.path.basename(filename))
+        shutil.copyfile(filename,target_filename)
         # Check description
         if not description:
             description = "%s: %s" % (dbkey,
