@@ -1,4 +1,4 @@
-<tool id="ceas" name="CEAS" version="1.0.2-1">
+<tool id="ceas" name="CEAS" version="1.0.2-2">
   <description>Annotate intervals and scores with genome features</description>
   <requirements>
     <requirement type="package" version="1.2.5">python_mysqldb</requirement>
@@ -109,6 +109,13 @@ likely to be regulated by a binding factor.
 CEAS also enables biologists to visualize the average ChIP enrichment signals over
 specific genomic features, allowing continuous and broad ChIP enrichment to be perceived
 which might be too subtle to detect from ChIP peaks alone.
+
+**Usage**
+
+CEAS takes an input BED file describing a set of ChIP peaks (for example, the 'summits'
+output from MACS); optionally it can also take either a WIG or bigWig file.
+
+**Background**
 
 This tool is compatible with the ceasBW version of CEAS from the Cistrome package
 obtained from
