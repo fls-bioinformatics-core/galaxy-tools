@@ -10,6 +10,7 @@
 	       help="Text that will appear in the list of canonical genes" />
         <conditional name="reference_source">
           <param name="reference_source_selector" type="select" label="Choose the source for the reference genome">
+            <option value="history">History</option>
             <option value="server">File on the server</option>
           </param>
           <when value="server">
@@ -19,6 +20,10 @@
 		   truevalue="create_symlink" falsevalue="copy_file"
 		   label="Create symlink to orignal data instead of copying" checked="False" />
           </when>
+          <when value="history">
+            <param name="input_gene_list" type="data" format="tabular"
+		   label="Canonical gene list from history" optional="False" />
+          </when>
         </conditional>
     </inputs>
     <outputs>
@@ -26,10 +31,11 @@
     </outputs>
     <tests>
         <test>
-          <param name="dbkey" value="anoGam1"/>
-	  <param name="description" value=""/>
+          <param name="dbkey" value="mm9"/>
+	  <param name="description" value="Mouse (mm9)"/>
           <param name="reference_source_selector" value="history"/>
-          <output name="out_file" file="phiX174_as_anoGam1.data_manager_json"/>
+	  <param name="input_gene_list" value="mm9_canonical_genes.tsv"/>
+          <output name="out_file" file="mm9_canonical_genes.data_manager_json"/>
         </test>
     </tests>
     <help>

@@ -1,0 +1,10 @@
+mm9.kgXref.geneSymbol	#mm9.knownCanonical.chrom	mm9.knownCanonical.chromStart	mm9.knownCanonical.chromEnd	mm9.knownGene.strand	mm9.knownCanonical.transcript	mm9.kgXref.refseq
+Xkr4	chr1	3204562	3661579	-	uc007aeu.1	NM_001011874
+AK149000	chr1	3638391	3648985	-	uc007aev.1	
+Rp1	chr1	4333587	4350395	-	uc007aex.2	NM_011283
+Sox17	chr1	4481008	4486494	-	uc007aez.1	NM_011441
+Mrpl15	chr1	4763278	4775807	-	uc007aff.2	NM_001177658
+Lypla1	chr1	4797973	4836816	+	uc007afh.1	NM_008866
+Tcea1	chr1	4847774	4887990	+	uc007afi.2	NM_011541
+Rgs20	chr1	4899656	5060366	-	uc007afl.2	NM_001177795
+Atp6v1h	chr1	5073253	5152630	+	uc007afn.1	NM_133826
