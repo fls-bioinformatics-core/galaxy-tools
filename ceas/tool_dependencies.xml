@@ -102,6 +102,9 @@ bx-python==0.7.1
           <action type="chmod">
             <file mode="755">$INSTALL_DIR/fetchChromSizes</file>
           </action>
+          <action type="set_environment">
+            <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR</environment_variable>
+        </action>
 	</actions>
       </install>
     <readme>Installs the binary executable for the fetchChromSizes utility
