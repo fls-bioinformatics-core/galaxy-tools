@@ -1,17 +1,25 @@
-<tool id="ceas" name="CEAS" version="1.0.2-1">
+<tool id="ceas" name="CEAS" version="1.0.2-2">
+  <description>Annotate intervals and scores with genome features</description>
   <requirements>
     <requirement type="package" version="1.2.5">python_mysqldb</requirement>
     <requirement type="package" version="0.7.1">bx_python</requirement>
     <requirement type="package" version="1.0.2.d8c0751">cistrome_ceas</requirement>
+    <requirement type="package" version="1.0">ucsc_fetchChromSizes</requirement>
     <requirement type="package" version="3.1.2">R</requirement>
   </requirements>
-  <description>Annotate intervals and scores with genome features</description>
-  <command interpreter="bash">ceas_wrapper.sh $bed_file $gdb_file $extra_bed_file $log_output $pdf_report $xls_output
-  #if (str($wig_file.ext) == 'bigwig')
-    --bigwig $wig_file
-    --length $GALAXY_DATA_INDEX_DIR/shared/ucsc/chrom/${bed_file.dbkey}.len
-  # else
-    --wig $wig_file
+  <command interpreter="bash">ceas_wrapper.sh
+  $bed_file ${gdb_file.fields.path}
+  $log_output $pdf_report $xls_output
+  #if (str($wig_file) != 'None')
+    #if (str($wig_file.ext) == 'bigwig')
+      --bigwig $wig_file
+      --length $GALAXY_DATA_INDEX_DIR/shared/ucsc/chrom/${bed_file.dbkey}.len
+    #else
+      --wig $wig_file
+    #end if
+  #end if
+  #if (str($extra_bed_file) != 'None')
+    --ebed $extra_bed_file
   #end if
   #if (str($span) and int(str($span)) > 0)
     --span $span
@@ -22,28 +30,73 @@
   --rel-dist $relative_distance</command>
   <inputs>
     <param name="bed_file" type="data" format="bed" label="BED file with ChIP regions" />
-    <param name="wig_file" type="data" format="wig,bigwig" label="WIG or BIGWIG file for wig profiling or genome background annotation" optional="true" />
+    <param name="wig_file" type="data" format="wig,bigwig" label="WIG or BIGWIG file for wig profiling or genome background annotation" optional="true"
+	   help="If not supplied then only perform ChIP region annotation and gene-centered annotation" />
     <param name="extra_bed_file" type="data" format="bed" label="BED file with extra regions of interest (e.g. non-coding regions)" optional="true" />
     <param name="gdb_file" type="select" label="Gene annotation table">
       <options from_data_table="ceas_annotations">
-	<filter name="dbkey" type="data_meta" ref="bed_file" key="dbkey" column="0" />
-        <validator type="no_options" message="No tables are available for the selected input"/>
       </options>
+      <filter name="dbkey" type="data_meta" ref="bed_file" key="dbkey" column="1" />
+      <validator type="no_options" message="No tables are available for the selected input"/>
     </param>
-    <param name="span" type="integer" label="Span from TSS and TTS in the gene-centered annotation (bp)" help="ChIP regions within this range from TSS and TTS are considered when calculating the coverage rates of promoter and downstream by ChIP regions" value="3000" />
-    <param name="sizes_lower" type="integer" label="Lower interval for promoter/downstream sizes for ChIP region annotation (bp)" value="1000" />
-    <param name="sizes_middle" type="integer" label="Middle interval for promoter/downstream sizes (bp)" value="2000" help="Values > 10000bp are automatically fixed to 10000bp" />
-    <param name="sizes_upper" type="integer" label="Upper interval for promoter/downstream sizes (bp)" value="3000" help="Values > 10000bp are automatically fixed to 10000bp" />
-    <param name="bisizes_lower" type="integer" label="Lower interval for bidirectional-promoter sizes for ChIP region annotation (bp)" value="2500" />
-    <param name="bisizes_upper" type="integer" label="Upper interval for bidirectional-promoter sizes (bp)" value="5000" help="Values > 20000bp are automatically fixed to 20000bp" />
-    <param name="profiling_resolution" type="integer" label="Wig profiling resolution (bp)" value="50" help="Warning: a number smaller than the wig interval (resolution) may cause aliasing error" />
-    <param name="relative_distance" type="integer" label="Relative distance to TSS/TTS in wig profiling (bp)" value="3000" />
+    <param name="span" type="integer"
+	   label="Span from TSS and TTS in the gene-centered annotation (bp)"
+	   help="ChIP regions within this range from TSS and TTS are considered when calculating the coverage rates of promoter and downstream by ChIP regions (--span)" value="3000" />
+    <param name="sizes_lower" type="integer"
+	   label="Lower interval for promoter/downstream sizes for ChIP region annotation (bp)"
+	   value="1000" help=" (--sizes)" />
+    <param name="sizes_middle" type="integer"
+	   label="Middle interval for promoter/downstream sizes (bp)" value="2000"
+	   help="Values > 10000bp are automatically fixed to 10000bp (--sizes)" />
+    <param name="sizes_upper" type="integer"
+	   label="Upper interval for promoter/downstream sizes (bp)" value="3000"
+	   help="Values > 10000bp are automatically fixed to 10000bp (--sizes)" />
+    <param name="bisizes_lower" type="integer"
+	   label="Lower interval for bidirectional-promoter sizes for ChIP region annotation (bp)" value="2500"
+	   help="(--bisizes)" />
+    <param name="bisizes_upper" type="integer"
+	   label="Upper interval for bidirectional-promoter sizes (bp)" value="5000"
+	   help="Values > 20000bp are automatically fixed to 20000bp (--bisizes)" />
+    <param name="profiling_resolution" type="integer"
+	   label="Wig profiling resolution (bp)" value="50"
+	   help="Warning: a number smaller than the wig interval (resolution) may cause aliasing error (--pf-res)" />
+    <param name="relative_distance" type="integer"
+	   label="Relative distance to TSS/TTS in wig profiling (bp)" value="3000"
+	   help="(--rel-dist)" />
   </inputs>
   <outputs>
     <data name="log_output" format="txt" label="CEAS on ${on_string} (log output)" />
     <data name="pdf_report" format="pdf" label="CEAS on ${on_string} (PDF report)" />
     <data name="xls_output" format="interval" label="CEAS on ${on_string} (XLS output)" />
   </outputs>
+  <tests>
+    <test>
+      <!-- Test with bed input only -->
+      <param name="bed_file" value="ceas_in.bed" ftype="bed" dbkey="galGal3" />
+      <param name="gdb_file" value="galGal3_test" />
+      <output name="log_output" file="ceas_out1.log.re_match" compare="re_match"/>
+      <output name="pdf_report" file="ceas_out1.pdf" />
+      <output name="xls_output" file="ceas_out1.xls" />
+    </test>
+    <test>
+      <!-- Test with bed & very small wig input -->
+      <param name="bed_file" value="ceas_in.bed" ftype="bed" dbkey="galGal3" />
+      <param name="wig_file" value="ceas_in.wig" ftype="wig" />
+      <param name="gdb_file" value="galGal3_test" />
+      <output name="log_output" file="ceas_out2.log.re_match" compare="re_match"/>
+      <output name="pdf_report" file="ceas_out2.pdf" />
+      <output name="xls_output" file="ceas_out2.xls" />
+    </test>
+    <test>
+      <!-- Test with bed & bigwig input -->
+      <param name="bed_file" value="ceas_in.bed" ftype="bed" dbkey="galGal3" />
+      <param name="wig_file" value="ceas_in.bigwig" ftype="bigwig" />
+      <param name="gdb_file" value="galGal3_test" />
+      <output name="log_output" file="ceas_out3.log.re_match" compare="re_match"/>
+      <output name="pdf_report" file="ceas_out3.pdf" />
+      <output name="xls_output" file="ceas_out3.xls" />
+    </test>
+  </tests>
   <help>
 **What it does**
 
@@ -56,6 +109,13 @@ likely to be regulated by a binding factor.
 CEAS also enables biologists to visualize the average ChIP enrichment signals over
 specific genomic features, allowing continuous and broad ChIP enrichment to be perceived
 which might be too subtle to detect from ChIP peaks alone.
+
+**Usage**
+
+CEAS takes an input BED file describing a set of ChIP peaks (for example, the 'summits'
+output from MACS); optionally it can also take either a WIG or bigWig file.
+
+**Background**
 
 This tool is compatible with the ceasBW version of CEAS from the Cistrome package
 obtained from
@@ -71,4 +131,12 @@ http://liulab.dfci.harvard.edu/CEAS/index.html
 
 The CEAS user manual is available at http://liulab.dfci.harvard.edu/CEAS/usermanual.html
   </help>
+  <citations>
+    <!--
+    See https://wiki.galaxyproject.org/Admin/Tools/ToolConfigSyntax#A.3Ccitations.3E_tag_set
+    Can be either DOI or Bibtex
+    Use http://www.bioinformatics.org/texmed/ to convert PubMed to Bibtex
+    -->
+    <citation type="doi">10.1093/bioinformatics/btp479</citation>
+  </citations>
 </tool>

@@ -36,4 +36,6 @@ script:
   - "rnachipintegrator/run_planemo_tests.sh --galaxy_root travis/galaxy"
 # Macs21
   - "macs21/run_planemo_tests.sh --galaxy_root travis/galaxy"
+# CEAS
+  - "ceas/run_planemo_tests.sh --galaxy_root travis/galaxy"
 

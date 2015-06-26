@@ -1,8 +1,17 @@
 <?xml version="1.0"?>
 <tool_dependency>
-  <!-- Dependencies from main/test toolsheds -->
+  <!-- Local version of R 3.1.2 dependency -->
   <package name="R" version="3.1.2">
-    <repository name="package_r_3_1_2" prior_installation_required="True" owner="iuc" />
+    <install version="1.0">
+      <actions>
+	<action type="download_by_url">http://cran.r-project.org/src/base/R-3/R-3.1.2.tar.gz</action>
+        <action type="shell_command">./configure --prefix=$INSTALL_DIR</action>
+        <action type="make_install" />
+        <action type="set_environment">
+          <environment_variable name="PATH" action="prepend_to">$INSTALL_DIR/bin</environment_variable>
+        </action>
+      </actions>
+    </install>
   </package>
   <!-- Python mysqldb package -->
   <package name="python_mysqldb" version="1.2.5">
@@ -81,6 +90,25 @@ bx-python==0.7.1
 
     Cistrome data files and documentation can be found at
     http://liulab.dfci.harvard.edu/CEAS/index.html
+    </readme>
+  </package>
+  <!-- fetchChromSize from UCSC tools -->
+  <package name="ucsc_fetchChromSizes" version="1.0">
+      <install version="1.0">
+        <actions>
+          <action type="download_binary">
+            <url_template architecture="x86_64" os="linux">http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/fetchChromSizes</url_template>
+          </action>
+          <action type="chmod">
+            <file mode="755">$INSTALL_DIR/fetchChromSizes</file>
+          </action>
+          <action type="set_environment">
+            <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR</environment_variable>
+        </action>
+	</actions>
+      </install>
+    <readme>Installs the binary executable for the fetchChromSizes utility
+    from UCSC tools
     </readme>
   </package>
 </tool_dependency>
