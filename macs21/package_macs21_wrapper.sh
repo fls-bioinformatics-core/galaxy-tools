@@ -3,7 +3,8 @@
 # Package MACS 2.1.0 files into tgz file for upload to
 # Galaxy toolshed
 #
-TGZ=macs21_wrapper.tgz
+VERSION=$(grep "^<tool" macs21_wrapper.xml | grep -o -e version=\".*\" | cut -d= -f2 | tr -d \")
+TGZ=macs21-${VERSION}.tgz
 if [ -f $TGZ ] ; then
     echo $TGZ: already exists, please remove >&2
     exit 1
