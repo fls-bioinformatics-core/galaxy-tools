@@ -8,6 +8,7 @@ import tempfile
 import optparse
 import urllib2
 import gzip
+import shutil
 
 from galaxy.util.json import from_json_string, to_json_string
 
