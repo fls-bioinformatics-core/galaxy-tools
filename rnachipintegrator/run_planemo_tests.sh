@@ -39,6 +39,7 @@ done
 # Run the planemo tests
 planemo test $@ \
     $(dirname $0)/rnachipintegrator_wrapper.xml \
+    $(dirname $0)/rnachipintegrator_canonical_genes.xml \
     $(dirname $0)/data_manager/data_manager_rnachipintegrator_fetch_canonical_genes.xml
 ##
 #
