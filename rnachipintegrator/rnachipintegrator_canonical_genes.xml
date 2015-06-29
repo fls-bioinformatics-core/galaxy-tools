@@ -29,7 +29,7 @@
     --pad
     #end if
   #end if
-  $canonical_genes.value $chipseq
+  ${canonical_genes.fields.path} $chipseq
   --output_xls $xls_output
   #if $results_as_zip
   --zip_file $zip_file

@@ -5,6 +5,8 @@
     "${description}"</command>
     <inputs>
         <param name="dbkey" type="genomebuild" label="DBKEY to assign to data" />
+	<param type="text" name="unique_id" label="Internal identifier"
+	       help="Identifier string to associate with the annotation e.g. 'mm9_generic'" />
         <param type="text" name="description" value=""
 	       label="Description of canonical gene list" size="50"
 	       help="Text that will appear in the list of canonical genes" />

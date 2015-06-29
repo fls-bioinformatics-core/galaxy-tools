@@ -33,6 +33,7 @@ if __name__ == '__main__':
     # We want the values set in the data manager XML
     dbkey = params['param_dict']['dbkey']
     description = args[1].strip()
+    identifier = params['param_dict']['unique_id'].strip()
     # Where to put the output file
     # Nb we have to make this ourselves, it doesn't exist by default
     target_dir = params['output_data'][0]['extra_files_path']
@@ -42,6 +43,7 @@ if __name__ == '__main__':
 
     # Dictionary for returning to data manager
     data_manager_dict = {}
+    data_manager_dict['data_tables'] = dict()
 
     if method == 'server':
         # Pull in a file from the server
@@ -54,32 +56,38 @@ if __name__ == '__main__':
             shutil.copyfile(filename,target_filename)
         else:
             os.symlink(filename,target_filename)
-        # Check description
+        # Check identifier and description
         if not description:
             description = "%s: %s" % (dbkey,
                                       os.path.splitext(os.path.basename(filename))[0])
+        if not identifier:
+            identifier = "%s_%s" % (dbkey,
+                                    os.path.splitext(os.path.basename(filename))[0])
         # Update the output dictionary
-        data_manager_dict['data_tables'] = dict()
         data_manager_dict['data_tables']['rnachipintegrator_canonical_genes'] = {
+            'value': identifier,
             'dbkey': dbkey,
             'name': description,
-            'value': os.path.basename(filename),
+            'path': os.path.basename(filename),
         }
     elif method == 'history':
         # Copy file from history
         filename = params['param_dict']['reference_source']['input_gene_list']
         target_filename = os.path.join(target_dir,os.path.basename(filename))
         shutil.copyfile(filename,target_filename)
-        # Check description
+        # Check identifier and description
         if not description:
             description = "%s: %s" % (dbkey,
                                       os.path.splitext(os.path.basename(filename))[0])
+        if not identifier:
+            identifier = "%s_%s" % (dbkey,
+                                    os.path.splitext(os.path.basename(filename))[0])
         # Update the output dictionary
-        data_manager_dict['data_tables'] = dict()
         data_manager_dict['data_tables']['rnachipintegrator_canonical_genes'] = {
+            'value': identifier,
             'dbkey': dbkey,
             'name': description,
-            'value': os.path.basename(filename),
+            'path': os.path.basename(filename),
         }
     else:
         raise NotImplementedError("Method '%s' not implemented" % method)
