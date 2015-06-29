@@ -7,6 +7,7 @@
     <requirement type="package" version="1.0">ucsc_fetchChromSizes</requirement>
     <requirement type="package" version="3.1.2">R</requirement>
   </requirements>
+  <version_command>ceas --version 2&gt;&amp;1 | tail -1</version_command>
   <command interpreter="bash">ceas_wrapper.sh
   $bed_file ${gdb_file.fields.path}
   $log_output $pdf_report $xls_output
