@@ -113,8 +113,25 @@ which might be too subtle to detect from ChIP peaks alone.
 
 **Usage**
 
-CEAS takes an input BED file describing a set of ChIP peaks (for example, the 'summits'
-output from MACS); optionally it can also take either a WIG or bigWig file.
+CEAS takes the following inputs:
+
+ * BED file with discrete ChIP regions (for example, the 'summits' output from the MACS
+   peak caller)
+ * WIG or bigWIG file with a continuous ChIP enrichment signal
+ * Gene annotation table (provided as reference data)
+
+Optionally it can also take a BED file describing extra regions of interest (for example
+non-coding regions).
+
+The analysis modules are:
+
+ * **ChIP region annotation:** estimates the relative enrichment level of ChIP regions in
+   each gene feature with respect to the whole genome.
+ * **Gene-centered annotation:** identifies genes associated with ChIP regions to infer
+   the direct regulatory gene targets of the binding factor of interest.
+ * **Average signal profiling within/near important genomic features:** displays continuous
+   ChIP enrichment signal within/around important gene features to help visualize the
+   average binding patterns.
 
 **Background**
 
