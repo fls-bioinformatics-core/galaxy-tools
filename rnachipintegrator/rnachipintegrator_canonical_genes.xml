@@ -1,11 +1,10 @@
-<tool id="fls_rnachipintegrator_canonical_genes" name="Analyse canonical genes against ChIP data" version="0.4.4-0">
+<tool id="rnachipintegrator_canonical_genes" name="Analyse canonical genes against ChIP data" version="@VERSION@-0">
   <description>using RnaChipIntegrator</description>
-  <requirements>
-    <requirement type="package" version="0.7.5">python_xlwt</requirement>
-    <requirement type="package" version="0.9.3">python_xlrd</requirement>
-    <requirement type="package" version="1.7.1">python_xlutils</requirement>
-    <requirement type="package" version="0.4.4">rnachipintegrator</requirement>
-  </requirements>
+  <macros>
+    <import>rnachipintegrator_macros.xml</import>
+  </macros>
+  <expand macro="requirements" />
+  <expand macro="version_command" />
   <command interpreter="bash">rnachipintegrator_wrapper.sh
   #if str( $analysis_options.peak_type ) == "summits"
     #if str( $analysis_options.window ) != ""
