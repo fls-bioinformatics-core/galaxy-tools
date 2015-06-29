@@ -1,6 +1,6 @@
 <tables>
     <table name="rnachipintegrator_canonical_genes" comment_char="#">
-        <columns>dbkey, name, value</columns>
+        <columns>value, dbkey, name, path</columns>
         <file path="tool-data/rnachipintegrator_canonical_genes.loc" />
     </table>
 </tables>
