@@ -1,0 +1,10 @@
+#geneID	chr_RNA	start	end	strand	differentially_expressed	number_of_peaks	chr_ChIP_1	summit_1	distance_1
+Xkr4	chr1	3204562	3661579	-	None	1	chr1	3621547	40032
+AK149000	chr1	3638391	3648985	-	None	1	chr1	3621547	27438
+Rp1	chr1	4333587	4350395	-	None	0	---	---	---
+Sox17	chr1	4481008	4486494	-	None	0	---	---	---
+Mrpl15	chr1	4763278	4775807	-	None	0	---	---	---
+Lypla1	chr1	4797973	4836816	+	None	0	---	---	---
+Tcea1	chr1	4847774	4887990	+	None	0	---	---	---
+Rgs20	chr1	4899656	5060366	-	None	0	---	---	---
+Atp6v1h	chr1	5073253	5152630	+	None	0	---	---	---
