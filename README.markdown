@@ -1,17 +1,21 @@
 galaxy-tools
 ============
 
+[![Build Status](https://travis-ci.org/fls-bioinformatics-core/galaxy-tools.svg?branch=master)](https://travis-ci.org/fls-bioinformatics-core/galaxy-tools)
+
 FLS tools and tool-wrappers for Galaxy.
 
 Tools wrapping 3rd-party software:
 
  * BLAT
- * CEAS
+ * [CEAS](https://toolshed.g2.bx.psu.edu/view/pjbriggs/ceas/)
  * fastq_screen
- * pal_finder
+ * [MACS2](https://toolshed.g2.bx.psu.edu/view/pjbriggs/macs21/)
+ * [pal_finder](https://toolshed.g2.bx.psu.edu/view/pjbriggs/pal_finder/)
  * SOLiD_preprocess_filter_v2.pl
- * trimmomatic
+ * [trimmomatic](https://toolshed.g2.bx.psu.edu/view/pjbriggs/trimmomatic/)
  * weeder
+ * [weeder2](https://toolshed.g2.bx.psu.edu/view/pjbriggs/weeder2/)
  * bedgraph_to_wig converter
 
 Tools wrapping in-house scripts and programs:
@@ -19,25 +23,18 @@ Tools wrapping in-house scripts and programs:
  * motif_tools
  * make_macs_xls
  * qc_boxplotter
- * RnaChipIntegrator
+ * [RnaChipIntegrator](https://toolshed.g2.bx.psu.edu/view/pjbriggs/rnachipintegrator)
  * SamStats
 
-Tools are organised into subdirectories; to add these to your local
-Galaxy:
+Data managers:
 
-1. Either:
-   Copy the subdirectory into your .../galaxy-dist/tools/ directory
-   or:
-   Make a soft link in .../galaxy-dist/tools/ to the tool subdirectory
-   
-2. Add an entry for the tool in .../galaxy-dist/tool_conf.xml
+ * data_manager_mothur_toolsuite
 
-You will also need to restart Galaxy for the changes to take effect.
+Packages for installing tool dependencies:
 
-Note:
+ * package_numpy_1_8
+ * package_python2_7
 
- * The XML files also contain test for each tool, but the test data is not
-   currently in this repository.
-
- * The tool ids of the FLS tools are weakly namespaced by an "fls_" prefix
-   on the tool ids.
+See the individual READMEs files for information on how to install
+into a local Galaxy; alternatively a number of these tools are
+available from the main toolshed: https://toolshed.g2.bx.psu.edu/
