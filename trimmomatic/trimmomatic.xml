@@ -162,7 +162,7 @@
     <test>
       <!-- Paired-end with dataset collection -->
       <param name="is_paired_end" value="yes" />
-      <param name="paired_fastq_input_type" value="collection" />
+      <param name="paired_input_type" value="collection" />
       <param name="fastq_pair">
         <collection type="paired">
           <element name="forward" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
