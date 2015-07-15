@@ -4,7 +4,17 @@
   -mx8G
   -jar \$TRIMMOMATIC_DIR/trimmomatic-0.32.jar
   #if $paired_end.is_paired_end
-    PE -threads \${GALAXY_SLOTS:-6} -phred33 $fastq_r1_in $paired_end.fastq_r2_in $fastq_out_r1_paired $fastq_out_r1_unpaired $fastq_out_r2_paired $fastq_out_r2_unpaired 
+    PE -threads \${GALAXY_SLOTS:-6} -phred33
+    #set $paired_input_type = $paired_end.paired_input_type_conditional.paired_input_type
+    #if $paired_input_type == "pair_of_files"
+      "${paired_end.paired_input_type_conditional.fastq_r1_in}"
+      "${paired_end.paired_input_type_conditional.fastq_r2_in}"
+    #else
+      "${paired_end.paired_input_type_conditional.fastq_pair.forward}"
+      "${paired_end.paired_input_type_conditional.fastq_pair.reverse}"
+    #end if
+    "${fastq_out_r1_paired}" "${fastq_out_r1_unpaired}"
+    "${fastq_out_r2_paired}" "${fastq_out_r2_unpaired}"
   #else
     SE -threads \${GALAXY_SLOTS:-6} -phred33 $fastq_in $fastq_out
   #end if
@@ -46,10 +56,23 @@
       <param name="fastq_in" type="data" format="fastqsanger" label="Input FASTQ file" />
     </when>
     <when value="yes">
-      <param name="fastq_r1_in" type="data" format="fastqsanger"
-	     label="Input FASTQ file (R1/first of pair)" />
-      <param name="fastq_r2_in" type="data" format="fastqsanger"
-	     label="Input FASTQ file (R2/second of pair)" />
+      <conditional name="paired_input_type_conditional">
+        <param name="paired_input_type" type="select" label="Input Type">
+          <option value="pair_of_files" selected="true">Pair of datasets</option>
+          <option value="collection">Dataset collection pair</option>
+        </param>
+        <when value="pair_of_files">
+ 	  <param name="fastq_r1_in" type="data" format="fastqsanger"
+		 label="Input FASTQ file (R1/first of pair)" />
+ 	  <param name="fastq_r2_in" type="data" format="fastqsanger"
+		 label="Input FASTQ file (R2/second of pair)" />
+	</when>
+        <when value="collection">
+          <param name="fastq_pair" format="fastqsanger" type="data_collection"
+ 		 collection_type="paired"
+ 		 label="Select FASTQ dataset collection with R1/R2 pair" />
+        </when>
+      </conditional>
     </when>
     </conditional>
     <conditional name="illuminaclip">
