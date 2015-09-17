@@ -145,15 +145,15 @@
     <data format="fastqsanger" name="fastq_out" label="${tool.name} on ${on_string}">
       <filter>not paired_end['is_paired_end']</filter>
     </data>
-    <collection name="fastq_out_paired" type="paired" label="${tool.name} on ${on_string}: paired">
-      <data name="forward" format="fastqsanger" />
-      <data name="reverse" format="fastqsanger" />
+    <collection name="fastq_out_paired" type="paired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.name}: paired">
+      <data name="forward" format="fastqsanger" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.forward.name} (R1 paired)" />
+      <data name="reverse" format="fastqsanger" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.reverse.name} (R2 paired)" />
       <filter>paired_end['is_paired_end']</filter>
       <filter>paired_end['paired_input_type_conditional']['paired_input_type'] == "collection"</filter>
     </collection>
-    <collection name="fastq_out_unpaired" type="paired" label="${tool.name} on ${on_string}: unpaired">
-      <data name="forward" format="fastqsanger" />
-      <data name="reverse" format="fastqsanger" />
+    <collection name="fastq_out_unpaired" type="paired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.name}: unpaired">
+      <data name="forward" format="fastqsanger" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.forward.name} (R1 unpaired)" />
+      <data name="reverse" format="fastqsanger" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.reverse.name} (R2 unpaired)" />
       <filter>paired_end['is_paired_end']</filter>
       <filter>paired_end['paired_input_type_conditional']['paired_input_type'] == "collection"</filter>
     </collection>
