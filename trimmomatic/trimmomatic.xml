@@ -252,6 +252,14 @@ Note that trimming operation order is important.
 
 .. class:: infomark
 
+**Inputs**
+
+For single-end data this Trimmomatic tool accepts a single FASTQ file; for
+paired-end data it will accept either two FASTQ files (R1 and R2), or a
+dataset collection containing the R1/R2 FASTQ pair.
+
+.. class:: infomark
+
 **Outputs**
 
 For paired-end data a particular strength of Trimmomatic is that it retains the
@@ -261,6 +269,12 @@ pairing of reads (from R1 and R2) in the filtered output files:
    both have survived filtering.
  * Additionally two FASTQ files (R1-unpaired and R2-unpaired) contain reads where
    one of the pair failed the filtering steps.
+
+.. class:: warningmark
+
+If the input consists of a dataset collection with the R1/R2 FASTQ pair then
+the outputs will also inclue two dataset collections: one for the 'paired'
+outputs and one for the 'unpaired' (as described above)
 
 Retaining the same order and number of reads in the filtered output fastq files is
 essential for many downstream analysis tools.
