@@ -126,23 +126,23 @@
     </repeat>
   </inputs>
   <outputs>
-    <data format="fastqsanger" name="fastq_out_r1_paired" label="${tool.name} on ${on_string} (R1 paired)">
+    <data format="fastqsanger" name="fastq_out_r1_paired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_r1_in.name} (R1 paired)">
       <filter>paired_end['is_paired_end']</filter>
       <filter>paired_end['paired_input_type_conditional']['paired_input_type'] == "pair_of_files"</filter>
     </data>
-    <data format="fastqsanger" name="fastq_out_r1_unpaired" label="${tool.name} on ${on_string} (R1 unpaired)">
+    <data format="fastqsanger" name="fastq_out_r2_paired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_r2_in.name} (R2 paired)">
       <filter>paired_end['is_paired_end']</filter>
       <filter>paired_end['paired_input_type_conditional']['paired_input_type'] == "pair_of_files"</filter>
     </data>
-    <data format="fastqsanger" name="fastq_out_r2_paired" label="${tool.name} on ${on_string} (R2 paired)">
+    <data format="fastqsanger" name="fastq_out_r1_unpaired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_r1_in.name} (R1 unpaired)">
       <filter>paired_end['is_paired_end']</filter>
       <filter>paired_end['paired_input_type_conditional']['paired_input_type'] == "pair_of_files"</filter>
     </data>
-    <data format="fastqsanger" name="fastq_out_r2_unpaired" label="${tool.name} on ${on_string} (R2 unpaired)">
+    <data format="fastqsanger" name="fastq_out_r2_unpaired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_r2_in.name} (R2 unpaired)">
       <filter>paired_end['is_paired_end']</filter>
       <filter>paired_end['paired_input_type_conditional']['paired_input_type'] == "pair_of_files"</filter>
     </data>
-    <data format="fastqsanger" name="fastq_out" label="${tool.name} on ${on_string}">
+    <data format="fastqsanger" name="fastq_out" label="${tool.name} on ${paired_end.fastq_in.name}">
       <filter>not paired_end['is_paired_end']</filter>
     </data>
     <collection name="fastq_out_paired" type="paired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.name}: paired">
