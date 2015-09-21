@@ -1,6 +1,13 @@
 <tool id="trimmomatic" name="Trimmomatic" version="0.32.2">
   <description>flexible read trimming tool for Illumina NGS data</description>
-  <command interpreter="bash">trimmomatic.sh
+  <requirements>
+    <requirement type="package" version="0.32">trimmomatic</requirement>
+  </requirements>
+  <stdio>
+    <exit_code range="1:" />
+  </stdio>
+  <command interpreter="bash"><![CDATA[
+  trimmomatic.sh
   -mx8G
   -jar \$TRIMMOMATIC_DIR/trimmomatic-0.32.jar
   #if $paired_end.is_paired_end
@@ -47,10 +54,7 @@
       HEADCROP:$op.operation.headcrop
     #end if
   #end for
-  </command>
-  <requirements>
-    <requirement type="package" version="0.32">trimmomatic</requirement>
-  </requirements>
+  ]]></command>
   <inputs>
     <conditional name="paired_end">
     <param name="is_paired_end" type="boolean" label="Paired end data?" truevalue="yes" falsevalue="no" checked="on" />
@@ -221,7 +225,7 @@
       </output_collection>
     </test>
   </tests>
-  <help>
+  <help><![CDATA[
 .. class:: infomark
 
 **What it does**
@@ -303,7 +307,7 @@ The reference for Trimmomatic is:
 
 Please kindly acknowledge both this Galaxy tool and the Trimmomatic program if you
 use it.
-  </help>
+  ]]></help>
   <citations>
     <!--
     See https://wiki.galaxyproject.org/Admin/Tools/ToolConfigSyntax#A.3Ccitations.3E_tag_set
