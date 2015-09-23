@@ -58,6 +58,9 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.32.3     - Add support for FASTQ R1/R2 pairs using dataset collections (input
+             can be dataset collection, in which case tool also outputs dataset
+	     collections) and improve order and naming of output files.
 0.32.2     - Use ``GALAXY_SLOTS`` to set the appropriate number of threads to use
              at runtime (default is 6).
 0.32.1     - Remove ``trimmomatic_adapters.loc.sample`` and hard-code adapter files
