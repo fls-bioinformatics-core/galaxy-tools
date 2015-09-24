@@ -137,6 +137,20 @@
       <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats.out" />
     </test>
     <test>
+      <!-- Test with Illumina input as dataset pair -->
+      <param name="platform_type" value="illumina" />
+      <param name="paired_input_type" value="collection" />
+      <param name="input_fastq_pair">
+	<collection type="paired">
+	  <element name="forward" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+	  <element name="reverse" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+	</collection>
+      </param>
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats.out" />
+    </test>
+    <test>
       <!-- Test with 454 input -->
       <param name="platform_type" value="454" />
       <param name="input_fasta" value="454_in.fa" ftype="fasta" />
