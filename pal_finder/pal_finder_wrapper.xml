@@ -2,7 +2,14 @@
   <description>Find microsatellite repeat elements sequencing reads and design PCR primers to amplify them</description>
   <command interpreter="bash">pal_finder_wrapper.sh
   #if str( $platform.platform_type ) == "illumina"
-    "$platform.input_fastq_r1" "$platform.input_fastq_r2"
+    #set $paired_input_type = $platform.paired_input_type_conditional.paired_input_type
+    #if $paired_input_type == "pair_of_files"
+      "$platform.paired_input_type_conditional.input_fastq_r1"
+      "$platform.paired_input_type_conditional.input_fastq_r2"
+    #else
+      "$platform.paired_input_type_conditional.input_fastq_pair.forward"
+      "$platform.paired_input_type_conditional.input_fastq_pair.reverse"
+    #end if
   #else
     --454 "$platform.input_fasta"
   #end if
@@ -49,8 +56,23 @@
 	<option value="454">454</option>
       </param>
       <when value="illumina">
-	<param name="input_fastq_r1" type="data" format="fastqsanger" label="Illumina fastq file (read 1)" />
-	<param name="input_fastq_r2" type="data" format="fastqsanger" label="Illumina fastq file (read 2)" />
+	<conditional name="paired_input_type_conditional">
+          <param name="paired_input_type" type="select" label="Input Type">
+            <option value="pair_of_files" selected="true">Pair of datasets</option>
+            <option value="collection">Dataset collection pair</option>
+	  </param>
+	  <when value="pair_of_files">
+	    <param name="input_fastq_r1" type="data" format="fastqsanger"
+		   label="Illumina fastq file (read 1)" />
+	    <param name="input_fastq_r2" type="data" format="fastqsanger"
+		   label="Illumina fastq file (read 2)" />
+	  </when>
+	  <when value="collection">
+	    <param name="input_fastq_pair" format="fastqsanger"
+		   type="data_collection" collection_type="paired"
+		   label="Select FASTQ dataset collection with R1/R2 pair" />
+	  </when>
+	</conditional>
 	<param name="filter_microsats" type="boolean" truevalue="True" falsevalue="False"
 	       label="Filter and sort the microsatellites" checked="True"
 	       help="Filter pal_finder results to only include lines with primer sequences and remove non-perfect repeats" />
