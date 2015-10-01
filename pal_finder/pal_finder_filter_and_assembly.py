@@ -157,7 +157,7 @@ with open (pal_finder_output) as csvfile_infile:
     csv_f = csv.reader(csvfile_infile, delimiter='\t')
     header = csv_f.next()
     with open(os.path.splitext(pal_finder_output)[0] + ".filtered", 'w') as csvfile_outfile:
-        filewriter = csv.writer(csvfile_outfile, delimiter='\t')
+        filewriter = csv.writer(csvfile_outfile, delimiter='\t', lineterminator='\n')
         filewriter.writerow(header)
         for row in csv_f:
 # navigate through all different combinations of filter options
@@ -208,7 +208,7 @@ if filter_rank_motifs == 1:
 
     # open the file ready to write the ordered list
     with open(os.path.splitext(pal_finder_output)[0] + ".filtered", 'w') as rank_outfile:
-        rankwriter = csv.writer(rank_outfile, delimiter='\t')
+        rankwriter = csv.writer(rank_outfile, delimiter='\t', lineterminator='\n')
         rankwriter.writerow(header)
         count = 2
         while count < 10:
