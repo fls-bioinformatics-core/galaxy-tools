@@ -15,7 +15,9 @@
 # List of dependencies
 TOOL_DEPENDENCIES="perl/5.16.3
  primer3_core/2.0.0
- pal_finder/0.02.04"
+ pal_finder/0.02.04
+ biopython/1.65
+ pandaseq/2.8.1"
 # Where to find them
 TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.pal_finder
 if [ ! -d $TOOL_DEPENDENCIES_DIR ] ; then
