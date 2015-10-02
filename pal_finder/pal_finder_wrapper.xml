@@ -1,5 +1,12 @@
 <tool id="microsat_pal_finder" name="pal_finder" version="0.02.04.2">
   <description>Find microsatellite repeat elements sequencing reads and design PCR primers to amplify them</description>
+  <requirements>
+    <requirement type="package" version="5.16.3">perl</requirement>
+    <requirement type="package" version="0.02.04">pal_finder</requirement>
+    <requirement type="package" version="2.0.0">primer3_core</requirement>
+    <requirement type="package" version="1.65">biopython</requirement>
+    <requirement type="package" version="2.8.1">pandaseq</requirement>
+  </requirements>
   <command interpreter="bash">pal_finder_wrapper.sh
   #if str( $platform.platform_type ) == "illumina"
     #set $paired_input_type = $platform.paired_input_type_conditional.paired_input_type
@@ -43,13 +50,6 @@
   --primer-mispriming-library $mispriming.mispriming_library
   #end if
   </command>
-  <requirements>
-    <requirement type="package" version="5.16.3">perl</requirement>
-    <requirement type="package" version="0.02.04">pal_finder</requirement>
-    <requirement type="package" version="2.0.0">primer3_core</requirement>
-    <requirement type="package" version="1.65">biopython</requirement>
-    <requirement type="package" version="2.8.1">pandaseq</requirement>
-  </requirements>
   <inputs>
     <param name="primer_prefix" type="text" value="test" size="25" label="Primer prefix" help="This prefix will be added to the beginning of all primer names" />
     <conditional name="platform">
