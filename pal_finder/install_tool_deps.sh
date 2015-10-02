@@ -131,7 +131,7 @@ cat > pandaseq/2.8.1/env.sh <<EOF
 # Source this to setup pandaseq/2.8.1
 echo Setting up pandaseq 2.8.1
 export PATH=$INSTALL_DIR/bin:\$PATH
-export LD_LIBRARY_PATH=$INSTALL_DIR/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$INSTALL_DIR/lib:\$LD_LIBRARY_PATH
 #
 EOF
 ##
