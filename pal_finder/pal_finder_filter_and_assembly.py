@@ -105,7 +105,7 @@ def ReverseComplement1(seq):
 
 # Convert a .fastq to a .fasta, filter to just lines we want and strip MiSeq barcodes
 def fastq_to_fasta(file):
-    file_name = os.path.splitext(file)[0]
+    file_name = os.path.splitext(os.path.basename(file))[0]
     with open(file_name + "_filtered.fasta", "w") as out:
         for record in SeqIO.parse(file, "fastq"):
             ID = str(record.id)
@@ -115,7 +115,7 @@ def fastq_to_fasta(file):
 
 # strip the miseq barcodes from a fasta file
 def strip_barcodes(file):
-    file_name = os.path.splitext(file)[0]
+    file_name = os.path.splitext(os.path.basename(file))[0]
     with open(file_name + "_adapters_removed.fasta", "w") as out:
         for record in SeqIO.parse(file, "fasta"):
             match = re.search(r'\S*:', record.id)
@@ -153,10 +153,11 @@ else:
 wanted_lines = set()
 
 # read the pal_finder output file into a csv reader
+print pal_finder_output
 with open (pal_finder_output) as csvfile_infile:
     csv_f = csv.reader(csvfile_infile, delimiter='\t')
     header = csv_f.next()
-    with open(os.path.splitext(pal_finder_output)[0] + ".filtered", 'w') as csvfile_outfile:
+    with open(os.path.splitext(os.path.basename(pal_finder_output))[0] + ".filtered", 'w') as csvfile_outfile:
         filewriter = csv.writer(csvfile_outfile, delimiter='\t', lineterminator='\n')
         filewriter.writerow(header)
         for row in csv_f:
@@ -200,14 +201,14 @@ if filter_rank_motifs == 1:
     rank_motif = []
     ranked_list = []
     # read in the non-ordered file and add every entry to rank_motif list
-    with open(os.path.splitext(pal_finder_output)[0] + ".filtered") as csvfile_ranksize:
+    with open(os.path.splitext(os.path.basename(pal_finder_output))[0] + ".filtered") as csvfile_ranksize:
         csv_rank = csv.reader(csvfile_ranksize, delimiter='\t')
         header = csv_rank.next()
         for line in csv_rank:
             rank_motif.append(line)
 
     # open the file ready to write the ordered list
-    with open(os.path.splitext(pal_finder_output)[0] + ".filtered", 'w') as rank_outfile:
+    with open(os.path.splitext(os.path.basename(pal_finder_output))[0] + ".filtered", 'w') as rank_outfile:
         rankwriter = csv.writer(rank_outfile, delimiter='\t', lineterminator='\n')
         rankwriter.writerow(header)
         count = 2
@@ -239,7 +240,7 @@ if perform_assembly == 1:
     motif = []
     F_primers = []
     R_primers = []
-    with open(os.path.splitext(pal_finder_output)[0] + ".filtered") as input_csv:
+    with open(os.path.splitext(os.path.basename(pal_finder_output))[0] + ".filtered") as input_csv:
         pal_finder_csv = csv.reader(input_csv, delimiter='\t')
         header = pal_finder_csv.next()
         for row in pal_finder_csv:
@@ -284,9 +285,9 @@ if perform_assembly == 1:
 
 # get the files and everything else we will need
     assembly_file = "Assembly_adapters_removed.fasta" # Assembled fasta file
-    R1_fasta = os.path.splitext(R1_input)[0] + "_filtered.fasta"    # filtered R1 reads
-    R2_fasta = os.path.splitext(R2_input)[0] + "_filtered.fasta"   # filtered R2 reads
-    outputfilename = os.path.splitext(R1_input)[0]
+    R1_fasta = os.path.splitext(os.path.basename(R1_input))[0] + "_filtered.fasta"    # filtered R1 reads
+    R2_fasta = os.path.splitext(os.path.basename(R2_input))[0] + "_filtered.fasta"   # filtered R2 reads
+    outputfilename = os.path.splitext(os.path.basename(R1_input))[0]
 
 # parse the files with SeqIO
     assembly_sequences = SeqIO.parse(assembly_file,'fasta')
