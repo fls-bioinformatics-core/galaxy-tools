@@ -21,7 +21,7 @@
     --454 "$platform.input_fasta"
   #end if
   $output_microsat_summary $output_pal_summary
-  #if str( $platform.platform_type ) == "illumina" and $platform.filter_microsats
+  #if str( $platform.platform_type ) == "illumina" and str( $platform.filters ) != ''
     --filter_microsats "$output_filtered_microsats"
   #end if
   #if $keep_config_file
@@ -49,6 +49,11 @@
   #if str( $mispriming.mispriming_options ) == "custom"
   --primer-mispriming-library $mispriming.mispriming_library
   #end if
+  #if str( $platform.platform_type ) == "illumina"
+  #for $filter in str($platform.filters).split(',')
+       $filter
+    #end for
+  #end if
   </command>
   <inputs>
     <param name="primer_prefix" type="text" value="test" size="25" label="Primer prefix" help="This prefix will be added to the beginning of all primer names" />
@@ -75,9 +80,14 @@
 		   label="Select FASTQ dataset collection with R1/R2 pair" />
 	  </when>
 	</conditional>
-	<param name="filter_microsats" type="boolean" truevalue="True" falsevalue="False"
-	       label="Filter and sort the microsatellites" checked="True"
-	       help="Filter pal_finder results to only include lines with primer sequences and remove non-perfect repeats" />
+	<param name="filters" type="select" display="checkboxes"
+	       multiple="True" label="Filters to apply to the pal_finder results"
+	       help="Apply none, one or more filters to refine results">
+          <option value="-assembly" selected="True">Perform PANDASeq assembly QC</option>
+          <option value="-primers" selected="True">Only include loci with primers designed</option>
+          <option value="-occurrences" selected="True">Exclude loci which appear more than once</option>
+          <option value="-rankmotifs" selected="True">Only include loci with 'perfect' motifs, and rank by motif size</option>
+        </param>
       </when>
       <when value="454">
 	<param name="input_fasta" type="data" format="fasta" label="454 fasta file with raw reads" />
@@ -144,7 +154,7 @@
     <data name="output_microsat_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellite types)" />
     <data name="output_pal_summary" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellites with read IDs and primer pairs)" />
     <data name="output_filtered_microsats" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix} (filtered and sorted microsatellites)">
-      <filter>platform['platform_type'] == 'illumina' and platform['filter_microsats']</filter>
+      <filter>platform['platform_type'] == 'illumina' and platform['filters'] != ''</filter>
     </data>
     <data name="output_config_file" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (config file)">
       <filter>keep_config_file is True</filter>
@@ -178,7 +188,7 @@
       <!-- Test with Illumina input filter to loci with PandaSEQ assembly
 	   ('-assembly' option) -->
       <param name="platform_type" value="illumina" />
-      <param name="filters" value="assembly" />
+      <param name="filters" value="-assembly" />
       <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
       <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
       <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
@@ -189,7 +199,7 @@
       <!-- Test with Illumina input filter to loci with primers
 	   ('-primers' option) -->
       <param name="platform_type" value="illumina" />
-      <param name="filters" value="primers" />
+      <param name="filters" value="-primers" />
       <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
       <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
       <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
@@ -200,7 +210,7 @@
       <!-- Test with Illumina input filter to loci which appear only once
 	   ('-occurrences' option) -->
       <param name="platform_type" value="illumina" />
-      <param name="filters" value="occurrences" />
+      <param name="filters" value="-occurrences" />
       <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
       <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
       <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
@@ -211,7 +221,7 @@
       <!-- Test with Illumina input filter and rank loci with perfect motifs
 	   ('-rankmotifs' option) -->
       <param name="platform_type" value="illumina" />
-      <param name="filters" value="rankmotifs" />
+      <param name="filters" value="-rankmotifs" />
       <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
       <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
       <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
