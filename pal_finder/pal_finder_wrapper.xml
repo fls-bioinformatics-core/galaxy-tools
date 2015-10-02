@@ -175,6 +175,50 @@
       <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats.out" />
     </test>
     <test>
+      <!-- Test with Illumina input filter to loci with PandaSEQ assembly
+	   ('-assembly' option) -->
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="assembly" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats_assembly.out" />
+    </test>
+    <test>
+      <!-- Test with Illumina input filter to loci with primers
+	   ('-primers' option) -->
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="primers" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats_primers.out" />
+    </test>
+    <test>
+      <!-- Test with Illumina input filter to loci which appear only once
+	   ('-occurrences' option) -->
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="occurrences" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats_occurrences.out" />
+    </test>
+    <test>
+      <!-- Test with Illumina input filter and rank loci with perfect motifs
+	   ('-rankmotifs' option) -->
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="rankmotifs" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats_rankmotifs.out" />
+    </test>
+    <test>
       <!-- Test with 454 input -->
       <param name="platform_type" value="454" />
       <param name="input_fasta" value="454_in.fa" ftype="fasta" />
