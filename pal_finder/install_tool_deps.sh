@@ -105,7 +105,8 @@ cat > biopython/1.65/env.sh <<EOF
 #!/bin/sh
 # Source this to setup biopython/1.65
 echo Setting up biopython 1.65
-export PYTHONPATH=$INSTALL_DIR/lib/python2.7/site-packages:$PYTHONPATH
+export PYTHONPATH=$INSTALL_DIR/lib/python2.7/site-packages:\$PYTHONPATH
+export PYTHONPATH=$INSTALL_DIR/lib64/python2.7/site-packages:\$PYTHONPATH
 #
 EOF
 # PandaSeq 2.8
