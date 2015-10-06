@@ -1,5 +1,5 @@
-<tool id="microsat_pal_finder" name="pal_finder" version="0.02.04.2">
-  <description>Find microsatellite repeat elements sequencing reads and design PCR primers to amplify them</description>
+<tool id="microsat_pal_finder" name="pal_finder" version="0.02.04.3">
+  <description>Find microsatellite repeat elements from sequencing reads and design PCR primers to amplify them</description>
   <requirements>
     <requirement type="package" version="5.16.3">perl</requirement>
     <requirement type="package" version="0.02.04">pal_finder</requirement>
@@ -84,7 +84,7 @@
 	       multiple="True" label="Filters to apply to the pal_finder results"
 	       help="Apply none, one or more filters to refine results">
           <option value="-assembly" selected="True">Perform PANDASeq assembly QC</option>
-          <option value="-primers" selected="True">Only include loci with primers designed</option>
+          <option value="-primers" selected="True">Only include loci with designed primers</option>
           <option value="-occurrences" selected="True">Exclude loci which appear more than once</option>
           <option value="-rankmotifs" selected="True">Only include loci with 'perfect' motifs, and rank by motif size</option>
         </param>
@@ -245,9 +245,14 @@ This tool runs the pal_finder program, which finds microsatellite repeat element
 directly from raw 454 or Illumina paired-end sequencing reads. It then designs PCR
 primers to amplify these repeat loci (Potentially Amplifiable Loci: PAL).
 
-Optionally for Illumina data, the output from pal_finder can also be filtered to
-remove any motifs without primer sequences, and with non-perfect microsatellites.
-The microsatellites are then ranked by motif size (largest to smallest).
+Optionally for Illumina data, one or more filters can be applied to the output from
+pal_finder to:
+
+ * Only include loci with designed primers
+ * Exclude loci which appear more than once
+ * Only include loci with 'perfect' motifs (and rank by motif size,largest to
+   smallest)
+ * Perform PANDASeq assembly QC
 
 Pal_finder runs the primer3_core program; information on the settings used in
 primer3_core can be found in the Primer3 manual at
@@ -281,12 +286,12 @@ http://primer3.sourceforge.net/releases.php):
 The paper is available at
 http://purl.com/STEVEROZEN/papers/rozen-and-skaletsky-2000-primer3.pdf
 
-The filtering and sorting of the pal_finder output for Illumina data is performed
-using a Perl script written by Graeme Fox at the University of Manchester, and which
-is included with this tool.
+The filtering and assembly of the pal_finder output for Illumina data is performed
+using a Python utility written by Graeme Fox at the University of Manchester, and which
+is included with this tool; this utility uses the BioPython and PANDASeq packages.
 
 Please kindly acknowledge both this Galaxy tool, the pal_finder and primer3 packages, and
-the utility script if you use it in your work.
+the utility script and its dependencies if you use it in your work.
   </help>
   <citations>
     <!--
@@ -296,7 +301,7 @@ the utility script if you use it in your work.
     -->
     <citation type="doi">10.1371/journal.pone.0030953</citation>
     <citation type="bibtex">@Article{pmid10547847,
-    Author="Rozen, S.  and Skaletsky, H. ",
+    Author="Rozen, S. and Skaletsky, H. ",
     Title="{{P}rimer3 on the {W}{W}{W} for general users and for biologist programmers}",
     Journal="Methods Mol. Biol.",
     Year="2000",
@@ -304,5 +309,7 @@ the utility script if you use it in your work.
     Pages="365--386",
     URL="{http://purl.com/STEVEROZEN/papers/rozen-and-skaletsky-2000-primer3.pdf}"
     }</citation>
+    <citation type="doi">10.1093/bioinformatics/btp163</citation>
+    <citation type="doi">10.1186/1471-2105-13-31</citation>
   </citations>
 </tool>

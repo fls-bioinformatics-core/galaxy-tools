@@ -7,16 +7,17 @@ Automated installation
 ======================
 
 Installation via the Galaxy Tool Shed will take of installing the tool wrapper and
-the pal_finder and primer3_core programs, and setting the appropriate environment
-variables.
+the pal_finder and primer3_core programs (plus additional dependencies), and setting
+the appropriate environment variables.
 
 Manual Installation
 ===================
 
-There are two files to install:
+There are three files to install:
 
 - ``pal_finder_wrapper.xml`` (the Galaxy tool definition)
 - ``pal_finder_wrapper.sh`` (the shell script wrapper)
+- ``pal_finder_filter_and_assembly.py`` (filtering utility)
 
 The suggested location is in a ``tools/pal_finder_wrapper/`` folder. You will then
 need to modify the ``tools_conf.xml`` file to tell Galaxy to offer the tool
@@ -30,10 +31,15 @@ You will also need to install the pal_finder and primer3 packages:
 - ``Primer3`` version 2.0.0-alpha (see the pal_finder installation notes) can be
   obtained from http://primer3.sourceforge.net/releases.php
 
-The tool wrapper must be able to locate the pal_finder Perl script, the example
-pal_finder config.txt and simple.ref data files, and the primer3_core program - the
-locations of these are taken from the following enviroment variables which you will
-need to set manually:
+Additionally the filtering script needs ``BioPython`` and the ``PANDASeq`` program:
+
+- ``BioPython`` can be obtained from https://pypi.python.org/packages/source/b/biopython/
+- ``PANDASeq`` version 2.8.1 can be obtained from https://github.com/neufeld/pandaseq/
+
+The tool wrapper must be able to locate the ``pal_finder_v0.02.04.pl`` script, the
+example pal_finder ``config.txt`` and ``simple.ref`` data files, and the
+``primer3_core`` program - the locations of these are taken from the following
+enviroment variables which you will need to set manually:
 
 - ``PALFINDER_SCRIPT_DIR``: location of the pal_finder Perl script (defaults to /usr/bin)
 - ``PALFINDER_DATA_DIR``: location of the pal_finder data files (specifically config.txt
@@ -54,6 +60,10 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.02.04.3  - Update to the Illumina filtering script from Graeme Fox (including
+             new option to run ``PANDASeq`` assembly/QC steps), and corresponding
+	     update to the tool; add support for input FASTQs to be a dataset
+	     collection pair.
 0.02.04.2  - Fix bug that causes tool to fail when prefix includes spaces;
              add explicit dependency on Perl 5.16.3.
 0.02.04.1  - Add option to run Graeme Fox's ``pal_finder_filter.pl`` script to
