@@ -12,7 +12,7 @@ tar cvzf $TGZ \
     README.rst \
     pal_finder_wrapper.sh \
     pal_finder_wrapper.xml \
-    pal_finder_filter.pl \
+    pal_finder_filter_and_assembly.py \
     tool_dependencies.xml \
     test-data
 if [ -f $TGZ ] ; then
