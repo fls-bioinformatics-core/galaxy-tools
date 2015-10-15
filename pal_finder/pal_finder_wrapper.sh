@@ -108,6 +108,7 @@ PRIMER_MAX_TM=
 PRIMER_MIN_TM=
 PRIMER_PAIR_MAX_DIFF_TM=
 OUTPUT_CONFIG_FILE=
+OUTPUT_ASSEMBLY=
 FILTERED_MICROSATS=
 FILTER_OPTIONS=
 #
@@ -213,8 +214,13 @@ while [ ! -z "$1" ] ; do
 	    shift
 	    FILTERED_MICROSATS=$1
 	    ;;
-	-assembly|-primers|-occurrences|-rankmotifs)
+	-primers|-occurrences|-rankmotifs)
 	    FILTER_OPTIONS="$FILTER_OPTIONS $1"
+	    ;;
+	-assembly)
+	    FILTER_OPTIONS="$FILTER_OPTIONS $1"
+	    shift
+	    OUTPUT_ASSEMBLY=$1
 	    ;;
 	*)
 	    echo Unknown option: $1 >&2
@@ -317,9 +323,19 @@ if [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
     exit 1
 fi
 #
-# Run the pal_finder_filter.pl script from Graeme Fox
-if [ ! -z "$FILTERED_MICROSATS" ] ; then
-    echo "### Running filtering script ###"
+# Sort outputs into a consistent order regardless of Perl version
+echo "### Sorting outputs ###"
+head -1 Output/PAL_summary.txt > Output/PAL_summary.sorted.txt
+if [ "$PLATFORM" == "Illumina" ] ; then
+    grep -v "^readPairID" Output/PAL_summary.txt | sort -k 1 >> Output/PAL_summary.sorted.txt
+else
+    grep -v "^SequenceID" Output/PAL_summary.txt | sort -k 1 >> Output/PAL_summary.sorted.txt
+fi
+mv Output/PAL_summary.sorted.txt Output/PAL_summary.txt
+#
+# Run the filtering & assembly script
+if [ ! -z "$FILTERED_MICROSATS" ] || [ ! -z "$OUTPUT_ASSEMBLY" ] ; then
+    echo "### Running filtering & assembly script ###"
     python $PALFINDER_FILTER -i $fastq_r1 -j $fastq_r2 -p Output/PAL_summary.txt $FILTER_OPTIONS 2>&1
     if [ $? -ne 0 ] ; then
 	echo ERROR $PALFINDER_FILTER exited with non-zero status >&2
@@ -340,6 +356,12 @@ if [ -f Output/PAL_summary.txt ] ; then
 fi
 if [ ! -z "$FILTERED_MICROSATS" ] && [ -f PAL_summary.filtered ] ; then
     /bin/mv PAL_summary.filtered $FILTERED_MICROSATS
+fi
+if [ ! -z "$OUTPUT_ASSEMBLY" ] ; then
+    assembly=${fastq_r1%.*}_pal_finder_assembly_output.txt
+    if [ -f "$assembly" ] ; then
+	/bin/mv $assembly "$OUTPUT_ASSEMBLY"
+    fi
 fi
 if [ ! -z "$OUTPUT_CONFIG_FILE" ] && [ -f config.txt ] ; then
     /bin/mv config.txt $OUTPUT_CONFIG_FILE
