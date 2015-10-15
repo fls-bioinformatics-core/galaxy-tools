@@ -50,9 +50,11 @@
   --primer-mispriming-library $mispriming.mispriming_library
   #end if
   #if str( $platform.platform_type ) == "illumina"
-    #for $filter in str($platform.filters).split(',')
-      $filter
-    #end for
+    #if $platform.filters
+      #for $filter in str($platform.filters).split(',')
+        $filter
+      #end for
+    #end if
     #if str( $platform.assembly ) == '-assembly'
       $platform.assembly $output_assembly
     #end if
