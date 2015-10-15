@@ -85,7 +85,7 @@
 	       help="Apply none, one or more filters to refine results">
           <option value="-assembly" selected="True">Perform PANDASeq assembly QC</option>
           <option value="-primers" selected="True">Only include loci with designed primers</option>
-          <option value="-occurrences" selected="True">Exclude loci which appear more than once</option>
+          <option value="-occurrences" selected="True">Exclude loci where the primer sequences appear more than once</option>
           <option value="-rankmotifs" selected="True">Only include loci with 'perfect' motifs, and rank by motif size</option>
         </param>
       </when>
@@ -151,12 +151,12 @@
 	   help="Can be used to run pal_finder outside of Galaxy" />
   </inputs>
   <outputs>
-    <data name="output_microsat_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellite types)" />
-    <data name="output_pal_summary" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellites with read IDs and primer pairs)" />
-    <data name="output_filtered_microsats" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix} (filtered and sorted microsatellites)">
+    <data name="output_pal_summary" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix}: all microsatellites (full details)" />
+    <data name="output_filtered_microsats" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix}: filtered microsatellites (full details)">
       <filter>platform['platform_type'] == 'illumina' and platform['filters'] != ''</filter>
     </data>
-    <data name="output_config_file" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (config file)">
+    <data name="output_microsat_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix}: summary of microsatellite types" />
+    <data name="output_config_file" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix}: config file">
       <filter>keep_config_file is True</filter>
     </data>
   </outputs>
