@@ -121,6 +121,8 @@ def strip_barcodes(file):
             match = re.search(r'\S*:', record.id)
             if match:
                 correct = match.group().rstrip(":")
+            else:
+                correct = str(record.id)
             SEQ = str(record.seq)
             if correct in wanted:
                 out.write(">" + correct + "\n" + SEQ + "\n")
