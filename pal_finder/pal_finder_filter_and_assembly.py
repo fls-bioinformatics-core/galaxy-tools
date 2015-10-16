@@ -149,21 +149,30 @@ else:
     if filter_rank_motifs == 1:
         print "-rankmotifs flag supplied. Filtering pal_finder output on the \"Motifs(bases)\" column to just those with perfect repeats. Ranking output by size of motif (largest first)."
 
-# get lines from the pal_finder output which meet filter settings
+# index the raw fastq files so that the sequences can be pulled out and added to the filtered output file
+R1fastq_sequences_index = SeqIO.index(R1_input,'fastq')
+R2fastq_sequences_index = SeqIO.index(R2_input,'fastq')
 
 # create a set to hold the filtered output
 wanted_lines = set()
 
+# get lines from the pal_finder output which meet filter settings
+
 # read the pal_finder output file into a csv reader
-print pal_finder_output
 with open (pal_finder_output) as csvfile_infile:
     csv_f = csv.reader(csvfile_infile, delimiter='\t')
-    header = csv_f.next()
+    header =  csv_f.next()
     with open(os.path.splitext(os.path.basename(pal_finder_output))[0] + ".filtered", 'w') as csvfile_outfile:
-        filewriter = csv.writer(csvfile_outfile, delimiter='\t', lineterminator='\n')
-        filewriter.writerow(header)
+        # write the header line for the output file
+        csvfile_outfile.write('\t'.join(header) + "\tR1_Sequence_ID\tR1_Sequence\tR2_Sequence_ID\tR2_Sequence\n")
         for row in csv_f:
-# navigate through all different combinations of filter options
+            # get the sequence ID
+            seq_ID = row[0]
+            # get the raw sequence reads and convert to a format that can go into a tsv file
+            R1_sequence = R1fastq_sequences_index[seq_ID].format("fasta").replace("\n","\t",1).replace("\n","")
+            R2_sequence = R2fastq_sequences_index[seq_ID].format("fasta").replace("\n","\t",1).replace("\n","")
+            seq_info = "\t" + R1_sequence + "\t" + R2_sequence + "\n"
+        # navigate through all different combinations of filter options
         # if the primer filter is switched on
             if filter_primers == 1:
             # check the occurrences of primers field
@@ -176,27 +185,28 @@ with open (pal_finder_output) as csvfile_infile:
                             if filter_rank_motifs == 1:
                                     # check for perfect motifs
                                 if row[1].count('(') == 1:
-                                            # all 3 filter switched on - write line out to output
-                                    filewriter.writerow(row)
+                                    # all 3 filter switched on - write line out to output
+                                    csvfile_outfile.write('\t'.join(row) + seq_info)
+
                             else:
-                                filewriter.writerow(row)
+                                csvfile_outfile.write('\t'.join(row) + seq_info)
                     elif filter_rank_motifs == 1:
                         if row[1].count('(') == 1:
-                            filewriter.writerow(row)
+                            csvfile_outfile.write('\t'.join(row) + seq_info)
                     else:
-                        filewriter.writerow(row)
+                        csvfile_outfile.write('\t'.join(row) + seq_info)
             elif filter_occurrences == 1:
                 if (row[15] == "1" and row[16] == "1"):
                     if filter_rank_motifs == 1:
                         if row[1].count('(') == 1:
-                            filewriter.writerow(row)
+                            csvfile_outfile.write('\t'.join(row) + seq_info)
                     else:
-                        filewriter.writerow(row)
+                        csvfile_outfile.write('\t'.join(row) + seq_info)
             elif filter_rank_motifs == 1:
                 if row[1].count('(') == 1:
-                    filewriter.writerow(row)
+                    csvfile_outfile.write('\t'.join(row) + seq_info)
             else:
-                filewriter.writerow(row)
+                csvfile_outfile.write('\t'.join(row) + seq_info)
 
 # if filter_rank_motifs is active, order the file by the size of the motif
 if filter_rank_motifs == 1:
@@ -305,7 +315,7 @@ if perform_assembly == 1:
     for sequence in R1fasta_sequences:
         fasta_IDs.append(sequence.id)
 
-# Index the 3 fasta files
+# Index the assembly fasta file
     assembly_sequences_index = SeqIO.index(assembly_file,'fasta')
     R1fasta_sequences_index = SeqIO.index(R1_fasta,'fasta')
     R2fasta_sequences_index = SeqIO.index(R2_fasta,'fasta')
@@ -322,11 +332,11 @@ if perform_assembly == 1:
             # fasta entries need to be converted to single line so they sit nicely in the output
                 assembly_output = assembly_seq.replace("\n","\t")
                 R1_fasta_seq = (R1fasta_sequences_index.get_raw(x).decode())
-                R1_output = R1_fasta_seq.replace("\n","\t",1)
-                R1_output = R1_output.replace("\n","")
+                R1_output = R1_fasta_seq.replace("\n","\t",1).replace("\n","")
+                #R1_output = R1_output.replace("\n","")
                 R2_fasta_seq = (R2fasta_sequences_index.get_raw(x).decode())
-                R2_output = R2_fasta_seq.replace("\n","\t",1)
-                R2_output = R2_output.replace("\n","")
+                R2_output = R2_fasta_seq.replace("\n","\t",1).replace("\n","")
+                #R2_output = R2_output.replace("\n","")
                 assembly_no_id = '\n'.join(assembly_seq.split('\n')[1:])
 
 # check that both primer sequences can be seen in the assembled contig
