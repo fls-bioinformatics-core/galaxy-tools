@@ -26,9 +26,8 @@
 # --primer-opt-tm VALUE: optimum melting temperature (Celsius)
 # --primer-pair-max-diff-tm VALUE: max difference between melting temps of left & right primers
 # --output_config_file FNAME: write a copy of the config.txt file to FNAME
-# --filter_microsats FNAME: run Graeme Fox's utility to filter and sort the
-#                           microsatellites from pal_finder and write to FNAME
-# -assembly: run the 'assembly' filter option
+# --filter_microsats FNAME: write output of filter options FNAME
+# -assembly FNAME: run the 'assembly' filter option and write to FNAME
 # -primers: run the 'primers' filter option
 # -occurrences: run the 'occurrences' filter option
 # -rankmotifs: run the 'rankmotifs' filter option
