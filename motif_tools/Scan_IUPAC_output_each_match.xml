@@ -1,6 +1,10 @@
 <tool id="fasta_scan_iupac_each" name="IUPAC scan and output each match" version="1.0.0">
   <description>Returns all matches to a given IUPAC in GFF format</description>
   <command interpreter="perl">Scan_IUPAC_output_each_match.pl $iupac $fasta $output $label $strand</command>
+  <requirements>
+    <requirement type="package" version="5.18.1">perl</requirement>
+    <requirement type="package" version="1.6.922">bioperl</requirement>
+  </requirements>
   <inputs>
     <param name="iupac" type="text" label="IUPAC string" value="e.g. WGATAR" help="Enter an IUPAC string." size="20"/>
     <param format="fasta" name="fasta" type="data" label="FASTA file" help="Select a FASTA file containing the sequences to be scanned."/>

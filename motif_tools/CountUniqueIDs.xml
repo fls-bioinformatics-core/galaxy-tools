@@ -1,6 +1,9 @@
 <tool id="gff_unique_count" name="Count unique seq in GFF" version="1.0.0">
   <description>Gives the non-redundant count of sequences</description>
   <command interpreter="perl">CountUniqueIDs.pl $input $output</command>
+  <requirements>
+    <requirement type="package" version="5.18.1">perl</requirement>
+  </requirements>
   <inputs>
     <param format="gff" name="input" type="data" label="GFF file" help="Select a GFF file."/>
   </inputs>
