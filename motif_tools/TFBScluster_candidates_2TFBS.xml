@@ -27,6 +27,10 @@
     > $output_log 
 
   </command>
+  <requirements>
+    <requirement type="package" version="5.18.1">perl</requirement>
+    <requirement type="package" version="1.6.922">bioperl</requirement>
+  </requirements>
   <inputs>
     <!-- TFBS GFF libraries -->
     <param format="gff" name="lib1" type="data" label="TFBS #1 GFF file" help="Select the first GFF file containing TFBS positions."/>
