@@ -30,7 +30,12 @@ by adding the line:
 
     <tool file="weeder2/weeder2_wrapper.xml" />
 
-You will also need to install ``weeder2`` from:
+You also need to make a copy of the ``weeder2.loc`` file (a sample version is
+provided here) which lists the species for which frequency files are available.
+This file should be placed in the ``tool-data`` directory of your Galaxy
+installation.
+
+Additionally you will need to install ``weeder2`` from:
 
 - http://159.149.160.51/modtools/downloads/weeder2.html
 
@@ -41,12 +46,32 @@ appropriate files:
 
 Also the directory holding the Weeder2 executables should be on your ``PATH``.
 
+Functional tests
+================
+
 If you want to run the functional tests, copy the sample test files under
 sample test files under Galaxy's ``test-data/`` directory. Then:
 
-    ./run_tests.sh -id trimmomatic
+    ./run_tests.sh -id weeder2
 
 You will need to have set the environment variables above.
+
+Reference Data
+==============
+
+Weeder2 requires reference data in the form of frequency files for each
+species of interest. A set of reference files is provided as part of the
+Weeder2 installation.
+
+Additional frequency files can be generated for novel species using the
+``w2frequency_maker`` utility available via:
+
+- http://159.149.160.51/weederaddons/weeder2freq.html
+
+This page also explains what input data should be used.
+
+The location of the additional frequency files can then be specified by
+adding them to the ``weeder2.loc`` file (see above).
 
 History
 =======
@@ -54,7 +79,8 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
-2.0.0.0    - Initial version
+2.0.1      - Specify frequency files in ``weeder2.loc``.
+2.0.0      - Initial version
 ========== ======================================================================
 
 

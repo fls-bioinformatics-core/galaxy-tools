@@ -1,0 +1,18 @@
+#This is a sample file distributed with Galaxy that is used by the
+#weeder2 tool. The weeder_freqfiles.loC file has this format (white space 
+#characters are TAB characters):
+#
+#<species_code>	<Description>	<PathToFreqFilesDir>
+#
+#For example:
+#
+#AF	Aspergillus fumigatus (AF)	/home/galaxy/weeder/FreqFiles/
+#...etc...
+#
+#This file should be placed in galaxy's tool-data directory when the
+#ceas tool is installed.
+HS	Homo sapiens (HS)	.
+MM	Mus musculus (MM)	.
+DM	Drosophila melanogaster (DM)	.
+SC	Saccharomyces cerevisiae (SC)	.
+AT	Arabidopsis thaliana (AT)	.
