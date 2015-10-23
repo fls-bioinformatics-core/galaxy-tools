@@ -1,7 +1,10 @@
-<tool id="motiffinding_weeder2" name="Weeder2" version="2.0.0">
+<tool id="motiffinding_weeder2" name="Weeder2" version="2.0.1">
   <description>Motif discovery in sequences from coregulated genes of a single species</description>
+  <requirements>
+    <requirement type="package" version="2.0">weeder</requirement>
+  </requirements>
   <command interpreter="bash">weeder2_wrapper.sh
-  $sequence_file $species_code
+  $sequence_file $species_code ${species_code.fields.path}
   $output_motifs_file $output_matrix_file
   $strands
   #if $chipseq.use_chipseq
@@ -13,21 +16,12 @@
      -sim $advanced_options.sim_threshold
      -em $advanced_options.em_cycles
   #end if
-</command>
-  <requirements>
-    <requirement type="package" version="2.0">weeder</requirement>
-  </requirements>
+  </command>
   <inputs>
     <param name="sequence_file" type="data" format="fasta" label="Input sequence" />
     <param name="species_code" type="select" label="Species to use for background comparison">
-      <!-- Hard code options for now
-	   See weeder's "organisms.txt" for full list
-      -->
-      <option value="HS">Homo sapiens (HS)</option>
-      <option value="MM">Mus musculus (MM)</option>
-      <option value="DM">Drosophila melanogaster (DM)</option>
-      <option value="SC">Saccharomyces cerevisiae (SC)</option>
-      <option value="AT">Arabidopsis thaliana (AT)</option>
+      <options from_data_table="weeder2">
+      </options>
     </param>
     <param name="strands" label="Use both strands of sequence" type="boolean"
 	   truevalue="" falsevalue="-ss" checked="True"

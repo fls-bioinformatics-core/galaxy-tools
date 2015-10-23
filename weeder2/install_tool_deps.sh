@@ -34,7 +34,7 @@ rmdir $wd
 cat > weeder/2.0/env.sh <<EOF
 #!/bin/sh
 # Source this to setup weeder/2.0
-export PATH=$INSTALL_DIR/bin:$PATH
+export PATH=$INSTALL_DIR/bin:\$PATH
 export WEEDER_DIR=$INSTALL_DIR
 export WEEDER_FREQFILES_DIR=$INSTALL_DIR/FreqFiles
 #
