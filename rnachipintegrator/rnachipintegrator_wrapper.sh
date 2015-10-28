@@ -4,27 +4,30 @@
 #
 # usage: sh rnachipintegrator_wrapper.sh [OPTIONS] <rnaseq_in> <chipseq_in> --output_xls <xls_out>
 #
-echo RnaChipIntegrator: analyse gene expression and ChIP data
+echo RnaChipIntegrator: analyse genomic features and peak data
 #
 # Collect command line options
 opts=
-output_xls=
-peaks_to_transcripts_out=
+xls_file=
 zip_file=
+peaks_per_feature=
+features_per_peak=
+peaks_per_feature_summary=
+features_per_peak_summary=
 while [ ! -z "$1" ] ; do
     case $1 in
-	--output_xls)
-	    shift; output_xls=$1
+	--xls_file)
+	    shift; xls_file=$1
+	    opts="$opts --xls"
 	    ;;
-	--summit_outputs)
-	    shift; peaks_to_transcripts_out=$1
-	    shift; tss_to_summits_out=$1
+	--output_files)
+	    shift; peaks_per_feature=$1
+	    shift; features_per_peak=$1
 	    ;;
-	--peak_outputs)
-	    shift; transcripts_to_edges_out=$1
-	    shift; transcripts_to_edges_summary=$1
-	    shift; tss_to_edges_out=$1
-	    shift; tss_to_edges_summary=$1
+	--summary_files)
+	    shift; peaks_per_feature_summary=$1
+	    shift; features_per_peak_summary=$1
+	    opts="$opts --summary"
 	    ;;
 	--zip_file)
 	    shift; zip_file=$1
@@ -39,9 +42,9 @@ done
 # Run RnaChipIntegrator
 # NB append stderr to stdout otherwise Galaxy job will fail
 # Direct output to a temporary directory
-outdir=`mktemp -d`
+outdir=$(mktemp -d)
 base_name=galaxy
-cmd="RnaChipIntegrator.py --project=${outdir}/${base_name} $opts"
+cmd="RnaChipIntegrator --name=${outdir}/${base_name} $opts"
 echo $cmd
 $cmd 2>&1
 #
@@ -54,9 +57,9 @@ if [ "$exit_status" -ne "0" ] ; then
     exit $exit_status
 fi
 #
-# Deal with output files - XLS
+# Deal with output XLS file
 if [ -f "${outdir}/${base_name}.xls" ] ; then
-    /bin/mv ${outdir}/${base_name}.xls $output_xls
+    /bin/mv ${outdir}/${base_name}.xls $xls_file
 else
     echo No file ${outdir}/${base_name}.xls >&2
     # Clean up and exit
@@ -64,9 +67,13 @@ else
     exit 1
 fi
 #
-# Zip file
+# Generate zip file
 if [ ! -z "$zip_file" ] ; then
-    for ext in "PeaksToTranscripts" "TSSToSummits" "TranscriptsToPeakEdges" "TranscriptsToPeakEdges_summary" "TSSToPeakEdges" "TSSToPeakEdges_summary" ; do
+    for ext in \
+	peaks_per_feature \
+	peaks_per_feature_summary \
+	features_per_peak \
+	features_per_peak_summary ; do
 	txt_file=${outdir}/${base_name}_${ext}.txt
 	if [ -f "$txt_file" ] ; then
 	    zip -j -g ${outdir}/archive.zip $txt_file
@@ -75,61 +82,22 @@ if [ ! -z "$zip_file" ] ; then
     /bin/mv ${outdir}/archive.zip $zip_file
 fi
 #
-# Peaks to transcripts
-if [ ! -z "$peaks_to_transcripts_out" ] ; then
-    outfile=${outdir}/${base_name}_PeaksToTranscripts.txt
-    if [ -f "$outfile" ] ; then
-	/bin/mv $outfile $peaks_to_transcripts_out
-    else
-	echo No file $outfile >&2
+# Collect tab delimited files
+for ext in \
+    peaks_per_feature \
+    peaks_per_feature_summary \
+    features_per_peak \
+    features_per_peak_summary ; do
+    eval dest=\$$ext
+    if [ ! -z "$dest" ] ; then
+	outfile=${outdir}/${base_name}_${ext}.txt
+	if [ -f "$outfile" ] ; then
+	    /bin/mv $outfile $dest
+	else
+	    echo ERROR missing output file $outfile >&2
+	fi
     fi
-fi
-#
-# TSS to summits
-if [ ! -z "$tss_to_summits_out" ] ; then
-    outfile=${outdir}/${base_name}_TSSToSummits.txt
-    if [ -f "$outfile" ] ; then
-	/bin/mv $outfile $tss_to_summits_out
-    else
-	echo No file $outfile >&2
-    fi
-fi
-#
-# Transcripts to Peak Edges
-if [ ! -z "$transcripts_to_edges_out" ] ; then
-    outfile=${outdir}/${base_name}_TranscriptsToPeakEdges.txt
-    if [ -f "$outfile" ] ; then
-	/bin/mv $outfile $transcripts_to_edges_out
-    else
-	echo No file $outfile >&2
-    fi
-fi
-if [ ! -z "$transcripts_to_edges_summary" ] ; then
-    outfile=${outdir}/${base_name}_TranscriptsToPeakEdges_summary.txt
-    if [ -f "$outfile" ] ; then
-	/bin/mv $outfile $transcripts_to_edges_summary
-    else
-	echo No file $outfile >&2
-    fi
-fi
-#
-# TSS to Peak Edges
-if [ ! -z "$tss_to_edges_out" ] ; then
-    outfile=${outdir}/${base_name}_TSSToPeakEdges.txt
-    if [ -f "$outfile" ] ; then
-	/bin/mv $outfile $tss_to_edges_out
-    else
-	echo No file $outfile >&2
-    fi
-fi
-if [ ! -z "$tss_to_edges_summary" ] ; then
-    outfile=${outdir}/${base_name}_TSSToPeakEdges_summary.txt
-    if [ -f "$outfile" ] ; then
-	/bin/mv $outfile $tss_to_edges_summary
-    else
-	echo No file $outfile >&2
-    fi
-fi
+done
 #
 # Clean up
 /bin/rm -rf $outdir
