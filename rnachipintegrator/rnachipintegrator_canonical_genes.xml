@@ -41,40 +41,8 @@
       <options from_data_table="rnachipintegrator_canonical_genes">
       </options>
     </param>
-    <param name="cutoff" type="integer" value="1000000" optional="true"
-	   label="Maximum distance a feature can be from each
-		  peak before being omitted from the analysis (bp)"
-	   help="Leave blank for no limit (--cutoff)" />
-    <param name="number" type="integer" value="4" optional="true"
-	   label="Maximum number of transcripts per peak to report from
-		  from the analysis"
-	   help="Leave blank for no limit (--number)" />
-    <param name="promoter_start" type="integer" value="-1000" optional="true"
-	   label="Start of promoter region with respect to gene TSS" />
-    <param name="promoter_end" type="integer" value="100" optional="true"
-	   label="End of promoter region with respect to gene TSS" />
-    <param name="edge" type="select"
-	   label="Genomic feature edges to consider in distance calculations"
-	   help="(--edge)">
-      <option value="tss" selected="true">TSS only</option>
-      <option value="both">Nearest of TSS or TES</option>
-    </param>
-    <param name="output_format" type="select" label="Output format">
-      <option value="full" selected="true">Full output including summary</option>
-      <option value="compact">Compact output</option>
-    </param>
-    <param name="feature_type" type="select"
-	   label="Type of genomic features"
-	   help="Name of feature type (for output) (--feature)">
-      <option value="gene">Genes</option>
-      <option value="transcript">Transcripts</option>
-    </param>
-    <param name="pad_output" type="boolean" checked="false"
-	   truevalue="--pad" falsevalue=""
-	   label="Output same number of lines for each peak"
-	   help="Add blank lines in output for peaks with fewer than maximum number of hits (--pad)" />
-    <param name="results_as_zip" type="boolean" checked="false" truevalue="yes"
-           label="Put output tab-delimited files into a single zip archive" />
+    <expand macro="analysis_options" />
+    <expand macro="output_options" />
   </inputs>
   <outputs>
     <!-- Always produce XLS output -->
