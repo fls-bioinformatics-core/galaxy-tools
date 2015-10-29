@@ -83,36 +83,75 @@
     </data>
   </outputs>
   <tests>
+    <!--
+	RnaChipIntegrator +name=test +cutoff=130000 +promoter_region=-10000,2500 +xls +summary features.txt summits.txt
+    -->
     <test>
-      <param name="rnaseq" value="ExpressionData.txt" ftype="tabular" />
-      <param name="chipseq" value="ChIP_summits.txt" ftype="tabular" />
-      <param name="peak_type" value="summits" />
-      <param name="window" value="20000" />
+      <param name="features_in" value="features.txt" ftype="tabular" />
+      <param name="peaks_in" value="summits.txt" ftype="tabular" />
       <param name="cutoff" value="130000" />
-      <!-- 
-      **NB** outputs have to be specified in order that they appear in the
-      tool (which is the order they will be written to the history) - the
-      test framework seems to use the order and ignores the "name" attribute
-      -->
-      <output name="xls_output" file="summits.xls" compare="sim_size" />
-      <output name="peaks_to_transcripts_out" file="peaks_to_transcripts.out" ftype="tabular" />
-      <output name="tss_to_summits_out" file="tss_to_summits.out" ftype="tabular" />
+      <param name="promoter_start" value="-10000" />
+      <param name="promoter_end" value="2500" />
+      <output name="xls_out" file="summits.xls" compare="sim_size" />
+      <output name="peaks_per_feature_out" ftype="tabular"
+	      file="summits_per_feature.out" />
+      <output name="features_per_peak_out" ftype="tabular"
+	      file="features_per_summit.out" />
+      <output name="peaks_per_feature_summary" ftype="tabular"
+	      file="summits_per_feature.summary" />
+      <output name="features_per_peak_summary" ftype="tabular"
+	      file="features_per_summit.summary" />
     </test>
+    <!--
+	RnaChipIntegrator +name=test +cutoff=130000 +promoter_region=-10000,2500 +xls +summary features.txt peaks.txt
+    -->
     <test>
-      <param name="rnaseq" value="ExpressionData.txt" ftype="tabular" />
-      <param name="chipseq" value="ChIP_peaks.txt" ftype="tabular" />
-      <param name="peak_type" value="regions" />
-      <param name="edge_cutoff" value="130000" />
-      <!-- 
-      **NB** outputs have to be specified in order that they appear in the
-      tool (which is the order they will be written to the history) - the
-      test framework seems to use the order and ignores the "name" attribute
-      -->
-      <output name="xls_output" file="peaks.xls" compare="sim_size" />
-      <output name="transcripts_to_edges_out" file="transcripts_to_edges.out" ftype="tabular" />
-      <output name="transcripts_to_edges_summary" file="transcripts_to_edges.summary" ftype="tabular" />
-      <output name="tss_to_edges_out" file="tss_to_edges.out" ftype="tabular" />
-      <output name="tss_to_edges_summary" file="tss_to_edges.summary" ftype="tabular" />
+      <param name="features_in" value="features.txt" ftype="tabular" />
+      <param name="peaks_in" value="peaks.txt" ftype="tabular" />
+      <param name="cutoff" value="130000" />
+      <param name="promoter_start" value="-10000" />
+      <param name="promoter_end" value="2500" />
+      <output name="xls_out" file="peaks1.xls" compare="sim_size" />
+      <output name="peaks_per_feature_out" ftype="tabular"
+	      file="peaks_per_feature1.out" />
+      <output name="features_per_peak_out" ftype="tabular"
+	      file="features_per_peak1.out" />
+      <output name="peaks_per_feature_summary" ftype="tabular"
+	      file="peaks_per_feature1.summary" />
+      <output name="features_per_peak_summary" ftype="tabular"
+	      file="features_per_peak1.summary" />
+    </test>
+    <!--
+	RnaChipIntegrator +name=test +cutoff=130000 +xls +compact features.txt peaks.txt
+    -->
+    <test>
+      <param name="features_in" value="features.txt" ftype="tabular" />
+      <param name="peaks_in" value="peaks.txt" ftype="tabular" />
+      <param name="cutoff" value="130000" />
+      <param name="output_format" value="compact" />
+      <output name="xls_out" file="peaks2.xls" compare="sim_size" />
+      <output name="peaks_per_feature_out" ftype="tabular"
+	      file="peaks_per_feature2.out" />
+      <output name="features_per_peak_out" ftype="tabular"
+	      file="features_per_peak2.out" />
+    </test>
+    <!--
+	RnaChipIntegrator +name=test +cutoff=130000 +only-DE +feature=gene +xls +compact features.txt peaks.txt
+    -->
+    <test>
+      <param name="features_in" value="features.txt" ftype="tabular" />
+      <param name="peaks_in" value="peaks.txt" ftype="tabular" />
+      <param name="cutoff" value="130000" />
+      <param name="diff_expressed_only" value="true" />
+      <param name="set_feature_type" value="true" />
+      <param name="feature_type" value="gene" />
+      <param name="output_format" value="compact" />
+      <output name="xls_out" file="peaks3.xls" compare="sim_size" />
+      <output name="xls_out" file="peaks3.xls" compare="sim_size" />
+      <output name="peaks_per_feature_out" ftype="tabular"
+	      file="peaks_per_feature3.out" />
+      <output name="features_per_peak_out" ftype="tabular"
+	      file="features_per_peak3.out" />
     </test>
   </tests>
   <help>
