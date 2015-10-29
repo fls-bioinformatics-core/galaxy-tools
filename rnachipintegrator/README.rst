@@ -106,6 +106,10 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.5.0-0    - Significant update to bring tools in line with
+             ``RnaChipIntegrator`` version 0.5.0, including removing the
+             distinction between 'regions' and 'summits' for input peaks,
+             and otherwise attempting to simplify the tools for users.
 0.4.4-0    - Initial version pushed to toolshed
 ========== ======================================================================
 
