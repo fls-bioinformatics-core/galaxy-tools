@@ -78,26 +78,55 @@
     </data>
   </outputs>
   <tests>
+    <!--
+	RnaChipIntegrator +name=mm9 +cutoff=50000 +xls +summary mm9_canonical_genes.tsv mm9_summits.txt
+    -->
     <test>
-      <param name="chipseq" value="mm9_summits.txt" />
+      <param name="peaks_in" value="mm9_summits.txt" ftype="tabular" />
       <param name="canonical_genes" value="mm9_test" />
-      <param name="peak_type" value="summits" />
-      <param name="window" value="50000" />
-      <param name="cutoff" value="130000" />
-      <output name="xls_output" file="mm9_summits.xls" compare="sim_size" />
-      <output name="peaks_to_transcripts_out" file="mm9_summits_to_transcripts.out" ftype="tabular" />
-      <output name="tss_to_summits_out" file="mm9_tss_to_summits.out" ftype="tabular" />
+      <param name="cutoff" value="50000" />
+      <output name="xls_out" file="mm9_summits.xls" compare="sim_size" />
+      <output name="peaks_per_feature_out" ftype="tabular"
+	      file="mm9_summits_per_feature.out" />
+      <output name="features_per_peak_out" ftype="tabular"
+	      file="mm9_features_per_summit.out" />
+      <output name="peaks_per_feature_summary" ftype="tabular"
+	      file="mm9_summits_per_feature.summary" />
+      <output name="features_per_peak_summary" ftype="tabular"
+	      file="mm9_features_per_summit.summary" />
     </test>
+    <!--
+	RnaChipIntegrator +name=mm9 +cutoff=50000 +xls +summary mm9_canonical_genes.tsv mm9_peaks.txt
+    -->
     <test>
-      <param name="chipseq" value="mm9_peaks.txt" />
+      <param name="peaks_in" value="mm9_peaks.txt" ftype="tabular" />
       <param name="canonical_genes" value="mm9_test" />
-      <param name="peak_type" value="regions" />
-      <param name="edge_cutoff" value="50000" />
-      <output name="xls_output" file="mm9_peaks.xls" compare="sim_size" />
-      <output name="transcripts_to_edges_out" file="mm9_transcripts_to_edges.out" ftype="tabular" />
-      <output name="transcripts_to_edges_summary" file="mm9_transcripts_to_edges.summary" ftype="tabular" />
-      <output name="tss_to_edges_out" file="mm9_tss_to_edges.out" ftype="tabular" />
-      <output name="tss_to_edges_summary" file="mm9_tss_to_edges.summary" ftype="tabular" />
+      <param name="cutoff" value="50000" />
+      <output name="xls_out" file="mm9_peaks.xls" compare="sim_size" />
+      <output name="peaks_per_feature_out" ftype="tabular"
+	      file="mm9_peaks_per_feature.out" />
+      <output name="features_per_peak_out" ftype="tabular"
+	      file="mm9_features_per_peak.out" />
+      <output name="peaks_per_feature_summary" ftype="tabular"
+	      file="mm9_peaks_per_feature.summary" />
+      <output name="features_per_peak_summary" ftype="tabular"
+	      file="mm9_features_per_peak.summary" />
+    </test>
+    <!--
+	RnaChipIntegrator +name=mm9 +cutoff=50000 +feature=gene +xls +compact mm9_canonical_genes.tsv mm9_peaks.txt
+    -->
+    <test>
+      <param name="peaks_in" value="mm9_peaks.txt" ftype="tabular" />
+      <param name="canonical_genes" value="mm9_test" />
+      <param name="cutoff" value="50000" />
+      <param name="set_feature_type" value="true" />
+      <param name="feature_type" value="gene" />
+      <param name="output_format" value="compact" />
+      <output name="xls_out" file="mm9_peaks_compact.xls" compare="sim_size" />
+      <output name="peaks_per_feature_out" ftype="tabular"
+	      file="mm9_peaks_per_feature_compact.out" />
+      <output name="features_per_peak_out" ftype="tabular"
+	      file="mm9_features_per_peak_compact.out" />
     </test>
   </tests>
   <help>
