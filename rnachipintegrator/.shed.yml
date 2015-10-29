@@ -1,0 +1,9 @@
+categories:
+- Sequence Analysis
+description: Utility for integrating sets of genomic features (e.g. canonical genes, CpG islands) with peak data
+long_description: RnaChipIntegrator is a utility that performs integrated analyses of genomic feature data with peak data (e.g. ChIP peaks), identifying the nearest peaks to each feature, and vice versa.
+
+The program was originally written specifically for ChIP-Seq and RNA-Seq data but works equally well for ChIP-chip and microarray expression data, and can also be used to integrate any set of genomic features (e.g. canonical genes, CpG islands) with expression data.
+name: RnaChipIntegrator
+owner: pjbriggs
+remote_repository_url: https://github.com/fls-bioinformatics-core/galaxy-tools/tree/master/rnachipintegrator
