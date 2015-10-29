@@ -3,7 +3,7 @@
 # Package RnaChipIntegrator files into tgz file for upload to
 # Galaxy toolshed
 #
-TGZ=rnachipintegrator_wrapper.tgz
+TGZ=rnachipintegrator_legacy_wrapper.tgz
 if [ -f $TGZ ] ; then
     echo $TGZ: already exists, please remove >&2
     exit 1
