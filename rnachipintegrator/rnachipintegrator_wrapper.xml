@@ -49,8 +49,10 @@
     <expand macro="analysis_options" />
     <param name="diff_expressed_only" type="boolean"
 	   truevalue="--only-DE" falsevalue="" checked="false"
-	   label="Only use genomic features flagged as differentially expressed"
-           help="Input feature data must include differential expression flags (--only-DE)" />
+	   label="Only consider genomic features which are flagged as
+		  differentially expressed"
+           help="NB input feature data must include differential expression
+		 flags (--only-DE)" />
     <expand macro="output_options" />
   </inputs>
   <outputs>

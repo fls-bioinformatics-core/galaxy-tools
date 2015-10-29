@@ -13,12 +13,12 @@
   </xml>
   <xml name="analysis_options">
     <param name="cutoff" type="integer" value="1000000" optional="true"
-	   label="Maximum distance a feature can be from each
-		  peak before being omitted from the analysis (bp)"
+	   label="Maximum distance between feature/peak pair
+		  before it is omitted from the analyses (bp)"
 	   help="Leave blank for no limit (--cutoff)" />
     <param name="number" type="integer" value="4" optional="true"
-	   label="Maximum number of transcripts per peak to report from
-		  from the analysis"
+	   label="Maximum number of feature/peak pairs to report from
+		  the analyses"
 	   help="Leave blank for no limit (--number)" />
     <param name="promoter_start" type="integer" value="-1000" optional="true"
 	   label="Start of promoter region with respect to gene TSS" />
