@@ -147,7 +147,6 @@
       <param name="feature_type" value="gene" />
       <param name="output_format" value="compact" />
       <output name="xls_out" file="peaks3.xls" compare="sim_size" />
-      <output name="xls_out" file="peaks3.xls" compare="sim_size" />
       <output name="peaks_per_feature_out" ftype="tabular"
 	      file="peaks_per_feature3.out" />
       <output name="features_per_peak_out" ftype="tabular"
