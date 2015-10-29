@@ -13,24 +13,28 @@
   #end if
   #if str( $cutoff ) != ""
     --cutoff=$cutoff
+  #else
+    --cutoff=0
   #end if
   #if str( $number ) != ""
     --number=$number
+  #else
+    --number=0
   #end if
-  #if (str( $promoter_start ) != "" and str( $promoter_end ))
-    --promoter_region=$promoter_start,$promoter_end
-  #end if
+  --promoter_region=$promoter_start,$promoter_end
   --edge=$edge
-  --feature=$feature_type
+  #if $features.set_feature_type
+    --feature=$features.feature_type
+  #end if
   $diff_expressed_only
-  $pad_output
   --xls_file "$xls_out"
   #if $results_as_zip
     --zip_file "$zip_file"
   #else
     --output_files "$peaks_per_feature_out" "$features_per_peak_out"
-    #if str( $output_format ) == "full"
+    #if str( $output.output_format ) == "full"
       --summary_files "$peaks_per_feature_summary" "$features_per_peak_summary"
+      ${output.pad_output}
     #else
       --compact
     #end if
