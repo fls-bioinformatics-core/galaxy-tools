@@ -71,12 +71,12 @@
     <data format="tabular" name="peaks_per_feature_summary"
 	  label="Nearest peaks to each feature (summary): ${features_in.name} vs ${peaks_in.name}" >
       <filter>results_as_zip is False</filter>
-      <filter>output_format == "full"</filter>
+      <filter>output['output_format'] == "full"</filter>
     </data>
     <data format="tabular" name="features_per_peak_summary"
 	  label="Nearest features to each peak (summary): ${features_in.name} vs ${peaks_in.name}" >
       <filter>results_as_zip is False</filter>
-      <filter>output_format == "full"</filter>
+      <filter>output['output_format'] == "full"</filter>
     </data>
     <!-- All outputs in a ZIP file -->
     <data format="zip" name="zip_file"
