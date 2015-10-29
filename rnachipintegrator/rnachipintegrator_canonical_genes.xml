@@ -48,7 +48,7 @@
   <inputs>
     <param format="tabular" name="chipseq" type="data" label="ChIP peaks data file" />
     <param name="canonical_genes" type="select" label="Canonical genes to analyse ChIP peaks against">
-      <options from_data_table="rnachipintegrator_canonical_genes">
+      <options from_data_table="rnachipintegrator_canonical_genes_legacy">
       </options>
     </param>
   <conditional name="analysis_options">
