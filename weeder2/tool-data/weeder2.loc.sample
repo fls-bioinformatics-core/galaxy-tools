@@ -1,16 +1,33 @@
-#This is a sample file distributed with Galaxy that is used by the
-#weeder2 tool. The weeder_freqfiles.loC file has this format (white space 
-#characters are TAB characters):
+# This is a sample file distributed with Galaxy that is used by the
+# weeder2 tool to find the frequency files.
+#
+# The weeder.loc file has this format (white space characters are TAB
+# characters):
 #
 #<species_code>	<Description>	<PathToFreqFilesDir>
 #
-#For example:
+# <PathToFreqFilesDir> should be a period ('.') to indicate the
+# frequency files that come as standard with weeder2; otherwise
+# it should be the full path to the directory holding a custom
+# set of .freq files.
 #
-#AF	Aspergillus fumigatus (AF)	/home/galaxy/weeder/FreqFiles/
-#...etc...
+# For example:
 #
-#This file should be placed in galaxy's tool-data directory when the
-#ceas tool is installed.
+#AF	Aspergillus fumigatus (AF)	/home/galaxy/weeder/FreqFiles
+#
+# where '/home/galaxy/weeder/FreqFiles' would contain:
+#
+#-rw-rw-r-- 1 pjb pjb 20109718 Oct 23 13:16 AF_ds.10.freq
+#-rw-rw-r-- 1 pjb pjb    47080 Oct 23 13:15 AF_ds.6.freq
+#-rw-rw-r-- 1 pjb pjb  1006374 Oct 23 13:15 AF_ds.8.freq
+#-rw-rw-r-- 1 pjb pjb 19930169 Oct 23 13:16 AF_ss.10.freq
+#-rw-rw-r-- 1 pjb pjb    45262 Oct 23 13:16 AF_ss.6.freq
+#-rw-rw-r-- 1 pjb pjb   984583 Oct 23 13:16 AF_ss.8.freq
+#
+# Entries are already provided for the standard frequency files that
+# are distributed with Weeder2.
+# This file should be placed in galaxy's tool-data directory when the
+# weeder2 tool is installed.
 HS	Homo sapiens (HS)	.
 MM	Mus musculus (MM)	.
 DM	Drosophila melanogaster (DM)	.
