@@ -134,8 +134,8 @@ while [ ! -z "$1" ] ; do
     case "$1" in
 	--primer-prefix)
 	    shift
-	    # Convert spaces to underscores in prefix
-	    PRIMER_PREFIX=$(echo $1 | tr " " "_")
+	    # Convert all non-alphanumeric characters to underscores in prefix
+	    PRIMER_PREFIX=$(echo $1 | tr -s -c "[:alnum:]" "_")
 	    ;;
 	--2merMinReps)
 	    shift
