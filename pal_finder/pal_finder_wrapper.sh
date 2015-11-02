@@ -135,7 +135,7 @@ while [ ! -z "$1" ] ; do
 	--primer-prefix)
 	    shift
 	    # Convert all non-alphanumeric characters to underscores in prefix
-	    PRIMER_PREFIX=$(echo $1 | tr -s -c "[:alnum:]" "_")
+	    PRIMER_PREFIX=$(echo -n $1 | tr -s -c "[:alnum:]" "_")
 	    ;;
 	--2merMinReps)
 	    shift
