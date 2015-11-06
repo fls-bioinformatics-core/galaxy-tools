@@ -92,7 +92,7 @@
         </param>
 	<param name="assembly" type="boolean"
 	       checked="True" truevalue="-assembly" falsevalue=""
-               label="Perform PANDASeq assembly QC" />
+               label="Use PANDAseq to assemble paired-end reads and confirm primer sequences are present in high-quality assembly" />
       </when>
       <when value="454">
 	<param name="input_fasta" type="data" format="fasta" label="454 fasta file with raw reads" />
@@ -265,7 +265,8 @@ pal_finder to:
  * Exclude loci where the primer sequences occur more than once in the reads
  * Only include loci with 'perfect' motifs (and rank by motif size,largest to
    smallest)
- * Perform PANDASeq assembly QC
+ * Use PANDAseq to assemble paired-end reads and confirm primer sequences are
+   present in high-quality assembly
 
 Pal_finder runs the primer3_core program; information on the settings used in
 primer3_core can be found in the Primer3 manual at
@@ -301,7 +302,7 @@ http://purl.com/STEVEROZEN/papers/rozen-and-skaletsky-2000-primer3.pdf
 
 The filtering and assembly of the pal_finder output for Illumina data is performed
 using a Python utility written by Graeme Fox at the University of Manchester, and which
-is included with this tool; this utility uses the BioPython and PANDASeq packages.
+is included with this tool; this utility uses the BioPython and PANDAseq packages.
 
 Please kindly acknowledge both this Galaxy tool, the pal_finder and primer3 packages, and
 the utility script and its dependencies if you use it in your work.
