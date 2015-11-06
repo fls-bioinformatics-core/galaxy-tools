@@ -87,7 +87,7 @@
 	       multiple="True" label="Filters to apply to the pal_finder results"
 	       help="Apply none, one or more filters to refine results">
           <option value="-primers" selected="True">Only include loci with designed primers</option>
-          <option value="-occurrences" selected="True">Exclude loci where the primer sequences appear more than once</option>
+          <option value="-occurrences" selected="True">Exclude loci where the primer sequences occur more than once in the reads</option>
           <option value="-rankmotifs" selected="True">Only include loci with 'perfect' motifs, and rank by motif size</option>
         </param>
 	<param name="assembly" type="boolean"
@@ -262,7 +262,7 @@ Optionally for Illumina data, one or more filters can be applied to the output f
 pal_finder to:
 
  * Only include loci with designed primers
- * Exclude loci which appear more than once
+ * Exclude loci where the primer sequences occur more than once in the reads
  * Only include loci with 'perfect' motifs (and rank by motif size,largest to
    smallest)
  * Perform PANDASeq assembly QC
