@@ -1,6 +1,6 @@
 #feature.id	feature.chr	feature.start	feature.end	feature.strand	chr_1	start_1	end_1	dist_closest_1	dist_TSS_1	direction_1	in_the_feature_1	chr_2	start_2	end_2	dist_closest_2	dist_TSS_2	direction_2	in_the_feature_2	chr_3	start_3	end_3	dist_closest_3	dist_TSS_3	direction_3	in_the_feature_3	chr_4	start_4	end_4	dist_closest_4	dist_TSS_4	direction_4	in_the_feature_4
-Xkr4	chr1	3204562	3661579	-	chr1	3621547	3621548	0	40031	.	YES	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
-AK149000	chr1	3638391	3648985	-	chr1	3621547	3621548	16843	27437	U	NO	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
+Xkr4	chr1	3204562	3661579	-	chr1	3621547	3621583	0	39996	.	YES	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
+AK149000	chr1	3638391	3648985	-	chr1	3621547	3621583	16808	27402	U	NO	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
 Rp1	chr1	4333587	4350395	-	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
 Sox17	chr1	4481008	4486494	-	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
 Mrpl15	chr1	4763278	4775807	-	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
