@@ -33,18 +33,24 @@
   </xml>
   <xml name="output_options">
     <conditional name="output">
-      <param name="output_format" type="select" label="Output format">
-	<option value="full" selected="true">Full output including summary</option>
-	<option value="compact">Compact output</option>
-      </param>
-      <when value="full">
+      <param name="compact_format" type="boolean" checked="true"
+	     truevalue="true" falsevalue="false"
+	     label="Use 'compact' output format"
+	     help="Puts all hits for each peak or feature on a single line
+		   (--compact)" />
+      <when value="true">
+      </when>
+      <when value="false">
 	<param name="pad_output" type="boolean" checked="false"
 	       truevalue="--pad" falsevalue=""
 	       label="Output same number of lines for each peak"
 	       help="Add blank lines in output for peaks with fewer than
 		     maximum number of hits (--pad)" />
-      </when>
-      <when value="compact">
+	<param name="summary" type="boolean" checked="false"
+	       truevalue="true" falsevalue="false"
+	       label="Output additional 'summary' datasets"
+	       help="Summaries contain only the top hits for each peak
+		     or feature (--summary)" />
       </when>
     </conditional>
     <conditional name="features">

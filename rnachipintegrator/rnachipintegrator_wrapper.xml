@@ -32,11 +32,13 @@
     --zip_file "$zip_file"
   #else
     --output_files "$peaks_per_feature_out" "$features_per_peak_out"
-    #if str( $output.output_format ) == "full"
-      --summary_files "$peaks_per_feature_summary" "$features_per_peak_summary"
-      ${output.pad_output}
-    #else
+    #if $output.compact_format
       --compact
+    #else
+      #if $output.summary
+        --summary_files "$peaks_per_feature_summary" "$features_per_peak_summary"
+      #end if
+      ${output.pad_output}
     #end if
   #end if
   "$features_in" "$peaks_in"
@@ -71,12 +73,14 @@
     <data format="tabular" name="peaks_per_feature_summary"
 	  label="Nearest peaks to each feature (summary): ${features_in.name} vs ${peaks_in.name}" >
       <filter>results_as_zip is False</filter>
-      <filter>output['output_format'] == "full"</filter>
+      <filter>output['compact_format'] is False</filter>
+      <filter>output['summary'] is True</filter>
     </data>
     <data format="tabular" name="features_per_peak_summary"
 	  label="Nearest features to each peak (summary): ${features_in.name} vs ${peaks_in.name}" >
       <filter>results_as_zip is False</filter>
-      <filter>output['output_format'] == "full"</filter>
+      <filter>output['compact_format'] is False</filter>
+      <filter>output['summary'] is True</filter>
     </data>
     <!-- All outputs in a ZIP file -->
     <data format="zip" name="zip_file"
@@ -86,7 +90,7 @@
   </outputs>
   <tests>
     <!--
-	RnaChipIntegrator +name=test +cutoff=130000 +promoter_region=-10000,2500 +xls +summary features.txt summits.txt
+	RnaChipIntegrator +name=test +cutoff=130000 +promoter_region=-10000,2500 +xls +compact features.txt summits.txt
     -->
     <test>
       <param name="features_in" value="features.txt" ftype="tabular" />
@@ -99,13 +103,9 @@
 	      file="summits_per_feature.out" />
       <output name="features_per_peak_out" ftype="tabular"
 	      file="features_per_summit.out" />
-      <output name="peaks_per_feature_summary" ftype="tabular"
-	      file="summits_per_feature.summary" />
-      <output name="features_per_peak_summary" ftype="tabular"
-	      file="features_per_summit.summary" />
     </test>
     <!--
-	RnaChipIntegrator +name=test +cutoff=130000 +promoter_region=-10000,2500 +xls +summary features.txt peaks.txt
+	RnaChipIntegrator +name=test +cutoff=130000 +promoter_region=-10000,2500 +xls +compact features.txt peaks.txt
     -->
     <test>
       <param name="features_in" value="features.txt" ftype="tabular" />
@@ -118,19 +118,15 @@
 	      file="peaks_per_feature1.out" />
       <output name="features_per_peak_out" ftype="tabular"
 	      file="features_per_peak1.out" />
-      <output name="peaks_per_feature_summary" ftype="tabular"
-	      file="peaks_per_feature1.summary" />
-      <output name="features_per_peak_summary" ftype="tabular"
-	      file="features_per_peak1.summary" />
     </test>
     <!--
-	RnaChipIntegrator +name=test +cutoff=130000 +xls +compact features.txt peaks.txt
+	RnaChipIntegrator +name=test +cutoff=130000 +xls features.txt peaks.txt
     -->
     <test>
       <param name="features_in" value="features.txt" ftype="tabular" />
       <param name="peaks_in" value="peaks.txt" ftype="tabular" />
       <param name="cutoff" value="130000" />
-      <param name="output_format" value="compact" />
+      <param name="compact_format" value="false" />
       <output name="xls_out" file="peaks2.xls" compare="sim_size" />
       <output name="peaks_per_feature_out" ftype="tabular"
 	      file="peaks_per_feature2.out" />
@@ -147,12 +143,31 @@
       <param name="diff_expressed_only" value="true" />
       <param name="set_feature_type" value="true" />
       <param name="feature_type" value="gene" />
-      <param name="output_format" value="compact" />
       <output name="xls_out" file="peaks3.xls" compare="sim_size" />
       <output name="peaks_per_feature_out" ftype="tabular"
 	      file="peaks_per_feature3.out" />
       <output name="features_per_peak_out" ftype="tabular"
 	      file="features_per_peak3.out" />
+    </test>
+    <!--
+	RnaChipIntegrator +name=test +cutoff=130000 +promoter_region=-10000,2500 +xls +summary features.txt peaks.txt
+    -->
+    <test>
+      <param name="features_in" value="features.txt" ftype="tabular" />
+      <param name="peaks_in" value="peaks.txt" ftype="tabular" />
+      <param name="cutoff" value="130000" />
+      <param name="compact_format" value="false" />
+      <param name="summary" value="true" />
+      <param name="pad_output" value="true" />
+      <output name="xls_out" file="peaks4.xls" compare="sim_size" />
+      <output name="peaks_per_feature_out" ftype="tabular"
+	      file="peaks_per_feature4.out" />
+      <output name="features_per_peak_out" ftype="tabular"
+	      file="features_per_peak4.out" />
+      <output name="peaks_per_feature_summary" ftype="tabular"
+	      file="peaks_per_feature4.summary" />
+      <output name="features_per_peak_summary" ftype="tabular"
+	      file="features_per_peak4.summary" />
     </test>
   </tests>
   <help>
@@ -218,15 +233,20 @@ The key outputs from the tool are two lists compromising the nearest
 peaks for each feature, and the nearest feature for each peak (one
 dataset for each list).
 
-There are two formats for reporting: "full" and "compact":
+There are two formats for reporting: "compact" and "full":
 
- * **Full output** reports the most extensive data for each feature-peak
-   pair, with one pair reported per line in the output datasets.
- * **Compact output** reports minimal data, with multiple peaks for a
-   given feature on a single line (and vice versa).
+ * **Compact output** reports all the hits for each peak or feature on
+   a single line of output;
+ * **Full output** reports each peak/feature pair on a separate line
+   (i.e. a multi-line output format).
 
-In "full" output mode, "summary" datasets are also produced with just
-the top peak reported for each feature (and vice versa).
+In "full" output mode, additional options are available:
+
+ * The output files can be "padded" with extra (empty) lines to ensure
+   that there are always the same number of lines for each peak or
+   feature, if fewer than the requested number of hits are found.
+ * "Summary" datasets can also be requested, which include just the top
+   peak reported for each feature (and vice versa).
 
 In either mode these data will also be output in a single MS Excel file,
 which contains one sheet per result set.
