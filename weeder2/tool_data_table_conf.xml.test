@@ -1,0 +1,6 @@
+<tables>
+    <table name="weeder2" comment_char="#">
+        <columns>value, name, path</columns>
+        <file path="${__HERE__}/test-data/weeder2.loc" />
+    </table>
+</tables>
