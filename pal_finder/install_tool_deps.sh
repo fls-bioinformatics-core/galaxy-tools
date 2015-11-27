@@ -89,5 +89,50 @@ export PALFINDER_SCRIPT_DIR=$INSTALL_DIR/bin
 export PALFINDER_DATA_DIR=$INSTALL_DIR/data
 #
 EOF
+# BioPython 1.65
+echo Installing BioPython
+INSTALL_DIR=$TOP_DIR/biopython/1.65
+mkdir -p $INSTALL_DIR
+wd=$(mktemp -d)
+echo Moving to $wd
+pushd $wd
+pip install --install-option "--prefix=$INSTALL_DIR" https://pypi.python.org/packages/source/b/biopython/biopython-1.65.tar.gz >/dev/null 2>&1
+popd
+rm -rf $wd/*
+rmdir $wd
+# Make setup file
+cat > biopython/1.65/env.sh <<EOF
+#!/bin/sh
+# Source this to setup biopython/1.65
+echo Setting up biopython 1.65
+export PYTHONPATH=$INSTALL_DIR/lib/python2.7/site-packages:\$PYTHONPATH
+export PYTHONPATH=$INSTALL_DIR/lib64/python2.7/site-packages:\$PYTHONPATH
+#
+EOF
+# PandaSeq 2.8
+echo Installing PandaSeq
+INSTALL_DIR=$TOP_DIR/pandaseq/2.8.1
+mkdir -p $INSTALL_DIR
+wd=$(mktemp -d)
+echo Moving to $wd
+pushd $wd
+wget -q https://github.com/neufeld/pandaseq/archive/v2.8.1.tar.gz
+tar xzf v2.8.1.tar.gz
+cd pandaseq-2.8.1
+./autogen.sh >/dev/null 2>&1
+./configure --prefix=$INSTALL_DIR >/dev/null 2>&1
+make; make install >/dev/null 2>&1
+popd
+rm -rf $wd/*
+rmdir $wd
+# Make setup file
+cat > pandaseq/2.8.1/env.sh <<EOF
+#!/bin/sh
+# Source this to setup pandaseq/2.8.1
+echo Setting up pandaseq 2.8.1
+export PATH=$INSTALL_DIR/bin:\$PATH
+export LD_LIBRARY_PATH=$INSTALL_DIR/lib:\$LD_LIBRARY_PATH
+#
+EOF
 ##
 #

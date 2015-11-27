@@ -1,17 +1,28 @@
-<tool id="microsat_pal_finder" name="pal_finder" version="0.02.04.2">
-  <description>Find microsatellite repeat elements sequencing reads and design PCR primers to amplify them</description>
+<tool id="microsat_pal_finder" name="pal_finder" version="0.02.04.3">
+  <description>Find microsatellite repeat elements from sequencing reads and design PCR primers to amplify them</description>
+  <requirements>
+    <requirement type="package" version="5.16.3">perl</requirement>
+    <requirement type="package" version="0.02.04">pal_finder</requirement>
+    <requirement type="package" version="2.0.0">primer3_core</requirement>
+    <requirement type="package" version="1.65">biopython</requirement>
+    <requirement type="package" version="2.8.1">pandaseq</requirement>
+  </requirements>
   <command interpreter="bash">pal_finder_wrapper.sh
   #if str( $platform.platform_type ) == "illumina"
-    $platform.input_fastq_r1 $platform.input_fastq_r2
+    #set $paired_input_type = $platform.paired_input_type_conditional.paired_input_type
+    #if $paired_input_type == "pair_of_files"
+      "$platform.paired_input_type_conditional.input_fastq_r1"
+      "$platform.paired_input_type_conditional.input_fastq_r2"
+    #else
+      "$platform.paired_input_type_conditional.input_fastq_pair.forward"
+      "$platform.paired_input_type_conditional.input_fastq_pair.reverse"
+    #end if
   #else
-    --454 $platform.input_fasta
+    --454 "$platform.input_fasta"
   #end if
   $output_microsat_summary $output_pal_summary
-  #if str( $platform.platform_type ) == "illumina" and $platform.filter_microsats
-    --filter_microsats $output_filtered_microsats
-  #end if
   #if $keep_config_file
-    --output_config_file $output_config_file
+    --output_config_file "$output_config_file"
   #end if
   --primer-prefix "$primer_prefix"
   --2merMinReps $min_2mer_repeats
@@ -35,12 +46,18 @@
   #if str( $mispriming.mispriming_options ) == "custom"
   --primer-mispriming-library $mispriming.mispriming_library
   #end if
+  #if str( $platform.platform_type ) == "illumina"
+    #if $platform.filters
+      #for $filter in str($platform.filters).split(',')
+        $filter
+        --filter_microsats "$output_filtered_microsats"
+      #end for
+    #end if
+    #if str( $platform.assembly ) == '-assembly'
+      $platform.assembly "$output_assembly"
+    #end if
+  #end if
   </command>
-  <requirements>
-    <requirement type="package" version="5.16.3">perl</requirement>
-    <requirement type="package" version="0.02.04">pal_finder</requirement>
-    <requirement type="package" version="2.0.0">primer3_core</requirement>
-  </requirements>
   <inputs>
     <param name="primer_prefix" type="text" value="test" size="25" label="Primer prefix" help="This prefix will be added to the beginning of all primer names" />
     <conditional name="platform">
@@ -49,11 +66,33 @@
 	<option value="454">454</option>
       </param>
       <when value="illumina">
-	<param name="input_fastq_r1" type="data" format="fastqsanger" label="Illumina fastq file (read 1)" />
-	<param name="input_fastq_r2" type="data" format="fastqsanger" label="Illumina fastq file (read 2)" />
-	<param name="filter_microsats" type="boolean" truevalue="True" falsevalue="False"
-	       label="Filter and sort the microsatellites" checked="True"
-	       help="Filter pal_finder results to only include lines with primer sequences and remove non-perfect repeats" />
+	<conditional name="paired_input_type_conditional">
+          <param name="paired_input_type" type="select" label="Input Type">
+            <option value="pair_of_files" selected="true">Pair of datasets</option>
+            <option value="collection">Dataset collection pair</option>
+	  </param>
+	  <when value="pair_of_files">
+	    <param name="input_fastq_r1" type="data" format="fastqsanger"
+		   label="Illumina fastq file (read 1)" />
+	    <param name="input_fastq_r2" type="data" format="fastqsanger"
+		   label="Illumina fastq file (read 2)" />
+	  </when>
+	  <when value="collection">
+	    <param name="input_fastq_pair" format="fastqsanger"
+		   type="data_collection" collection_type="paired"
+		   label="Select FASTQ dataset collection with R1/R2 pair" />
+	  </when>
+	</conditional>
+	<param name="filters" type="select" display="checkboxes"
+	       multiple="True" label="Filters to apply to the pal_finder results"
+	       help="Apply none, one or more filters to refine results">
+          <option value="-primers" selected="True">Only include loci with designed primers</option>
+          <option value="-occurrences" selected="True">Exclude loci where the primer sequences occur more than once in the reads</option>
+          <option value="-rankmotifs" selected="True">Only include loci with 'perfect' motifs, and rank by motif size</option>
+        </param>
+	<param name="assembly" type="boolean"
+	       checked="True" truevalue="-assembly" falsevalue=""
+               label="Use PANDAseq to assemble paired-end reads and confirm primer sequences are present in high-quality assembly" />
       </when>
       <when value="454">
 	<param name="input_fasta" type="data" format="fasta" label="454 fasta file with raw reads" />
@@ -117,12 +156,15 @@
 	   help="Can be used to run pal_finder outside of Galaxy" />
   </inputs>
   <outputs>
-    <data name="output_microsat_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellite types)" />
-    <data name="output_pal_summary" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix} (microsatellites with read IDs and primer pairs)" />
-    <data name="output_filtered_microsats" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix} (filtered and sorted microsatellites)">
-      <filter>platform['platform_type'] == 'illumina' and platform['filter_microsats']</filter>
+    <data name="output_pal_summary" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix}: all microsatellites (full details)" />
+    <data name="output_filtered_microsats" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix}: filtered microsatellites (full details)">
+      <filter>platform['platform_type'] == 'illumina' and platform['filters'] is not None</filter>
     </data>
-    <data name="output_config_file" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix} (config file)">
+    <data name="output_microsat_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix}: summary of microsatellite types" />
+    <data name="output_assembly" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix}: assembly">
+      <filter>platform['assembly'] is True</filter>
+    </data>
+    <data name="output_config_file" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix}: config file">
       <filter>keep_config_file is True</filter>
     </data>
   </outputs>
@@ -132,24 +174,77 @@
       <param name="platform_type" value="illumina" />
       <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
       <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
-      <!-- 
-      **NB** outputs have to be specified in order that they appear in the
-      tool (which is the order they will be written to the history) - the
-      test framework seems to use the order and ignores the "name" attribute
-      -->
       <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
       <output name="output_pal_summary" file="illuminaPE_microsats.out" />
       <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats.out" />
+      <output name="output_assembly" file="illuminaPE_assembly_after_filters.out" />
+    </test>
+    <test>
+      <!-- Test with Illumina input as dataset pair -->
+      <param name="platform_type" value="illumina" />
+      <param name="paired_input_type" value="collection" />
+      <param name="input_fastq_pair">
+	<collection type="paired">
+	  <element name="forward" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+	  <element name="reverse" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+	</collection>
+      </param>
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats.out" />
+      <output name="output_assembly" file="illuminaPE_assembly_after_filters.out" />
+    </test>
+    <test>
+      <!-- Test with Illumina input filter to loci with PandaSEQ assembly
+	   ('-assembly' option) -->
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_assembly" file="illuminaPE_assembly.out" />
+    </test>
+    <test>
+      <!-- Test with Illumina input filter to loci with primers
+	   ('-primers' option) -->
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="-primers" />
+      <param name="assembly" value="false" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats_primers.out" />
+    </test>
+    <test>
+      <!-- Test with Illumina input filter to loci which appear only once
+	   ('-occurrences' option) -->
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="-occurrences" />
+      <param name="assembly" value="false" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats_occurrences.out" />
+    </test>
+    <test>
+      <!-- Test with Illumina input filter and rank loci with perfect motifs
+	   ('-rankmotifs' option) -->
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="-rankmotifs" />
+      <param name="assembly" value="false" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats_rankmotifs.out" />
     </test>
     <test>
       <!-- Test with 454 input -->
       <param name="platform_type" value="454" />
       <param name="input_fasta" value="454_in.fa" ftype="fasta" />
-      <!-- 
-      **NB** outputs have to be specified in order that they appear in the
-      tool (which is the order they will be written to the history) - the
-      test framework seems to use the order and ignores the "name" attribute
-      -->
       <output name="output_microsat_summary" file="454_microsat_types.out" />
       <output name="output_pal_summary" file="454_microsats.out" />
     </test>
@@ -163,9 +258,15 @@ This tool runs the pal_finder program, which finds microsatellite repeat element
 directly from raw 454 or Illumina paired-end sequencing reads. It then designs PCR
 primers to amplify these repeat loci (Potentially Amplifiable Loci: PAL).
 
-Optionally for Illumina data, the output from pal_finder can also be filtered to
-remove any motifs without primer sequences, and with non-perfect microsatellites.
-The microsatellites are then ranked by motif size (largest to smallest).
+Optionally for Illumina data, one or more filters can be applied to the output from
+pal_finder to:
+
+ * Only include loci with designed primers
+ * Exclude loci where the primer sequences occur more than once in the reads
+ * Only include loci with 'perfect' motifs (and rank by motif size,largest to
+   smallest)
+ * Use PANDAseq to assemble paired-end reads and confirm primer sequences are
+   present in high-quality assembly
 
 Pal_finder runs the primer3_core program; information on the settings used in
 primer3_core can be found in the Primer3 manual at
@@ -199,12 +300,12 @@ http://primer3.sourceforge.net/releases.php):
 The paper is available at
 http://purl.com/STEVEROZEN/papers/rozen-and-skaletsky-2000-primer3.pdf
 
-The filtering and sorting of the pal_finder output for Illumina data is performed
-using a Perl script written by Graeme Fox at the University of Manchester, and which
-is included with this tool.
+The filtering and assembly of the pal_finder output for Illumina data is performed
+using a Python utility written by Graeme Fox at the University of Manchester, and which
+is included with this tool; this utility uses the BioPython and PANDAseq packages.
 
 Please kindly acknowledge both this Galaxy tool, the pal_finder and primer3 packages, and
-the utility script if you use it in your work.
+the utility script and its dependencies if you use it in your work.
   </help>
   <citations>
     <!--
@@ -214,7 +315,7 @@ the utility script if you use it in your work.
     -->
     <citation type="doi">10.1371/journal.pone.0030953</citation>
     <citation type="bibtex">@Article{pmid10547847,
-    Author="Rozen, S.  and Skaletsky, H. ",
+    Author="Rozen, S. and Skaletsky, H. ",
     Title="{{P}rimer3 on the {W}{W}{W} for general users and for biologist programmers}",
     Journal="Methods Mol. Biol.",
     Year="2000",
@@ -222,5 +323,7 @@ the utility script if you use it in your work.
     Pages="365--386",
     URL="{http://purl.com/STEVEROZEN/papers/rozen-and-skaletsky-2000-primer3.pdf}"
     }</citation>
+    <citation type="doi">10.1093/bioinformatics/btp163</citation>
+    <citation type="doi">10.1186/1471-2105-13-31</citation>
   </citations>
 </tool>

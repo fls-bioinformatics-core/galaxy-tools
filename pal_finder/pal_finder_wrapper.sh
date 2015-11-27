@@ -26,8 +26,11 @@
 # --primer-opt-tm VALUE: optimum melting temperature (Celsius)
 # --primer-pair-max-diff-tm VALUE: max difference between melting temps of left & right primers
 # --output_config_file FNAME: write a copy of the config.txt file to FNAME
-# --filter_microsats FNAME: run Graeme Fox's Perl script to filter and sort the
-#                           microsatellites from pal_finder and write to FNAME
+# --filter_microsats FNAME: write output of filter options FNAME
+# -assembly FNAME: run the 'assembly' filter option and write to FNAME
+# -primers: run the 'primers' filter option
+# -occurrences: run the 'occurrences' filter option
+# -rankmotifs: run the 'rankmotifs' filter option
 #
 # pal_finder is available from http://sourceforge.net/projects/palfinder/
 #
@@ -55,9 +58,9 @@ echo $*
 : ${PRIMER3_CORE_EXE:=primer3_core}
 #
 # Filter script is in the same directory as this script
-PALFINDER_FILTER_PL=$(dirname $0)/pal_finder_filter.pl
-if [ ! -f $PALFINDER_FILTER_PL ] ; then
-    echo No pal_finder_filter.pl script >&2
+PALFINDER_FILTER=$(dirname $0)/pal_finder_filter_and_assembly.py
+if [ ! -f $PALFINDER_FILTER ] ; then
+    echo No $PALFINDER_FILTER script >&2
     exit 1
 fi
 #
@@ -104,7 +107,9 @@ PRIMER_MAX_TM=
 PRIMER_MIN_TM=
 PRIMER_PAIR_MAX_DIFF_TM=
 OUTPUT_CONFIG_FILE=
+OUTPUT_ASSEMBLY=
 FILTERED_MICROSATS=
+FILTER_OPTIONS=
 #
 # Collect command line arguments
 if [ $# -lt 2 ] ; then
@@ -129,8 +134,8 @@ while [ ! -z "$1" ] ; do
     case "$1" in
 	--primer-prefix)
 	    shift
-	    # Convert spaces to underscores in prefix
-	    PRIMER_PREFIX=$(echo $1 | tr " " "_")
+	    # Convert all non-alphanumeric characters to underscores in prefix
+	    PRIMER_PREFIX=$(echo -n $1 | tr -s -c "[:alnum:]" "_")
 	    ;;
 	--2merMinReps)
 	    shift
@@ -207,6 +212,14 @@ while [ ! -z "$1" ] ; do
 	--filter_microsats)
 	    shift
 	    FILTERED_MICROSATS=$1
+	    ;;
+	-primers|-occurrences|-rankmotifs)
+	    FILTER_OPTIONS="$FILTER_OPTIONS $1"
+	    ;;
+	-assembly)
+	    FILTER_OPTIONS="$FILTER_OPTIONS $1"
+	    shift
+	    OUTPUT_ASSEMBLY=$1
 	    ;;
 	*)
 	    echo Unknown option: $1 >&2
@@ -309,15 +322,25 @@ if [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
     exit 1
 fi
 #
-# Run the pal_finder_filter.pl script from Graeme Fox
-if [ ! -z "$FILTERED_MICROSATS" ] ; then
-    echo "### Running filtering script ###"
-    perl $PALFINDER_FILTER_PL Output/PAL_summary.txt 2>&1
+# Sort outputs into a consistent order regardless of Perl version
+echo "### Sorting outputs ###"
+head -1 Output/PAL_summary.txt > Output/PAL_summary.sorted.txt
+if [ "$PLATFORM" == "Illumina" ] ; then
+    grep -v "^readPairID" Output/PAL_summary.txt | sort -k 1 >> Output/PAL_summary.sorted.txt
+else
+    grep -v "^SequenceID" Output/PAL_summary.txt | sort -k 1 >> Output/PAL_summary.sorted.txt
+fi
+mv Output/PAL_summary.sorted.txt Output/PAL_summary.txt
+#
+# Run the filtering & assembly script
+if [ ! -z "$FILTERED_MICROSATS" ] || [ ! -z "$OUTPUT_ASSEMBLY" ] ; then
+    echo "### Running filtering & assembly script ###"
+    python $PALFINDER_FILTER -i $fastq_r1 -j $fastq_r2 -p Output/PAL_summary.txt $FILTER_OPTIONS 2>&1
     if [ $? -ne 0 ] ; then
-	echo ERROR pal_finder_filter.pl exited with non-zero status >&2
+	echo ERROR $PALFINDER_FILTER exited with non-zero status >&2
 	exit 1
-    elif [ ! -f pal_finder_filter_output.txt ] ; then
-	echo ERROR no output from pal_finder_filter.pl >&2
+    elif [ ! -f PAL_summary.filtered ] ; then
+	echo ERROR no output from $PALFINDER_FILTER >&2
 	exit 1
     fi
 fi
@@ -330,8 +353,14 @@ fi
 if [ -f Output/PAL_summary.txt ] ; then
     /bin/mv Output/PAL_summary.txt $PAL_SUMMARY
 fi
-if [ ! -z "$FILTERED_MICROSATS" ] && [ -f pal_finder_filter_output.txt ] ; then
-    /bin/mv pal_finder_filter_output.txt $FILTERED_MICROSATS
+if [ ! -z "$FILTERED_MICROSATS" ] && [ -f PAL_summary.filtered ] ; then
+    /bin/mv PAL_summary.filtered $FILTERED_MICROSATS
+fi
+if [ ! -z "$OUTPUT_ASSEMBLY" ] ; then
+    assembly=${fastq_r1%.*}_pal_finder_assembly_output.txt
+    if [ -f "$assembly" ] ; then
+	/bin/mv $assembly "$OUTPUT_ASSEMBLY"
+    fi
 fi
 if [ ! -z "$OUTPUT_CONFIG_FILE" ] && [ -f config.txt ] ; then
     /bin/mv config.txt $OUTPUT_CONFIG_FILE
