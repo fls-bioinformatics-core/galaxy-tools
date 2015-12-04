@@ -70,6 +70,7 @@
 	  <action type="shell_command">pip install  --install-option "--prefix=$INSTALL_DIR" https://pypi.python.org/packages/source/b/biopython/biopython-1.65.tar.gz</action>
 	  <action type="set_environment">
 	    <environment_variable name="PYTHONPATH" action="prepend_to">$INSTALL_DIR/lib/python2.7/site-packages</environment_variable>
+	    <environment_variable name="PYTHONPATH" action="prepend_to">$INSTALL_DIR/lib64/python2.7/site-packages</environment_variable>
 	  </action>
 	</actions>
       </install>
