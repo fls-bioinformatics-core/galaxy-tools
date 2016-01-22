@@ -9,7 +9,7 @@
   <command interpreter="bash"><![CDATA[
   trimmomatic.sh
   -mx8G
-  -jar \$TRIMMOMATIC_DIR/trimmomatic-$TRIMMOMATIC_VER.jar
+  -jar \$TRIMMOMATIC_DIR/trimmomatic-0.32.jar
   #if $paired_end.is_paired_end
     PE -threads \${GALAXY_SLOTS:-6} -phred33
     #set $paired_input_type = $paired_end.paired_input_type_conditional.paired_input_type
@@ -96,6 +96,7 @@
       <param name="palindrome_clip_threshold" type="integer" label="How accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment" value="30" />
       <param name="simple_clip_threshold" type="integer" label="How accurate the match between any adapter etc. sequence must be against a read" value="10" />
     </when>
+    <when value="no" /> <!-- empty clause to satisfy planemo lint -->
     </conditional>
     <repeat name="operations" title="Trimmomatic Operation" min="1">
       <conditional name="operation">

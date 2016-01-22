@@ -34,6 +34,6 @@ for dep in $TOOL_DEPENDENCIES ; do
     fi
 done
 # Run the planemo tests
-planemo test $@ $(dirname $0)/trimmomatic.xml
+planemo test $@ $(dirname $0)/trimmomatic.xml --test_data test-data
 ##
 #
