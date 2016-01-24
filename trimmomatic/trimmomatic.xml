@@ -96,6 +96,7 @@
       <param name="palindrome_clip_threshold" type="integer" label="How accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment" value="30" />
       <param name="simple_clip_threshold" type="integer" label="How accurate the match between any adapter etc. sequence must be against a read" value="10" />
     </when>
+    <when value="no" /> <!-- empty clause to satisfy planemo lint -->
     </conditional>
     <repeat name="operations" title="Trimmomatic Operation" min="1">
       <conditional name="operation">
