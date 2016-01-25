@@ -154,7 +154,7 @@ Performs integrated analyses of a set of peaks (e.g. ChIP data) against a
 list of "canonical genes" for a specific organism and genome build,
 identifying the nearest peaks to each canonical gene (and vice versa).
 
-RnaChipIntgerator can be obtained from
+RnaChipIntegrator can be obtained from
 http://fls-bioinformatics-core.github.com/RnaChipIntegrator/
 
 -------------
@@ -210,7 +210,8 @@ which contains one sheet per result set.
 
 It is recommended that you refer to the ``RnaChipIntegrator``
 documentation for information on the contents of each output file:
-https://github.com/fls-bioinformatics-core/RnaChipIntegrator/blob/master/doc/MANUAL.markdown
+
+* http://rnachipintegrator.readthedocs.org/en/latest/
 
 -------------
 

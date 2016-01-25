@@ -185,7 +185,7 @@ data but works equally well for ChIP-chip and microarray expression data,
 and can also be used to integrate any set of genomic features (e.g.
 canonical genes, CpG islands) with expression data.
 
-RnaChipIntgerator can be obtained from
+RnaChipIntegrator can be obtained from
 http://fls-bioinformatics-core.github.com/RnaChipIntegrator/
 
 -------------
@@ -259,7 +259,8 @@ which contains one sheet per result set.
 
 It is recommended that you refer to the ``RnaChipIntegrator``
 documentation for information on the contents of each output file:
-https://github.com/fls-bioinformatics-core/RnaChipIntegrator/blob/master/doc/MANUAL.markdown
+
+* http://rnachipintegrator.readthedocs.org/en/latest/
 
 -------------
 
