@@ -17,8 +17,6 @@
   #end if
   #if str( $number ) != ""
     --number=$number
-  #else
-    --number=0
   #end if
   --promoter_region=$promoter_start,$promoter_end
   --edge=$edge
