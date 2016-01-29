@@ -43,14 +43,14 @@
   ]]></command>
   <inputs>
     <param format="tabular" name="features_in" type="data"
-	   label="Genomic features (e.g. gene expression data)" />
+	   label="Genes/genomic features" />
     <param format="tabular" name="peaks_in" type="data"
-	   label="Peaks" />
+	   label="Peaks/regions" />
     <expand macro="analysis_options" />
     <param name="diff_expressed_only" type="boolean"
 	   truevalue="--only-DE" falsevalue="" checked="false"
-	   label="Only consider genomic features which are flagged as
-		  differentially expressed"
+	   label="Only consider genes which are flagged as differentially
+		  expressed"
            help="NB input feature data must include differential expression
 		 flags (--only-DE)" />
     <expand macro="output_options" />
@@ -61,21 +61,21 @@
 	  label="All RnaChipIntegrator analyses: ${features_in.name} vs ${peaks_in.name} (Excel spreadsheet)" />
     <!-- Outputs if no zip requested -->
     <data format="tabular" name="peaks_per_feature_out"
-	  label="Nearest peaks to each feature: ${features_in.name} vs ${peaks_in.name}" >
+	  label="Nearest peaks to each gene: ${features_in.name} vs ${peaks_in.name}" >
       <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="features_per_peak_out"
-	  label="Nearest features to each peak: ${features_in.name} vs ${peaks_in.name}" >
+	  label="Nearest genes to each peak: ${features_in.name} vs ${peaks_in.name}" >
       <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="peaks_per_feature_summary"
-	  label="Nearest peaks to each feature (summary): ${features_in.name} vs ${peaks_in.name}" >
+	  label="Nearest peaks to each gene (summary): ${features_in.name} vs ${peaks_in.name}" >
       <filter>results_as_zip is False</filter>
       <filter>output['compact_format'] is False</filter>
       <filter>output['summary'] is True</filter>
     </data>
     <data format="tabular" name="features_per_peak_summary"
-	  label="Nearest features to each peak (summary): ${features_in.name} vs ${peaks_in.name}" >
+	  label="Nearest gene to each peak (summary): ${features_in.name} vs ${peaks_in.name}" >
       <filter>results_as_zip is False</filter>
       <filter>output['compact_format'] is False</filter>
       <filter>output['summary'] is True</filter>
@@ -174,9 +174,9 @@
 
 **What it does**
 
-Performs integrated analyses of genomic features (e.g. gene expression
-data) against a set of peaks (e.g. ChIP data), identifying the nearest
-peaks to each feature and vice versa.
+Performs integrated analyses of genes (or other genomic feature data)
+gainst a set of peaks (e.g. ChIP data), identifying the nearest peaks to
+each feature and vice versa.
 
 The program was originally written specifically for ChIP-Seq and RNA-Seq
 data but works equally well for ChIP-chip and microarray expression data,
@@ -192,18 +192,18 @@ https://pypi.python.org/pypi/RnaChipIntegrator/
 
 **Input**
 
-The feature data must be in a tabular file with the following columns
-of data for each genomic feature (one feature per line):
+The gene data must be in a tabular file with the following columns
+of data for each gene or genomic feature (one gene per line):
 
 ====== ========== ======================================================================
 Column Name       Description
 ====== ========== ======================================================================
-     1 ID         Name used to identify the feature in the output
+     1 ID         Name used to identify the gene in the output
      2 chr        Chromosome name
-     3 start      Start position of the feature
-     4 end        End position of the feature
+     3 start      Start position of the gene
+     4 end        End position of the gene
      5 strand     Must be either '+' or '-'
-     6 diff_expr  Optional: indicates feature is differentially expressed (1) or not (0)
+     6 diff_expr  Optional: indicates gene is differentially expressed (1) or not (0)
 ====== ========== ======================================================================
 
 The peak data must be in a tabular file with at least 3 columns of data
@@ -228,23 +228,23 @@ will be used.
 **Outputs**
 
 The key outputs from the tool are two lists compromising the nearest
-peaks for each feature, and the nearest feature for each peak (one
-dataset for each list).
+peaks for each gene, and the nearest gene for each peak (one dataset
+for each list).
 
 There are two formats for reporting: "compact" and "full":
 
- * **Compact output** reports all the hits for each peak or feature on
+ * **Compact output** reports all the hits for each peak or gene on
    a single line of output;
- * **Full output** reports each peak/feature pair on a separate line
+ * **Full output** reports each peak/gene pair on a separate line
    (i.e. a multi-line output format).
 
 In "full" output mode, additional options are available:
 
  * The output files can be "padded" with extra (empty) lines to ensure
    that there are always the same number of lines for each peak or
-   feature, if fewer than the requested number of hits are found.
+   gene, if fewer than the requested number of hits are found.
  * "Summary" datasets can also be requested, which include just the top
-   peak reported for each feature (and vice versa).
+   peak reported for each gene (and vice versa).
 
 In either mode these data will also be output in a single MS Excel file,
 which contains one sheet per result set.
