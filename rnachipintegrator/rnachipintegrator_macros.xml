@@ -13,11 +13,11 @@
   </xml>
   <xml name="analysis_options">
     <param name="cutoff" type="integer" value="1000000" optional="true"
-	   label="Maximum distance between feature/peak pair
+	   label="Maximum distance between a gene/peak pair
 		  before it is omitted from the analyses (bp)"
 	   help="Leave blank for no limit (--cutoff)" />
     <param name="number" type="integer" value="4" optional="true"
-	   label="Maximum number of feature/peak pairs to report from
+	   label="Maximum number of gene/peak pairs to report from
 		  the analyses"
 	   help="Leave blank for no limit (--number)" />
     <param name="promoter_start" type="integer" value="-1000" optional="true"
@@ -25,7 +25,7 @@
     <param name="promoter_end" type="integer" value="100" optional="true"
 	   label="End of promoter region with respect to gene TSS" />
     <param name="edge" type="select"
-	   label="Genomic feature edges to consider in distance calculations"
+	   label="Gene 'edges' to consider in distance calculations"
 	   help="(--edge)">
       <option value="tss" selected="true">TSS only</option>
       <option value="both">Nearest of TSS or TES</option>
@@ -36,7 +36,7 @@
       <param name="compact_format" type="boolean" checked="true"
 	     truevalue="true" falsevalue="false"
 	     label="Use 'compact' output format"
-	     help="Puts all hits for each peak or feature on a single line
+	     help="Puts all hits for each peak or gene on a single line
 		   (--compact)" />
       <when value="true">
       </when>
