@@ -21,23 +21,16 @@
   #end if
   --promoter_region=$promoter_start,$promoter_end
   --edge=$edge
-  #if $features.set_feature_type
-    --feature=$features.feature_type
-  #end if
   $diff_expressed_only
   --xls_file "$xls_out"
-  #if $results_as_zip
-    --zip_file "$zip_file"
+  --output_files "$peaks_per_feature_out" "$features_per_peak_out"
+  #if $output.compact_format
+    --compact
   #else
-    --output_files "$peaks_per_feature_out" "$features_per_peak_out"
-    #if $output.compact_format
-      --compact
-    #else
-      #if $output.summary
-        --summary_files "$peaks_per_feature_summary" "$features_per_peak_summary"
-      #end if
-      ${output.pad_output}
+    #if $output.summary
+      --summary_files "$peaks_per_feature_summary" "$features_per_peak_summary"
     #end if
+    ${output.pad_output}
   #end if
   "$features_in" "$peaks_in"
   ]]></command>
@@ -59,31 +52,19 @@
     <!-- Always produce XLS output -->
     <data format="xls" name="xls_out"
 	  label="All RnaChipIntegrator analyses: ${features_in.name} vs ${peaks_in.name} (Excel spreadsheet)" />
-    <!-- Outputs if no zip requested -->
     <data format="tabular" name="peaks_per_feature_out"
-	  label="Nearest peaks to each gene: ${features_in.name} vs ${peaks_in.name}" >
-      <filter>results_as_zip is False</filter>
-    </data>
+	  label="Nearest peaks to each gene: ${features_in.name} vs ${peaks_in.name}" />
     <data format="tabular" name="features_per_peak_out"
-	  label="Nearest genes to each peak: ${features_in.name} vs ${peaks_in.name}" >
-      <filter>results_as_zip is False</filter>
-    </data>
+	  label="Nearest genes to each peak: ${features_in.name} vs ${peaks_in.name}" />
     <data format="tabular" name="peaks_per_feature_summary"
 	  label="Nearest peaks to each gene (summary): ${features_in.name} vs ${peaks_in.name}" >
-      <filter>results_as_zip is False</filter>
       <filter>output['compact_format'] is False</filter>
       <filter>output['summary'] is True</filter>
     </data>
     <data format="tabular" name="features_per_peak_summary"
 	  label="Nearest gene to each peak (summary): ${features_in.name} vs ${peaks_in.name}" >
-      <filter>results_as_zip is False</filter>
       <filter>output['compact_format'] is False</filter>
       <filter>output['summary'] is True</filter>
-    </data>
-    <!-- All outputs in a ZIP file -->
-    <data format="zip" name="zip_file"
-	  label="All tab-delimited files for ${features_in.name} vs ${peaks_in.name} (zip file)" >
-      <filter>results_as_zip is True</filter>
     </data>
   </outputs>
   <tests>
@@ -132,15 +113,13 @@
 	      file="features_per_peak2.out" />
     </test>
     <!--
-	RnaChipIntegrator +name=test +cutoff=130000 +only-DE +feature=gene +xls +compact features.txt peaks.txt
+	RnaChipIntegrator +name=test +cutoff=130000 +only-DE +xls +compact features.txt peaks.txt
     -->
     <test>
       <param name="features_in" value="features.txt" ftype="tabular" />
       <param name="peaks_in" value="peaks.txt" ftype="tabular" />
       <param name="cutoff" value="130000" />
       <param name="diff_expressed_only" value="true" />
-      <param name="set_feature_type" value="true" />
-      <param name="feature_type" value="gene" />
       <output name="xls_out" file="peaks3.xls" compare="sim_size" />
       <output name="peaks_per_feature_out" ftype="tabular"
 	      file="peaks_per_feature3.out" />

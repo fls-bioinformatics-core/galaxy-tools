@@ -53,25 +53,6 @@
 		     or feature (--summary)" />
       </when>
     </conditional>
-    <conditional name="features">
-      <param name="set_feature_type" type="boolean" checked="false"
-	     truevalue="true" falsevalue="false"
-	     label="Explicitly set feature type in output"
-	     help="Use explicit feature type (e.g. 'gene') rather than
-		   generic name 'feature' (--feature)" />
-      <when value="true">
-	<param name="feature_type" type="select"
-	       label="Type of genomic features">
-	  <option value="gene">Genes</option>
-	  <option value="transcript">Transcripts</option>
-	</param>
-      </when>
-      <when value="false">
-      </when>
-    </conditional>
-    <param name="results_as_zip" type="boolean"
-	   checked="false" truevalue="yes"
-           label="Put output tab-delimited files into a single zip archive" />
   </xml>
   <xml name="citations">
     <citations>
