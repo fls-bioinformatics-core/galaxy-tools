@@ -51,10 +51,10 @@
     </install>
     <readme>Installs Python module xlutils 1.7.1</readme>
   </package>
-  <package name="rnachipintegrator" version="0.5.0-alpha.4">
+  <package name="rnachipintegrator" version="0.5.0-alpha.6">
     <install version="1.0">
       <actions>
-	<action type="download_by_url">https://github.com/fls-bioinformatics-core/RnaChipIntegrator/archive/v0.5.0-alpha.4.tar.gz</action>
+	<action type="download_by_url">https://github.com/fls-bioinformatics-core/RnaChipIntegrator/archive/v0.5.0-alpha.6.tar.gz</action>
         <action type="shell_command">
 	  pip install --no-use-wheel --install-option "--prefix=$INSTALL_DIR" .
 	</action>
@@ -64,6 +64,6 @@
 	</action>
       </actions>
     </install>
-    <readme>Installs RnaChipIntegrator 0.5.0-alpha.4</readme>
+    <readme>Installs RnaChipIntegrator 0.5.0-alpha.6</readme>
   </package>
 </tool_dependency>

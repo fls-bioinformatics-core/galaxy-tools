@@ -1,4 +1,4 @@
-#feature.id	feature.chr	feature.start	feature.end	feature.strand	chr	start	end	dist_closest	dist_TSS	direction	in_the_feature
+#gene.id	gene.chr	gene.start	gene.end	gene.strand	chr	start	end	dist_closest	dist_TSS	direction	in_the_gene
 Xkr4	chr1	3204562	3661579	-	chr1	3621547	3621583	0	39996	.	YES
 Xkr4	chr1	3204562	3661579	-	---	---	---	---	---	---	---
 Xkr4	chr1	3204562	3661579	-	---	---	---	---	---	---	---
