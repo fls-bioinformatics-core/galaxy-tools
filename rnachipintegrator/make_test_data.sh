@@ -53,18 +53,6 @@ mv mm9.xls test-data/mm9_peaks1.xls
 RnaChipIntegrator --name=mm9 \
 		  --cutoff=50000 \
 		  --number=4 \
-		  --feature=gene \
-		  --xls \
-		  --compact \
-		  test-data/mm9_canonical_genes.tsv test-data/mm9_peaks.txt
-mv mm9_gene_centric.txt test-data/mm9_peaks_per_feature2.out
-mv mm9_peak_centric.txt test-data/mm9_features_per_peak2.out
-mv mm9.xls test-data/mm9_peaks2.xls
-#
-# Test #4
-RnaChipIntegrator --name=mm9 \
-		  --cutoff=50000 \
-		  --number=4 \
 		  --xls \
 		  --summary \
 		  --pad \
@@ -116,7 +104,6 @@ RnaChipIntegrator --name=test \
 		  --cutoff=130000 \
 		  --number=4 \
 		  --only-DE \
-		  --feature=gene \
 		  --xls \
 		  --compact \
 		  test-data/features.txt test-data/peaks.txt
