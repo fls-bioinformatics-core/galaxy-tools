@@ -4,16 +4,16 @@
 #
 # usage: sh rnachipintegrator_wrapper.sh [OPTIONS] <rnaseq_in> <chipseq_in> --output_xls <xls_out>
 #
-echo RnaChipIntegrator: analyse genomic features and peak data
+echo RnaChipIntegrator: analyse gene and peak data
 #
 # Collect command line options
 opts=
 xls_file=
 zip_file=
-peaks_per_feature=
-features_per_peak=
-peaks_per_feature_summary=
-features_per_peak_summary=
+gene_centric=
+peak_centric=
+gene_centric_summary=
+peak_centric_summary=
 while [ ! -z "$1" ] ; do
     case $1 in
 	--xls_file)
@@ -21,12 +21,12 @@ while [ ! -z "$1" ] ; do
 	    opts="$opts --xls"
 	    ;;
 	--output_files)
-	    shift; peaks_per_feature=$1
-	    shift; features_per_peak=$1
+	    shift; gene_centric=$1
+	    shift; peak_centric=$1
 	    ;;
 	--summary_files)
-	    shift; peaks_per_feature_summary=$1
-	    shift; features_per_peak_summary=$1
+	    shift; gene_centric_summary=$1
+	    shift; peak_centric_summary=$1
 	    opts="$opts --summary"
 	    ;;
 	--zip_file)
@@ -70,10 +70,10 @@ fi
 # Generate zip file
 if [ ! -z "$zip_file" ] ; then
     for ext in \
-	peaks_per_feature \
-	peaks_per_feature_summary \
-	features_per_peak \
-	features_per_peak_summary ; do
+	gene_centric \
+	gene_centric_summary \
+	peak_centric \
+	peak_centric_summary ; do
 	txt_file=${outdir}/${base_name}_${ext}.txt
 	if [ -f "$txt_file" ] ; then
 	    zip -j -g ${outdir}/archive.zip $txt_file
@@ -84,10 +84,10 @@ fi
 #
 # Collect tab delimited files
 for ext in \
-    peaks_per_feature \
-    peaks_per_feature_summary \
-    features_per_peak \
-    features_per_peak_summary ; do
+    gene_centric \
+    gene_centric_summary \
+    peak_centric \
+    peak_centric_summary ; do
     eval dest=\$$ext
     if [ ! -z "$dest" ] ; then
 	outfile=${outdir}/${base_name}_${ext}.txt

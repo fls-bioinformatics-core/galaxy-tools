@@ -186,7 +186,7 @@ and can also be used to integrate any set of genomic features (e.g.
 canonical genes, CpG islands) with expression data.
 
 RnaChipIntegrator can be obtained from
-http://fls-bioinformatics-core.github.com/RnaChipIntegrator/
+https://pypi.python.org/pypi/RnaChipIntegrator/
 
 -------------
 

@@ -15,22 +15,23 @@ if [ ! -d "$TOP_DIR" ] ; then
     mkdir -p $TOP_DIR
 fi
 cd $TOP_DIR
-# RnaChipIntegrator 0.5.0-alpha.4
-INSTALL_DIR=$TOP_DIR/rnachipintegrator/0.5.0-alpha.4
+# RnaChipIntegrator 0.5.0-alpha.6
+VERSION=0.5.0-alpha.6
+INSTALL_DIR=$TOP_DIR/rnachipintegrator/$VERSION
 mkdir -p $INSTALL_DIR
 wd=$(mktemp -d)
 pushd $wd
-wget https://github.com/fls-bioinformatics-core/RnaChipIntegrator/archive/v0.5.0-alpha.4.tar.gz
-tar zxf v0.5.0-alpha.4.tar.gz
-cd RnaChipIntegrator-0.5.0-alpha.4
+wget https://github.com/fls-bioinformatics-core/RnaChipIntegrator/archive/v${VERSION}.tar.gz
+tar zxf v${VERSION}.tar.gz
+cd RnaChipIntegrator-$VERSION
 pip install --no-use-wheel --install-option "--prefix=$INSTALL_DIR" .
 popd
 rm -rf $wd/*
 rmdir $wd
-cat > rnachipintegrator/0.5.0-alpha.4/env.sh <<EOF
+cat > rnachipintegrator/$VERSION/env.sh <<EOF
 #!/bin/sh
-# Source this to setup rnachipintegrator/0.5.0-alpha.4
-echo Setting up RnaChipIntegrator 0.5.0-alpha.4
+# Source this to setup rnachipintegrator/$VERSION
+echo Setting up RnaChipIntegrator $VERSION
 export PATH=$INSTALL_DIR/bin:\$PATH
 export PYTHONPATH=$INSTALL_DIR/lib/python2.7/site-packages:\$PYTHONPATH
 #

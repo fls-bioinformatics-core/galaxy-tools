@@ -222,7 +222,7 @@ documentation for information on the contents of each output file:
 This Galaxy tool has been developed within the Bioinformatics Core Facility at the
 University of Manchester. It runs the RnaChipIntegrator package which has also been
 developed by this group, and is documented at
-http://fls-bioinformatics-core.github.com/RnaChipIntegrator/
+https://pypi.python.org/pypi/RnaChipIntegrator/
 
 Please kindly acknowledge the Bioinformatics Core Facility if you use this tool.
   </help>

@@ -1,4 +1,4 @@
-#feature.id	feature.chr	feature.start	feature.end	feature.strand	peak.chr	peak.start	peak.end	order	dist_closest	dist_TSS	dist_TES
+#gene.id	gene.chr	gene.start	gene.end	gene.strand	peak.chr	peak.start	peak.end	order	dist_closest	dist_TSS	dist_TES
 Xkr4	chr1	3204562	3661579	-	chr1	3621547	3621583	1 of 1	0	39996	416985
 AK149000	chr1	3638391	3648985	-	chr1	3621547	3621583	1 of 1	16808	27402	16808
 Rp1	chr1	4333587	4350395	-	---	---	---	---	---	---	---

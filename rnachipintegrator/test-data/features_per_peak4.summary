@@ -1,4 +1,4 @@
-#peak.chr	peak.start	peak.end	feature.id	strand	TSS	TES	dist_closest	dist_TSS	dist_TES	direction	overlap_feature	overlap_promoter
+#peak.chr	peak.start	peak.end	gene.id	strand	TSS	TES	dist_closest	dist_TSS	dist_TES	direction	overlap_gene	overlap_promoter
 chr1	10617233	10617437	NM_177834_Cpa6	-	10710026	10314801	0	92589	302432	.	1	0
 chr1	108747519	108747791	NM_009190_Vps4b	-	108739123	108665873	8396	8396	81646	U	0	0
 chr1	120760212	120760461	---	---	---	---	---	---	---	---	---	---

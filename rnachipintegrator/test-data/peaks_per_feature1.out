@@ -1,4 +1,4 @@
-#feature.id	feature.chr	feature.start	feature.end	feature.strand	chr_1	start_1	end_1	dist_closest_1	dist_TSS_1	direction_1	in_the_feature_1	chr_2	start_2	end_2	dist_closest_2	dist_TSS_2	direction_2	in_the_feature_2	chr_3	start_3	end_3	dist_closest_3	dist_TSS_3	direction_3	in_the_feature_3	chr_4	start_4	end_4	dist_closest_4	dist_TSS_4	direction_4	in_the_feature_4
+#gene.id	gene.chr	gene.start	gene.end	gene.strand	chr_1	start_1	end_1	dist_closest_1	dist_TSS_1	direction_1	in_the_gene_1	chr_2	start_2	end_2	dist_closest_2	dist_TSS_2	direction_2	in_the_gene_2	chr_3	start_3	end_3	dist_closest_3	dist_TSS_3	direction_3	in_the_gene_3	chr_4	start_4	end_4	dist_closest_4	dist_TSS_4	direction_4	in_the_gene_4
 AF064749_Col6a3	chr1	92566771	92800755	-	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
 AK015559_4930472D16Rik	chr1	25020851	25021989	-	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.
 AK030377_A330023F24Rik	chr1	196781953	196826186	-	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.	.

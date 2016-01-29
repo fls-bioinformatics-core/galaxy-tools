@@ -1,4 +1,4 @@
-#feature.id	feature.chr	feature.start	feature.end	feature.strand	chr	start	end	dist_closest	dist_TSS	direction	in_the_feature
+#gene.id	gene.chr	gene.start	gene.end	gene.strand	chr	start	end	dist_closest	dist_TSS	direction	in_the_gene
 AF064749_Col6a3	chr1	92566771	92800755	-	---	---	---	---	---	---	---
 AF064749_Col6a3	chr1	92566771	92800755	-	---	---	---	---	---	---	---
 AF064749_Col6a3	chr1	92566771	92800755	-	---	---	---	---	---	---	---
