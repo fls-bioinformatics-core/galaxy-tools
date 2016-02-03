@@ -2,10 +2,8 @@
   <token name="@VERSION@">0.5.0</token>
   <xml name="requirements">
     <requirements>
-      <requirement type="package" version="0.7.5">python_xlwt</requirement>
-      <requirement type="package" version="0.9.3">python_xlrd</requirement>
-      <requirement type="package" version="1.7.1">python_xlutils</requirement>
-      <requirement type="package" version="0.5.0-alpha.6">rnachipintegrator</requirement>
+      <requirement type="package" version="0.8.4">python_xlsxwritert</requirement>
+      <requirement type="package" version="0.5.0-alpha.7">rnachipintegrator</requirement>
     </requirements>
   </xml>
   <xml name="version_command">
