@@ -20,7 +20,7 @@
   #end if
   --promoter_region=$promoter_start,$promoter_end
   --edge=$edge
-  --xls_file "$xls_out"
+  --xlsx_file "$xlsx_out"
   --output_files "$peaks_per_feature_out" "$features_per_peak_out"
   #if $output.compact_format
     --compact
@@ -43,7 +43,7 @@
   </inputs>
   <outputs>
     <!-- Always produce XLS output -->
-    <data format="xls" name="xls_out"
+    <data format="xlsx" name="xlsx_out"
 	  label="All RnaChipIntegrator analyses: ${canonical_genes.fields.name} vs ${peaks_in.name} (Excel spreadsheet)" />
     <data format="tabular" name="peaks_per_feature_out"
 	  label="Nearest peaks to each gene: ${canonical_genes.fields.name} vs ${peaks_in.name}" />
@@ -62,33 +62,33 @@
   </outputs>
   <tests>
     <!--
-	RnaChipIntegrator +name=mm9 +cutoff=50000 +xls +summary mm9_canonical_genes.tsv mm9_summits.txt
+	RnaChipIntegrator +name=mm9 +cutoff=50000 +xlsx +summary mm9_canonical_genes.tsv mm9_summits.txt
     -->
     <test>
       <param name="peaks_in" value="mm9_summits.txt" ftype="tabular" />
       <param name="canonical_genes" value="mm9_test" />
       <param name="cutoff" value="50000" />
-      <output name="xls_out" file="mm9_summits.xls" compare="sim_size" />
+      <output name="xlsx_out" file="mm9_summits.xlsx" compare="sim_size" />
       <output name="peaks_per_feature_out" ftype="tabular"
 	      file="mm9_summits_per_feature.out" />
       <output name="features_per_peak_out" ftype="tabular"
 	      file="mm9_features_per_summit.out" />
     </test>
     <!--
-	RnaChipIntegrator +name=mm9 +cutoff=50000 +xls +compact mm9_canonical_genes.tsv mm9_peaks.txt
+	RnaChipIntegrator +name=mm9 +cutoff=50000 +xlsx +compact mm9_canonical_genes.tsv mm9_peaks.txt
     -->
     <test>
       <param name="peaks_in" value="mm9_peaks.txt" ftype="tabular" />
       <param name="canonical_genes" value="mm9_test" />
       <param name="cutoff" value="50000" />
-      <output name="xls_out" file="mm9_peaks1.xls" compare="sim_size" />
+      <output name="xlsx_out" file="mm9_peaks1.xlsx" compare="sim_size" />
       <output name="peaks_per_feature_out" ftype="tabular"
 	      file="mm9_peaks_per_feature1.out" />
       <output name="features_per_peak_out" ftype="tabular"
 	      file="mm9_features_per_peak1.out" />
     </test>
     <!--
-	RnaChipIntegrator +name=mm9 +cutoff=50000 +xls +summary +pad mm9_canonical_genes.tsv mm9_peaks.txt
+	RnaChipIntegrator +name=mm9 +cutoff=50000 +xlsx +summary +pad mm9_canonical_genes.tsv mm9_peaks.txt
     -->
     <test>
       <param name="peaks_in" value="mm9_peaks.txt" ftype="tabular" />
@@ -97,7 +97,7 @@
       <param name="compact_format" value="false" />
       <param name="summary" value="true" />
       <param name="pad_output" value="true" />
-      <output name="xls_out" file="mm9_peaks3.xls" compare="sim_size" />
+      <output name="xlsx_out" file="mm9_peaks3.xlsx" compare="sim_size" />
       <output name="peaks_per_feature_out" ftype="tabular"
 	      file="mm9_peaks_per_feature3.out" />
       <output name="features_per_peak_out" ftype="tabular"

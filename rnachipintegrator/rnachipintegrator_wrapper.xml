@@ -22,7 +22,7 @@
   --promoter_region=$promoter_start,$promoter_end
   --edge=$edge
   $diff_expressed_only
-  --xls_file "$xls_out"
+  --xlsx_file "$xlsx_out"
   --output_files "$peaks_per_feature_out" "$features_per_peak_out"
   #if $output.compact_format
     --compact
@@ -49,8 +49,8 @@
     <expand macro="output_options" />
   </inputs>
   <outputs>
-    <!-- Always produce XLS output -->
-    <data format="xls" name="xls_out"
+    <!-- Always produce XLSX output -->
+    <data format="xlsx" name="xlsx_out"
 	  label="All RnaChipIntegrator analyses: ${features_in.name} vs ${peaks_in.name} (Excel spreadsheet)" />
     <data format="tabular" name="peaks_per_feature_out"
 	  label="Nearest peaks to each gene: ${features_in.name} vs ${peaks_in.name}" />
@@ -69,7 +69,7 @@
   </outputs>
   <tests>
     <!--
-	RnaChipIntegrator +name=test +cutoff=130000 +promoter_region=-10000,2500 +xls +compact features.txt summits.txt
+	RnaChipIntegrator +name=test +cutoff=130000 +promoter_region=-10000,2500 +xlsx +compact features.txt summits.txt
     -->
     <test>
       <param name="features_in" value="features.txt" ftype="tabular" />
@@ -77,14 +77,14 @@
       <param name="cutoff" value="130000" />
       <param name="promoter_start" value="-10000" />
       <param name="promoter_end" value="2500" />
-      <output name="xls_out" file="summits.xls" compare="sim_size" />
+      <output name="xlsx_out" file="summits.xlsx" compare="sim_size" />
       <output name="peaks_per_feature_out" ftype="tabular"
 	      file="summits_per_feature.out" />
       <output name="features_per_peak_out" ftype="tabular"
 	      file="features_per_summit.out" />
     </test>
     <!--
-	RnaChipIntegrator +name=test +cutoff=130000 +promoter_region=-10000,2500 +xls +compact features.txt peaks.txt
+	RnaChipIntegrator +name=test +cutoff=130000 +promoter_region=-10000,2500 +xlsx +compact features.txt peaks.txt
     -->
     <test>
       <param name="features_in" value="features.txt" ftype="tabular" />
@@ -92,42 +92,42 @@
       <param name="cutoff" value="130000" />
       <param name="promoter_start" value="-10000" />
       <param name="promoter_end" value="2500" />
-      <output name="xls_out" file="peaks1.xls" compare="sim_size" />
+      <output name="xlsx_out" file="peaks1.xlsx" compare="sim_size" />
       <output name="peaks_per_feature_out" ftype="tabular"
 	      file="peaks_per_feature1.out" />
       <output name="features_per_peak_out" ftype="tabular"
 	      file="features_per_peak1.out" />
     </test>
     <!--
-	RnaChipIntegrator +name=test +cutoff=130000 +xls features.txt peaks.txt
+	RnaChipIntegrator +name=test +cutoff=130000 +xlsx features.txt peaks.txt
     -->
     <test>
       <param name="features_in" value="features.txt" ftype="tabular" />
       <param name="peaks_in" value="peaks.txt" ftype="tabular" />
       <param name="cutoff" value="130000" />
       <param name="compact_format" value="false" />
-      <output name="xls_out" file="peaks2.xls" compare="sim_size" />
+      <output name="xlsx_out" file="peaks2.xlsx" compare="sim_size" />
       <output name="peaks_per_feature_out" ftype="tabular"
 	      file="peaks_per_feature2.out" />
       <output name="features_per_peak_out" ftype="tabular"
 	      file="features_per_peak2.out" />
     </test>
     <!--
-	RnaChipIntegrator +name=test +cutoff=130000 +only-DE +xls +compact features.txt peaks.txt
+	RnaChipIntegrator +name=test +cutoff=130000 +only-DE +xlsx +compact features.txt peaks.txt
     -->
     <test>
       <param name="features_in" value="features.txt" ftype="tabular" />
       <param name="peaks_in" value="peaks.txt" ftype="tabular" />
       <param name="cutoff" value="130000" />
       <param name="diff_expressed_only" value="true" />
-      <output name="xls_out" file="peaks3.xls" compare="sim_size" />
+      <output name="xlsx_out" file="peaks3.xlsx" compare="sim_size" />
       <output name="peaks_per_feature_out" ftype="tabular"
 	      file="peaks_per_feature3.out" />
       <output name="features_per_peak_out" ftype="tabular"
 	      file="features_per_peak3.out" />
     </test>
     <!--
-	RnaChipIntegrator +name=test +cutoff=130000 +promoter_region=-10000,2500 +xls +summary features.txt peaks.txt
+	RnaChipIntegrator +name=test +cutoff=130000 +promoter_region=-10000,2500 +xlsx +summary features.txt peaks.txt
     -->
     <test>
       <param name="features_in" value="features.txt" ftype="tabular" />
@@ -136,7 +136,7 @@
       <param name="compact_format" value="false" />
       <param name="summary" value="true" />
       <param name="pad_output" value="true" />
-      <output name="xls_out" file="peaks4.xls" compare="sim_size" />
+      <output name="xlsx_out" file="peaks4.xlsx" compare="sim_size" />
       <output name="peaks_per_feature_out" ftype="tabular"
 	      file="peaks_per_feature4.out" />
       <output name="features_per_peak_out" ftype="tabular"
