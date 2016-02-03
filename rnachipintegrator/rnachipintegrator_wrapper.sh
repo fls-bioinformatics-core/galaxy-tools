@@ -8,7 +8,7 @@ echo RnaChipIntegrator: analyse gene and peak data
 #
 # Collect command line options
 opts=
-xls_file=
+xlsx_file=
 zip_file=
 gene_centric=
 peak_centric=
@@ -16,9 +16,9 @@ gene_centric_summary=
 peak_centric_summary=
 while [ ! -z "$1" ] ; do
     case $1 in
-	--xls_file)
-	    shift; xls_file=$1
-	    opts="$opts --xls"
+	--xlsx_file)
+	    shift; xlsx_file=$1
+	    opts="$opts --xlsx"
 	    ;;
 	--output_files)
 	    shift; gene_centric=$1
@@ -57,11 +57,11 @@ if [ "$exit_status" -ne "0" ] ; then
     exit $exit_status
 fi
 #
-# Deal with output XLS file
-if [ -f "${outdir}/${base_name}.xls" ] ; then
-    /bin/mv ${outdir}/${base_name}.xls $xls_file
+# Deal with output XLSX file
+if [ -f "${outdir}/${base_name}.xlsx" ] ; then
+    /bin/mv ${outdir}/${base_name}.xlsx $xlsx_file
 else
-    echo No file ${outdir}/${base_name}.xls >&2
+    echo No file ${outdir}/${base_name}.xlsx >&2
     # Clean up and exit
     /bin/rm -rf $outdir
     exit 1
