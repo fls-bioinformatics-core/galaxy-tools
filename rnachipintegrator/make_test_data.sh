@@ -1,10 +1,8 @@
 #!/bin/bash -e
 #
 # List of dependencies
-TOOL_DEPENDENCIES="rnachipintegrator/0.5.0-alpha.6
- xlwt/0.7.5
- xlrd/0.9.3
- xlutils/1.7.1"
+TOOL_DEPENDENCIES="rnachipintegrator/0.5.0-alpha.7
+ xlsxwriter/0.8.4"
 # Where to find them
 TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.rnachipintegrator
 if [ ! -d $TOOL_DEPENDENCIES_DIR ] ; then
@@ -31,29 +29,29 @@ done
 RnaChipIntegrator --name=mm9 \
 		  --cutoff=50000 \
 		  --number=4 \
-		  --xls \
+		  --xlsx \
 		  --compact \
 		  test-data/mm9_canonical_genes.tsv test-data/mm9_summits.txt
 mv mm9_gene_centric.txt test-data/mm9_summits_per_feature.out
 mv mm9_peak_centric.txt test-data/mm9_features_per_summit.out
-mv mm9.xls test-data/mm9_summits.xls
+mv mm9.xlsx test-data/mm9_summits.xlsx
 #
 # Test #2
 RnaChipIntegrator --name=mm9 \
 		  --cutoff=50000 \
 		  --number=4 \
-		  --xls \
+		  --xlsx \
 		  --compact \
 		  test-data/mm9_canonical_genes.tsv test-data/mm9_peaks.txt
 mv mm9_gene_centric.txt test-data/mm9_peaks_per_feature1.out
 mv mm9_peak_centric.txt test-data/mm9_features_per_peak1.out
-mv mm9.xls test-data/mm9_peaks1.xls
+mv mm9.xlsx test-data/mm9_peaks1.xlsx
 #
 # Test #3
 RnaChipIntegrator --name=mm9 \
 		  --cutoff=50000 \
 		  --number=4 \
-		  --xls \
+		  --xlsx \
 		  --summary \
 		  --pad \
 		  test-data/mm9_canonical_genes.tsv test-data/mm9_peaks.txt
@@ -61,7 +59,7 @@ mv mm9_gene_centric.txt test-data/mm9_peaks_per_feature3.out
 mv mm9_peak_centric.txt test-data/mm9_features_per_peak3.out
 mv mm9_gene_centric_summary.txt test-data/mm9_peaks_per_feature3.summary
 mv mm9_peak_centric_summary.txt test-data/mm9_features_per_peak3.summary
-mv mm9.xls test-data/mm9_peaks3.xls
+mv mm9.xlsx test-data/mm9_peaks3.xlsx
 #
 # rnachipintegrator_wrapper
 #
@@ -70,52 +68,52 @@ RnaChipIntegrator --name=test \
 		  --cutoff=130000 \
 		  --number=4 \
 		  --promoter_region=-10000,2500 \
-		  --xls \
+		  --xlsx \
 		  --compact \
 		  test-data/features.txt test-data/summits.txt
 mv test_gene_centric.txt test-data/summits_per_feature.out
 mv test_peak_centric.txt test-data/features_per_summit.out
-mv test.xls test-data/summits.xls
+mv test.xlsx test-data/summits.xlsx
 #
 # Test #2
 RnaChipIntegrator --name=test \
 		  --cutoff=130000 \
 		  --number=4 \
 		  --promoter_region=-10000,2500 \
-		  --xls \
+		  --xlsx \
 		  --compact \
 		  test-data/features.txt test-data/peaks.txt
 mv test_gene_centric.txt test-data/peaks_per_feature1.out
 mv test_peak_centric.txt test-data/features_per_peak1.out
-mv test.xls test-data/peaks1.xls
+mv test.xlsx test-data/peaks1.xlsx
 #
 # Test #3
 RnaChipIntegrator --name=test \
 		  --cutoff=130000 \
 		  --number=4 \
-		  --xls \
+		  --xlsx \
 		  test-data/features.txt test-data/peaks.txt
 mv test_gene_centric.txt test-data/peaks_per_feature2.out
 mv test_peak_centric.txt test-data/features_per_peak2.out
-mv test.xls test-data/peaks2.xls
+mv test.xlsx test-data/peaks2.xlsx
 #
 # Test #4
 RnaChipIntegrator --name=test \
 		  --cutoff=130000 \
 		  --number=4 \
 		  --only-DE \
-		  --xls \
+		  --xlsx \
 		  --compact \
 		  test-data/features.txt test-data/peaks.txt
 mv test_gene_centric.txt test-data/peaks_per_feature3.out
 mv test_peak_centric.txt test-data/features_per_peak3.out
-mv test.xls test-data/peaks3.xls
+mv test.xlsx test-data/peaks3.xlsx
 #
 # Test #5
 RnaChipIntegrator --name=test \
 		  --cutoff=130000 \
 		  --number=4 \
-		  --xls \
+		  --xlsx \
 		  --summary \
 		  --pad \
 		  test-data/features.txt test-data/peaks.txt
@@ -123,6 +121,6 @@ mv test_gene_centric.txt test-data/peaks_per_feature4.out
 mv test_peak_centric.txt test-data/features_per_peak4.out
 mv test_gene_centric_summary.txt test-data/peaks_per_feature4.summary
 mv test_peak_centric_summary.txt test-data/features_per_peak4.summary
-mv test.xls test-data/peaks4.xls
+mv test.xlsx test-data/peaks4.xlsx
 ##
 #
