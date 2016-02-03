@@ -228,6 +228,14 @@ In "full" output mode, additional options are available:
 In either mode these data will also be output in a single MS Excel file,
 which contains one sheet per result set.
 
+.. class:: warning
+
+Using "compact" output with the number of hits limited to more than 4
+peak/gene pairs (or with no limit at all) can result in a large number
+of columns in the output files, which in some versions of Galaxy will
+not be properly displayed. However the data files themselves should be
+okay.
+
 -------------
 
 .. class:: informark
