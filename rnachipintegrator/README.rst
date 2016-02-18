@@ -90,12 +90,10 @@ Note on Excel output files and Galaxy
 RnaChipIntegrator produces an Excel spreadsheet as one of its outputs,
 however Galaxy is not currently set up by default to handle these.
 
-To enable Excel output file handling in Galaxy, edit the ``datatypes_conf.xml``
-file and add:
+To enable Excel (XLS) output file handling in Galaxy, edit the
+``datatypes_conf.xml`` file and add:
 
-    <datatype extension="xls" type="galaxy.datatypes.data:Data" mimetype="application/vnd.ms-excel" />
-
-You'll also need to remove the existing datatype with extension "xls".
+    <datatype extension="xlsx" type="galaxy.datatypes.binary:Binary" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
 
 Restarting Galaxy should mean that the browser correctly handles Excel outputs
 from RnaChipIntegrator.
