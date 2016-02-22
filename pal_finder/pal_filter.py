@@ -256,8 +256,8 @@ with open (pal_finder_output) as csvfile_infile:
     with open(os.path.splitext(os.path.basename(pal_finder_output))[0] + \
                     ".filtered", 'w') as csvfile_outfile:
 # write the header line for the output file
-        csvfile_outfile.write('\t'.join(header) + "\tR1_Sequence_ID\t\
-                    R1_Sequence\tR2_Sequence_ID\tR2_Sequence\n")
+        csvfile_outfile.write('\t'.join(header) + "\tR1_Sequence_ID\t"
+                              "R1_Sequence\tR2_Sequence_ID\tR2_Sequence\n")
         for row in csv_f:
 # get the sequence ID
             seq_ID = row[0]
@@ -443,12 +443,12 @@ if perform_assembly == 1:
     with open (outputfilename + "_pal_filter_assembly_output.txt", 'w') \
                     as outputfile:
 # write the headers for the output file
-        outputfile.write("readPairID\t Forward Primer\t F Primer Position in \
-                    Assembled Read\t Reverse Primer\t R Primer Position in \
-                    Assembled Read\t Motifs(bases)\t Assembled Read ID\t \
-                    Assembled Read Sequence\t Raw Forward Read ID\t Raw \
-                    Forward Read Sequence\t Raw Reverse Read ID\t Raw Reverse \
-                    Read Sequence\n")
+        outputfile.write("readPairID\t Forward Primer\t F Primer Position in "
+                         "Assembled Read\t Reverse Primer\t R Primer Position in "
+                         "Assembled Read\t Motifs(bases)\t Assembled Read ID\t "
+                         "Assembled Read Sequence\t Raw Forward Read ID\t Raw "
+                         "Forward Read Sequence\t Raw Reverse Read ID\t Raw Reverse "
+                         "Read Sequence\n")
 
 # cycle through parameters from the pal_finder output
         for x, y, z, a in zip(seqIDs, F_primers, R_primers, motif):
