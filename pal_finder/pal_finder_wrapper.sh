@@ -58,7 +58,7 @@ echo $*
 : ${PRIMER3_CORE_EXE:=primer3_core}
 #
 # Filter script is in the same directory as this script
-PALFINDER_FILTER=$(dirname $0)/pal_finder_filter_and_assembly.py
+PALFINDER_FILTER=$(dirname $0)/pal_filter.py
 if [ ! -f $PALFINDER_FILTER ] ; then
     echo No $PALFINDER_FILTER script >&2
     exit 1
@@ -115,7 +115,7 @@ FILTER_OPTIONS=
 if [ $# -lt 2 ] ; then
   echo "Usage: $0 FASTQ_R1 FASTQ_R2 MICROSAT_SUMMARY PAL_SUMMARY [OPTIONS]"
   echo "       $0 --454    FASTA    MICROSAT_SUMMARY PAL_SUMMARY [OPTIONS]"
-  exit
+  exits
 fi
 if [ "$1" == "--454" ] ; then
     PLATFORM="454"
@@ -357,9 +357,12 @@ if [ ! -z "$FILTERED_MICROSATS" ] && [ -f PAL_summary.filtered ] ; then
     /bin/mv PAL_summary.filtered $FILTERED_MICROSATS
 fi
 if [ ! -z "$OUTPUT_ASSEMBLY" ] ; then
-    assembly=${fastq_r1%.*}_pal_finder_assembly_output.txt
+    assembly=${fastq_r1%.*}_pal_filter_assembly_output.txt
     if [ -f "$assembly" ] ; then
 	/bin/mv $assembly "$OUTPUT_ASSEMBLY"
+    else
+	echo ERROR no assembly output found >&2
+	exit 1
     fi
 fi
 if [ ! -z "$OUTPUT_CONFIG_FILE" ] && [ -f config.txt ] ; then
