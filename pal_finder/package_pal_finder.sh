@@ -3,7 +3,8 @@
 # Package pal_finder tool files into tgz file for upload to
 # Galaxy toolshed
 #
-TGZ=pal_finder.tgz
+VERSION=$(grep "^<tool" pal_finder_wrapper.xml | grep -o -e version=\".*\" | cut -d= -f2 | tr -d \")
+TGZ=pal_finder-${VERSION}.tgz
 if [ -f $TGZ ] ; then
     echo $TGZ: already exists, please remove >&2
     exit 1
@@ -12,7 +13,7 @@ tar cvzf $TGZ \
     README.rst \
     pal_finder_wrapper.sh \
     pal_finder_wrapper.xml \
-    pal_finder_filter_and_assembly.py \
+    pal_filter.py \
     tool_dependencies.xml \
     test-data
 if [ -f $TGZ ] ; then
