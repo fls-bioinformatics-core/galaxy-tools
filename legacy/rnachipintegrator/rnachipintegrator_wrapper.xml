@@ -1,11 +1,5 @@
-<tool id="fls_rnachipintegrator_canonical_genes" name="Analyse canonical genes against ChIP data" version="0.0.4">
-  <description>using RnaChipIntegrator</description>
-  <requirements>
-    <requirement type="package" version="0.7.5">python_xlwt</requirement>
-    <requirement type="package" version="0.9.3">python_xlrd</requirement>
-    <requirement type="package" version="1.7.1">python_xlutils</requirement>
-    <requirement type="package" version="0.4.3">rnachipintegrator</requirement>
-  </requirements>
+<tool id="fls_rnachipintegrator_wrapper" name="RnaChipIntegrator" version="0.0.5">
+  <description>Integrated analysis of gene expression data and ChIP data</description>
   <command interpreter="bash">rnachipintegrator_wrapper.sh
   #if str( $analysis_options.peak_type ) == "summits"
     #if str( $analysis_options.window ) != ""
@@ -29,7 +23,7 @@
     --pad
     #end if
   #end if
-  $canonical_genes.value $chipseq
+  $rnaseq $chipseq
   --output_xls $xls_output
   #if $results_as_zip
   --zip_file $zip_file
@@ -45,12 +39,15 @@
     #end if
   #end if
   </command>
+  <requirements>
+    <requirement type="package" version="0.7.5">python_xlwt</requirement>
+    <requirement type="package" version="0.9.3">python_xlrd</requirement>
+    <requirement type="package" version="1.7.1">python_xlutils</requirement>
+    <requirement type="package" version="0.4.3">rnachipintegrator</requirement>
+  </requirements>
   <inputs>
+    <param format="tabular" name="rnaseq" type="data" label="Gene expression data file" />
     <param format="tabular" name="chipseq" type="data" label="ChIP peaks data file" />
-    <param name="canonical_genes" type="select" label="Canonical genes to analyse ChIP peaks against">
-      <options from_data_table="rnachipintegrator_canonical_genes">
-      </options>
-    </param>
   <conditional name="analysis_options">
     <!-- user must specify if ChIP peaks are summits or regions -->
     <param name="peak_type" type="select" label="ChIP peaks are"
@@ -79,9 +76,9 @@
       <param name="promoter_end" type="integer" value="2500" optional="true"
 	     label="End of promoter region with respect to gene TSS" />
       <param name="pad_output" type="boolean" checked="false" truevalue="yes"
-	     label="Output same number of lines for each peak (--pad)"
+	     label="Output same number of lines for each peak"
 	     help="Add blank lines in output for peaks with fewer than maximum number
-		   of hits" />
+		   of hits (--pad)" />
     </when>
   </conditional>
     <param name="results_as_zip" type="boolean" checked="false" truevalue="yes"
@@ -90,54 +87,75 @@
   <outputs>
     <!-- Always produce XLS output -->
     <data format="xls" name="xls_output"
-	  label="All RnaChipIntegrator analyses for ${canonical_genes.fields.name} vs ${chipseq.name} (Excel spreadsheet)" />
+	  label="All RnaChipIntegrator analyses for ${rnaseq.name} vs ${chipseq.name} (Excel spreadsheet)" />
     <!-- Outputs only produced for summit data -->
     <data format="tabular" name="peaks_to_transcripts_out"
-	  label="Nearest summits to transcripts for ${canonical_genes.fields.name} vs ${chipseq.name}" >
+	  label="Nearest summits to transcripts for ${rnaseq.name} vs ${chipseq.name}" >
       <filter>analysis_options['peak_type'] == "summits"</filter>
       <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="tss_to_summits_out"
-	  label="Nearest summits to TSS for ${canonical_genes.fields.name} vs ${chipseq.name}" >
+	  label="Nearest TSS to summits for ${rnaseq.name} vs ${chipseq.name}" >
       <filter>analysis_options['peak_type'] == "summits"</filter>
       <filter>results_as_zip is False</filter>
     </data>
     <!-- Outputs only produced for peak data -->
     <data format="tabular" name="transcripts_to_edges_out"
-	  label="Nearest transcripts to peak edges for ${canonical_genes.fields.name} vs ${chipseq.name}" >
+	  label="Nearest transcripts to peak edges for ${rnaseq.name} vs ${chipseq.name}" >
       <filter>analysis_options['peak_type'] == "regions"</filter>
       <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="transcripts_to_edges_summary"
-	  label="Nearest transcripts to peak edges (summary) for ${canonical_genes.fields.name} vs ${chipseq.name}" >
+	  label="Nearest transcripts to peak edges (summary) for ${rnaseq.name} vs ${chipseq.name}" >
       <filter>analysis_options['peak_type'] == "regions"</filter>
       <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="tss_to_edges_out"
-	  label="Nearest TSS to peak edges for ${canonical_genes.fields.name} vs ${chipseq.name}" >
+	  label="Nearest TSS to peak edges for ${rnaseq.name} vs ${chipseq.name}" >
       <filter>analysis_options['peak_type'] == "regions"</filter>
       <filter>results_as_zip is False</filter>
     </data>
     <data format="tabular" name="tss_to_edges_summary"
-	  label="Nearest TSS to peak edges (summary) for ${canonical_genes.fields.name} vs ${chipseq.name}" >
+	  label="Nearest TSS to peak edges (summary) for ${rnaseq.name} vs ${chipseq.name}" >
       <filter>analysis_options['peak_type'] == "regions"</filter>
       <filter>results_as_zip is False</filter>
     </data>
     <data format="zip" name="zip_file"
-	  label="All tab-delimited files for ${canonical_genes.fields.name} vs ${chipseq.name} (zip file)" >
+	  label="All tab-delimited files for ${rnaseq.name} vs ${chipseq.name} (zip file)" >
       <filter>results_as_zip is True</filter>
     </data>
   </outputs>
   <tests>
     <test>
-      <param name="rnaseq" value="ExpressionData.txt" />
-      <param name="chipseq" value="ChIP_peaks.txt" />
-      <output name="xls_output" file="peaks.xls" compare="sim_size" />
+      <param name="rnaseq" value="ExpressionData.txt" ftype="tabular" />
+      <param name="chipseq" value="ChIP_summits.txt" ftype="tabular" />
+      <param name="peak_type" value="summits" />
+      <param name="window" value="20000" />
+      <param name="cutoff" value="130000" />
+      <!-- 
+      **NB** outputs have to be specified in order that they appear in the
+      tool (which is the order they will be written to the history) - the
+      test framework seems to use the order and ignores the "name" attribute
+      -->
+      <output name="xls_output" file="summits.xls" compare="sim_size" />
+      <output name="peaks_to_transcripts_out" file="peaks_to_transcripts.out" ftype="tabular" />
+      <output name="tss_to_summits_out" file="tss_to_summits.out" ftype="tabular" />
     </test>
     <test>
-      <param name="rnaseq" value="ExpressionData.txt" />
-      <param name="chipseq" value="ChIP_edges.txt" />
+      <param name="rnaseq" value="ExpressionData.txt" ftype="tabular" />
+      <param name="chipseq" value="ChIP_peaks.txt" ftype="tabular" />
+      <param name="peak_type" value="regions" />
+      <param name="edge_cutoff" value="130000" />
+      <!-- 
+      **NB** outputs have to be specified in order that they appear in the
+      tool (which is the order they will be written to the history) - the
+      test framework seems to use the order and ignores the "name" attribute
+      -->
       <output name="xls_output" file="peaks.xls" compare="sim_size" />
+      <output name="transcripts_to_edges_out" file="transcripts_to_edges.out" ftype="tabular" />
+      <output name="transcripts_to_edges_summary" file="transcripts_to_edges.summary" ftype="tabular" />
+      <output name="tss_to_edges_out" file="tss_to_edges.out" ftype="tabular" />
+      <output name="tss_to_edges_summary" file="tss_to_edges.summary" ftype="tabular" />
     </test>
   </tests>
   <help>
@@ -146,9 +164,9 @@
 
 **What it does**
 
-Run RnaChipIntegrator to analyse ChIP data against a set of list of "canonical
-genes" for a specific organism/genome build, identifying the nearest ChIP peaks
-to each cannonical gene (vice versa).
+Run RnaChipIntegrator to perform integrated analyses of gene expression
+and ChIP data, identifying the nearest ChIP peaks to each transcript
+and vice versa.
 
 For ChIP peaks defined as regions the following analyses are performed:
 
@@ -166,6 +184,11 @@ For ChIP peaks defined as summits:
  * **PeaksToTranscripts**: reports the nearest peak summits with the smallest
    distance to either the TSS or TES of each transcript.
 
+The program was originally written specifically for ChIP-Seq and RNA-Seq data
+but works equally well for ChIP-chip and microarray expression data, and can
+also be used to integrate any set of genomic features (e.g. canonical genes,
+CpG islands) with expression data.
+
 RnaChipIntgerator can be obtained from
 http://fls-bioinformatics-core.github.com/RnaChipIntegrator/
 
@@ -174,6 +197,20 @@ http://fls-bioinformatics-core.github.com/RnaChipIntegrator/
 .. class:: infomark
 
 **Input**
+
+The expression data must be in a tab-delimited file with the following columns
+of data for each genomic feature (one feature per line):
+
+====== ========== ======================================================================
+Column Name       Description
+====== ========== ======================================================================
+     1 ID         Name used to identify the feature in the output
+     2 chr        Chromosome name
+     3 start      Start position of the feature
+     4 end        End position of the feature
+     5 strand     Must be either '+' or '-'
+     6 diff_expr  Optional: indicates feature is differentially expressed (1) or not (0)
+====== ========== ======================================================================
 
 The ChIP-seq data must be in a tab-delimited file with 3 columns of data for each
 ChIP peak (one per line):
@@ -195,10 +232,10 @@ entire extent of the binding region (with 'start' and 'end' indicating the limit
 
 **Output**
 
-The outputs from this tool vary depending on the type of ChIP data that is input (i.e
-summits or peaks), however generally there is one tab-delimited results file for each
-analysis described above in the **What it does** section (some analyses output a second
-file with just the "best" hits).
+The outputs from this tool vary depending on the type of data that is input, however
+generally there is one tab-delimited results file for each analysis described above
+in the **What it does** section (some analyses output a second file with just the
+"best" hits).
 
 A history item will be generated for each output file, unless the option to put them
 into a single zip archive is selected; this archive file will have to be downloaded
