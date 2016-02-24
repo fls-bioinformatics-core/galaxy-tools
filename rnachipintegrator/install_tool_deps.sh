@@ -21,8 +21,8 @@ INSTALL_DIR=$TOP_DIR/rnachipintegrator/$VERSION
 mkdir -p $INSTALL_DIR
 wd=$(mktemp -d)
 pushd $wd
-wget https://github.com/fls-bioinformatics-core/RnaChipIntegrator/archive/v${VERSION}.tar.gz
-tar zxf v${VERSION}.tar.gz
+wget https://pypi.python.org/packages/source/R/RnaChipIntegrator/RnaChipIntegrator-${VERSION}.tar.gz
+tar zxf RnaChipIntegrator-${VERSION}.tar.gz
 cd RnaChipIntegrator-$VERSION
 pip install --no-use-wheel --install-option "--prefix=$INSTALL_DIR" .
 popd
