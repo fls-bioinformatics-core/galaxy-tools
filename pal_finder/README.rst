@@ -21,7 +21,7 @@ There are three files to install:
 
 The suggested location is in a ``tools/pal_finder_wrapper/`` folder. You will then
 need to modify the ``tools_conf.xml`` file to tell Galaxy to offer the tool
-by adding the line:
+by adding the line::
 
     <tool file="pal_finder/pal_finder_wrapper.xml" />
 
@@ -48,7 +48,7 @@ enviroment variables which you will need to set manually:
   full path if it's not on the Galaxy user's PATH (defaults to primer3_core)
 
 If you want to run the functional tests, copy the sample test files under
-sample test files under Galaxy's ``test-data/`` directory. Then:
+sample test files under Galaxy's ``test-data/`` directory. Then::
 
     ./run_tests.sh -id microsat_pal_finder
 
