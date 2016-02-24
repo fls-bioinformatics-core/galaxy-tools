@@ -1,4 +1,4 @@
-<tool id="rnachipintegrator_canonical_genes" name="Analyse canonical genes against ChIP data" version="@VERSION@-0">
+<tool id="rnachipintegrator_canonical_genes" name="Analyse canonical genes against 'peak' data" version="@VERSION@.0">
   <description>using RnaChipIntegrator</description>
   <macros>
     <import>rnachipintegrator_macros.xml</import>
