@@ -60,6 +60,8 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.02.04.4  - Update to the filter script (``pal_filter.py``) which removes some
+             columns from the output assembly file.
 0.02.04.3  - Update to the Illumina filtering script from Graeme Fox (including
              new option to run ``PANDASeq`` assembly/QC steps), and corresponding
 	     update to the tool; add support for input FASTQs to be a dataset
