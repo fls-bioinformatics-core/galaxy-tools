@@ -1,6 +1,6 @@
 categories: [Sequence Analysis]
 description: Find microsatellite repeat elements from sequencing reads and design PCR primers to amplify them
-long_description: Runs the pal_finder Perl script and PRIMER3 to find microsatellite repeat elements sequencing reads and design PCR primers to amplify them
+long_description: Runs the pal_finder Perl script and PRIMER3 to find microsatellite repeat elements from Illumina or 454 sequencing reads and designs PCR primers to amplify them
 name: pal_finder
 owner: pjbriggs
 remote_repository_url: https://github.com/fls-bioinformatics-core/galaxy-tools/tree/master/pal_finder
