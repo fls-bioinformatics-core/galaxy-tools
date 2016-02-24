@@ -2,7 +2,7 @@
   <token name="@VERSION@">1.0.0</token>
   <xml name="requirements">
     <requirements>
-      <requirement type="package" version="0.8.4">python_xlsxwritert</requirement>
+      <requirement type="package" version="0.8.4">python_xlsxwriter</requirement>
       <requirement type="package" version="1.0.0">rnachipintegrator</requirement>
     </requirements>
   </xml>
