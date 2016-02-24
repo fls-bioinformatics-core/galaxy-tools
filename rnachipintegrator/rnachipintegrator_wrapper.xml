@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tool id="rnachipintegrator_wrapper" name="RnaChipIntegrator" version="@VERSION@-0">
-  <description>Integrated analysis of gene expression data and ChIP data</description>
+<tool id="rnachipintegrator_wrapper" name="RnaChipIntegrator" version="@VERSION@.0">
+  <description>Integrated analysis of 'gene' and 'peak' data</description>
   <macros>
     <import>rnachipintegrator_macros.xml</import>
   </macros>
