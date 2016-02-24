@@ -15,8 +15,8 @@ if [ ! -d "$TOP_DIR" ] ; then
     mkdir -p $TOP_DIR
 fi
 cd $TOP_DIR
-# RnaChipIntegrator 0.5.0-alpha.8
-VERSION=0.5.0-alpha.8
+# RnaChipIntegrator 1.0.0
+VERSION=1.0.0
 INSTALL_DIR=$TOP_DIR/rnachipintegrator/$VERSION
 mkdir -p $INSTALL_DIR
 wd=$(mktemp -d)
