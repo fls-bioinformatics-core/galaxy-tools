@@ -38,5 +38,5 @@ script:
 # Use the Galaxy virtualenv
   - ". travis/galaxy_venv/bin/activate"
 # Run tool tests
-  - "$TOOL/run_planemo_tests.sh --galaxy_root travis/galaxy"
+  - "tools/$TOOL/run_planemo_tests.sh --galaxy_root travis/galaxy"
 
