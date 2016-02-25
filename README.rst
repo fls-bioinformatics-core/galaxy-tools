@@ -4,9 +4,14 @@ galaxy-tools
 .. image:: https://travis-ci.org/fls-bioinformatics-core/galaxy-tools.png?branch=master
    :target: https://travis-ci.org/fls-bioinformatics-core/galaxy-tools
 
-Tools, tool-wrappers and tool dependency packages for Galaxy.
+Tools, tool-wrappers and tool dependency packages for Galaxy developed
+within the Bioinformatics Core Facility at the University of Manchester.
 
-Tools wrapping 3rd-party software:
+tools
+-----
+
+The ``tools`` subdirectory contains the following tools which wrap
+3rd-party software:
 
  * BLAT
  * `CEAS <https://toolshed.g2.bx.psu.edu/view/pjbriggs/ceas/>`_
@@ -19,7 +24,7 @@ Tools wrapping 3rd-party software:
  * `weeder2 <https://toolshed.g2.bx.psu.edu/view/pjbriggs/weeder2/>`_
  * bedgraph_to_wig converter
 
-Tools wrapping in-house scripts and programs:
+There are also tools wrapping in-house scripts and programs:
 
  * motif_tools
  * make_macs_xls
@@ -27,15 +32,21 @@ Tools wrapping in-house scripts and programs:
  * `RnaChipIntegrator <https://toolshed.g2.bx.psu.edu/view/pjbriggs/rnachipintegrator>`_
  * SamStats
 
-Data managers:
+See the individual ``README`` files for information on how to install
+into a local Galaxy; alternatively where indicated a subset of tools are
+available from the main toolshed: https://toolshed.g2.bx.psu.edu/
 
- * data_manager_mothur_toolsuite
+packages
+--------
 
-Packages for installing tool dependencies:
+The ``packages`` subdirectory contains tool dependency packages:
 
  * package_numpy_1_8
  * package_python2_7
 
-See the individual README files for information on how to install
-into a local Galaxy; alternatively a number of these tools are
-available from the main toolshed: https://toolshed.g2.bx.psu.edu/
+legacy
+------
+
+The ``legacy`` subdirectory contains tools and packages which are
+no longer supported, or which are backwardly-incompatible, or where
+development is now happening elsewhere.
