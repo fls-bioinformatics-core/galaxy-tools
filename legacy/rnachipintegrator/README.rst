@@ -1,6 +1,12 @@
 RnaChipIntegrator: integrated analysis of gene expression and ChIP data (legacy version)
 ========================================================================================
 
+.. warning::
+
+   This is a "legacy version" which predates the change of format of the
+   ``.loc`` file for the canonical genes tool. It has been made to provide
+   backwards-compatibility only.
+
 Galaxy tool wrappers for running the RnaChipIntegrator program
 (http://fls-bioinformatics-core.github.com/RnaChipIntegrator/) for integrated
 analyses of gene expression and ChIP data.
@@ -11,12 +17,6 @@ There are two tools available that are built around RnaChipIntegrator:
   any gene list
 - A "cannonical gene" variant which allows ChIP peaks to be analysed against a
   list of cannonical genes for different genomes
-
-.. warning::
-
-   This is a "legacy version" which predates the change of format of the
-   ``.loc`` file for the canonical genes tool. It has been made to provide
-   backwards-compatibility only.
 
 Automated installation
 ======================
