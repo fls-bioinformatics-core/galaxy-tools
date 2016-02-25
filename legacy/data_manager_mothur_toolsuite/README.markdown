@@ -1,6 +1,11 @@
 data_manager_mothur_reference_data
 ==================================
 
+* **This data manager has been pushed to the
+  [galaxproject/tools-iuc](https://github.com/galaxyproject/tools-iuc)
+  repository (see
+  [pull request 585](https://github.com/galaxyproject/tools-iuc/pull/585)**
+
 Data manager to install reference data for Mothur toolsuite.
 
 Specifically it can download data directly from the Mothur website, or
