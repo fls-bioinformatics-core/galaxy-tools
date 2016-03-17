@@ -235,7 +235,7 @@ with open (args.pal_finder) as csvfile_infile:
     header.extend(("R1_Sequence_ID", \
                    "R1_Sequence", \
                    "R2_Sequence_ID", \
-                   "R2_Sequence_ID" + "\n"))
+                   "R2_Sequence" + "\n"))
     with open( \
             os.path.splitext(os.path.basename(args.pal_finder))[0] + \
             ".filtered", 'w') as csvfile_outfile:
@@ -447,7 +447,7 @@ if args.assembly:
                 assembly_seq = (assembly_sequences_index.get_raw(x).decode())
                 # fasta entries need to be converted to single line so sit
                 # nicely in the output
-                assembly_output = assembly_seq.replace("\n","\t")
+                assembly_output = assembly_seq.replace("\n","\t").strip('\t')
                 R1_fasta_seq = (R1fasta_sequences_index.get_raw(x).decode())
                 R1_output = R1_fasta_seq.replace("\n","\t",1).replace("\n","")
                 R2_fasta_seq = (R2fasta_sequences_index.get_raw(x).decode())
