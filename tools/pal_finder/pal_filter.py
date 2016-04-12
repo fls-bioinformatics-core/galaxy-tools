@@ -456,8 +456,10 @@ if args.assembly:
 
                 # check that both primer sequences can be seen in the
                 # assembled contig
-                if y or ReverseComplement1(y) in assembly_no_id and z or \
-                                    ReverseComplement1(z) in assembly_no_id:
+                if ((y in assembly_no_id) or \
+                    (ReverseComplement1(y) in assembly_no_id)) and \
+                    ((z in assembly_no_id) or \
+                    (ReverseComplement1(z) in assembly_no_id)):
                     if y in assembly_no_id:
                         # get the positions of the primers in the assembly
                         # (can be used to predict fragment length)
