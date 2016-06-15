@@ -61,11 +61,15 @@ MAX_LINES=500
 : ${PALFINDER_DATA_DIR:=/usr/share/pal_finder_v0.02.04}
 : ${PRIMER3_CORE_EXE:=primer3_core}
 #
+# Utility function for terminating on fatal error
+function fatal() {
+    echo "FATAL $@" >&2
+    exit 1
+}
 # Filter script is in the same directory as this script
 PALFINDER_FILTER=$(dirname $0)/pal_filter.py
 if [ ! -f $PALFINDER_FILTER ] ; then
-    echo No $PALFINDER_FILTER script >&2
-    exit 1
+    fatal No $PALFINDER_FILTER script
 fi
 #
 # Check that we have all the components
@@ -79,16 +83,13 @@ function have_program() {
     fi	
 }
 if [ "$(have_program $PRIMER3_CORE_EXE)" == "no" ] ; then
-    echo "ERROR primer3_core missing: ${PRIMER3_CORE_EXE} not found" >&2
-    exit 1
+    fatal "primer3_core missing: ${PRIMER3_CORE_EXE} not found"
 fi
 if [ ! -f "${PALFINDER_DATA_DIR}/config.txt" ] ; then
-    echo "ERROR pal_finder config.txt not found in ${PALFINDER_DATA_DIR}" >&2
-    exit 1
+    fatal "pal_finder config.txt not found in ${PALFINDER_DATA_DIR}"
 fi
 if [ ! -f "${PALFINDER_SCRIPT_DIR}/pal_finder_v0.02.04.pl" ] ; then
-    echo "ERROR pal_finder_v0.02.04.pl not found in ${PALFINDER_SCRIPT_DIR}" >&2
-    exit 1
+    fatal "pal_finder_v0.02.04.pl not found in ${PALFINDER_SCRIPT_DIR}"
 fi
 #
 # Initialise parameters used in the config.txt file
@@ -121,7 +122,7 @@ RANDOM_SEED=568765
 if [ $# -lt 2 ] ; then
   echo "Usage: $0 FASTQ_R1 FASTQ_R2 MICROSAT_SUMMARY PAL_SUMMARY [OPTIONS]"
   echo "       $0 --454    FASTA    MICROSAT_SUMMARY PAL_SUMMARY [OPTIONS]"
-  exits
+  fatal "Bad command line"
 fi
 if [ "$1" == "--454" ] ; then
     PLATFORM="454"
@@ -242,16 +243,14 @@ done
 # Check that primer3_core is available
 got_primer3=`which $PRIMER3_CORE_EXE 2>&1 | grep -v "no primer3_core in"`
 if [ -z "$got_primer3" ] ; then
-  echo ERROR primer3_core not found >&2
-  exit 1
+  fatal "primer3_core not found"
 fi
 #
 # Set up the working dir
 if [ "$PLATFORM" == "Illumina" ] ; then
     # Paired end Illumina data as input
     if [ $FASTQ_R1 == $FASTQ_R2 ] ; then
-	echo ERROR R1 and R2 fastqs are the same file >&2
-	exit 1
+	fatal ERROR R1 and R2 fastqs are the same file
     fi
     ln -s $FASTQ_R1
     ln -s $FASTQ_R2
@@ -346,12 +345,11 @@ tail -$MAX_LINES pal_finder.log
 # Check for success/failure
 if [ ! -z "$(tail -n 1 pal_finder.log | grep 'No microsatellites found in any reads. Ending script.')" ] ; then
     # No microsatellites found
-    echo ERROR pal_finder failed to locate any microsatellites >&2
+    fatal ERROR pal_finder failed to locate any microsatellites
     exit 1
 elif [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
     # Log doesn't end with "Done!!" (indicates failure)
-    echo ERROR pal_finder failed to complete successfully >&2
-    exit 1
+    fatal ERROR pal_finder failed to complete successfully
 fi
 echo "### pal_finder finished ###"
 #
@@ -361,8 +359,7 @@ if [ ! -z "$(grep 'primer3_core: Illegal element in PRIMER_PRODUCT_SIZE_RANGE' p
     echo ERROR primer3 terminated prematurely due to bad product size ranges >&2
     echo Read IDs with bad ranges: >&2
     ./detect_bad_ranges.sh Output/pr3in.txt >&2
-    echo ERROR primer3 failed to complete successfully >&2
-    exit 1
+    fatal primer3 failed to complete successfully
 fi
 #
 # Sort microsat_summary output
@@ -394,11 +391,9 @@ if [ ! -z "$FILTERED_MICROSATS" ] || [ ! -z "$OUTPUT_ASSEMBLY" ] ; then
     fi
     tail -$MAX_LINES pal_filter.log
     if [ $? -ne 0 ] ; then
-	echo ERROR $PALFINDER_FILTER exited with non-zero status >&2
-	exit 1
+	fatal $PALFINDER_FILTER exited with non-zero status
     elif [ ! -f PAL_summary.filtered ] ; then
-	echo ERROR no output from $PALFINDER_FILTER >&2
-	exit 1
+	fatal no output from $PALFINDER_FILTER
     fi
 fi
 #
@@ -418,8 +413,7 @@ if [ ! -z "$OUTPUT_ASSEMBLY" ] ; then
     if [ -f "$assembly" ] ; then
 	/bin/mv $assembly "$OUTPUT_ASSEMBLY"
     else
-	echo ERROR no assembly output found >&2
-	exit 1
+	fatal no assembly output found
     fi
 fi
 if [ ! -z "$OUTPUT_CONFIG_FILE" ] && [ -f config.txt ] ; then
