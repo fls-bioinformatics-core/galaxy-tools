@@ -314,6 +314,7 @@ set_config_value 6merMinReps $MIN_6_MER_REPS config.txt
 # Primer3 settings
 set_config_value primer3input Output/pr3in.txt config.txt
 set_config_value primer3output Output/pr3out.txt config.txt
+set_config_value keepPrimer3files 1
 set_config_value primer3executable $PRIMER3_CORE_EXE config.txt
 set_config_value prNamePrefix ${PRIMER_PREFIX}_ config.txt
 set_config_value PRIMER_MISPRIMING_LIBRARY "$PRIMER_MISPRIMING_LIBRARY" config.txt
@@ -350,6 +351,17 @@ if [ ! -z "$(tail -n 1 pal_finder.log | grep 'No microsatellites found in any re
 elif [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
     # Log doesn't end with "Done!!" (indicates failure)
     echo ERROR pal_finder failed to complete successfully >&2
+    exit 1
+fi
+echo "### pal_finder finished ###"
+#
+# Check for errors in pal_finder output
+echo "### Checking for errors ###"
+if [ ! -z "$(grep 'primer3_core: Illegal element in PRIMER_PRODUCT_SIZE_RANGE' pal_finder.log)" ] ; then
+    echo ERROR primer3 terminated prematurely due to bad product size ranges >&2
+    echo Read IDs with bad ranges: >&2
+    ./detect_bad_ranges.sh Output/pr3in.txt >&2
+    echo ERROR primer3 failed to complete successfully >&2
     exit 1
 fi
 #
