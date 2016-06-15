@@ -314,7 +314,7 @@ set_config_value 6merMinReps $MIN_6_MER_REPS config.txt
 # Primer3 settings
 set_config_value primer3input Output/pr3in.txt config.txt
 set_config_value primer3output Output/pr3out.txt config.txt
-set_config_value keepPrimer3files 1
+set_config_value keepPrimer3files 1 config.txt
 set_config_value primer3executable $PRIMER3_CORE_EXE config.txt
 set_config_value prNamePrefix ${PRIMER_PREFIX}_ config.txt
 set_config_value PRIMER_MISPRIMING_LIBRARY "$PRIMER_MISPRIMING_LIBRARY" config.txt
