@@ -358,7 +358,7 @@ echo "### Checking for errors ###"
 if [ ! -z "$(grep 'primer3_core: Illegal element in PRIMER_PRODUCT_SIZE_RANGE' pal_finder.log)" ] ; then
     echo ERROR primer3 terminated prematurely due to bad product size ranges >&2
     echo Read IDs with bad ranges: >&2
-    ./detect_bad_ranges.sh Output/pr3in.txt >&2
+    $(dirname $0)/detect_bad_ranges.sh Output/pr3in.txt >&2
     fatal primer3 failed to complete successfully
 fi
 #
