@@ -15,13 +15,13 @@ if [ ! -d "$TOP_DIR" ] ; then
     mkdir -p $TOP_DIR
 fi
 cd $TOP_DIR
-# RnaChipIntegrator 1.0.0
-VERSION=1.0.0
+# RnaChipIntegrator 1.0.1
+VERSION=1.0.1
 INSTALL_DIR=$TOP_DIR/rnachipintegrator/$VERSION
 mkdir -p $INSTALL_DIR
 wd=$(mktemp -d)
 pushd $wd
-wget https://pypi.python.org/packages/source/R/RnaChipIntegrator/RnaChipIntegrator-${VERSION}.tar.gz
+wget https://pypi.python.org/packages/b6/dd/8e7187194fe438b9ceeb26e92c4852014d47c612989dae54160822172635/RnaChipIntegrator-${VERSION}.tar.gz
 tar zxf RnaChipIntegrator-${VERSION}.tar.gz
 cd RnaChipIntegrator-$VERSION
 pip install --no-use-wheel --install-option "--prefix=$INSTALL_DIR" .
