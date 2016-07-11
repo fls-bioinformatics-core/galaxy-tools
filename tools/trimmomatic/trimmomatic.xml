@@ -53,6 +53,9 @@
     #if str( $op.operation.name ) == "HEADCROP"
       HEADCROP:$op.operation.headcrop
     #end if
+    #if str( $op.operation.name ) == "AVGQUAL"
+      AVGQUAL:$op.operation.avgqual
+    #end if
   #end for
   ]]></command>
   <inputs>
@@ -107,6 +110,7 @@
 	  <option value="TRAILING">Cut bases off the end of a read, if below a threshold quality (TRAILING)</option>
 	  <option value="CROP">Cut the read to a specified length (CROP)</option>
 	  <option value="HEADCROP">Cut the specified number of bases from the start of the read (HEADCROP)</option>
+	  <option value="AVGQUAL">Drop reads with average quality lower than a specified level (AVGQUAL)</option>
 	</param>
 	<when value="SLIDINGWINDOW">
 	  <param name="window_size" type="integer" label="Number of bases to average across" value="4" />
@@ -126,6 +130,9 @@
 	</when>
 	<when value="HEADCROP">
 	  <param name="headcrop" type="integer" label="Number of bases to remove from the start of the read" value="" />
+	</when>
+	<when value="AVGQUAL">
+	  <param name="avgqual" type="integer" label="Minimum average quality required to keep a read" value="" />
 	</when>
       </conditional>
     </repeat>
@@ -227,6 +234,7 @@
     </test>
     <test>
       <!-- Single-end using AVGQUAL -->
+      <param name="is_paired_end" value="no" />
       <param name="fastq_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
       <param name="operations_0|operation|name" value="AVGQUAL" />
       <param name="operations_0|operation|avgqual" value="30" />
