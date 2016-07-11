@@ -225,6 +225,21 @@
 	<element name="reverse" file="trimmomatic_pe_r2_unpaired_out1.fastq" />
       </output_collection>
     </test>
+    <test>
+      <!-- Single-end using AVGQUAL -->
+      <param name="fastq_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
+      <param name="operations_0|operation|name" value="AVGQUAL" />
+      <param name="operations_0|operation|avgqual" value="30" />
+      <output name="fastq_out" file="trimmomatic_avgqual.fastq" />
+    </test>
+    <test>
+      <!-- Paired-end using MAXINFO -->
+      <param name="fastq_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
+      <param name="operations_0|operation|name" value="MAXINFO" />
+      <param name="operations_0|operation|maxinfo_target_read_length" value="50" />
+      <param name="operations_0|operation|maxinfo_strictness" value="0.9" />
+      <output name="fastq_out" file="trimmomatic_maxinfo.fastq" />
+    </test>
   </tests>
   <help><![CDATA[
 .. class:: infomark
@@ -244,6 +259,9 @@ This tool allows the following trimming steps to be performed:
  * **TRAILING:** Cut bases off the end of a read, if below a threshold quality
  * **CROP:** Cut the read to a specified length
  * **HEADCROP:** Cut the specified number of bases from the start of the read
+ * **AVGQUAL:** Drop the read if the average quality is below a specified value
+ * **MAXINFO:** Trim reads adaptively, balancing read length and error rate to 
+   maximise the value of each read
 
 If ILLUMINACLIP is requested then it is always performed first; subsequent options
 can be mixed and matched and will be performed in the order that they have been
