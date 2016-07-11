@@ -56,6 +56,9 @@
     #if str( $op.operation.name ) == "AVGQUAL"
       AVGQUAL:$op.operation.avgqual
     #end if
+    #if str( $op.operation.name ) == "MAXINFO"
+      MAXINFO:$op.operation.target_length:$op.operation.strictness
+    #end if
   #end for
   ]]></command>
   <inputs>
@@ -111,6 +114,7 @@
 	  <option value="CROP">Cut the read to a specified length (CROP)</option>
 	  <option value="HEADCROP">Cut the specified number of bases from the start of the read (HEADCROP)</option>
 	  <option value="AVGQUAL">Drop reads with average quality lower than a specified level (AVGQUAL)</option>
+	  <option value="MAXINFO">Trim reads adaptively, balancing read length and error rate to maximise the value of each read (MAXINFO)</option>
 	</param>
 	<when value="SLIDINGWINDOW">
 	  <param name="window_size" type="integer" label="Number of bases to average across" value="4" />
@@ -133,6 +137,10 @@
 	</when>
 	<when value="AVGQUAL">
 	  <param name="avgqual" type="integer" label="Minimum average quality required to keep a read" value="" />
+	</when>
+	<when value="MAXINFO">
+	  <param name="target_length" type="integer" label="Target read length" value="" help="The read length which is likely to allow the location of the read within the target sequence to be determined." />
+	  <param name="strictness" type="float" label="Strictness" value="" help="Set between zero and one - specifies the balance between preserving read length versus removal of incorrect bases; low values (&lt;0.2) favours longer reads, high values (&gt;0.8) favours read correctness." />
 	</when>
       </conditional>
     </repeat>
@@ -241,11 +249,12 @@
       <output name="fastq_out" file="trimmomatic_avgqual.fastq" />
     </test>
     <test>
-      <!-- Paired-end using MAXINFO -->
+      <!-- Single-end using MAXINFO -->
+      <param name="is_paired_end" value="no" />
       <param name="fastq_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
       <param name="operations_0|operation|name" value="MAXINFO" />
-      <param name="operations_0|operation|maxinfo_target_read_length" value="50" />
-      <param name="operations_0|operation|maxinfo_strictness" value="0.9" />
+      <param name="operations_0|operation|target_length" value="75" />
+      <param name="operations_0|operation|strictness" value="0.8" />
       <output name="fastq_out" file="trimmomatic_maxinfo.fastq" />
     </test>
   </tests>
