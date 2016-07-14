@@ -1,4 +1,4 @@
-<tool id="macs2_1_peakcalling" name="MACS2.1.0" version="2.1.0-4">
+<tool id="macs2_1_peakcalling" name="MACS2.1.0" version="2.1.0-5">
   <description>Model-based Analysis of ChIP-Seq: peak calling</description>
   <requirements>
     <requirement type="package" version="2.7">python</requirement>
@@ -19,7 +19,7 @@
        -c $input_control_file1
     #end if
     ##
-    --format=$input_chipseq_file1.extension
+    --format=$format
     --name="$experiment_name"
     --bw=$bw
     ##
@@ -114,6 +114,15 @@
 	       value="0.1" help="default: 0.1 (--broad-cutoff)"/>
       </when>
     </conditional>
+    <param name="format" type="select" label="Format of input read data"
+	   help="Specify the format of the input data and whether or not it is paired end (--format)">
+      <option value="BAMPE" selected="true">BAM (paired-end)</option>
+      <option value="BAM">BAM (single-end)</option>
+      <option value="BEDPE">BED (paired-end)</option>
+      <option value="BED">BED (single-end)</option>
+      <option value="SAMPE">SAM (paired-end)</option>
+      <option value="SAM">SAM (single-end)</option>
+    </param>
     <param name="input_chipseq_file1" type="data" format="bed,sam,bam"
 	   label="ChIP-seq read file" />
     <param name="input_control_file1" type="data" format="bed,sam,bam" optional="True"
@@ -270,6 +279,7 @@
       <!-- Inputs -->
       <param name="experiment_name" value="test_MACS2.1.0" />
       <param name="broad_regions" value="" />
+      <param name="format" value="BED" />
       <param name="input_chipseq_file1" value="test_region_IP.bed" dbkey="galGal3"
 	     ftype="bed" />
       <param name="input_control_file1" value="test_region_Input.bed"
@@ -308,6 +318,7 @@
       <!-- Inputs -->
       <param name="experiment_name" value="test_MACS2.1.0" />
       <param name="broad_regions" value="" />
+      <param name="format" value="BED" />
       <param name="input_chipseq_file1" value="test_region_IP.bed" dbkey="galGal3"
 	     ftype="bed" />
       <param name="input_control_file1" value="test_region_Input.bed"

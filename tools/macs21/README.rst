@@ -59,6 +59,8 @@ practices in invoking commands from Galaxy, and to add new functionality.
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+2.1.0-5    - User must explicitly specify the format for the inputs (to allow
+             for paired-end data)
 2.1.0-4    - Remove 'bdgcmp' functionality.
 2.1.0-3    - Add tool tests
 2.1.0-2    - Add option to create bigWig file from bedGraphs; fix bug with -B
