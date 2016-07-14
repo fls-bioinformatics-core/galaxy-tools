@@ -13,7 +13,7 @@
 #                         Galaxy instance)
 #
 # List of dependencies
-TOOL_DEPENDENCIES="trimmomatic/0.32"
+TOOL_DEPENDENCIES="trimmomatic/0.36"
 # Where to find them
 TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.trimmomatic
 if [ ! -d $TOOL_DEPENDENCIES_DIR ] ; then

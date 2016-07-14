@@ -33,15 +33,15 @@ by adding the line:
 
     <tool file="trimmomatic/trimmomatic.xml" />
 
-You will also need to install trimmomatic 0.32:
+You will also need to install trimmomatic 0.36:
 
-- http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.32.zip
+- http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.36.zip
 
 The tool wrapper uses the following environment variables in order to find the
 appropriate files:
 
 - ``TRIMMOMATIC_DIR`` should point to the directory holding the
-  ``trimmomatic-0.32.jar`` file
+  ``trimmomatic-0.36.jar`` file
 - ``TRIMMOMATIC_ADAPTERS_DIR`` should point to the directory holding the adapter
   sequence files (used by the ``ILLUMINACLIP`` option).
 
@@ -58,6 +58,7 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.36.0     - Update to Trimmomatic 0.36.
 0.32.4     - Add support for ``AVGQUAL`` and ``MAXINFO`` operations.
 0.32.3     - Add support for FASTQ R1/R2 pairs using dataset collections (input
              can be dataset collection, in which case tool also outputs dataset

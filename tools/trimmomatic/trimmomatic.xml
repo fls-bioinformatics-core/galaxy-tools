@@ -1,7 +1,7 @@
-<tool id="trimmomatic" name="Trimmomatic" version="0.32.4">
+<tool id="trimmomatic" name="Trimmomatic" version="0.36.0">
   <description>flexible read trimming tool for Illumina NGS data</description>
   <requirements>
-    <requirement type="package" version="0.32">trimmomatic</requirement>
+    <requirement type="package" version="0.36">trimmomatic</requirement>
   </requirements>
   <stdio>
     <exit_code range="1:" />
@@ -9,7 +9,7 @@
   <command interpreter="bash"><![CDATA[
   trimmomatic.sh
   -mx8G
-  -jar \$TRIMMOMATIC_DIR/trimmomatic-0.32.jar
+  -jar \$TRIMMOMATIC_DIR/trimmomatic-0.36.jar
   #if $paired_end.is_paired_end
     PE -threads \${GALAXY_SLOTS:-6} -phred33
     #set $paired_input_type = $paired_end.paired_input_type_conditional.paired_input_type
