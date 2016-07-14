@@ -58,6 +58,7 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.32.4     - Add support for ``AVGQUAL`` and ``MAXINFO`` operations.
 0.32.3     - Add support for FASTQ R1/R2 pairs using dataset collections (input
              can be dataset collection, in which case tool also outputs dataset
 	     collections) and improve order and naming of output files.
