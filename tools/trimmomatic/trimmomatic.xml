@@ -1,4 +1,4 @@
-<tool id="trimmomatic" name="Trimmomatic" version="0.32.3">
+<tool id="trimmomatic" name="Trimmomatic" version="0.32.4">
   <description>flexible read trimming tool for Illumina NGS data</description>
   <requirements>
     <requirement type="package" version="0.32">trimmomatic</requirement>
@@ -52,6 +52,12 @@
     #end if
     #if str( $op.operation.name ) == "HEADCROP"
       HEADCROP:$op.operation.headcrop
+    #end if
+    #if str( $op.operation.name ) == "AVGQUAL"
+      AVGQUAL:$op.operation.avgqual
+    #end if
+    #if str( $op.operation.name ) == "MAXINFO"
+      MAXINFO:$op.operation.target_length:$op.operation.strictness
     #end if
   #end for
   ]]></command>
@@ -107,6 +113,8 @@
 	  <option value="TRAILING">Cut bases off the end of a read, if below a threshold quality (TRAILING)</option>
 	  <option value="CROP">Cut the read to a specified length (CROP)</option>
 	  <option value="HEADCROP">Cut the specified number of bases from the start of the read (HEADCROP)</option>
+	  <option value="AVGQUAL">Drop reads with average quality lower than a specified level (AVGQUAL)</option>
+	  <option value="MAXINFO">Trim reads adaptively, balancing read length and error rate to maximise the value of each read (MAXINFO)</option>
 	</param>
 	<when value="SLIDINGWINDOW">
 	  <param name="window_size" type="integer" label="Number of bases to average across" value="4" />
@@ -126,6 +134,13 @@
 	</when>
 	<when value="HEADCROP">
 	  <param name="headcrop" type="integer" label="Number of bases to remove from the start of the read" value="" />
+	</when>
+	<when value="AVGQUAL">
+	  <param name="avgqual" type="integer" label="Minimum average quality required to keep a read" value="" />
+	</when>
+	<when value="MAXINFO">
+	  <param name="target_length" type="integer" label="Target read length" value="" help="The read length which is likely to allow the location of the read within the target sequence to be determined." />
+	  <param name="strictness" type="float" label="Strictness" value="" help="Set between zero and one - specifies the balance between preserving read length versus removal of incorrect bases; low values (&lt;0.2) favours longer reads, high values (&gt;0.8) favours read correctness." />
 	</when>
       </conditional>
     </repeat>
@@ -225,6 +240,23 @@
 	<element name="reverse" file="trimmomatic_pe_r2_unpaired_out1.fastq" />
       </output_collection>
     </test>
+    <test>
+      <!-- Single-end using AVGQUAL -->
+      <param name="is_paired_end" value="no" />
+      <param name="fastq_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
+      <param name="operations_0|operation|name" value="AVGQUAL" />
+      <param name="operations_0|operation|avgqual" value="30" />
+      <output name="fastq_out" file="trimmomatic_avgqual.fastq" />
+    </test>
+    <test>
+      <!-- Single-end using MAXINFO -->
+      <param name="is_paired_end" value="no" />
+      <param name="fastq_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
+      <param name="operations_0|operation|name" value="MAXINFO" />
+      <param name="operations_0|operation|target_length" value="75" />
+      <param name="operations_0|operation|strictness" value="0.8" />
+      <output name="fastq_out" file="trimmomatic_maxinfo.fastq" />
+    </test>
   </tests>
   <help><![CDATA[
 .. class:: infomark
@@ -244,6 +276,9 @@ This tool allows the following trimming steps to be performed:
  * **TRAILING:** Cut bases off the end of a read, if below a threshold quality
  * **CROP:** Cut the read to a specified length
  * **HEADCROP:** Cut the specified number of bases from the start of the read
+ * **AVGQUAL:** Drop the read if the average quality is below a specified value
+ * **MAXINFO:** Trim reads adaptively, balancing read length and error rate to 
+   maximise the value of each read
 
 If ILLUMINACLIP is requested then it is always performed first; subsequent options
 can be mixed and matched and will be performed in the order that they have been
