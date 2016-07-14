@@ -16,22 +16,22 @@ if [ ! -d "$TOP_DIR" ] ; then
 fi
 cd $TOP_DIR
 # Trimmomatic 0.32
-INSTALL_DIR=$TOP_DIR/trimmomatic/0.32
+INSTALL_DIR=$TOP_DIR/trimmomatic/0.36
 mkdir -p $INSTALL_DIR
 wd=$(mktemp -d)
 pushd $wd
-wget -q http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.32.zip
-unzip -qq Trimmomatic-0.32.zip
-mv Trimmomatic-0.32/trimmomatic-0.32.jar $INSTALL_DIR/
-mv Trimmomatic-0.32/adapters/ $INSTALL_DIR/
+wget -q http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.36.zip
+unzip -qq Trimmomatic-0.36.zip
+mv Trimmomatic-0.36/trimmomatic-0.36.jar $INSTALL_DIR/
+mv Trimmomatic-0.36/adapters/ $INSTALL_DIR/
 popd
 rm -rf $wd/*
 rmdir $wd
 # Make setup file
-cat > trimmomatic/0.32/env.sh <<EOF
+cat > trimmomatic/0.36/env.sh <<EOF
 #!/bin/sh
-# Source this to setup trimmomatic/0.32
-echo Setting up Trimmomatic 0.32
+# Source this to setup trimmomatic/0.36
+echo Setting up Trimmomatic 0.36
 export TRIMMOMATIC_DIR=$INSTALL_DIR
 export TRIMMOMATIC_ADAPTERS_DIR=$INSTALL_DIR/adapters
 #

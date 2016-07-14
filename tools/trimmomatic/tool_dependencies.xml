@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <tool_dependency>
-    <package name="trimmomatic" version="0.32">
+    <package name="trimmomatic" version="0.36">
       <install version="1.0">
 	<actions>
-	  <action type="download_by_url">http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.32.zip</action>
+	  <action type="download_by_url">http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.36.zip</action>
 	  <action type="move_file">
-	    <source>trimmomatic-0.32.jar</source>
+	    <source>trimmomatic-0.36.jar</source>
 	    <destination>$INSTALL_DIR</destination>
 	  </action>
           <action type="move_directory_files">
