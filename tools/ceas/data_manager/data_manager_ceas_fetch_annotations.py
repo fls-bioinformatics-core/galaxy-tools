@@ -10,7 +10,11 @@ import urllib2
 import gzip
 import shutil
 
-from galaxy.util.json import from_json_string, to_json_string
+# Convenience functions mapping to JSON conversion
+# (this idiom borrowed from lib/galaxy/utils/json.py)
+import json
+to_json_string = json.dumps
+from_json_string = json.loads
 
 # Download file from specified URL and put into local subdir
 
