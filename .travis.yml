@@ -31,6 +31,9 @@ install:
 # Bootstrap Galaxy instance for tests
   - "bioinf-software-install/install_galaxy.sh --repo https://github.com/galaxyproject/galaxy/ travis"
   - ". travis/galaxy_venv/bin/activate"
+# Update setuptools before installing planemo
+# See https://github.com/galaxyproject/planemo/issues/520
+  - "pip install --upgrade pip setuptools"
 # Install planemo to do the testing
   - "pip install planemo"
 
