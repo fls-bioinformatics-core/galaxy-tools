@@ -13,7 +13,7 @@
 #                         Galaxy instance)
 #
 # List of dependencies
-TOOL_DEPENDENCIES="rnachipintegrator/1.0.0
+TOOL_DEPENDENCIES="rnachipintegrator/1.0.1
  xlsxwriter/0.8.4"
 # Where to find them
 TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.rnachipintegrator
