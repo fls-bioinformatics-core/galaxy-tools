@@ -104,6 +104,8 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+1.0.2.0    - Update to ``RnaChipIntegrator`` version 1.0.2 (fixes bug with
+             zero or blank cutoff)
 1.0.0.0    - Update to use latest ``RnaChipIntegrator`` version 1.0.0.
 0.5.0-0    - Significant update to bring tools in line with
              ``RnaChipIntegrator`` version 0.5.0, including removing the
