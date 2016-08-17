@@ -1,7 +1,7 @@
 #!/bin/bash -e
 #
 # List of dependencies
-TOOL_DEPENDENCIES="rnachipintegrator/0.5.0-alpha.7
+TOOL_DEPENDENCIES="rnachipintegrator/1.0.2
  xlsxwriter/0.8.4"
 # Where to find them
 TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.rnachipintegrator
@@ -122,5 +122,19 @@ mv test_peak_centric.txt test-data/features_per_peak4.out
 mv test_gene_centric_summary.txt test-data/peaks_per_feature4.summary
 mv test_peak_centric_summary.txt test-data/features_per_peak4.summary
 mv test.xlsx test-data/peaks4.xlsx
+#
+# Test #6
+RnaChipIntegrator --name=test \
+		  --cutoff=0 \
+		  --number=4 \
+		  --xlsx \
+		  --summary \
+		  --pad \
+		  test-data/features.txt test-data/peaks.txt
+mv test_gene_centric.txt test-data/peaks_per_feature6.out
+mv test_peak_centric.txt test-data/features_per_peak6.out
+mv test_gene_centric_summary.txt test-data/peaks_per_feature6.summary
+mv test_peak_centric_summary.txt test-data/features_per_peak6.summary
+mv test.xlsx test-data/peaks6.xlsx
 ##
 #
