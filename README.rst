@@ -51,3 +51,27 @@ legacy
 The ``legacy`` subdirectory contains tools and packages which are
 no longer supported, or which are backwardly-incompatible, or where
 development is now happening elsewhere.
+
+local_dependency_installers
+---------------------------
+
+The ``local_dependency_installers`` subdirectory contains shell
+scripts with installer functions for many of the tool dependencies.
+
+For example::
+
+    local_dependency_installers/trimmomatic.sh
+
+contains a function ``install_trimmomatic_0_36``, which will install
+Trimmomatic v0.36 in a Galaxy-style directory structure (i.e.
+``.../trimmomatic/0.36/`` which includes an ``env.sh`` which can be
+sourced to make the installed dependency available.
+
+These functions are used primarily for setting up the test environments
+for the Planemo tests, but could be recycled e.g. for local tool
+installations into Galaxy using an appropriately configured
+``galaxy_packages`` dependency resolver (see e.g.
+https://docs.galaxyproject.org/en/master/admin/dependency_resolvers.html#)
+
+Use e.g. ``grep ^function local_dependency_installers/*.sh`` to list
+the available installer functions.
