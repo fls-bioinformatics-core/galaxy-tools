@@ -146,6 +146,26 @@
       <output name="features_per_peak_summary" ftype="tabular"
 	      file="features_per_peak4.summary" />
     </test>
+    <!--
+	RnaChipIntegrator +name=test +cutoff=0 +promoter_region=-10000,2500 +xlsx +summary features.txt peaks.txt
+    -->
+    <test>
+      <param name="features_in" value="features.txt" ftype="tabular" />
+      <param name="peaks_in" value="peaks.txt" ftype="tabular" />
+      <param name="cutoff" value="" />
+      <param name="compact_format" value="false" />
+      <param name="summary" value="true" />
+      <param name="pad_output" value="true" />
+      <output name="xlsx_out" file="peaks6.xlsx" compare="sim_size" />
+      <output name="peaks_per_feature_out" ftype="tabular"
+	      file="peaks_per_feature6.out" />
+      <output name="features_per_peak_out" ftype="tabular"
+	      file="features_per_peak6.out" />
+      <output name="peaks_per_feature_summary" ftype="tabular"
+	      file="peaks_per_feature6.summary" />
+      <output name="features_per_peak_summary" ftype="tabular"
+	      file="features_per_peak6.summary" />
+    </test>
   </tests>
   <help>
 

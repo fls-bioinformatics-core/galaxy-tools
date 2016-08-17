@@ -17,9 +17,10 @@ fi
 if [ ! -d "$TOP_DIR" ] ; then
     mkdir -p $TOP_DIR
 fi
-# RnaChipIntegrator 1.0.0
-install_rnachipintegrator_1_0_0 $TOP_DIR
 # xlsxwriter 0.8.4
 install_xlsxwriter_0_8_4 $TOP_DIR
+# RnaChipIntegrator 1.0.2
+. $TOP_DIR/xlsxwriter/0.8.4/env.sh # Needs xlsxwriter
+install_rnachipintegrator_1_0_2 $TOP_DIR
 ##
 #
