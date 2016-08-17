@@ -10,10 +10,7 @@ function install_rnachipintegrator_1_0_0() {
     local wd=$(mktemp -d)
     echo Moving to $wd
     pushd $wd
-    wget https://pypi.python.org/packages/source/R/RnaChipIntegrator/RnaChipIntegrator-${version}.tar.gz
-    tar zxf RnaChipIntegrator-${version}.tar.gz
-    cd RnaChipIntegrator-$version
-    pip install --no-use-wheel --install-option "--prefix=$install_dir" .
+    pip install --no-use-wheel --install-option "--prefix=$install_dir"  https://pypi.python.org/packages/source/R/RnaChipIntegrator/RnaChipIntegrator-${version}.tar.gz
     popd
     rm -rf $wd/*
     rmdir $wd
@@ -35,10 +32,7 @@ function install_rnachipintegrator_1_0_2() {
     local wd=$(mktemp -d)
     echo Moving to $wd
     pushd $wd
-    wget https://pypi.python.org/packages/3b/28/a83c8d0503e5af1318c1b0d7cdbdca933a9647220e461d1a8f5800a58de2/RnaChipIntegrator-${version}.tar.gz
-    tar zxf RnaChipIntegrator-${version}.tar.gz
-    cd RnaChipIntegrator-$version
-    pip install --no-use-wheel --install-option "--prefix=$install_dir" .
+    pip install --no-use-wheel --install-option "--prefix=$install_dir" https://pypi.python.org/packages/3b/28/a83c8d0503e5af1318c1b0d7cdbdca933a9647220e461d1a8f5800a58de2/RnaChipIntegrator-${version}.tar.gz
     popd
     rm -rf $wd/*
     rmdir $wd
