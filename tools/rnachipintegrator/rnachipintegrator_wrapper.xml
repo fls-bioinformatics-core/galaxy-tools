@@ -152,7 +152,7 @@
     <test>
       <param name="features_in" value="features.txt" ftype="tabular" />
       <param name="peaks_in" value="peaks.txt" ftype="tabular" />
-      <param name="cutoff" value="0" />
+      <param name="cutoff" value="" />
       <param name="compact_format" value="false" />
       <param name="summary" value="true" />
       <param name="pad_output" value="true" />
