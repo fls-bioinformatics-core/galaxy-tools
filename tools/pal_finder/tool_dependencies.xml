@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<tool_dependency>
+    <package name="pal_finder" version="0.02.04">
+      <install version="1.0">
+	<actions>
+	  <action type="download_by_url">http://sourceforge.net/projects/palfinder/files/pal_finder_v0.02.04.tar.gz</action>
+	  <action type="move_file">
+	    <source>pal_finder_v0.02.04.pl</source>
+	    <destination>$INSTALL_DIR/bin</destination>
+	  </action>
+	  <action type="move_file">
+	    <source>config.txt</source>
+	    <destination>$INSTALL_DIR/data</destination>
+	  </action>
+	  <action type="move_file">
+	    <source>simple.ref</source>
+	    <destination>$INSTALL_DIR/data</destination>
+	  </action>
+	  <action type="set_environment">
+	    <environment_variable name="PATH" action="prepend_to">$INSTALL_DIR/bin</environment_variable>
+	  </action>
+	  <action type="set_environment">
+	    <environment_variable name="PALFINDER_SCRIPT_DIR" action="set_to">$INSTALL_DIR/bin</environment_variable>
+	  </action>
+	  <action type="set_environment">
+	    <environment_variable name="PALFINDER_DATA_DIR" action="set_to">$INSTALL_DIR/data</environment_variable>
+	  </action>
+	</actions>
+      </install>
+      <readme>pal_finder also needs Perl</readme>
+    </package>
+    <package name="perl" version="5.16.3">
+      <install version="1.0">
+        <actions>
+          <!-- install perl -->
+          <action type="download_by_url">http://www.cpan.org/src/5.0/perl-5.16.3.tar.gz</action>
+          <action type="shell_command">./Configure -des -Dprefix=$INSTALL_DIR -Dstartperl='#!/usr/bin/env perl'</action>
+          <action type="make_install" />
+          <action type="set_environment">
+            <environment_variable name="PATH" action="prepend_to">$INSTALL_DIR/bin</environment_variable>
+          </action>
+        </actions>
+      </install>
+      <readme>
+        Perl 5 is a highly capable, feature-rich programming language with over 25 years of
+	development:
+
+        http://www.perl.org/
+      </readme>
+    </package>
+    <package name="primer3_core" version="2.0.0">
+      <install version="1.0">
+	<actions>
+	  <action type="download_by_url">https://sourceforge.net/projects/primer3/files/primer3/2.0.0-alpha/primer3-2.0.0-alpha.tar.gz</action>
+	  <action type="shell_command">make -C src -f Makefile</action>
+	  <action type="move_file">
+	    <source>src/primer3_core</source>
+	    <destination>$INSTALL_DIR/bin</destination>
+	  </action>
+	  <action type="set_environment">
+	    <environment_variable name="PATH" action="prepend_to">$INSTALL_DIR/bin</environment_variable>
+	  </action>
+	</actions>
+      </install>
+      <readme>primer3_core</readme>
+    </package>
+    <package name="biopython" version="1.65">
+      <install version="1.0">
+	<actions>
+	  <action type="shell_command">pip install  --install-option "--prefix=$INSTALL_DIR" https://pypi.python.org/packages/source/b/biopython/biopython-1.65.tar.gz</action>
+	  <action type="set_environment">
+	    <environment_variable name="PYTHONPATH" action="prepend_to">$INSTALL_DIR/lib/python2.7/site-packages</environment_variable>
+	    <environment_variable name="PYTHONPATH" action="prepend_to">$INSTALL_DIR/lib64/python2.7/site-packages</environment_variable>
+	  </action>
+	</actions>
+      </install>
+      <readme>BioPython 1.65</readme>
+    </package>
+    <package name="pandaseq" version="2.8.1">
+      <install version="1.0">
+	<actions>
+	  <action type="download_by_url">https://github.com/neufeld/pandaseq/archive/v2.8.1.tar.gz</action>
+	  <action type="shell_command">./autogen.sh</action>
+	  <action type="shell_command">./configure --prefix=$INSTALL_DIR</action>
+	  <action type="shell_command">make</action>
+	  <action type="shell_command">make install</action>
+	  <action type="set_environment">
+	    <environment_variable name="PATH" action="prepend_to">$INSTALL_DIR/bin</environment_variable>
+	    <environment_variable name="LD_LIBRARY_PATH" action="prepend_to">$INSTALL_DIR/lib</environment_variable>
+	  </action>
+	</actions>
+      </install>
+      <readme>PANDASeq 2.8.1
+
+      PANDASEQ is a program to align Illumina reads, optionally
+      with PCR primers embedded in the sequence, and reconstruct
+      an overlapping sequence.
+
+      https://github.com/neufeld/pandaseq
+      </readme>
+    </package>
+</tool_dependency>

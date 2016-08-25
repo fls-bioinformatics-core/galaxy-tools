@@ -1,0 +1,183 @@
+<tool id="motiffinding_weeder2" name="Weeder2" version="2.0.1">
+  <description>Motif discovery in sequences from coregulated genes of a single species</description>
+  <requirements>
+    <requirement type="package" version="2.0">weeder</requirement>
+  </requirements>
+  <command interpreter="bash">weeder2_wrapper.sh
+  $sequence_file $species_code ${species_code.fields.path}
+  $output_motifs_file $output_matrix_file
+  $strands
+  #if $chipseq.use_chipseq
+     -chipseq -top $chipseq.top
+  #end if
+  #if str( $advanced_options.advanced_options_selector ) == "on"
+     -maxm $advanced_options.n_motifs_report
+     -b $advanced_options.n_motifs_build
+     -sim $advanced_options.sim_threshold
+     -em $advanced_options.em_cycles
+  #end if
+  </command>
+  <inputs>
+    <param name="sequence_file" type="data" format="fasta" label="Input sequence" />
+    <param name="species_code" type="select" label="Species to use for background comparison">
+      <options from_data_table="weeder2">
+      </options>
+    </param>
+    <param name="strands" label="Use both strands of sequence" type="boolean"
+	   truevalue="" falsevalue="-ss" checked="True"
+	   help="If not checked then use -ss option" />
+    <conditional name="chipseq">
+      <param name="use_chipseq" type="boolean"
+	     label="Use the ChIP-seq heuristic"
+	     help="Speeds up the computation (-chipseq)"
+	     truevalue="yes" falsevalue="no" checked="on" />
+      <when value="yes">
+	<param name="top" type="integer" value="100"
+	       label="Number of top input sequences with oligos to scan for"
+	       help="Increase this value to improve the chance of finding motifs enriched only in a subset of your input sequences (-top)" />
+      </when>
+      <when value="no"></when>
+    </conditional>
+    <conditional name="advanced_options">
+      <param name="advanced_options_selector" type="select"
+	     label="Display advanced options">
+	<option value="off">Hide</option>
+	<option value="on">Display</option>
+      </param>
+      <when value="on">
+	<param name="n_motifs_report" type="integer" value="25"
+	       label="Number of discovered motifs to report" help="(-maxm)" />
+	<param name="n_motifs_build" type="integer" value="50"
+	       label="Number of top scoring motifs to build occurrences matrix profiles and outputs for"
+	       help="(-b)" />
+	<param name="sim_threshold" type="float" min="0.0" max="1.0" value="0.95"
+	       label="Similarity threshold for the redundancy filter"
+	       help="Remove motifs that are too similar, with lower values imposing a stricter filter. Must be between 0.0 and 1.0 (-sim)" />
+	<param name="em_cycles" type="integer" min="0" max="100" value="1"
+	       label="Number of expectation maximization (EM) cycles to perform"
+	       help="Number of cycles must be between 0 and 100 (-em)" />
+      </when>
+      <when value="off">
+      </when>
+    </conditional>
+  </inputs>
+  <outputs>
+    <data name="output_motifs_file" format="txt" label="Weeder2 on ${on_string} (motifs)" />
+    <data name="output_matrix_file" format="txt" label="Weeder2 on ${on_string} (matrix)" />
+  </outputs>
+  <tests>
+    <test>
+      <param name="sequence_file" value="weeder_in.fa" ftype="fasta" />
+      <param name="species_code" value="MM" />
+      <output name="output_motifs_file" file="weeder2_motifs.out" lines_diff="2" />
+      <output name="output_matrix_file" file="weeder2_matrix.out" />
+    </test>
+  </tests>
+  <help>
+
+.. class:: infomark
+
+**What it does**
+
+Weeder2 is a program for finding novel motifs (transcription factor binding sites)
+conserved in a set of regulatory regions of related genes.
+
+-------------
+
+.. class:: infomark
+
+**Usage advice**
+
+Guidelines on how to use this tool can be seen in Zambelli et al. 2014 (see link
+below), but the following is a brief guide. Please note that **motifs** are a model
+or matrix that describes a set of sequences that may differ in the base composition.
+**Oligos** are specific sequences found within the input sequences or genomic
+background.
+
+**Input sequence** (in FASTA format) should be short (100-200bp) and be reasonably
+expected to contain an enriched motif(s).  This is not generally an issue with
+transcription factor ChIP-seq derived sequences centred on the summit of binding
+regions that are expected to contain a dominant motif and possibly secondary motifs.
+
+There is **no need to mask sequence for repetitive sequence** as factors may
+legitimately bind repetitive sequence.
+
+**Use both strands of sequence** by default, unless there is a specific reason not
+to do so.
+
+**Species to use for background comparison** should match the genome used to
+generate the **input sequence**. The background genome motif frequencies are
+generated from within the promoter regions of annotated genes and are shown to be a
+good background for both promoter and other regulatory regions. 
+
+**Use the ChIP-seq heuristic** (-chipseq) when there are a large number of
+input sequences (hundreds or thousands). When -chipseq is used Weeder will use
+only oligos from the first 100 sequences to build motifs with which it scans
+all of the input sequences. This speeds up the computational time without too much
+risk of losing important motifs. Even if not strictly necessary it's advisable to
+order input sequences by their significance, e.g. fold enrichment or Pvalue. For
+large data sets (-top) should be set to a number equating at least 10 to 20% of
+input sequences (as recommended by the authors).
+
+**Number of discovered motifs to report** (-maxm) limits the number of reported
+motifs even if there are more than -maxm. **Number of top scoring motifs to build
+occurrences matrix profiles and outputs for** (-b) changes the number of top
+scoring motifs of length 6, 8 and 10 for which the occurrence matrix is built.
+Increasing -b may result in a larger number of reported motifs, but with potentially
+more of low significance and increases the computational time. If increasing -b does
+not result in more motifs in your results it means that the additional motifs are
+filtered out by the redundancy filter or that the maximum number of reported motifs
+set by -maxm has been reached.
+
+**Similarity threshold for the redundancy filter** (-sim) default setting is
+recommended.
+
+**Number of expectation maximization (EM) cycles to perform** (-em) default is
+recommended.  The option is included to help "clean up" the resulting motif matrices.
+In this version the number of EM steps can be increased, which can be useful for
+motifs with highly redundant stretches of sequence.
+
+-------------
+
+.. class:: infomark
+
+**A note on the results**
+
+The resulting matrices are the result of scanning (by default both strands) for
+oligos of length 6, 8 and 8, allowing 1, 2 and 3 substitutions respectively. The
+matrices within the matrix.w2 file can be input into other tools. The recommended
+next step is to use **STAMP** (http://www.benoslab.pitt.edu/stamp/), which displays
+the motifs as logos and identifies matches with libraries of known DNA binding
+motifs, such as TRANSFAC or JASPAR.
+
+-------------
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed by Peter Briggs and Ian Donaldson within the
+Bioinformatics Core Facility at the University of Manchester, and runs the Weeder2
+motif discovery package:
+
+ * Zambelli, F., Pesole, G. and Pavesi, G. 2014. Using Weeder, Pscan, and PscanChIP
+   for the Discovery of Enriched Transcription Factor Binding Site Motifs in
+   Nucleotide Sequences. Current Protocols in Bioinformatics. 47:2.11:2.11.1–2.11.31.
+ * http://onlinelibrary.wiley.com/doi/10.1002/0471250953.bi0211s47/full
+
+This tool is compatible with Weeder 2.0:
+
+ * http://159.149.160.51/modtools/downloads/weeder2.html
+
+Please kindly acknowledge both this Galaxy tool, the Weeder package and the utility
+scripts if you use it in your work.
+  </help>
+  <citations>
+    <!--
+    See https://wiki.galaxyproject.org/Admin/Tools/ToolConfigSyntax#A.3Ccitations.3E_tag_set
+    Can be either DOI or Bibtex
+    Use http://www.bioinformatics.org/texmed/ to convert PubMed to Bibtex
+    -->
+    <citation type="doi">10.1002/0471250953.bi0211s47</citation>
+  </citations>
+</tool>

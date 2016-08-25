@@ -1,0 +1,6 @@
+<tables>
+    <table name="rnachipintegrator_canonical_genes" comment_char="#">
+        <columns>value, dbkey, name, path</columns>
+        <file path="${__HERE__}/test-data/rnachipintegrator_canonical_genes.loc" />
+    </table>
+</tables>

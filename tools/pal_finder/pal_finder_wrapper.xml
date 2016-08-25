@@ -1,0 +1,329 @@
+<tool id="microsat_pal_finder" name="pal_finder" version="0.02.04.4">
+  <description>Find microsatellite repeat elements from sequencing reads and design PCR primers to amplify them</description>
+  <requirements>
+    <requirement type="package" version="5.16.3">perl</requirement>
+    <requirement type="package" version="0.02.04">pal_finder</requirement>
+    <requirement type="package" version="2.0.0">primer3_core</requirement>
+    <requirement type="package" version="1.65">biopython</requirement>
+    <requirement type="package" version="2.8.1">pandaseq</requirement>
+  </requirements>
+  <command interpreter="bash">pal_finder_wrapper.sh
+  #if str( $platform.platform_type ) == "illumina"
+    #set $paired_input_type = $platform.paired_input_type_conditional.paired_input_type
+    #if $paired_input_type == "pair_of_files"
+      "$platform.paired_input_type_conditional.input_fastq_r1"
+      "$platform.paired_input_type_conditional.input_fastq_r2"
+    #else
+      "$platform.paired_input_type_conditional.input_fastq_pair.forward"
+      "$platform.paired_input_type_conditional.input_fastq_pair.reverse"
+    #end if
+  #else
+    --454 "$platform.input_fasta"
+  #end if
+  $output_microsat_summary $output_pal_summary
+  #if $keep_config_file
+    --output_config_file "$output_config_file"
+  #end if
+  --primer-prefix "$primer_prefix"
+  --2merMinReps $min_2mer_repeats
+  --3merMinReps $min_3mer_repeats
+  --4merMinReps $min_4mer_repeats
+  --5merMinReps $min_5mer_repeats
+  --6merMinReps $min_6mer_repeats
+  #if str( $primer.primer_options ) == "custom"
+  --primer-opt-size $primer.primer_opt_size
+  --primer-min-size $primer.primer_min_size
+  --primer-max-size $primer.primer_max_size
+  --primer-min-gc $primer.primer_min_gc
+  --primer-max-gc $primer.primer_max_gc
+  --primer-gc-clamp $primer.primer_gc_clamp
+  --primer-max-end-gc $primer.primer_max_end_gc
+  --primer-min-tm $primer.primer_min_tm
+  --primer-max-tm $primer.primer_max_tm
+  --primer-opt-tm $primer.primer_opt_tm
+  --primer-pair-max-diff-tm $primer.primer_pair_max_diff_tm
+  #end if
+  #if str( $mispriming.mispriming_options ) == "custom"
+  --primer-mispriming-library $mispriming.mispriming_library
+  #end if
+  #if str( $platform.platform_type ) == "illumina"
+    #if $platform.filters
+      #for $filter in str($platform.filters).split(',')
+        $filter
+        --filter_microsats "$output_filtered_microsats"
+      #end for
+    #end if
+    #if str( $platform.assembly ) == '-assembly'
+      $platform.assembly "$output_assembly"
+    #end if
+  #end if
+  </command>
+  <inputs>
+    <param name="primer_prefix" type="text" value="test" size="25" label="Primer prefix" help="This prefix will be added to the beginning of all primer names" />
+    <conditional name="platform">
+      <param name="platform_type" type="select" label="Sequencing platform used to generate data" help="Currently pal_finder only handles Illumina paired-end reads and 454 single-end reads" >
+	<option value="illumina" selected="true">Illumina</option>
+	<option value="454">454</option>
+      </param>
+      <when value="illumina">
+	<conditional name="paired_input_type_conditional">
+          <param name="paired_input_type" type="select" label="Input Type">
+            <option value="pair_of_files" selected="true">Pair of datasets</option>
+            <option value="collection">Dataset collection pair</option>
+	  </param>
+	  <when value="pair_of_files">
+	    <param name="input_fastq_r1" type="data" format="fastqsanger"
+		   label="Illumina fastq file (read 1)" />
+	    <param name="input_fastq_r2" type="data" format="fastqsanger"
+		   label="Illumina fastq file (read 2)" />
+	  </when>
+	  <when value="collection">
+	    <param name="input_fastq_pair" format="fastqsanger"
+		   type="data_collection" collection_type="paired"
+		   label="Select FASTQ dataset collection with R1/R2 pair" />
+	  </when>
+	</conditional>
+	<param name="filters" type="select" display="checkboxes"
+	       multiple="True" label="Filters to apply to the pal_finder results"
+	       help="Apply none, one or more filters to refine results">
+          <option value="-primers" selected="True">Only include loci with designed primers</option>
+          <option value="-occurrences" selected="True">Exclude loci where the primer sequences occur more than once in the reads</option>
+          <option value="-rankmotifs" selected="True">Only include loci with 'perfect' motifs, and rank by motif size</option>
+        </param>
+	<param name="assembly" type="boolean"
+	       checked="True" truevalue="-assembly" falsevalue=""
+               label="Use PANDAseq to assemble paired-end reads and confirm primer sequences are present in high-quality assembly" />
+      </when>
+      <when value="454">
+	<param name="input_fasta" type="data" format="fasta" label="454 fasta file with raw reads" />
+      </when>
+    </conditional>
+    <param name="min_2mer_repeats" type="integer" value="6" label="Minimum number of 2-mer repeat units to detect" help="Set to zero to ignore repeats of this n-mer unit" />
+    <param name="min_3mer_repeats" type="integer" value="0" label="Minimum number of 3-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
+    <param name="min_4mer_repeats" type="integer" value="0" label="Minimum number of 4-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
+    <param name="min_5mer_repeats" type="integer" value="0" label="Minimum number of 5-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
+    <param name="min_6mer_repeats" type="integer" value="0" label="Minimum number of 6-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
+    <conditional name="mispriming">
+      <param name="mispriming_options" type="select" label="Mispriming library to use" help="Specify file of nucleotide sequences to avoid amplifying (PRIMER_MISPRIMING_LIBRARY)">
+	<option value="default">Default from pal_finder</option>
+	<option value="custom">Custom sequences from history</option>
+      </param>
+      <when value="default">
+      </when>
+      <when value="custom">
+	<param name="mispriming_library" type="data" format="fasta" label="Select mispriming library from history" help="Fasta file containing sequences to avoid amplifying" />
+      </when>
+    </conditional>
+    <conditional name="primer">
+      <param name="primer_options" type="select" label="Primer settings to use" help="Advanced users can customise the settings for primer3 for more control">
+	<option value="default">Defaults for pal_finder</option>
+	<option value="custom">Custom</option>
+      </param>
+      <when value="custom">
+	<param name="primer_opt_size" type="integer" value="20"
+	       label="Optimum length (in bases) of a primer (PRIMER_OPT_SIZE)"
+	       help="Primer3 will attempt to pick primers close to this length" />
+	<param name="primer_min_size" type="integer" value="18"
+	       label="Minimum acceptable length (in bases) of a primer (PRIMER_MIN_SIZE)"
+	       help="Must be greater than 0 and less than or equal to PRIMER_MAX_SIZE" />
+	<param name="primer_max_size" type="integer" value="30"
+	       label="Maximum acceptable length (in bases) of a primer (PRIMER_MAX_SIZE)"
+	       help="Currently this parameter cannot be larger than 35. This limit is governed by maximum oligo size for which primer3's melting-temperature is valid" />
+	<param name="primer_min_gc" type="float" value="30.0"
+	       label="Minimum allowable percentage of Gs and Cs in any primer (PRIMER_MIN_GC)" />
+	<param name="primer_max_gc" type="float" value="80.0"
+	       label="Maximum allowable percentage of Gs and Cs in any primer (PRIMER_MAX_GC)" />
+	<param name="primer_gc_clamp" type="integer" value="2"
+	       label="Specify number of consecutive Gs and Cs at 3' end of both the left and right primer (PRIMER_GC_CLAMP)" />
+	<param name="primer_max_end_gc" type="integer" value="5"
+	       label="Maximum number of Gs or Cs allowed in last five 3' bases of a left or right primer (PRIMER_MAX_END_GC)" />
+	<param name="primer_min_tm" type="float" value="58.0"
+	       label="Minimum acceptable melting temperature for a primer oligo (PRIMER_MIN_TM)"
+	       help="Temperature should be in degrees Celsius" />
+	<param name="primer_max_tm" type="float" value="65.0"
+	       label="Maximum acceptable melting temperature for a primer oligo (PRIMER_MAX_TM)"
+	       help="Temperature should be in degrees Celsius" />
+	<param name="primer_opt_tm" type="float" value="62.0"
+	       label="Optimum melting temperature for a primer (PRIMER_OPT_TM)"
+	       help="Temperature should be in degrees Celsius" />
+	<param name="primer_pair_max_diff_tm" type="float" value="2.0"
+	       label="Maximum acceptable difference between melting temperatures of left and right primers (PRIMER_PAIR_MAX_DIFF_TM)"
+	       help="Temperature should be in degrees Celsius" />
+      </when>
+    </conditional>
+    <param name="keep_config_file" type="boolean" truevalue="True" falsevalue="False"
+	   label="Output the config file to the history"
+	   help="Can be used to run pal_finder outside of Galaxy" />
+  </inputs>
+  <outputs>
+    <data name="output_pal_summary" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix}: all microsatellites (full details)" />
+    <data name="output_filtered_microsats" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix}: filtered microsatellites (full details)">
+      <filter>platform['platform_type'] == 'illumina' and platform['filters'] is not None</filter>
+    </data>
+    <data name="output_microsat_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix}: summary of microsatellite types" />
+    <data name="output_assembly" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix}: assembly">
+      <filter>platform['assembly'] is True</filter>
+    </data>
+    <data name="output_config_file" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix}: config file">
+      <filter>keep_config_file is True</filter>
+    </data>
+  </outputs>
+  <tests>
+    <test>
+      <!-- Test with Illumina input -->
+      <param name="platform_type" value="illumina" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats.out" />
+      <output name="output_assembly" file="illuminaPE_assembly_after_filters.out" />
+    </test>
+    <test>
+      <!-- Test with Illumina input as dataset pair -->
+      <param name="platform_type" value="illumina" />
+      <param name="paired_input_type" value="collection" />
+      <param name="input_fastq_pair">
+	<collection type="paired">
+	  <element name="forward" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+	  <element name="reverse" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+	</collection>
+      </param>
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats.out" />
+      <output name="output_assembly" file="illuminaPE_assembly_after_filters.out" />
+    </test>
+    <test>
+      <!-- Test with Illumina input filter to loci with PandaSEQ assembly
+	   ('-assembly' option) -->
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_assembly" file="illuminaPE_assembly.out" />
+    </test>
+    <test>
+      <!-- Test with Illumina input filter to loci with primers
+	   ('-primers' option) -->
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="-primers" />
+      <param name="assembly" value="false" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats_primers.out" />
+    </test>
+    <test>
+      <!-- Test with Illumina input filter to loci which appear only once
+	   ('-occurrences' option) -->
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="-occurrences" />
+      <param name="assembly" value="false" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats_occurrences.out" />
+    </test>
+    <test>
+      <!-- Test with Illumina input filter and rank loci with perfect motifs
+	   ('-rankmotifs' option) -->
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="-rankmotifs" />
+      <param name="assembly" value="false" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
+      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats_rankmotifs.out" />
+    </test>
+    <test>
+      <!-- Test with 454 input -->
+      <param name="platform_type" value="454" />
+      <param name="input_fasta" value="454_in.fa" ftype="fasta" />
+      <output name="output_microsat_summary" file="454_microsat_types.out" />
+      <output name="output_pal_summary" file="454_microsats.out" />
+    </test>
+  </tests>
+  <help>
+.. class:: infomark
+
+**What it does**
+
+This tool runs the pal_finder program, which finds microsatellite repeat elements
+directly from raw 454 or Illumina paired-end sequencing reads. It then designs PCR
+primers to amplify these repeat loci (Potentially Amplifiable Loci: PAL).
+
+Optionally for Illumina data, one or more filters can be applied to the output from
+pal_finder to:
+
+ * Only include loci with designed primers
+ * Exclude loci where the primer sequences occur more than once in the reads
+ * Only include loci with 'perfect' motifs (and rank by motif size,largest to
+   smallest)
+ * Use PANDAseq to assemble paired-end reads and confirm primer sequences are
+   present in high-quality assembly
+
+Pal_finder runs the primer3_core program; information on the settings used in
+primer3_core can be found in the Primer3 manual at
+http://primer3.sourceforge.net/primer3_manual.htm
+
+-------------
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed by Peter Briggs within the Bioinformatics Core
+Facility at the University of Manchester. It runs the pal_finder package which can be
+obtained from http://sourceforge.net/projects/palfinder/:
+
+ * PLoS One. 2012; 7(2): e30953 "Rapid Microsatellite Identification from Illumina Paired-End
+   Genomic Sequencing in Two Birds and a Snake" Todd A. Castoe, Alexander W. Poole, A. P.
+   Jason de Koning, Kenneth L. Jones, Diana F. Tomback, Sara J. Oyler-McCance, Jennifer A.
+   Fike, Stacey L. Lance, Jeffrey W. Streicher, Eric N. Smith, and David D. Pollock
+
+The paper is available at http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3279355/
+
+This tool is compatible with pal_finder version 0.02.04, which in turn runs the
+primer3_core program (version 2.0.0-alpha is required, available from
+http://primer3.sourceforge.net/releases.php):
+
+ * Steve Rozen and Helen J. Skaletsky (2000) "Primer3 on the WWW for general users and for
+   biologist programmers". In: Krawetz S, Misener S (eds) Bioinformatics Methods and
+   Protocols: Methods in Molecular Biology. Humana Press, Totowa, NJ, pp 365-386
+
+The paper is available at
+http://purl.com/STEVEROZEN/papers/rozen-and-skaletsky-2000-primer3.pdf
+
+The filtering and assembly of the pal_finder output for Illumina data is performed
+using a Python utility written by Graeme Fox at the University of Manchester, and which
+is included with this tool; this utility uses the BioPython and PANDAseq packages.
+
+Please kindly acknowledge both this Galaxy tool, the pal_finder and primer3 packages, and
+the utility script and its dependencies if you use it in your work.
+  </help>
+  <citations>
+    <!--
+    See https://wiki.galaxyproject.org/Admin/Tools/ToolConfigSyntax#A.3Ccitations.3E_tag_set
+    Can be either DOI or Bibtex
+    Use http://www.bioinformatics.org/texmed/ to convert PubMed to Bibtex
+    -->
+    <citation type="doi">10.1371/journal.pone.0030953</citation>
+    <citation type="bibtex">@Article{pmid10547847,
+    Author="Rozen, S. and Skaletsky, H. ",
+    Title="{{P}rimer3 on the {W}{W}{W} for general users and for biologist programmers}",
+    Journal="Methods Mol. Biol.",
+    Year="2000",
+    Volume="132",
+    Pages="365--386",
+    URL="{http://purl.com/STEVEROZEN/papers/rozen-and-skaletsky-2000-primer3.pdf}"
+    }</citation>
+    <citation type="doi">10.1093/bioinformatics/btp163</citation>
+    <citation type="doi">10.1186/1471-2105-13-31</citation>
+  </citations>
+</tool>

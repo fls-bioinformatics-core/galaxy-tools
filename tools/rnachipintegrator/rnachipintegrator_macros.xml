@@ -1,0 +1,68 @@
+<macros>
+  <token name="@VERSION@">1.0.2</token>
+  <xml name="requirements">
+    <requirements>
+      <requirement type="package" version="0.8.4">python_xlsxwriter</requirement>
+      <requirement type="package" version="1.0.2">rnachipintegrator</requirement>
+    </requirements>
+  </xml>
+  <xml name="version_command">
+        <version_command>RnaChipIntegrator --version</version_command>
+  </xml>
+  <xml name="analysis_options">
+    <param name="cutoff" type="integer" value="1000000" optional="true"
+	   label="Maximum distance between a gene/peak pair
+		  before it is omitted from the analyses (bp)"
+	   help="Leave blank for no limit (--cutoff)" />
+    <param name="number" type="integer" value="4" optional="true"
+	   label="Maximum number of gene/peak pairs to report from
+		  the analyses"
+	   help="Leave blank for no limit (--number)" />
+    <param name="promoter_start" type="integer" value="-1000" optional="true"
+	   label="Start of promoter region with respect to gene TSS" />
+    <param name="promoter_end" type="integer" value="100" optional="true"
+	   label="End of promoter region with respect to gene TSS" />
+    <param name="edge" type="select"
+	   label="Gene 'edges' to consider in distance calculations"
+	   help="(--edge)">
+      <option value="tss" selected="true">TSS only</option>
+      <option value="both">Nearest of TSS or TES</option>
+    </param>
+  </xml>
+  <xml name="output_options">
+    <conditional name="output">
+      <param name="compact_format" type="boolean" checked="true"
+	     truevalue="true" falsevalue="false"
+	     label="Use 'compact' output format"
+	     help="Puts all hits for each peak or gene on a single line
+		   (--compact)" />
+      <when value="true">
+      </when>
+      <when value="false">
+	<param name="pad_output" type="boolean" checked="false"
+	       truevalue="--pad" falsevalue=""
+	       label="Output same number of lines for each peak"
+	       help="Add blank lines in output for peaks with fewer than
+		     maximum number of hits (--pad)" />
+	<param name="summary" type="boolean" checked="false"
+	       truevalue="true" falsevalue="false"
+	       label="Output additional 'summary' datasets"
+	       help="Summaries contain only the top hits for each peak
+		     or feature (--summary)" />
+      </when>
+    </conditional>
+  </xml>
+  <xml name="citations">
+    <citations>
+      <citation type="bibtex">@misc{Briggs2016,
+  author = {Briggs PJ, Donaldson IJ, Zeef LAH},
+  title = {RnaChipIntegrator},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  year = {2016},
+  howpublished = {\url{https://github.com/fls-bioinformatics-core/RnaChipIntegrator}},
+  version = {1.0.0}
+}</citation>
+    </citations>
+  </xml>
+</macros>

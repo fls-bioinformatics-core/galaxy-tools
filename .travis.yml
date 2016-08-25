@@ -2,8 +2,19 @@
 language: python
 python:
   - "2.7"
+# Attempt to split the tests into separate
+# environments
+env:
+  - TOOL=trimmomatic
+  - TOOL=pal_finder
+  - TOOL=weeder2
+  - TOOL=rnachipintegrator
+  - TOOL=macs21
+  - TOOL=ceas
 
 before_install:
+# Update the list of available packages
+  - sudo apt-get -qq update
 # Java needed for Trimmomatic
   - "sudo apt-get install java-common"
 # Dependencies needed for Galaxy installer
@@ -20,22 +31,15 @@ install:
 # Bootstrap Galaxy instance for tests
   - "bioinf-software-install/install_galaxy.sh --repo https://github.com/galaxyproject/galaxy/ travis"
   - ". travis/galaxy_venv/bin/activate"
+# Update setuptools before installing planemo
+# See https://github.com/galaxyproject/planemo/issues/520
+  - "pip install --upgrade pip setuptools"
 # Install planemo to do the testing
   - "pip install planemo"
 
 script:
 # Use the Galaxy virtualenv
   - ". travis/galaxy_venv/bin/activate"
-# Trimmomatic
-  - "trimmomatic/run_planemo_tests.sh --galaxy_root travis/galaxy"
-# Palfinder
-  - "pal_finder/run_planemo_tests.sh --galaxy_root travis/galaxy"
-# Weeder2
-  - "weeder2/run_planemo_tests.sh --galaxy_root travis/galaxy"
-# RnaChipIntegrator
-  - "rnachipintegrator/run_planemo_tests.sh --galaxy_root travis/galaxy"
-# Macs21
-  - "macs21/run_planemo_tests.sh --galaxy_root travis/galaxy"
-# CEAS
-  - "ceas/run_planemo_tests.sh --galaxy_root travis/galaxy"
+# Run tool tests
+  - "tools/$TOOL/run_planemo_tests.sh --galaxy_root travis/galaxy"
 

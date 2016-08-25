@@ -1,0 +1,202 @@
+<tool id="rnachipintegrator_canonical_genes" name="Analyse canonical genes against 'peak' data" version="@VERSION@.0">
+  <description>using RnaChipIntegrator</description>
+  <macros>
+    <import>rnachipintegrator_macros.xml</import>
+  </macros>
+  <expand macro="requirements" />
+  <expand macro="version_command" />
+  <command interpreter="bash"><![CDATA[
+  rnachipintegrator_wrapper.sh
+  #if $peaks_in.metadata.chromCol
+    --peak_cols=${peaks_in.metadata.chromCol},${peaks_in.metadata.startCol},${peaks_in.metadata.endCol}
+  #end if
+  #if str( $cutoff ) != ""
+    --cutoff=$cutoff
+  #else
+    --cutoff=0
+  #end if
+  #if str( $number ) != ""
+    --number=$number
+  #end if
+  --promoter_region=$promoter_start,$promoter_end
+  --edge=$edge
+  --xlsx_file "$xlsx_out"
+  --output_files "$peaks_per_feature_out" "$features_per_peak_out"
+  #if $output.compact_format
+    --compact
+  #else
+    #if $output.summary
+      --summary_files "$peaks_per_feature_summary" "$features_per_peak_summary"
+    #end if
+    ${output.pad_output}
+  #end if
+  "${canonical_genes.fields.path}" "$peaks_in"
+  ]]></command>
+  <inputs>
+    <param format="tabular" name="peaks_in" type="data" label="Peaks" />
+    <param name="canonical_genes" type="select" label="Canonical genes to analyse peaks against">
+      <options from_data_table="rnachipintegrator_canonical_genes">
+      </options>
+    </param>
+    <expand macro="analysis_options" />
+    <expand macro="output_options" />
+  </inputs>
+  <outputs>
+    <!-- Always produce XLS output -->
+    <data format="xlsx" name="xlsx_out"
+	  label="All RnaChipIntegrator analyses: ${canonical_genes.fields.name} vs ${peaks_in.name} (Excel spreadsheet)" />
+    <data format="tabular" name="peaks_per_feature_out"
+	  label="Nearest peaks to each gene: ${canonical_genes.fields.name} vs ${peaks_in.name}" />
+    <data format="tabular" name="features_per_peak_out"
+	  label="Nearest genes to each peak: ${canonical_genes.fields.name} vs ${peaks_in.name}" />
+    <data format="tabular" name="peaks_per_feature_summary"
+	  label="Nearest peaks to each gene (summary): ${canonical_genes.fields.name} vs ${peaks_in.name}" >
+      <filter>output['compact_format'] is False</filter>
+      <filter>output['summary'] is True</filter>
+    </data>
+    <data format="tabular" name="features_per_peak_summary"
+	  label="Nearest genes to each peak (summary): ${canonical_genes.fields.name} vs ${peaks_in.name}" >
+      <filter>output['compact_format'] is False</filter>
+      <filter>output['summary'] is True</filter>
+    </data>
+  </outputs>
+  <tests>
+    <!--
+	RnaChipIntegrator +name=mm9 +cutoff=50000 +xlsx +summary mm9_canonical_genes.tsv mm9_summits.txt
+    -->
+    <test>
+      <param name="peaks_in" value="mm9_summits.txt" ftype="tabular" />
+      <param name="canonical_genes" value="mm9_test" />
+      <param name="cutoff" value="50000" />
+      <output name="xlsx_out" file="mm9_summits.xlsx" compare="sim_size" />
+      <output name="peaks_per_feature_out" ftype="tabular"
+	      file="mm9_summits_per_feature.out" />
+      <output name="features_per_peak_out" ftype="tabular"
+	      file="mm9_features_per_summit.out" />
+    </test>
+    <!--
+	RnaChipIntegrator +name=mm9 +cutoff=50000 +xlsx +compact mm9_canonical_genes.tsv mm9_peaks.txt
+    -->
+    <test>
+      <param name="peaks_in" value="mm9_peaks.txt" ftype="tabular" />
+      <param name="canonical_genes" value="mm9_test" />
+      <param name="cutoff" value="50000" />
+      <output name="xlsx_out" file="mm9_peaks1.xlsx" compare="sim_size" />
+      <output name="peaks_per_feature_out" ftype="tabular"
+	      file="mm9_peaks_per_feature1.out" />
+      <output name="features_per_peak_out" ftype="tabular"
+	      file="mm9_features_per_peak1.out" />
+    </test>
+    <!--
+	RnaChipIntegrator +name=mm9 +cutoff=50000 +xlsx +summary +pad mm9_canonical_genes.tsv mm9_peaks.txt
+    -->
+    <test>
+      <param name="peaks_in" value="mm9_peaks.txt" ftype="tabular" />
+      <param name="canonical_genes" value="mm9_test" />
+      <param name="cutoff" value="50000" />
+      <param name="compact_format" value="false" />
+      <param name="summary" value="true" />
+      <param name="pad_output" value="true" />
+      <output name="xlsx_out" file="mm9_peaks3.xlsx" compare="sim_size" />
+      <output name="peaks_per_feature_out" ftype="tabular"
+	      file="mm9_peaks_per_feature3.out" />
+      <output name="features_per_peak_out" ftype="tabular"
+	      file="mm9_features_per_peak3.out" />
+      <output name="peaks_per_feature_summary" ftype="tabular"
+	      file="mm9_peaks_per_feature3.summary" />
+      <output name="features_per_peak_summary" ftype="tabular"
+	      file="mm9_features_per_peak3.summary" />
+    </test>
+  </tests>
+  <help>
+
+.. class:: infomark
+
+**What it does**
+
+Performs integrated analyses of a set of peaks (e.g. ChIP data) against a
+list of "canonical genes" for a specific organism and genome build,
+identifying the nearest peaks to each canonical gene (and vice versa).
+
+RnaChipIntegrator can be obtained from
+http://fls-bioinformatics-core.github.com/RnaChipIntegrator/
+
+-------------
+
+.. class:: infomark
+
+**Input**
+
+The peak data must be in a tabular file with at least 3 columns of data
+for each peak (one peak per line):
+
+====== ========== =================================
+Column Name       Description
+====== ========== =================================
+     1 chr        Chromosome name
+     2 start      Start position of the peak
+     3 end        End position of the peak
+====== ========== =================================
+
+-------------
+
+.. class:: infomark
+
+**Outputs**
+
+The key outputs from the tool are two lists compromising the nearest
+peaks for each gene, and the nearest gene for each peak (one
+dataset for each list).
+
+There are two formats for reporting: "compact" and "full":
+
+ * **Compact output** reports all the hits for each peak or gene on
+   a single line of output;
+ * **Full output** reports each peak/gene pair on a separate line
+   (i.e. a multi-line output format).
+
+In "full" output mode, additional options are available:
+
+ * The output files can be "padded" with extra (empty) lines to ensure
+   that there are always the same number of lines for each peak or
+   gene, if fewer than the requested number of hits are found.
+ * "Summary" datasets can also be requested, which include just the
+   nearest peak reported for each gene (and vice versa).
+
+In either mode these data will also be output in a single MS Excel file,
+which contains one sheet per result set.
+
+.. class:: warning
+
+Using "compact" output with the number of hits limited to more than 4
+peak/gene pairs (or with no limit at all) can result in a large number
+of columns in the output files, which in some versions of Galaxy will
+not be properly displayed. However the data files themselves should be
+okay.
+
+-------------
+
+.. class:: informark
+
+**More information**
+
+It is recommended that you refer to the ``RnaChipIntegrator``
+documentation for information on the contents of each output file:
+
+* http://rnachipintegrator.readthedocs.org/en/latest/
+
+-------------
+
+.. class:: infomark
+
+**Credits**
+
+This Galaxy tool has been developed within the Bioinformatics Core Facility at the
+University of Manchester. It runs the RnaChipIntegrator package which has also been
+developed by this group, and is documented at
+https://pypi.python.org/pypi/RnaChipIntegrator/
+
+Please kindly acknowledge the Bioinformatics Core Facility if you use this tool.
+  </help>
+  <expand macro="citations" />
+</tool>

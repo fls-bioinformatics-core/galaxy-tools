@@ -1,0 +1,17 @@
+categories:
+- Sequence Analysis
+description: Analyse 'gene' and 'peak' data to identify nearest genes to peaks
+   (and vice versa)
+long_description: |
+   Perform integrated analyses of 'gene' data (a set of genes or genomic
+   features, for example gene expression data or canonical gene lists) with
+   'peak' data (a set of regions, for example ChIP peaks) to identify the
+   nearest genes or features to each peak, and vice versa.
+
+   The program was originally written specifically for ChIP-Seq and RNA-Seq
+   data but works equally well for ChIP-chip and microarray expression data,
+   and can also be used to integrate any set of genomic features (e.g.
+   canonical genes, CpG islands) with expression data.
+name: rnachipintegrator
+owner: pjbriggs
+remote_repository_url: https://github.com/fls-bioinformatics-core/galaxy-tools/tree/master/rnachipintegrator
