@@ -24,8 +24,8 @@ function install_trimmomatic_0_36() {
 #!/bin/sh
 # Source this to setup trimmomatic/0.36
 echo Setting up Trimmomatic 0.36
-export TRIMMOMATIC_DIR=$install_dir
-export TRIMMOMATIC_ADAPTERS_DIR=$install_dir/adapters
+export TRIMMOMATIC_JAR_PATH=$install_dir
+export TRIMMOMATIC_ADAPTERS_PATH=$install_dir/adapters
 #
 EOF
 }
