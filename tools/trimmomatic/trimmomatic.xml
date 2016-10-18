@@ -9,7 +9,7 @@
   <stdio>
     <exit_code range="1:" />
   </stdio>
-  <command interpreter="bash"><![CDATA[
+  <command><![CDATA[
   @CONDA_TRIMMOMATIC_JAR_PATH@ &&
   @CONDA_TRIMMOMATIC_ADAPTERS_PATH@ &&
   trimmomatic.sh
