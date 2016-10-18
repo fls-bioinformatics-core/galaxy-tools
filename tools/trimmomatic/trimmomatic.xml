@@ -12,9 +12,7 @@
   <command><![CDATA[
   @CONDA_TRIMMOMATIC_JAR_PATH@ &&
   @CONDA_TRIMMOMATIC_ADAPTERS_PATH@ &&
-  trimmomatic.sh
-  -mx8G
-  -jar \$TRIMMOMATIC_JAR_PATH/trimmomatic-0.36.jar
+  java -mx8G -jar \$TRIMMOMATIC_JAR_PATH/trimmomatic-0.36.jar
   #if $paired_end.is_paired_end
     PE -threads \${GALAXY_SLOTS:-6} -phred33
     #set $paired_input_type = $paired_end.paired_input_type_conditional.paired_input_type
@@ -65,6 +63,8 @@
       MAXINFO:$op.operation.target_length:$op.operation.strictness
     #end if
   #end for
+  2>&1 | tee trimmomatic.log &&
+  if [ -z "\$(tail -1 trimmomatic.log | grep "Completed successfully")" ]; then echo "Trimmomatic did not finish successfully" >&2 ; exit 1 ; fi
   ]]></command>
   <inputs>
     <conditional name="paired_end">
