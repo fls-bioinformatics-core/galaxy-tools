@@ -29,7 +29,11 @@
   #end if
   ## ILLUMINACLIP option
   #if $illuminaclip.do_illuminaclip
-    ILLUMINACLIP:\$TRIMMOMATIC_ADAPTERS_DIR/$illuminaclip.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
+    #if $paired_end.is_paired_end
+      ILLUMINACLIP:\$TRIMMOMATIC_ADAPTERS_DIR/$illuminaclip.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold:$illuminaclip.min_adapter_len:$illuminaclip.keep_both_reads
+    #else
+      ILLUMINACLIP:\$TRIMMOMATIC_ADAPTERS_DIR/$illuminaclip.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
+    #end if
   #end if
   ## Other operations
   #for $op in $operations
@@ -63,7 +67,7 @@
   ]]></command>
   <inputs>
     <conditional name="paired_end">
-    <param name="is_paired_end" type="boolean" label="Paired end data?" truevalue="yes" falsevalue="no" checked="on" />
+    <param name="is_paired_end" type="boolean" label="Paired end data?" truevalue="yes" falsevalue="no" checked="true" />
     <when value="no">
       <param name="fastq_in" type="data" format="fastqsanger" label="Input FASTQ file" />
     </when>
@@ -88,7 +92,7 @@
     </when>
     </conditional>
     <conditional name="illuminaclip">
-    <param name="do_illuminaclip" type="boolean" label="Perform initial ILLUMINACLIP step?" help="Cut adapter and other illumina-specific sequences from the read" truevalue="yes" falsevalue="no" checked="off" />
+    <param name="do_illuminaclip" type="boolean" label="Perform initial ILLUMINACLIP step?" help="Cut adapter and other illumina-specific sequences from the read" truevalue="yes" falsevalue="no" checked="false" />
     <when value="yes">
       <param name="adapter_fasta" type="select" label="Adapter sequences to use">
 	<option value="TruSeq2-SE.fa">TruSeq2 (single-ended, for Illumina GAII)</option>
@@ -101,6 +105,8 @@
       <param name="seed_mismatches" type="integer" label="Maximum mismatch count which will still allow a full match to be performed" value="2" />
       <param name="palindrome_clip_threshold" type="integer" label="How accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment" value="30" />
       <param name="simple_clip_threshold" type="integer" label="How accurate the match between any adapter etc. sequence must be against a read" value="10" />
+      <param name="min_adapter_len" type="integer" label="Minimum length of adapter that needs to be detected (PE specific/palindrome mode)" value="2" />
+      <param name="keep_both_reads" type="boolean" label="Always keep both reads (PE specific/palindrome mode)?" help="After read-though has been detected by palindrome mode, and the adapter sequence removed, the reverse read contains the same sequence information as the forward read, albeit in reverse complement. For this reason, the default behaviour is to entirely drop the reverse read. By specifying „true‟ for this parameter, the reverse read will also be retained, which may be useful e.g. if the downstream tools cannot handle a combination of paired and unpaired reads." truevalue="true" falsevalue="false" checked="true" />
     </when>
     <when value="no" /> <!-- empty clause to satisfy planemo lint -->
     </conditional>
@@ -184,7 +190,7 @@
       <param name="is_paired_end" value="no" />
       <param name="fastq_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
       <param name="operations_0|operation|name" value="SLIDINGWINDOW" />
-      <!-- 
+      <!--
       **NB** outputs have to be specified in order that they appear in the
       tool (which is the order they will be written to the history) - the
       test framework seems to use the order and ignores the "name" attribute
@@ -197,7 +203,7 @@
       <param name="fastq_r1_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
       <param name="fastq_r2_in" value="Illumina_SG_R2.fastq" ftype="fastqsanger" />
       <param name="operations_0|operation|name" value="SLIDINGWINDOW" />
-      <!-- 
+      <!--
       **NB** outputs have to be specified in order that they appear in the
       tool (which is the order they will be written to the history) - the
       test framework seems to use the order and ignores the "name" attribute
@@ -213,7 +219,7 @@
       <param name="fastq_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
       <param name="operations_0|operation|name" value="CROP" />
       <param name="operations_0|operation|crop" value="10" />
-      <!-- 
+      <!--
       **NB** outputs have to be specified in order that they appear in the
       tool (which is the order they will be written to the history) - the
       test framework seems to use the order and ignores the "name" attribute
@@ -277,7 +283,7 @@ This tool allows the following trimming steps to be performed:
  * **CROP:** Cut the read to a specified length
  * **HEADCROP:** Cut the specified number of bases from the start of the read
  * **AVGQUAL:** Drop the read if the average quality is below a specified value
- * **MAXINFO:** Trim reads adaptively, balancing read length and error rate to 
+ * **MAXINFO:** Trim reads adaptively, balancing read length and error rate to
    maximise the value of each read
 
 If ILLUMINACLIP is requested then it is always performed first; subsequent options
@@ -334,7 +340,7 @@ within Bjorn Usadel's group at RWTH Aachen university.
 
 Trimmomatic website (including documentation):
 
- * http://www.usadellab.org/cms/index.php?page=trimmomatic 
+ * http://www.usadellab.org/cms/index.php?page=trimmomatic
 
 The reference for Trimmomatic is:
 
