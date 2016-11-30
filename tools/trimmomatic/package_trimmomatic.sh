@@ -11,7 +11,7 @@ fi
 tar cvzf $TGZ \
     README.rst \
     trimmomatic.xml \
-    trimmomatic.sh \
+    trimmomatic_macros.xml \
     tool_dependencies.xml \
     test-data
 if [ -f $TGZ ] ; then
