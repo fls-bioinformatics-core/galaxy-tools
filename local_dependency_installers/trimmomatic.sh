@@ -14,7 +14,7 @@ function install_trimmomatic_0_36() {
     pushd $wd
     wget -q http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.36.zip
     unzip -qq Trimmomatic-0.36.zip
-    mv Trimmomatic-0.36/trimmomatic-0.36.jar $install_dir/
+    mv Trimmomatic-0.36/trimmomatic-0.36.jar $install_dir/trimmomatic.jar
     mv Trimmomatic-0.36/adapters/ $install_dir/
     popd
     rm -rf $wd/*

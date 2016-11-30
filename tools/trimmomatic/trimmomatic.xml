@@ -12,7 +12,7 @@
   <command><![CDATA[
   @CONDA_TRIMMOMATIC_JAR_PATH@ &&
   @CONDA_TRIMMOMATIC_ADAPTERS_PATH@ &&
-  java -mx8G -jar \$TRIMMOMATIC_JAR_PATH/trimmomatic-0.36.jar
+  java -mx8G -jar \$TRIMMOMATIC_JAR_PATH/trimmomatic.jar
   #if $paired_end.is_paired_end
     PE -threads \${GALAXY_SLOTS:-6} -phred33
     #set $paired_input_type = $paired_end.paired_input_type_conditional.paired_input_type

@@ -4,7 +4,7 @@
       <install version="1.0">
 	<actions>
 	  <action type="download_by_url">http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.36.zip</action>
-	  <action type="move_file">
+	  <action type="move_file" rename_to="trimmomatic.jar">
 	    <source>trimmomatic-0.36.jar</source>
 	    <destination>$INSTALL_DIR</destination>
 	  </action>
