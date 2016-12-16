@@ -1,15 +1,18 @@
-<tool id="trimmomatic" name="Trimmomatic" version="0.36.0">
+<tool id="trimmomatic" name="Trimmomatic" version="0.36.1">
   <description>flexible read trimming tool for Illumina NGS data</description>
+  <macros>
+    <import>trimmomatic_macros.xml</import>
+  </macros>
   <requirements>
     <requirement type="package" version="0.36">trimmomatic</requirement>
   </requirements>
   <stdio>
     <exit_code range="1:" />
   </stdio>
-  <command interpreter="bash"><![CDATA[
-  trimmomatic.sh
-  -mx8G
-  -jar \$TRIMMOMATIC_DIR/trimmomatic-0.36.jar
+  <command><![CDATA[
+  @CONDA_TRIMMOMATIC_JAR_PATH@ &&
+  @CONDA_TRIMMOMATIC_ADAPTERS_PATH@ &&
+  java -mx8G -jar \$TRIMMOMATIC_JAR_PATH/trimmomatic.jar
   #if $paired_end.is_paired_end
     PE -threads \${GALAXY_SLOTS:-6} -phred33
     #set $paired_input_type = $paired_end.paired_input_type_conditional.paired_input_type
@@ -29,7 +32,7 @@
   #end if
   ## ILLUMINACLIP option
   #if $illuminaclip.do_illuminaclip
-    ILLUMINACLIP:\$TRIMMOMATIC_ADAPTERS_DIR/$illuminaclip.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
+    ILLUMINACLIP:\$TRIMMOMATIC_ADAPTERS_PATH/$illuminaclip.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
   #end if
   ## Other operations
   #for $op in $operations
@@ -60,6 +63,8 @@
       MAXINFO:$op.operation.target_length:$op.operation.strictness
     #end if
   #end for
+  2>&1 | tee trimmomatic.log &&
+  if [ -z "\$(tail -1 trimmomatic.log | grep "Completed successfully")" ]; then echo "Trimmomatic did not finish successfully" >&2 ; exit 1 ; fi
   ]]></command>
   <inputs>
     <conditional name="paired_end">
