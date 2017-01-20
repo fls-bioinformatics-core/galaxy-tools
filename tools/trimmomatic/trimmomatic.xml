@@ -17,8 +17,8 @@
     #else
       #set r1_ext = $paired_end.paired_input_type_conditional.fastq_pair.forward.extension
       #set r2_ext = $paired_end.paired_input_type_conditional.fastq_pair.reverse.extension
-      ln -s '${paired_end.paired_input_type_conditional.fastq_pair.forward}" fastq_r1.'$r1_ext' &&
-      ln -s '${paired_end.paired_input_type_conditional.fastq_pair.reverse}" fastq_r2.'$r2_ext' &&
+      ln -s '${paired_end.paired_input_type_conditional.fastq_pair.forward}' fastq_r1.'$r1_ext' &&
+      ln -s '${paired_end.paired_input_type_conditional.fastq_pair.reverse}' fastq_r2.'$r2_ext' &&
     #end if
   #else
       ln -s '$fastq_in' fastq_in.'$fastq_in.extension' &&
@@ -26,18 +26,11 @@
   bash '${__tool_directory__}/trimmomatic.sh'
   #if $paired_end.is_paired_end
     PE -threads \${GALAXY_SLOTS:-6} -phred33
-    #set $paired_input_type = $paired_end.paired_input_type_conditional.paired_input_type
-    #if $paired_input_type == "pair_of_files"
       fastq_r1.'$r1_ext' fastq_r2.'$r2_ext'
       fastq_out_r1_paired.'$r1_ext' fastq_out_r1_unpaired.'$r1_ext'
       fastq_out_r2_paired.'$r2_ext' fastq_out_r2_unpaired.'$r2_ext'
-    #else
-      fastq_r1.'$r1_ext' fastq_r2.'$r2_ext'
-      "${fastq_out_paired.forward}" "${fastq_out_unpaired.forward}"
-      "${fastq_out_paired.reverse}" "${fastq_out_unpaired.reverse}"
-    #end if
   #else
-    SE -threads \${GALAXY_SLOTS:-6} -phred33 fastq_in.'$fastq_in.extension' "$fastq_out"
+    SE -threads \${GALAXY_SLOTS:-6} -phred33 fastq_in.'$fastq_in.extension' fastq_out.'$fastq_in.extension'
   #end if
   ## ILLUMINACLIP option
   #if $illuminaclip.do_illuminaclip
@@ -72,12 +65,29 @@
       MAXINFO:$op.operation.target_length:$op.operation.strictness
     #end if
   #end for
+  &&
+  #if $paired_end.is_paired_end
+    #set $paired_input_type = $paired_end.paired_input_type_conditional.paired_input_type
+    #if $paired_input_type == "pair_of_files"
+      mv fastq_out_r1_paired.'$r1_ext' '${fastq_out_r1_paired}' &&
+      mv fastq_out_r1_unpaired.'$r1_ext' '${fastq_out_r1_unpaired}' &&
+      mv fastq_out_r2_paired.'$r2_ext' '${fastq_out_r2_paired}' &&
+      mv fastq_out_r2_unpaired.'$r2_ext' '${fastq_out_r2_unpaired}'
+    #else
+      mv fastq_out_r1_paired.'$r1_ext' '${fastq_out_paired.forward}' &&
+      mv fastq_out_r1_unpaired.'$r1_ext' '${fastq_out_unpaired.forward}' &&
+      mv fastq_out_r2_paired.'$r2_ext' '${fastq_out_paired.reverse}' &&
+      mv fastq_out_r2_unpaired.'$r2_ext' '${fastq_out_unpaired.reverse}'
+    #end if
+  #else
+    mv fastq_out.'$fastq_in.extension' '${fastq_out}'
+  #end if
   ]]></command>
   <inputs>
     <conditional name="paired_end">
     <param name="is_paired_end" type="boolean" label="Paired end data?" truevalue="yes" falsevalue="no" checked="True" />
     <when value="no">
-      <param name="fastq_in" type="data" format="fastqsanger" label="Input FASTQ file" />
+      <param name="fastq_in" type="data" format="fastqsanger|fastqsanger.gz" label="Input FASTQ file" />
     </when>
     <when value="yes">
       <conditional name="paired_input_type_conditional">
@@ -86,13 +96,13 @@
           <option value="collection">Dataset collection pair</option>
         </param>
         <when value="pair_of_files">
- 	  <param name="fastq_r1_in" type="data" format="fastqsanger"
+ 	  <param name="fastq_r1_in" type="data" format="fastqsanger|fastqsanger.gz"
 		 label="Input FASTQ file (R1/first of pair)" />
- 	  <param name="fastq_r2_in" type="data" format="fastqsanger"
+ 	  <param name="fastq_r2_in" type="data" format="fastqsanger|fastqgsanger.gz"
 		 label="Input FASTQ file (R2/second of pair)" />
 	</when>
         <when value="collection">
-          <param name="fastq_pair" format="fastqsanger" type="data_collection"
+          <param name="fastq_pair" format="fastqsanger|fastqsanger.gz" type="data_collection"
  		 collection_type="paired"
  		 label="Select FASTQ dataset collection with R1/R2 pair" />
         </when>
@@ -158,42 +168,43 @@
     </repeat>
   </inputs>
   <outputs>
-    <data format="fastqsanger" name="fastq_out_r1_paired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_r1_in.name} (R1 paired)"
-      format_source="${paired_end.paired_input_type_conditional.fastq_r1_in}"
-      from_work_dir="fastq_out_r1_paired.${paired_end.paired_input_type_conditional.fastq_r1_in.extension}">
+    <data name="fastq_out_r1_paired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_r1_in.name} (R1 paired)"
+      format_source="${paired_end.paired_input_type_conditional.fastq_r1_in}">
       <filter>paired_end['is_paired_end']</filter>
       <filter>paired_end['paired_input_type_conditional']['paired_input_type'] == "pair_of_files"</filter>
     </data>
-    <data format="fastqsanger" name="fastq_out_r2_paired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_r2_in.name} (R2 paired)"
-      format_source="${paired_end.paired_input_type_conditional.fastq_r2_in}"
-      from_work_dir="fastq_out_r2_paired.${paired_end.paired_input_type_conditional.fastq_r2_in.extension}">
+    <data name="fastq_out_r2_paired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_r2_in.name} (R2 paired)"
+      format_source="${paired_end.paired_input_type_conditional.fastq_r2_in}">
       <filter>paired_end['is_paired_end']</filter>
       <filter>paired_end['paired_input_type_conditional']['paired_input_type'] == "pair_of_files"</filter>
     </data>
-    <data format="fastqsanger" name="fastq_out_r1_unpaired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_r1_in.name} (R1 unpaired)"
-      format_source="${paired_end.paired_input_type_conditional.fastq_r1_in}"
-      from_work_dir="fastq_out_r1_unpaired.${paired_end.paired_input_type_conditional.fastq_r1_in.extension}">
+    <data name="fastq_out_r1_unpaired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_r1_in.name} (R1 unpaired)"
+      format_source="${paired_end.paired_input_type_conditional.fastq_r1_in}">
       <filter>paired_end['is_paired_end']</filter>
       <filter>paired_end['paired_input_type_conditional']['paired_input_type'] == "pair_of_files"</filter>
     </data>
-    <data format="fastqsanger" name="fastq_out_r2_unpaired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_r2_in.name} (R2 unpaired)"
-      format_source="${paired_end.paired_input_type_conditional.fastq_r1_in}"
-      from_work_dir="fastq_out_r1_unpaired.${paired_end.paired_input_type_conditional.fastq_r1_in.extension}">
+    <data name="fastq_out_r2_unpaired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_r2_in.name} (R2 unpaired)"
+      format_source="${paired_end.paired_input_type_conditional.fastq_r1_in}">
       <filter>paired_end['is_paired_end']</filter>
       <filter>paired_end['paired_input_type_conditional']['paired_input_type'] == "pair_of_files"</filter>
     </data>
-    <data format="fastqsanger" name="fastq_out" label="${tool.name} on ${paired_end.fastq_in.name}">
+    <data name="fastq_out" label="${tool.name} on ${paired_end.fastq_in.name}"
+      format_source="${fastq_in}">
       <filter>not paired_end['is_paired_end']</filter>
     </data>
     <collection name="fastq_out_paired" type="paired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.name}: paired">
-      <data name="forward" format="fastqsanger" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.forward.name} (R1 paired)" />
-      <data name="reverse" format="fastqsanger" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.reverse.name} (R2 paired)" />
+      <data name="forward" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.forward.name} (R1 paired)"
+        format_source="${paired_end.paired_input_type_conditional.fastq_pair.forward}" />
+      <data name="reverse" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.reverse.name} (R2 paired)"
+        format_source="${paired_end.paired_input_type_conditional.fastq_pair.reverse}" />
       <filter>paired_end['is_paired_end']</filter>
       <filter>paired_end['paired_input_type_conditional']['paired_input_type'] == "collection"</filter>
     </collection>
     <collection name="fastq_out_unpaired" type="paired" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.name}: unpaired">
-      <data name="forward" format="fastqsanger" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.forward.name} (R1 unpaired)" />
-      <data name="reverse" format="fastqsanger" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.reverse.name} (R2 unpaired)" />
+      <data name="forward" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.forward.name} (R1 unpaired)"
+        format_source="${paired_end.paired_input_type_conditional.fastq_pair.forward}" />
+      <data name="reverse" label="${tool.name} on ${paired_end.paired_input_type_conditional.fastq_pair.reverse.name} (R2 unpaired)"
+        format_source="${paired_end.paired_input_type_conditional.fastq_pair.reverse}" />
       <filter>paired_end['is_paired_end']</filter>
       <filter>paired_end['paired_input_type_conditional']['paired_input_type'] == "collection"</filter>
     </collection>
@@ -212,7 +223,19 @@
       <output name="fastq_out" file="trimmomatic_se_out1.fastq" />
     </test>
     <test>
-      <!-- Paired-end example -->
+      <!-- Single-end example - gzipped -->
+      <param name="is_paired_end" value="no" />
+      <param name="fastq_in" value="Illumina_SG_R1.fastq.gz" ftype="fastqsanger.gz" />
+      <param name="operations_0|operation|name" value="SLIDINGWINDOW" />
+      <!--
+      **NB** outputs have to be specified in order that they appear in the
+      tool (which is the order they will be written to the history) - the
+      test framework seems to use the order and ignores the "name" attribute
+      -->
+      <output name="fastq_out" file="trimmomatic_se_out1.fastq.gz" />
+    </test>
+    <test>
+      <!-- Paired-end example - gzipped -->
       <param name="is_paired_end" value="yes" />
       <param name="fastq_r1_in" value="Illumina_SG_R1.fastq.gz" ftype="fastqsanger.gz" />
       <param name="fastq_r2_in" value="Illumina_SG_R2.fastq.gz" ftype="fastqsanger.gz" />
@@ -226,6 +249,92 @@
       <output name="fastq_out_r1_unpaired" file="trimmomatic_pe_r1_unpaired_out1.fastq.gz" />
       <output name="fastq_out_r2_paired" file="trimmomatic_pe_r2_paired_out1.fastq.gz" />
       <output name="fastq_out_r2_unpaired" file="trimmomatic_pe_r2_unpaired_out1.fastq.gz" />
+    </test>
+    <test>
+      <!-- Paired-end example -->
+      <param name="is_paired_end" value="yes" />
+      <param name="fastq_r1_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
+      <param name="fastq_r2_in" value="Illumina_SG_R2.fastq" ftype="fastqsanger" />
+      <param name="operations_0|operation|name" value="SLIDINGWINDOW" />
+      <!--
+      **NB** outputs have to be specified in order that they appear in the
+      tool (which is the order they will be written to the history) - the
+      test framework seems to use the order and ignores the "name" attribute
+      -->
+      <output name="fastq_out_r1_paired" file="trimmomatic_pe_r1_paired_out1.fastq" />
+      <output name="fastq_out_r1_unpaired" file="trimmomatic_pe_r1_unpaired_out1.fastq" />
+      <output name="fastq_out_r2_paired" file="trimmomatic_pe_r2_paired_out1.fastq" />
+      <output name="fastq_out_r2_unpaired" file="trimmomatic_pe_r2_unpaired_out1.fastq" />
+    </test>
+    <test>
+      <!-- Single-end example (cropping) -->
+      <param name="is_paired_end" value="no" />
+      <param name="fastq_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
+      <param name="operations_0|operation|name" value="CROP" />
+      <param name="operations_0|operation|crop" value="10" />
+      <!--
+      **NB** outputs have to be specified in order that they appear in the
+      tool (which is the order they will be written to the history) - the
+      test framework seems to use the order and ignores the "name" attribute
+      -->
+      <output name="fastq_out" file="trimmomatic_se_out2.fastq" />
+    </test>
+    <test>
+      <!-- Paired-end with dataset collection -->
+      <param name="is_paired_end" value="yes" />
+      <param name="paired_input_type" value="collection" />
+      <param name="fastq_pair">
+        <collection type="paired">
+          <element name="forward" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
+          <element name="reverse" value="Illumina_SG_R2.fastq" ftype="fastqsanger"/>
+        </collection>
+      </param>
+      <param name="operations_0|operation|name" value="SLIDINGWINDOW" />
+      <output_collection name="fastq_out_paired" type="paired">
+    <element name="forward" file="trimmomatic_pe_r1_paired_out1.fastq" />
+    <element name="reverse" file="trimmomatic_pe_r2_paired_out1.fastq" />
+      </output_collection>
+      <output_collection name="fastq_out_unpaired" type="paired">
+    <element name="forward" file="trimmomatic_pe_r1_unpaired_out1.fastq" />
+    <element name="reverse" file="trimmomatic_pe_r2_unpaired_out1.fastq" />
+      </output_collection>
+    </test>
+    <test>
+      <!-- Paired-end with dataset collection - gzipped -->
+      <param name="is_paired_end" value="yes" />
+      <param name="paired_input_type" value="collection" />
+      <param name="fastq_pair">
+        <collection type="paired">
+          <element name="forward" value="Illumina_SG_R1.fastq.gz" ftype="fastqsanger.gz" />
+          <element name="reverse" value="Illumina_SG_R2.fastq.gz" ftype="fastqsanger.gz"/>
+        </collection>
+      </param>
+      <param name="operations_0|operation|name" value="SLIDINGWINDOW" />
+      <output_collection name="fastq_out_paired" type="paired">
+    <element name="forward" file="trimmomatic_pe_r1_paired_out1.fastq.gz" />
+    <element name="reverse" file="trimmomatic_pe_r2_paired_out1.fastq.gz" />
+      </output_collection>
+      <output_collection name="fastq_out_unpaired" type="paired">
+    <element name="forward" file="trimmomatic_pe_r1_unpaired_out1.fastq.gz" />
+    <element name="reverse" file="trimmomatic_pe_r2_unpaired_out1.fastq.gz" />
+      </output_collection>
+    </test>
+    <test>
+      <!-- Single-end using AVGQUAL -->
+      <param name="is_paired_end" value="no" />
+      <param name="fastq_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
+      <param name="operations_0|operation|name" value="AVGQUAL" />
+      <param name="operations_0|operation|avgqual" value="30" />
+      <output name="fastq_out" file="trimmomatic_avgqual.fastq" />
+    </test>
+    <test>
+      <!-- Single-end using MAXINFO -->
+      <param name="is_paired_end" value="no" />
+      <param name="fastq_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
+      <param name="operations_0|operation|name" value="MAXINFO" />
+      <param name="operations_0|operation|target_length" value="75" />
+      <param name="operations_0|operation|strictness" value="0.8" />
+      <output name="fastq_out" file="trimmomatic_maxinfo.fastq" />
     </test>
   </tests>
   <help><![CDATA[
