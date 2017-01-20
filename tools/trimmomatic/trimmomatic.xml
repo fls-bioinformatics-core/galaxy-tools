@@ -1,12 +1,9 @@
-<tool id="trimmomatic" name="Trimmomatic" version="0.36.1">
+<tool id="trimmomatic" name="Trimmomatic" version="0.36.2">
   <description>flexible read trimming tool for Illumina NGS data</description>
   <requirements>
     <requirement type="package" version="0.36">trimmomatic</requirement>
   </requirements>
-  <stdio>
-    <exit_code range="1:" />
-  </stdio>
-  <command><![CDATA[
+  <command detect_errors="aggressive"><![CDATA[
   #if $paired_end.is_paired_end
     #set $paired_input_type = $paired_end.paired_input_type_conditional.paired_input_type
     #if $paired_input_type == "pair_of_files"
