@@ -1,4 +1,4 @@
-<tool id="trimmomatic" name="Trimmomatic" version="0.36.0">
+<tool id="trimmomatic" name="Trimmomatic" version="0.36.1">
   <description>flexible read trimming tool for Illumina NGS data</description>
   <requirements>
     <requirement type="package" version="0.36">trimmomatic</requirement>
