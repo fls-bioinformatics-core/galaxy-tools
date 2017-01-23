@@ -58,6 +58,8 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.36.1     - Reimplement to work with bioconda Trimmomatic 0.36 (toolshed version
+             is still supported for now).
 0.36.0     - Update to Trimmomatic 0.36.
 0.32.4     - Add support for ``AVGQUAL`` and ``MAXINFO`` operations.
 0.32.3     - Add support for FASTQ R1/R2 pairs using dataset collections (input
