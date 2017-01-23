@@ -1,11 +1,10 @@
-<tool id="fls_rnachipintegrator_canonical_genes" name="Analyse canonical genes against ChIP data" version="0.0.4">
+<tool id="rnachipintegrator_canonical_genes" name="Analyse canonical genes against ChIP data" version="@VERSION@-0">
   <description>using RnaChipIntegrator</description>
-  <requirements>
-    <requirement type="package" version="0.7.5">python_xlwt</requirement>
-    <requirement type="package" version="0.9.3">python_xlrd</requirement>
-    <requirement type="package" version="1.7.1">python_xlutils</requirement>
-    <requirement type="package" version="0.4.3">rnachipintegrator</requirement>
-  </requirements>
+  <macros>
+    <import>rnachipintegrator_macros.xml</import>
+  </macros>
+  <expand macro="requirements" />
+  <expand macro="version_command" />
   <command interpreter="bash">rnachipintegrator_wrapper.sh
   #if str( $analysis_options.peak_type ) == "summits"
     #if str( $analysis_options.window ) != ""
@@ -29,7 +28,7 @@
     --pad
     #end if
   #end if
-  $canonical_genes.value $chipseq
+  ${canonical_genes.fields.path} $chipseq
   --output_xls $xls_output
   #if $results_as_zip
   --zip_file $zip_file
@@ -130,14 +129,25 @@
   </outputs>
   <tests>
     <test>
-      <param name="rnaseq" value="ExpressionData.txt" />
-      <param name="chipseq" value="ChIP_peaks.txt" />
-      <output name="xls_output" file="peaks.xls" compare="sim_size" />
+      <param name="chipseq" value="mm9_summits.txt" />
+      <param name="canonical_genes" value="mm9_test" />
+      <param name="peak_type" value="summits" />
+      <param name="window" value="50000" />
+      <param name="cutoff" value="130000" />
+      <output name="xls_output" file="mm9_summits.xls" compare="sim_size" />
+      <output name="peaks_to_transcripts_out" file="mm9_summits_to_transcripts.out" ftype="tabular" />
+      <output name="tss_to_summits_out" file="mm9_tss_to_summits.out" ftype="tabular" />
     </test>
     <test>
-      <param name="rnaseq" value="ExpressionData.txt" />
-      <param name="chipseq" value="ChIP_edges.txt" />
-      <output name="xls_output" file="peaks.xls" compare="sim_size" />
+      <param name="chipseq" value="mm9_peaks.txt" />
+      <param name="canonical_genes" value="mm9_test" />
+      <param name="peak_type" value="regions" />
+      <param name="edge_cutoff" value="50000" />
+      <output name="xls_output" file="mm9_peaks.xls" compare="sim_size" />
+      <output name="transcripts_to_edges_out" file="mm9_transcripts_to_edges.out" ftype="tabular" />
+      <output name="transcripts_to_edges_summary" file="mm9_transcripts_to_edges.summary" ftype="tabular" />
+      <output name="tss_to_edges_out" file="mm9_tss_to_edges.out" ftype="tabular" />
+      <output name="tss_to_edges_summary" file="mm9_tss_to_edges.summary" ftype="tabular" />
     </test>
   </tests>
   <help>

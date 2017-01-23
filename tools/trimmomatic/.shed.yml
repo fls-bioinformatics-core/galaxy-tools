@@ -2,5 +2,5 @@ categories: [Fastq Manipulation]
 description: A flexible read trimming tool for Illumina NGS data
 long_description: Trimmomatic performs a variety of useful trimming tasks for illumina paired-end and single ended data.
 name: trimmomatic
-owner: pjbriggs
-remote_repository_url: https://github.com/fls-bioinformatics-core/galaxy-tools/tree/master/trimmomatic
+owner: sanbi-uwc
+remote_repository_url: https://github.com/SANBI-SA/galaxy-tools/tree/master/tools/trimmomatic

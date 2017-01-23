@@ -1,5 +1,11 @@
-<tool id="fls_rnachipintegrator_wrapper" name="RnaChipIntegrator" version="0.0.5">
+<?xml version="1.0" encoding="utf-8"?>
+<tool id="rnachipintegrator_wrapper" name="RnaChipIntegrator" version="@VERSION@-0">
   <description>Integrated analysis of gene expression data and ChIP data</description>
+  <macros>
+    <import>rnachipintegrator_macros.xml</import>
+  </macros>
+  <expand macro="requirements" />
+  <expand macro="version_command" />
   <command interpreter="bash">rnachipintegrator_wrapper.sh
   #if str( $analysis_options.peak_type ) == "summits"
     #if str( $analysis_options.window ) != ""
@@ -39,12 +45,6 @@
     #end if
   #end if
   </command>
-  <requirements>
-    <requirement type="package" version="0.7.5">python_xlwt</requirement>
-    <requirement type="package" version="0.9.3">python_xlrd</requirement>
-    <requirement type="package" version="1.7.1">python_xlutils</requirement>
-    <requirement type="package" version="0.4.3">rnachipintegrator</requirement>
-  </requirements>
   <inputs>
     <param format="tabular" name="rnaseq" type="data" label="Gene expression data file" />
     <param format="tabular" name="chipseq" type="data" label="ChIP peaks data file" />
