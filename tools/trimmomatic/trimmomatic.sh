@@ -20,7 +20,7 @@ if [ -z "$TRIMMOMATIC_DIR" ] ; then
   exit 1
 fi
 
-java -mx8G -jar $TRIMMOMATIC_DIR/$JARFILE $@ 2>&1 | tee trimmomatic.log
+java -mx16G -jar $TRIMMOMATIC_DIR/$JARFILE $@ 2>&1 | tee trimmomatic.log
 status=$?
 echo "Exit status: $status"
 # Check for successful completion
