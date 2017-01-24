@@ -1,4 +1,4 @@
-<tool id="trimmomatic" name="Trimmomatic" version="0.36.1">
+<tool id="trimmomatic" name="Trimmomatic" version="0.36.2">
   <description>flexible read trimming tool for Illumina NGS data</description>
   <macros>
     <import>trimmomatic_macros.xml</import>
@@ -6,10 +6,7 @@
   <requirements>
     <requirement type="package" version="0.36">trimmomatic</requirement>
   </requirements>
-  <stdio>
-    <exit_code range="1:" />
-  </stdio>
-  <command><![CDATA[
+  <command detect_errors="aggressive"><![CDATA[
   @CONDA_TRIMMOMATIC_JAR_PATH@ &&
   @CONDA_TRIMMOMATIC_ADAPTERS_PATH@ &&
   java -mx8G -jar \$TRIMMOMATIC_JAR_PATH/trimmomatic.jar
