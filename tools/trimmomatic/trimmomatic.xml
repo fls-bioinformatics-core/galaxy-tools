@@ -9,7 +9,6 @@
   <command detect_errors="aggressive"><![CDATA[
   @CONDA_TRIMMOMATIC_JAR_PATH@ &&
   @CONDA_TRIMMOMATIC_ADAPTERS_PATH@ &&
-  java -mx8G -jar \$TRIMMOMATIC_JAR_PATH/trimmomatic.jar
   #if $readtype.single_or_paired == "pair_of_files"
     #set r1_ext = $readtype.fastq_r1_in.extension
     #set r2_ext = $readtype.fastq_r2_in.extension
@@ -23,7 +22,7 @@
   #else
     ln -s '$fastq_in' fastq_in.'$fastq_in.extension' &&
   #end if
-  bash '${__tool_directory__}/trimmomatic.sh'
+  java -mx8G -jar \$TRIMMOMATIC_JAR_PATH/trimmomatic.jar
   #if $readtype.single_or_paired in ["pair_of_files","collection"]
     PE -threads \${GALAXY_SLOTS:-6} -phred33
       fastq_r1.'$r1_ext' fastq_r2.'$r2_ext'
