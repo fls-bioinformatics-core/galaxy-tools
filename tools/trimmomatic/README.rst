@@ -85,6 +85,14 @@ Version    Changes
 ========== ======================================================================
 
 
+Credits
+=======
+
+This wrapper has been developed and is maintained by Peter Briggs (@pjbriggs).
+Peter van Heusden (@pvanheus) and Marius van den Beek (@mvdbeek) contributed
+support for gz compressed FastQ files.
+
+
 Developers
 ==========
 

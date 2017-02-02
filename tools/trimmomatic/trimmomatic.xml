@@ -359,7 +359,10 @@ reads.
 **Credits**
 
 This Galaxy tool has been developed within the Bioinformatics Core Facility at the
-University of Manchester. It runs the Trimmomatic program which has been developed
+University of Manchester, with contributions from Peter van Heusden and Marius
+van den Beek.
+
+It runs the Trimmomatic program which has been developed
 within Bjorn Usadel's group at RWTH Aachen university.
 
 Trimmomatic website (including documentation):
