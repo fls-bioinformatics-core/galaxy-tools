@@ -58,6 +58,9 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.36.2     - Support fastqsanger.gz datatype. If fastqsanger.gz is used as input
+             the output will also be fastqsanger.gz.
+           - Use $_JAVA_OPTIONS to customize memory requirements.
 0.36.1     - Reimplement to work with bioconda Trimmomatic 0.36 (toolshed version
              is still supported for now).
 0.36.0     - Update to Trimmomatic 0.36.
@@ -80,6 +83,14 @@ Version    Changes
              cosmetic updates to wording and help text for some options.
 0.0.1      - Initial version
 ========== ======================================================================
+
+
+Credits
+=======
+
+This wrapper has been developed and is maintained by Peter Briggs (@pjbriggs).
+Peter van Heusden (@pvanheus) and Marius van den Beek (@mvdbeek) contributed
+support for gz compressed FastQ files.
 
 
 Developers
