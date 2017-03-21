@@ -19,6 +19,19 @@ Installation via the Galaxy Tool Shed will take care of installing the tool wrap
 and the trimmomatic program and data, and setting the appropriate environment
 variables.
 
+Controlling the available memory
+================================
+
+The default amount of memory avilable to trimmomatic is set to 8GB.
+To change the default amount of memory you can set the environment variable
+``_JAVA_OPTIONS`` to ``-Xmx<amount_of_memory_in_GB>G``. The recommended way to
+set this is in the job_conf.xml file. To change the available memory to 6GB, a
+line like the below should be added:
+
+``<env id="_JAVA_OPTIONS">-Xmx6G</env>``
+
+This will set the environment variable ``_JAVA_OPTIONS`` to ``-Xmx6G``.
+
 Manual Installation
 ===================
 
@@ -58,6 +71,9 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.36.3     - Fix naming of output collections. Instead of all outputs being called
+             "Trimmomatic on collection NN" these will now be called "Trimmomatic
+             on collection NN: paired" or "Trimmomatic on collection NN: unpaired".
 0.36.2     - Support fastqsanger.gz datatype. If fastqsanger.gz is used as input
              the output will also be fastqsanger.gz.
            - Use $_JAVA_OPTIONS to customize memory requirements.
