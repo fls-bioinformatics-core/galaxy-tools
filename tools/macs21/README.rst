@@ -59,6 +59,8 @@ practices in invoking commands from Galaxy, and to add new functionality.
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+2.1.0-6    - Add bedSort step into bigWig file generation; terminate with error
+             when MACS finishes with non-zero exit code.
 2.1.0-5    - User must explicitly specify the format for the inputs (to allow
              for paired-end data)
 2.1.0-4    - Remove 'bdgcmp' functionality.
