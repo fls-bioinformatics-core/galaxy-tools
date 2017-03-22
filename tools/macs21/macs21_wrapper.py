@@ -219,6 +219,10 @@ if __name__ == "__main__":
     proc = subprocess.Popen(args=cmdline,shell=True,cwd=working_dir,
                             stderr=open(stderr_filen,'wb'))
     proc.wait()
+    exit_code = proc.returncode
+    if exit_code != 0:
+        sys.stderr.write(open(stderr_filen,'rb').read())
+        sys.exit(exit_code)
     
     # Run R script to create PDF from model script
     if os.path.exists(os.path.join(working_dir,"%s_model.r" % experiment_name)):
