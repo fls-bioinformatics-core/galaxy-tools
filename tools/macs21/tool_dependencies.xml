@@ -8,7 +8,7 @@
     <repository name="package_r_3_1_2" prior_installation_required="True" owner="iuc" />
   </package>
   <!-- Subset of UCSC tools -->
-  <package name="ucsc_tools_for_macs21" version="1.0">
+  <package name="ucsc_tools_for_macs21" version="2.0">
       <install version="1.0">
             <actions>
 	      <!-- fetchChromSizes -->
@@ -24,6 +24,13 @@
               </action>
               <action type="chmod">
                 <file mode="755">$INSTALL_DIR/bedClip</file>
+              </action>
+	      <!-- bedSort -->
+              <action type="download_binary">
+                <url_template architecture="x86_64" os="linux">http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedSort</url_template>
+              </action>
+              <action type="chmod">
+                <file mode="755">$INSTALL_DIR/bedSort</file>
               </action>
 	      <!-- bedGraphToBigWig -->
               <action type="download_binary">

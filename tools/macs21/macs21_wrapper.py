@@ -61,7 +61,8 @@ def make_bigwig_from_bedgraph(bedgraph_file,bigwig_file,
 
     $ fetchChromSizes.sh mm9 > mm9.chrom.sizes
     $ bedClip treat.bedgraph mm9.chrom.sizes treat.clipped
-    $ bedGraphToBigWig treat.clipped mm9.chrom.sizes treat.bw
+    $ bedSort treat.clipped treat.clipped.sorted
+    $ bedGraphToBigWig treat.clipped.sorted mm9.chrom.sizes treat.bw
 
     Get the binaries from
     http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/
@@ -111,8 +112,20 @@ def make_bigwig_from_bedgraph(bedgraph_file,bigwig_file,
     if not os.path.exists(treat_clipped):
         sys.stderr.write("Failed to create clipped bed file\n")
         sys.exit(1)
+    # Run bedSort
+    treat_clipped_sorted = "%s.sorted" % os.path.basename(treat_clipped)
+    cmd = "bedSort %s %s" % (treat_clipped,treat_clipped_sorted)
+    print "Running %s" % cmd
+    proc = subprocess.Popen(args=cmd,shell=True,cwd=working_dir)
+    proc.wait()
+    # Check that sorted file exists
+    treat_clipped_sorted = os.path.join(working_dir,treat_clipped_sorted)
+    if not os.path.exists(treat_clipped_sorted):
+        sys.stderr.write("Failed to create sorted clipped bed file\n")
+        sys.exit(1)
     # Run bedGraphToBigWig
-    cmd = "bedGraphToBigWig %s %s %s" % (treat_clipped,chrom_sizes,
+    cmd = "bedGraphToBigWig %s %s %s" % (treat_clipped_sorted,
+                                         chrom_sizes,
                                          bigwig_file)
     print "Running %s" % cmd
     proc = subprocess.Popen(args=cmd,shell=True,cwd=working_dir)
@@ -206,6 +219,10 @@ if __name__ == "__main__":
     proc = subprocess.Popen(args=cmdline,shell=True,cwd=working_dir,
                             stderr=open(stderr_filen,'wb'))
     proc.wait()
+    exit_code = proc.returncode
+    if exit_code != 0:
+        sys.stderr.write(open(stderr_filen,'rb').read())
+        sys.exit(exit_code)
     
     # Run R script to create PDF from model script
     if os.path.exists(os.path.join(working_dir,"%s_model.r" % experiment_name)):

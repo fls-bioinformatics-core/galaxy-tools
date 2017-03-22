@@ -25,6 +25,6 @@ install_numpy_1_9 $TOP_DIR
 . $TOP_DIR/numpy/1.9/env.sh # needs Numpy 1.9
 install_macs2_2_1_0_20140616 $TOP_DIR
 # UCSC tool subset
-install_ucsc_tools_for_macs21_1_0 $TOP_DIR
+install_ucsc_tools_for_macs21_2_0 $TOP_DIR
 ##
 #
