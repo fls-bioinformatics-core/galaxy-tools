@@ -43,3 +43,27 @@ export PATH=$install_dir/bin:\$PATH
 #
 EOF
 }
+#
+function install_ucsc_tools_for_macs21_2_0() {
+    echo Installing UCSC tools for MACS2
+    local install_dir=$1/ucsc_tools_for_macs21/2.0
+    mkdir -p $install_dir/bin
+    echo Moving to $install_dir/bin
+    pushd $install_dir/bin
+    wget -q http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/fetchChromSizes
+    wget -q http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedClip
+    wget -q http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedSort
+    wget -q http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig
+    for x in "fetchChromSizes bedClip bedSort bedGraphToBigWig" ; do
+	chmod 755 $x
+    done
+    popd
+    # Make setup file
+    cat > $1/ucsc_tools_for_macs21/2.0/env.sh <<EOF
+#!/bin/sh
+# Source this to setup ucsc_tools_for_macs21/2.0
+echo Setting up UCSC Tools for MACS21 2.0
+export PATH=$install_dir/bin:\$PATH
+#
+EOF
+}
