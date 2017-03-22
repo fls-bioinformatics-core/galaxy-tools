@@ -5,7 +5,7 @@
     <requirement type="package" version="1.9">numpy</requirement>
     <requirement type="package" version="2.1.0.20140616">macs2</requirement>
     <requirement type="package" version="3.1.2">R</requirement>
-    <requirement type="package" version="1.0">ucsc_tools_for_macs21</requirement>
+    <requirement type="package" version="2.0">ucsc_tools_for_macs21</requirement>
   </requirements>
   <version_command>macs2 --version</version_command>
   <command interpreter="python">
