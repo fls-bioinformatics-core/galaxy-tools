@@ -41,5 +41,5 @@ script:
 # Use the Galaxy virtualenv
   - ". travis/galaxy_venv/bin/activate"
 # Run tool tests
-  - "tools/$TOOL/run_planemo_tests.sh --galaxy_root travis/galaxy"
+  - "tools/$TOOL/run_planemo_tests.sh --galaxy_root travis/galaxy --no_conda_auto_install --no_conda_auto_init"
 
