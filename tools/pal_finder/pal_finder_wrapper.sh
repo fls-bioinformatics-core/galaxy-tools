@@ -50,6 +50,9 @@
 echo "### $(basename $0) ###"
 echo $*
 #
+# Maximum size reporting log file contents
+MAX_LINES=500
+#
 # Initialise locations of scripts, data and executables
 #
 # Set these in the environment to overide at execution time
@@ -318,11 +321,11 @@ echo "### pal_finder finished ###"
 #
 # Handlers the pal_finder log file
 echo "### Output from pal_finder ###"
-if [ $(wc -l pal_finder.log | cut -d" " -f1) -gt 500 ] ; then
-    echo WARNING output too long, truncated to last 500 lines:
+if [ $(wc -l pal_finder.log | cut -d" " -f1) -gt $MAX_LINES ] ; then
+    echo WARNING output too long, truncated to last $MAX_LINES lines:
     echo ...
 fi
-tail -500 pal_finder.log
+tail -$MAX_LINES pal_finder.log
 #
 # Check that log ends with "Done!!" message
 if [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
@@ -345,11 +348,11 @@ if [ ! -z "$FILTERED_MICROSATS" ] || [ ! -z "$OUTPUT_ASSEMBLY" ] ; then
     echo "### Running filtering & assembly script ###"
     python $PALFINDER_FILTER -i $fastq_r1 -j $fastq_r2 -p Output/PAL_summary.txt $FILTER_OPTIONS 1>pal_filter.log 2>&1
     echo "### Output from pal_filter ###"
-    if [ $(wc -l pal_filter.log | cut -d" " -f1) -gt 500 ] ; then
-	echo WARNING output too long, truncated to last 500 lines:
+    if [ $(wc -l pal_filter.log | cut -d" " -f1) -gt $MAX_LINES ] ; then
+	echo WARNING output too long, truncated to last $MAX_LINES lines:
 	echo ...
     fi
-    tail -500 pal_filter.log
+    tail -$MAX_LINES pal_filter.log
     if [ $? -ne 0 ] ; then
 	echo ERROR $PALFINDER_FILTER exited with non-zero status >&2
 	exit 1
