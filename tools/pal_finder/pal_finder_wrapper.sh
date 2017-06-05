@@ -54,6 +54,9 @@ echo $*
 # Maximum size reporting log file contents
 MAX_LINES=500
 #
+# Get helper functions
+. $(dirname $0)/pal_finder_wrapper_utils.sh
+#
 # Initialise locations of scripts, data and executables
 #
 # Set these in the environment to overide at execution time
@@ -61,11 +64,6 @@ MAX_LINES=500
 : ${PALFINDER_DATA_DIR:=/usr/share/pal_finder_v0.02.04}
 : ${PRIMER3_CORE_EXE:=primer3_core}
 #
-# Utility function for terminating on fatal error
-function fatal() {
-    echo "FATAL $@" >&2
-    exit 1
-}
 # Filter script is in the same directory as this script
 PALFINDER_FILTER=$(dirname $0)/pal_filter.py
 if [ ! -f $PALFINDER_FILTER ] ; then
@@ -73,15 +71,6 @@ if [ ! -f $PALFINDER_FILTER ] ; then
 fi
 #
 # Check that we have all the components
-function have_program() {
-    local program=$1
-    local got_program=$(which $program 2>&1 | grep "no $(basename $program) in")
-    if [ -z "$got_program" ] ; then
-	echo yes
-    else
-	echo no
-    fi	
-}
 if [ "$(have_program $PRIMER3_CORE_EXE)" == "no" ] ; then
     fatal "primer3_core missing: ${PRIMER3_CORE_EXE} not found"
 fi
@@ -278,17 +267,6 @@ echo "### Creating config.txt file for pal_finder run ###"
 /bin/cp $PALFINDER_DATA_DIR/config.txt .
 #
 # Update the config.txt file with new values
-function set_config_value() {
-    local key=$1
-    local value=$2
-    local config_txt=$3
-    if [ -z "$value" ] ; then
-	echo "No value for $key, left as default"
-    else
-	echo Setting "$key" to "$value"
-	sed -i 's,^'"$key"' .*,'"$key"'  '"$value"',' $config_txt
-    fi
-}
 # Input files
 set_config_value platform $PLATFORM config.txt
 if [ "$PLATFORM" == "Illumina" ] ; then
@@ -356,10 +334,21 @@ echo "### pal_finder finished ###"
 # Check for errors in pal_finder output
 echo "### Checking for errors ###"
 if [ ! -z "$(grep 'primer3_core: Illegal element in PRIMER_PRODUCT_SIZE_RANGE' pal_finder.log)" ] ; then
-    echo ERROR primer3 terminated prematurely due to bad product size ranges >&2
-    echo Read IDs with bad ranges: >&2
-    $(dirname $0)/detect_bad_ranges.sh Output/pr3in.txt >&2
-    fatal primer3 failed to complete successfully
+    echo ERROR primer3 terminated prematurely due to bad product size ranges
+    cat >&2 <<EOF
+ERROR primer3 terminated prematurely due to bad product size ranges
+
+Pal_finder generated bad ranges for the following read IDs:
+EOF
+    $(find_bad_primer_ranges Output/pr3in.txt) >&2
+    cat >&2 <<EOF
+
+This error can occur when input data contains short R1 reads and has
+has not been properly trimmed and filtered.
+
+EOF
+    fatal pal_finder failed to complete successfully
+EOF
 fi
 #
 # Sort microsat_summary output
