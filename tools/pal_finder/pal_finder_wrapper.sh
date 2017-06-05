@@ -313,8 +313,16 @@ set_config_value PRIMER_PAIR_MAX_DIFF_TM "$PRIMER_PAIR_MAX_DIFF_TM" config.txt
 #
 # Run pal_finder
 echo "### Running pal_finder ###"
-perl $PALFINDER_SCRIPT_DIR/pal_finder_v0.02.04.pl config.txt 2>&1 | tee pal_finder.log
-echo "### pal_finder finised ###"
+perl $PALFINDER_SCRIPT_DIR/pal_finder_v0.02.04.pl config.txt 1>pal_finder.log 2>&1
+echo "### pal_finder finished ###"
+#
+# Handlers the pal_finder log file
+echo "### Output from pal_finder ###"
+if [ $(wc -l pal_finder.log | cut -d" " -f1) -gt 500 ] ; then
+    echo WARNING output too long, truncated to last 500 lines:
+    echo ...
+fi
+tail -500 pal_finder.log
 #
 # Check that log ends with "Done!!" message
 if [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
@@ -335,7 +343,13 @@ mv Output/PAL_summary.sorted.txt Output/PAL_summary.txt
 # Run the filtering & assembly script
 if [ ! -z "$FILTERED_MICROSATS" ] || [ ! -z "$OUTPUT_ASSEMBLY" ] ; then
     echo "### Running filtering & assembly script ###"
-    python $PALFINDER_FILTER -i $fastq_r1 -j $fastq_r2 -p Output/PAL_summary.txt $FILTER_OPTIONS 2>&1
+    python $PALFINDER_FILTER -i $fastq_r1 -j $fastq_r2 -p Output/PAL_summary.txt $FILTER_OPTIONS 1>pal_filter.log 2>&1
+    echo "### Output from pal_filter ###"
+    if [ $(wc -l pal_filter.log | cut -d" " -f1) -gt 500 ] ; then
+	echo WARNING output too long, truncated to last 500 lines:
+	echo ...
+    fi
+    tail -500 pal_filter.log
     if [ $? -ne 0 ] ; then
 	echo ERROR $PALFINDER_FILTER exited with non-zero status >&2
 	exit 1
