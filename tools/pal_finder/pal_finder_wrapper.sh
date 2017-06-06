@@ -385,5 +385,7 @@ fi
 if [ ! -z "$OUTPUT_CONFIG_FILE" ] && [ -f config.txt ] ; then
     /bin/mv config.txt $OUTPUT_CONFIG_FILE
 fi
+#
+echo "### Pal_finder tool completed ###"
 ##
 #
