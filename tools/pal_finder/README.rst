@@ -60,6 +60,11 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+
+0.02.04.5  - Update to handle large output files which can sometimes be generated
+             by the ``pal_finder_v0.02.04.pl`` or ``pal_filter.py`` scripts (logs
+             of hundreds of Gb's have been observed in production): log files
+             longer than 500 lines are now truncated to avoid downstream problems. 
 0.02.04.4  - Update to the filter script (``pal_filter.py``) which removes some
              columns from the output assembly file.
 0.02.04.3  - Update to the Illumina filtering script from Graeme Fox (including
