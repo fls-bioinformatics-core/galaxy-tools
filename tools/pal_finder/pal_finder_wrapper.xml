@@ -117,7 +117,7 @@
 	<param name="input_fasta" type="data" format="fasta" label="454 fasta file with raw reads" />
       </when>
     </conditional>
-    <param name="min_2mer_repeats" type="integer" value="6" label="Minimum number of 2-mer repeat units to detect" help="Set to zero to ignore repeats of this n-mer unit" />
+    <param name="min_2mer_repeats" type="integer" value="6" label="Minimum number of 2-mer repeat units to detect" min="1" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_3mer_repeats" type="integer" value="0" label="Minimum number of 3-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_4mer_repeats" type="integer" value="0" label="Minimum number of 4-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_5mer_repeats" type="integer" value="0" label="Minimum number of 5-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
