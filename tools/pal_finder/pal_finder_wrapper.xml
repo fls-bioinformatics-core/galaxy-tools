@@ -317,6 +317,24 @@ http://primer3.sourceforge.net/primer3_manual.htm
 
 -------------
 
+.. class:: informark
+
+**Known problems**
+
+**Bad product size ranges:**
+
+For some datasets pal_finder may generate 'bad' product size ranges (where the lower
+limit exceeds the upper limit) for one or more reads. If this occurs then the tool
+will list the reads for which the bad ranges were generated and then terminate with
+an error.
+
+The conditions which cause this error are unclear, however we believe it to be
+associated with short or low quality reads. Ensure that the input data has been
+sufficiently trimmed and filtered (using e.g. the Trimmomatic tool) before rerunning
+pal_finder.
+
+-------------
+
 .. class:: infomark
 
 **Credits**
