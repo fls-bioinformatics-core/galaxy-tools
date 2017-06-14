@@ -33,10 +33,18 @@
   #end if
   ## ILLUMINACLIP option
   #if $illuminaclip.do_illuminaclip
-    #if $readtype.single_or_paired in ["pair_of_files","collection"]
-      ILLUMINACLIP:\$TRIMMOMATIC_ADAPTERS_PATH/$illuminaclip.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold:$illuminaclip.min_adapter_len:$illuminaclip.keep_both_reads
+    #if $illuminaclip.adapter_type.standard_or_custom == "custom"
+      #if $readtype.single_or_paired in ["pair_of_files","collection"]
+        ILLUMINACLIP:$adapter_file_from_text:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold:$illuminaclip.min_adapter_len:$illuminaclip.keep_both_reads
+      #else
+        ILLUMINACLIP:$adapter_file_from_text:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
+      #end if
     #else
-      ILLUMINACLIP:\$TRIMMOMATIC_ADAPTERS_PATH/$illuminaclip.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
+      #if $readtype.single_or_paired in ["pair_of_files","collection"]
+        ILLUMINACLIP:\$TRIMMOMATIC_ADAPTERS_PATH/$illuminaclip.adapter_type.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold:$illuminaclip.min_adapter_len:$illuminaclip.keep_both_reads
+      #else
+        ILLUMINACLIP:\$TRIMMOMATIC_ADAPTERS_PATH/$illuminaclip.adapter_type.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
+      #end if
     #end if
   #end if
   ## Other operations
@@ -85,6 +93,14 @@
     mv fastq_out.'$fastq_in.extension' '${fastq_out}'
   #end if
   ]]></command>
+  <configfiles>
+    <configfile name="adapter_file_from_text">#set from_text_area = ''
+#if str( $illuminaclip.do_illuminaclip ) == "yes" and str( $illuminaclip.adapter_type.standard_or_custom ) == "custom":
+#set from_text_area = $illuminaclip.adapter_type.adapter_text
+#end if
+${from_text_area}</configfile>
+  </configfiles>
+
   <inputs>
     <conditional name="readtype">
       <param name="single_or_paired" type="select" label="Single-end or paired-end reads?">
@@ -108,14 +124,31 @@
     <conditional name="illuminaclip">
       <param name="do_illuminaclip" type="boolean" label="Perform initial ILLUMINACLIP step?" help="Cut adapter and other illumina-specific sequences from the read" truevalue="yes" falsevalue="no" checked="False" />
       <when value="yes">
-        <param name="adapter_fasta" type="select" label="Adapter sequences to use">
-          <option value="TruSeq2-SE.fa">TruSeq2 (single-ended, for Illumina GAII)</option>
-          <option value="TruSeq3-SE.fa">TruSeq3 (single-ended, for MiSeq and HiSeq)</option>
-          <option value="TruSeq2-PE.fa">TruSeq2 (paired-ended, for Illumina GAII)</option>
-          <option value="TruSeq3-PE.fa">TruSeq3 (paired-ended, for MiSeq and HiSeq)</option>
-          <option value="TruSeq3-PE-2.fa">TruSeq3 (additional seqs) (paired-ended, for MiSeq and HiSeq)</option>
-          <option value="NexteraPE-PE.fa">Nextera (paired-ended)</option>
-        </param>
+        <conditional name="adapter_type">
+          <param name="standard_or_custom" type="select" label="Select standard adapter sequences or provide custom?">
+            <option value="standard" selected="true">Standard</option>
+            <option value="custom">Custom</option>
+          </param>
+          <when value="standard">
+            <param name="adapter_fasta" type="select" label="Adapter sequences to use">
+              <option value="TruSeq2-SE.fa">TruSeq2 (single-ended, for Illumina GAII)</option>
+              <option value="TruSeq3-SE.fa">TruSeq3 (single-ended, for MiSeq and HiSeq)</option>
+              <option value="TruSeq2-PE.fa">TruSeq2 (paired-ended, for Illumina GAII)</option>
+              <option value="TruSeq3-PE.fa">TruSeq3 (paired-ended, for MiSeq and HiSeq)</option>
+              <option value="TruSeq3-PE-2.fa">TruSeq3 (additional seqs) (paired-ended, for MiSeq and HiSeq)</option>
+              <option value="NexteraPE-PE.fa">Nextera (paired-ended)</option>
+            </param>
+          </when>
+          <when value="custom">
+            <param name="adapter_text" type="text" area="True" size="10x30" value=""
+                   label="Custom adapter sequences in fasta format" help="Write sequences in the fasta format.">
+              <sanitizer>
+                  <valid initial="string.printable"></valid>
+                  <mapping initial="none"/>
+              </sanitizer>
+            </param>
+          </when>
+        </conditional>
         <param name="seed_mismatches" type="integer" label="Maximum mismatch count which will still allow a full match to be performed" value="2" />
         <param name="palindrome_clip_threshold" type="integer" label="How accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment" value="30" />
         <param name="simple_clip_threshold" type="integer" label="How accurate the match between any adapter etc. sequence must be against a read" value="10" />
