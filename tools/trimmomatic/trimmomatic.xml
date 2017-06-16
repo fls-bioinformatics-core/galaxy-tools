@@ -153,9 +153,8 @@ ${from_text_area}</configfile>
         <param name="palindrome_clip_threshold" type="integer" label="How accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment" value="30" />
         <param name="simple_clip_threshold" type="integer" label="How accurate the match between any adapter etc. sequence must be against a read" value="10" />
         <param name="min_adapter_len" type="integer" label="Minimum length of adapter that needs to be detected (PE specific/palindrome mode)" value="2" />
-        <param name="keep_both_reads" type="boolean" label="Always keep both reads (PE specific/palindrome mode)?"
-           help="After read-though has been detected by palindrome mode, and the adapter sequence removed, the reverse read contains the same sequence information as the forward read, albeit in reverse complement. For this reason, the default behaviour is to entirely drop the reverse read. By specifying „true‟ for this parameter, the reverse read will also be retained, which may be useful e.g. if the downstream tools cannot handle a combination of paired and unpaired reads."
-           truevalue="true" falsevalue="false" checked="true" />
+        <param name="keep_both_reads" type="boolean" label="Always keep both reads (PE specific/palindrome mode)?" truevalue="true" falsevalue="false" checked="true"
+               help="See help below"/>
       </when>
       <when value="no" /> <!-- empty clause to satisfy planemo lint -->
     </conditional>
@@ -340,6 +339,12 @@ single ended data.
 This tool allows the following trimming steps to be performed:
 
  * **ILLUMINACLIP:** Cut adapter and other illumina-specific sequences from the read
+
+   * If **Always keep both reads (PE specific/palindrome mode)** is True, the reverse read will also be retained in palindrome mode.
+     After read-though has been detected by palindrome mode, and the adapter sequence removed,
+     the reverse read contains the same sequence information as the forward read, albeit in reverse complement.
+     For this reason, the default behaviour is to entirely drop the reverse read.
+     Retaining the reverse read may be useful e.g. if the downstream tools cannot handle a combination of paired and unpaired reads.
  * **SLIDINGWINDOW:** Perform a sliding window trimming, cutting once the average
    quality within the window falls below a threshold
  * **MINLEN:** Drop the read if it is below a specified length
@@ -400,8 +405,8 @@ reads.
 **Credits**
 
 This Galaxy tool has been developed within the Bioinformatics Core Facility at the
-University of Manchester, with contributions from Peter van Heusden and Marius
-van den Beek.
+University of Manchester, with contributions from Peter van Heusden, Marius
+van den Beek, Jelle Scholtalbers and Charles Girardot.
 
 It runs the Trimmomatic program which has been developed
 within Bjorn Usadel's group at RWTH Aachen university.
