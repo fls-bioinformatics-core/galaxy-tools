@@ -152,7 +152,7 @@ ${from_text_area}</configfile>
         <param name="seed_mismatches" type="integer" label="Maximum mismatch count which will still allow a full match to be performed" value="2" />
         <param name="palindrome_clip_threshold" type="integer" label="How accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment" value="30" />
         <param name="simple_clip_threshold" type="integer" label="How accurate the match between any adapter etc. sequence must be against a read" value="10" />
-        <param name="min_adapter_len" type="integer" label="Minimum length of adapter that needs to be detected (PE specific/palindrome mode)" value="2" />
+        <param name="min_adapter_len" type="integer" label="Minimum length of adapter that needs to be detected (PE specific/palindrome mode)" value="8" />
         <param name="keep_both_reads" type="boolean" label="Always keep both reads (PE specific/palindrome mode)?" truevalue="true" falsevalue="false" checked="true"
                help="See help below"/>
       </when>
