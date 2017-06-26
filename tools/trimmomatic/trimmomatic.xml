@@ -1,4 +1,4 @@
-<tool id="trimmomatic" name="Trimmomatic" version="0.36.3">
+<tool id="trimmomatic" name="Trimmomatic" version="0.36.4">
   <description>flexible read trimming tool for Illumina NGS data</description>
   <macros>
     <import>trimmomatic_macros.xml</import>
@@ -33,7 +33,19 @@
   #end if
   ## ILLUMINACLIP option
   #if $illuminaclip.do_illuminaclip
-    ILLUMINACLIP:\$TRIMMOMATIC_ADAPTERS_PATH/$illuminaclip.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
+    #if $illuminaclip.adapter_type.standard_or_custom == "custom"
+      #if $readtype.single_or_paired in ["pair_of_files","collection"]
+        ILLUMINACLIP:$adapter_file_from_text:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold:$illuminaclip.min_adapter_len:$illuminaclip.keep_both_reads
+      #else
+        ILLUMINACLIP:$adapter_file_from_text:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
+      #end if
+    #else
+      #if $readtype.single_or_paired in ["pair_of_files","collection"]
+        ILLUMINACLIP:\$TRIMMOMATIC_ADAPTERS_PATH/$illuminaclip.adapter_type.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold:$illuminaclip.min_adapter_len:$illuminaclip.keep_both_reads
+      #else
+        ILLUMINACLIP:\$TRIMMOMATIC_ADAPTERS_PATH/$illuminaclip.adapter_type.adapter_fasta:$illuminaclip.seed_mismatches:$illuminaclip.palindrome_clip_threshold:$illuminaclip.simple_clip_threshold
+      #end if
+    #end if
   #end if
   ## Other operations
   #for $op in $operations
@@ -81,6 +93,14 @@
     mv fastq_out.'$fastq_in.extension' '${fastq_out}'
   #end if
   ]]></command>
+  <configfiles>
+    <configfile name="adapter_file_from_text">#set from_text_area = ''
+#if str( $illuminaclip.do_illuminaclip ) == "yes" and str( $illuminaclip.adapter_type.standard_or_custom ) == "custom":
+#set from_text_area = $illuminaclip.adapter_type.adapter_text
+#end if
+${from_text_area}</configfile>
+  </configfiles>
+
   <inputs>
     <conditional name="readtype">
       <param name="single_or_paired" type="select" label="Single-end or paired-end reads?">
@@ -104,17 +124,37 @@
     <conditional name="illuminaclip">
       <param name="do_illuminaclip" type="boolean" label="Perform initial ILLUMINACLIP step?" help="Cut adapter and other illumina-specific sequences from the read" truevalue="yes" falsevalue="no" checked="False" />
       <when value="yes">
-        <param name="adapter_fasta" type="select" label="Adapter sequences to use">
-          <option value="TruSeq2-SE.fa">TruSeq2 (single-ended, for Illumina GAII)</option>
-          <option value="TruSeq3-SE.fa">TruSeq3 (single-ended, for MiSeq and HiSeq)</option>
-          <option value="TruSeq2-PE.fa">TruSeq2 (paired-ended, for Illumina GAII)</option>
-          <option value="TruSeq3-PE.fa">TruSeq3 (paired-ended, for MiSeq and HiSeq)</option>
-          <option value="TruSeq3-PE-2.fa">TruSeq3 (additional seqs) (paired-ended, for MiSeq and HiSeq)</option>
-          <option value="NexteraPE-PE.fa">Nextera (paired-ended)</option>
-        </param>
+        <conditional name="adapter_type">
+          <param name="standard_or_custom" type="select" label="Select standard adapter sequences or provide custom?">
+            <option value="standard" selected="true">Standard</option>
+            <option value="custom">Custom</option>
+          </param>
+          <when value="standard">
+            <param name="adapter_fasta" type="select" label="Adapter sequences to use">
+              <option value="TruSeq2-SE.fa">TruSeq2 (single-ended, for Illumina GAII)</option>
+              <option value="TruSeq3-SE.fa">TruSeq3 (single-ended, for MiSeq and HiSeq)</option>
+              <option value="TruSeq2-PE.fa">TruSeq2 (paired-ended, for Illumina GAII)</option>
+              <option value="TruSeq3-PE.fa">TruSeq3 (paired-ended, for MiSeq and HiSeq)</option>
+              <option value="TruSeq3-PE-2.fa">TruSeq3 (additional seqs) (paired-ended, for MiSeq and HiSeq)</option>
+              <option value="NexteraPE-PE.fa">Nextera (paired-ended)</option>
+            </param>
+          </when>
+          <when value="custom">
+            <param name="adapter_text" type="text" area="True" size="10x30" value=""
+                   label="Custom adapter sequences in fasta format" help="Write sequences in the fasta format.">
+              <sanitizer>
+                  <valid initial="string.printable"></valid>
+                  <mapping initial="none"/>
+              </sanitizer>
+            </param>
+          </when>
+        </conditional>
         <param name="seed_mismatches" type="integer" label="Maximum mismatch count which will still allow a full match to be performed" value="2" />
         <param name="palindrome_clip_threshold" type="integer" label="How accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment" value="30" />
         <param name="simple_clip_threshold" type="integer" label="How accurate the match between any adapter etc. sequence must be against a read" value="10" />
+        <param name="min_adapter_len" type="integer" label="Minimum length of adapter that needs to be detected (PE specific/palindrome mode)" value="8" />
+        <param name="keep_both_reads" type="boolean" label="Always keep both reads (PE specific/palindrome mode)?" truevalue="true" falsevalue="false" checked="true"
+               help="See help below"/>
       </when>
       <when value="no" /> <!-- empty clause to satisfy planemo lint -->
     </conditional>
@@ -287,6 +327,35 @@
       <param name="operations_0|operation|strictness" value="0.8" />
       <output name="fastq_out" file="trimmomatic_maxinfo.fastq" />
     </test>
+    <test>
+      <!-- Paired-end ILLUMINACLIP - this does not check valid clipping -->
+      <param name="single_or_paired" value="pair_of_files" />
+      <param name="fastq_r1_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
+      <param name="fastq_r2_in" value="Illumina_SG_R2.fastq" ftype="fastqsanger" />
+      <param name="do_illuminaclip" value="true"/>
+      <param name="adapter_fasta" value="TruSeq2-PE.fa"/>
+      <param name="operations_0|operation|name" value="SLIDINGWINDOW" />
+      <output name="fastq_out_r1_paired" file="trimmomatic_pe_r1_paired_out1_clip.fastq" />
+      <output name="fastq_out_r1_unpaired" file="trimmomatic_pe_r1_unpaired_out1.fastq" />
+      <output name="fastq_out_r2_paired" file="trimmomatic_pe_r2_paired_out1.fastq" />
+      <output name="fastq_out_r2_unpaired" file="trimmomatic_pe_r2_unpaired_out1_clip.fastq" />
+    </test>
+    <test>
+      <!-- Paired-end ILLUMINACLIP providing 'custom' adapters - this does not check valid clipping -->
+      <param name="single_or_paired" value="pair_of_files" />
+      <param name="fastq_r1_in" value="Illumina_SG_R1.fastq" ftype="fastqsanger" />
+      <param name="fastq_r2_in" value="Illumina_SG_R2.fastq" ftype="fastqsanger" />
+      <param name="do_illuminaclip" value="true"/>
+      <param name="standard_or_custom" value="custom"/>
+      <param name="adapter_text"
+             value=">PrefixPE/1&#10;AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT&#10;>PrefixPE/2&#10;CAAGCAGAAGACGGCATACGAGATCGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT&#10;>PCR_Primer1&#10;AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT&#10;>PCR_Primer1_rc&#10;AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT&#10;>PCR_Primer2&#10;CAAGCAGAAGACGGCATACGAGATCGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT&#10;>PCR_Primer2_rc&#10;AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTCGTATGCCGTCTTCTGCTTG&#10;>FlowCell1&#10;TTTTTTTTTTAATGATACGGCGACCACCGAGATCTACAC&#10;>FlowCell2&#10;TTTTTTTTTTCAAGCAGAAGACGGCATACGA&#10;"/>
+      <param name="adapter_fasta" value="TruSeq2-PE.fa"/>
+      <param name="operations_0|operation|name" value="SLIDINGWINDOW" />
+      <output name="fastq_out_r1_paired" file="trimmomatic_pe_r1_paired_out1_clip.fastq" />
+      <output name="fastq_out_r1_unpaired" file="trimmomatic_pe_r1_unpaired_out1.fastq" />
+      <output name="fastq_out_r2_paired" file="trimmomatic_pe_r2_paired_out1.fastq" />
+      <output name="fastq_out_r2_unpaired" file="trimmomatic_pe_r2_unpaired_out1_clip.fastq" />
+    </test>
   </tests>
   <help><![CDATA[
 .. class:: infomark
@@ -299,6 +368,12 @@ single ended data.
 This tool allows the following trimming steps to be performed:
 
  * **ILLUMINACLIP:** Cut adapter and other illumina-specific sequences from the read
+
+   * If **Always keep both reads (PE specific/palindrome mode)** is True, the reverse read will also be retained in palindrome mode.
+     After read-though has been detected by palindrome mode, and the adapter sequence removed,
+     the reverse read contains the same sequence information as the forward read, albeit in reverse complement.
+     For this reason, the default behaviour is to entirely drop the reverse read.
+     Retaining the reverse read may be useful e.g. if the downstream tools cannot handle a combination of paired and unpaired reads.
  * **SLIDINGWINDOW:** Perform a sliding window trimming, cutting once the average
    quality within the window falls below a threshold
  * **MINLEN:** Drop the read if it is below a specified length
@@ -359,8 +434,8 @@ reads.
 **Credits**
 
 This Galaxy tool has been developed within the Bioinformatics Core Facility at the
-University of Manchester, with contributions from Peter van Heusden and Marius
-van den Beek.
+University of Manchester, with contributions from Peter van Heusden, Marius
+van den Beek, Jelle Scholtalbers and Charles Girardot.
 
 It runs the Trimmomatic program which has been developed
 within Bjorn Usadel's group at RWTH Aachen university.

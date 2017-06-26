@@ -71,6 +71,9 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.36.4     - Add option to provide custom adapter sequences for ILLUMINACLIP
+           - Add options ``minAdapterLength`` and ``keepBothReads`` for ILLUMINACLIP
+             in palindrome mode
 0.36.3     - Fix naming of output collections. Instead of all outputs being called
              "Trimmomatic on collection NN" these will now be called "Trimmomatic
              on collection NN: paired" or "Trimmomatic on collection NN: unpaired".
@@ -106,7 +109,8 @@ Credits
 
 This wrapper has been developed and is maintained by Peter Briggs (@pjbriggs).
 Peter van Heusden (@pvanheus) and Marius van den Beek (@mvdbeek) contributed
-support for gz compressed FastQ files.
+support for gz compressed FastQ files. Charles Girardot (@cgirardot) and
+Jelle Scholtalbers (@scholtalbers) contributed additional options to ILLUMINACLIP.
 
 
 Developers
