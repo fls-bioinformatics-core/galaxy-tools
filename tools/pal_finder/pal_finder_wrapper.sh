@@ -340,7 +340,7 @@ ERROR primer3 terminated prematurely due to bad product size ranges
 
 Pal_finder generated bad ranges for the following read IDs:
 EOF
-    $(find_bad_primer_ranges Output/pr3in.txt) >&2
+    echo $(find_bad_primer_ranges Output/pr3in.txt) >&2
     cat >&2 <<EOF
 
 This error can occur when input data contains short R1 reads and has
