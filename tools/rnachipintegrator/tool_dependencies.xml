@@ -17,10 +17,10 @@
     </install>
     <readme>Installs Python module XlsxWriter 0.8.4</readme>
   </package>
-  <package name="rnachipintegrator" version="1.0.2">
+  <package name="rnachipintegrator" version="1.0.3">
     <install version="1.0">
       <actions>
-	<action type="download_by_url">https://pypi.python.org/packages/3b/28/a83c8d0503e5af1318c1b0d7cdbdca933a9647220e461d1a8f5800a58de2/RnaChipIntegrator-1.0.2.tar.gz</action>
+	<action type="download_by_url">https://pypi.python.org/packages/2f/63/d2b930e110b74197675ab6eee21f46afbdb3931f6aa971fc2de8c2437163/RnaChipIntegrator-1.0.3.tar.gz</action>
         <action type="shell_command">
 	  pip install --no-use-wheel --install-option "--prefix=$INSTALL_DIR" .
 	</action>
@@ -30,6 +30,6 @@
 	</action>
       </actions>
     </install>
-    <readme>Installs RnaChipIntegrator 1.0.2 from PyPI</readme>
+    <readme>Installs RnaChipIntegrator 1.0.3 from PyPI</readme>
   </package>
 </tool_dependency>

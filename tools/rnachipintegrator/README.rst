@@ -84,26 +84,13 @@ In summary:
 from the refGene table, and select the strand field.)
 
 
-Note on Excel output files and Galaxy
-=====================================
-
-RnaChipIntegrator produces an Excel spreadsheet as one of its outputs,
-however Galaxy is not currently set up by default to handle these.
-
-To enable Excel (XLS) output file handling in Galaxy, edit the
-``datatypes_conf.xml`` file and add:
-
-    <datatype extension="xlsx" type="galaxy.datatypes.binary:Binary" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
-
-Restarting Galaxy should mean that the browser correctly handles Excel outputs
-from RnaChipIntegrator.
-
 History
 =======
 
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+1.0.3.0    - Update to ``RnaChipIntegrator`` version 1.0.3
 1.0.2.0    - Update to ``RnaChipIntegrator`` version 1.0.2 (fixes bug with
              zero or blank cutoff)
 1.0.0.0    - Update to use latest ``RnaChipIntegrator`` version 1.0.0.
