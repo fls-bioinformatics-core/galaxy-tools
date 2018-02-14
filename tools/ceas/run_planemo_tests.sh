@@ -13,11 +13,7 @@
 #                         Galaxy instance)
 #
 # List of dependencies
-TOOL_DEPENDENCIES="python_mysqldb/1.2.5
- bx_python/0.7.1
- cistrome_ceas/1.0.2.d8c0751
- ucsc_fetchChromSizes/1.0
- R/3.1.2"
+TOOL_DEPENDENCIES="cistrome_ceas/1.0.2.d8c0751"
 # Where to find them
 TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.ceas
 if [ ! -d $TOOL_DEPENDENCIES_DIR ] ; then

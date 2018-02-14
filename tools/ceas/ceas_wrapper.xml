@@ -1,10 +1,10 @@
 <tool id="ceas" name="CEAS" version="1.0.2-2">
   <description>Annotate intervals and scores with genome features</description>
   <requirements>
-    <requirement type="package" version="1.2.5">python_mysqldb</requirement>
-    <requirement type="package" version="0.7.1">bx_python</requirement>
+    <requirement type="package" version="1.2.5">mysql-python</requirement>
+    <requirement type="package" version="0.7.1">bx-python</requirement>
     <requirement type="package" version="1.0.2.d8c0751">cistrome_ceas</requirement>
-    <requirement type="package" version="1.0">ucsc_fetchChromSizes</requirement>
+    <requirement type="package" version="357">ucsc-fetchchromsizes</requirement>
     <requirement type="package" version="3.1.2">R</requirement>
   </requirements>
   <version_command>ceas --version 2&gt;&amp;1 | tail -1</version_command>
