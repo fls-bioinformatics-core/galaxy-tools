@@ -5,12 +5,12 @@ python:
 # Attempt to split the tests into separate
 # environments
 env:
-  - TOOL=trimmomatic
-  - TOOL=pal_finder
-  - TOOL=weeder2
-  - TOOL=rnachipintegrator
-  - TOOL=macs21
-  - TOOL=ceas
+  - TOOL=trimmomatic PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
+  - TOOL=pal_finder PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
+  - TOOL=weeder2 PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
+  - TOOL=rnachipintegrator PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
+  - TOOL=macs21 PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
+  - TOOL=ceas PLANEMO_OPTIONS="-no_conda_auto_install --no_conda_auto_init"
 
 before_install:
 # Update the list of available packages
@@ -41,5 +41,5 @@ script:
 # Use the Galaxy virtualenv
   - ". travis/galaxy_venv/bin/activate"
 # Run tool tests
-  - "tools/$TOOL/run_planemo_tests.sh --galaxy_root travis/galaxy --no_conda_auto_install --no_conda_auto_init"
+  - "tools/$TOOL/run_planemo_tests.sh --galaxy_root travis/galaxy $PLANEMO_OPTIONS"
 
