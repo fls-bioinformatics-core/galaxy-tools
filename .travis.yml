@@ -10,7 +10,7 @@ env:
   - TOOL=weeder2 PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
   - TOOL=rnachipintegrator PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
   - TOOL=macs21 PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
-  - TOOL=ceas PLANEMO_OPTIONS="-no_conda_auto_install --no_conda_auto_init"
+  - TOOL=ceas PLANEMO_OPTIONS=
 
 before_install:
 # Update the list of available packages
