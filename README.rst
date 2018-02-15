@@ -36,6 +36,12 @@ See the individual ``README`` files for information on how to install
 into a local Galaxy; alternatively where indicated a subset of tools are
 available from the main toolshed: https://toolshed.g2.bx.psu.edu/
 
+conda-recipes
+-------------
+
+The ``conda-recipes`` subdirectory contains recipes for building
+conda dependencies.
+
 packages
 --------
 

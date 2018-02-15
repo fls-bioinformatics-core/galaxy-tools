@@ -1,14 +1,12 @@
 <tool id="ceas" name="CEAS" version="1.0.2-2">
   <description>Annotate intervals and scores with genome features</description>
   <requirements>
-    <requirement type="package" version="1.2.5">mysql-python</requirement>
-    <requirement type="package" version="0.7.1">bx-python</requirement>
-    <requirement type="package" version="1.0.2.d8c0751">cistrome_ceas</requirement>
+    <requirement type="package" version="1.0.2b1">cistrome-ceas</requirement>
     <requirement type="package" version="357">ucsc-fetchchromsizes</requirement>
-    <requirement type="package" version="3.1.2">R</requirement>
   </requirements>
   <version_command>ceas --version 2&gt;&amp;1 | tail -1</version_command>
-  <command interpreter="bash">ceas_wrapper.sh
+  <command><![CDATA[
+  bash $__tool_directory__/ceas_wrapper.sh
   $bed_file ${gdb_file.fields.path}
   $log_output $pdf_report $xls_output
   #if (str($wig_file) != 'None')
@@ -28,7 +26,8 @@
   --sizes $sizes_lower,$sizes_middle,$sizes_upper
   --bisizes $bisizes_lower,$bisizes_upper
   --pf-res $profiling_resolution
-  --rel-dist $relative_distance</command>
+  --rel-dist $relative_distance
+  ]]></command>
   <inputs>
     <param name="bed_file" type="data" format="bed" label="BED file with ChIP regions" />
     <param name="wig_file" type="data" format="wig,bigwig" label="WIG or BIGWIG file for wig profiling or genome background annotation" optional="true"

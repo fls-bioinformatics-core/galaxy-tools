@@ -12,28 +12,16 @@
 #      --galaxy_root DIR (to run tests using existing
 #                         Galaxy instance)
 #
-# List of dependencies
-TOOL_DEPENDENCIES="cistrome_ceas/1.0.2.d8c0751"
-# Where to find them
-TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.ceas
-if [ ! -d $TOOL_DEPENDENCIES_DIR ] ; then
-    echo WARNING $TOOL_DEPENDENCIES_DIR not found >&2
-    echo Creating tool dependencies dir
-    mkdir -p $TOOL_DEPENDENCIES_DIR
-    echo Installing tool dependencies
-    $(dirname $0)/install_tool_deps.sh $TOOL_DEPENDENCIES_DIR
-fi
-# Load dependencies
-for dep in $TOOL_DEPENDENCIES ; do
-    env_file=$TOOL_DEPENDENCIES_DIR/$dep/env.sh
-    if [ -e $env_file ] ; then
-	. $env_file
-    else
-	echo ERROR no env.sh file found for $dep >&2
-	exit 1
-    fi
-done
+# Install conda/conda-build
+CONDA_DIR=$(mktemp -u -d --tmpdir=$(pwd) --suffix=.miniconda)
+planemo conda_init --conda_prefix $CONDA_DIR
+$CONDA_DIR/bin/conda install -y conda-build
+# Build and install local cistrome-ceas
+$CONDA_DIR/bin/conda-build --python 2.7 $(dirname $0)/../../conda-recipes/cistrome-ceas
+planemo conda_install --conda_prefix $CONDA_DIR --conda_use_local $(dirname $0)/ceas_wrapper.xml
 # Run the planemo tests
-planemo test $@ $(dirname $0)/ceas_wrapper.xml
+planemo test $@ --conda_prefix $CONDA_DIR --conda_use_local $(dirname $0)/ceas_wrapper.xml
+# Remove conda installation
+rm -rf $CONDA_DIR
 ##
 #
