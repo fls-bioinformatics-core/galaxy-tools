@@ -23,8 +23,8 @@ INFO\ \ \@\ .*\ \#5\ read\ the\ pre\-computed\ genome\ bg\ annotation\.\.\.\
 INFO\ \ \@\ .*\ \#6\ perform\ ChIP\ region\ annotation\.\.\.\ 
 INFO\ \ \@\ .*\ \#7\ write\ a\ R\ script\ of\ ChIP\ region\ annotation\.\.\.\ 
 
-R\ version\ 3\.1\.2\ \(2014\-10\-31\)\ \-\-\ \"Pumpkin\ Helmet\"
-Copyright\ \(C\)\ 2014\ The\ R\ Foundation\ for\ Statistical\ Computing
+R\ version\ .*
+Copyright\ \(C\)\ 20(\d\d)\ The\ R\ Foundation\ for\ Statistical\ Computing
 Platform\:\ .*
 
 R\ is\ free\ software\ and\ comes\ with\ ABSOLUTELY\ NO\ WARRANTY\.
