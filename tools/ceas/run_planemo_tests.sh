@@ -17,7 +17,7 @@ CONDA_DIR=$(mktemp -u -d --tmpdir=$(pwd) --suffix=.miniconda)
 planemo conda_init --conda_prefix $CONDA_DIR
 $CONDA_DIR/bin/conda install -y conda-build
 # Build and install local cistrome-ceas
-$CONDA_DIR/bin/conda-build --python 2.7 $(dirname $0)/../../conda-recipes/cistrome-ceas
+$CONDA_DIR/bin/conda-build -c bioconda --python 2.7 $(dirname $0)/../../conda-recipes/cistrome-ceas
 planemo conda_install --conda_prefix $CONDA_DIR --conda_use_local $(dirname $0)/ceas_wrapper.xml
 # Run the planemo tests
 planemo test $@ --conda_prefix $CONDA_DIR --conda_use_local $(dirname $0)/ceas_wrapper.xml
