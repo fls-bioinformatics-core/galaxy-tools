@@ -67,6 +67,8 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+1.0.2-3    - Switch to getting R 3.1.2 and bx-python 0.7.1 dependencies from the
+             toolshed (rather than installing as part of the tool)
 1.0.2-2    - Major updates to fix various bugs, add tests and enable ceasBW to
              be used without an existing chromosome sizes file.
 1.0.2-1    - Modified to work with Cistrome-version of CEAS (includes additional

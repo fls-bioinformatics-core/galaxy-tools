@@ -1,17 +1,12 @@
 <?xml version="1.0"?>
 <tool_dependency>
-  <!-- Local version of R 3.1.2 dependency -->
+  <!-- R 3.1.2 from main/test toolshed -->
   <package name="R" version="3.1.2">
-    <install version="1.0">
-      <actions>
-	<action type="download_by_url">http://cran.r-project.org/src/base/R-3/R-3.1.2.tar.gz</action>
-        <action type="shell_command">./configure --prefix=$INSTALL_DIR</action>
-        <action type="make_install" />
-        <action type="set_environment">
-          <environment_variable name="PATH" action="prepend_to">$INSTALL_DIR/bin</environment_variable>
-        </action>
-      </actions>
-    </install>
+    <repository name="package_r_3_1_2" prior_installation_required="True" owner="iuc" />
+  </package>
+  <!-- bx_python from main/test toolshed -->
+  <package name="bx-python" version="0.7.1">
+    <repository name="package_bx_python_0_7" prior_installation_required="True" owner="iuc" />
   </package>
   <!-- Python mysqldb package -->
   <package name="python_mysqldb" version="1.2.5">
@@ -30,28 +25,6 @@
       </actions>
     </install>
     <readme>Installs Python module MySQLdb 1.2.5</readme>
-  </package>
-  <!-- bx_python
-       This is cribbed from devteam's 'package_bx_python_0_7' in the main
-       toolshed:
-       https://toolshed.g2.bx.psu.edu/view/devteam/package_bx_python_0_7
-  -->
-  <package name="bx_python" version="0.7.1">
-    <install version="1.0">
-      <actions>
-        <action type="setup_virtualenv">
-numpy==1.7.1
-bx-python==0.7.1
-        </action>
-        <action type="set_environment">
-          <environment_variable action="set_to" name="BX_PYTHON_PATH">$INSTALL_DIR</environment_variable>
-        </action>
-      </actions>
-    </install>
-    <readme>
-      Installation of bx-python 0.7.1 along with numpy 1.7.1. The installation can be
-      accessed via BX_PYTHON_PATH.
-    </readme>
   </package>
   <!-- cistrome_ceas
        Installs the version of CEAS package found in the Cistrome
