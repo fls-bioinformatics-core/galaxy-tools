@@ -5,12 +5,12 @@ python:
 # Attempt to split the tests into separate
 # environments
 env:
-  - TOOL=trimmomatic
-  - TOOL=pal_finder
-  - TOOL=weeder2
-  - TOOL=rnachipintegrator
-  - TOOL=macs21
-  - TOOL=ceas
+  - TOOL=trimmomatic PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
+  - TOOL=pal_finder PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
+  - TOOL=weeder2 PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
+  - TOOL=rnachipintegrator PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
+  - TOOL=macs21 PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
+  - TOOL=ceas PLANEMO_OPTIONS=
 
 before_install:
 # Update the list of available packages
@@ -29,7 +29,7 @@ install:
   - "bioinf-software-install/install_samtools.sh samtools-0.1.18.tar.bz2 apps"
   - "export PATH=$PATH:$PWD/apps/samtools/0.1.18/"
 # Bootstrap Galaxy instance for tests
-  - "bioinf-software-install/install_galaxy.sh --repo https://github.com/galaxyproject/galaxy/ travis"
+  - "bioinf-software-install/install_galaxy.sh --repo https://github.com/galaxyproject/galaxy/ --release release_17.09 travis"
   - ". travis/galaxy_venv/bin/activate"
 # Update setuptools before installing planemo
 # See https://github.com/galaxyproject/planemo/issues/520
@@ -41,5 +41,5 @@ script:
 # Use the Galaxy virtualenv
   - ". travis/galaxy_venv/bin/activate"
 # Run tool tests
-  - "tools/$TOOL/run_planemo_tests.sh --galaxy_root travis/galaxy --no_conda_auto_install --no_conda_auto_init"
+  - "tools/$TOOL/run_planemo_tests.sh --galaxy_root travis/galaxy $PLANEMO_OPTIONS"
 
