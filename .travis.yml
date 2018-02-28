@@ -5,7 +5,7 @@ python:
 # Attempt to split the tests into separate
 # environments
 env:
-  - TOOL=trimmomatic PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
+  - TOOL=trimmomatic PLANEMO_OPTIONS=
   - TOOL=pal_finder PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
   - TOOL=weeder2 PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
   - TOOL=rnachipintegrator PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
