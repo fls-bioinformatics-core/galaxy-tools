@@ -71,6 +71,8 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.36.5     - Remove tool_dependencies.xml and always use conda to resolve tool
+             dependencies
 0.36.4     - Add option to provide custom adapter sequences for ILLUMINACLIP
            - Add options ``minAdapterLength`` and ``keepBothReads`` for ILLUMINACLIP
              in palindrome mode
