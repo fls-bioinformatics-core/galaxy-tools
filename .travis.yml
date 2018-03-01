@@ -28,7 +28,7 @@ install:
   - "bioinf-software-install/install_galaxy.sh --repo https://github.com/galaxyproject/galaxy/ --release release_17.09 travis"
 # Install planemo
   - "virtualenv planemo_venv"
-  - ". travis/planemo_venv/bin/activate"
+  - ". planemo_venv/bin/activate"
 # Update setuptools before installing planemo
 # See https://github.com/galaxyproject/planemo/issues/520
   - "pip install --upgrade pip setuptools"
