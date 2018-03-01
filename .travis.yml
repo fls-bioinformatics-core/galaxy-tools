@@ -37,7 +37,7 @@ install:
 
 script:
 # Use the Galaxy virtualenv
-  - ". travis/planemo_venv/bin/activate"
+  - ". planemo_venv/bin/activate"
 # Run tool tests
   - "tools/$TOOL/run_planemo_tests.sh --galaxy_root travis/galaxy $PLANEMO_OPTIONS"
 
