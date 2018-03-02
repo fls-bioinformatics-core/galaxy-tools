@@ -12,32 +12,19 @@
 #      --galaxy_root DIR (to run tests using existing
 #                         Galaxy instance)
 #
-# List of dependencies
-TOOL_DEPENDENCIES="perl/5.16.3
- primer3_core/2.0.0
- pal_finder/0.02.04
- biopython/1.65
- pandaseq/2.8.1"
-# Where to find them
-TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.pal_finder
-if [ ! -d $TOOL_DEPENDENCIES_DIR ] ; then
-    echo WARNING $TOOL_DEPENDENCIES_DIR not found >&2
-    echo Creating tool dependencies dir
-    mkdir -p $TOOL_DEPENDENCIES_DIR
-    echo Installing tool dependencies
-    $(dirname $0)/install_tool_deps.sh $TOOL_DEPENDENCIES_DIR
-fi
-# Load dependencies
-for dep in $TOOL_DEPENDENCIES ; do
-    env_file=$TOOL_DEPENDENCIES_DIR/$dep/env.sh
-    if [ -e $env_file ] ; then
-	. $env_file
-    else
-	echo ERROR no env.sh file found for $dep >&2
-	exit 1
-    fi
-done
+# Install conda/conda-build
+CONDA_DIR=$(mktemp -u -d --tmpdir=$(pwd) --suffix=.miniconda)
+planemo conda_init --conda_prefix $CONDA_DIR
+$CONDA_DIR/bin/conda install -y conda-build
+# Build local pal_finder
+$CONDA_DIR/bin/conda build -c bioconda $(dirname $0)/../../conda-recipes/pal_finder
+# Build local pandaseq 2.8.1
+##$CONDA_DIR/bin/conda build -c bioconda $(dirname $0)/../../conda-recipes/pandaseq/2.8.1
+# Install local packages
+planemo conda_install --conda_prefix $CONDA_DIR --conda_use_local $(dirname $0)/pal_finder_wrapper.xml
 # Run the planemo tests
-planemo test $@ $(dirname $0)/pal_finder_wrapper.xml
+planemo test --conda_prefix $CONDA_DIR --conda_use_local $@ $(dirname $0)/pal_finder_wrapper.xml
+# Remove the local conda install
+rm -rf $CONDA_DIR
 ##
 #
