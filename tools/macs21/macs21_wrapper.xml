@@ -8,8 +8,8 @@
     <requirement type="package" version="2.0">ucsc_tools_for_macs21</requirement>
   </requirements>
   <version_command>macs2 --version</version_command>
-  <command interpreter="python">
-    macs21_wrapper.py callpeak
+  <command><![CDATA[
+    python $__tool_directory__/macs21_wrapper.py callpeak
     ##
     ## ChIP-seq input
     $input_chipseq_file1
@@ -96,7 +96,7 @@
     #else
        --output-peaks=$output_peaks_file
     #end if
-  </command>
+  ]]></command>
   <inputs>
     <!--experiment name used as base for output file names -->
     <param name="experiment_name" type="text" value="MACS2.1.0 in Galaxy" size="50"
