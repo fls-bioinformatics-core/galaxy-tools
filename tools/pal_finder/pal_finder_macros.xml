@@ -1,0 +1,7 @@
+<macros>
+  <!--
+       Set the path for the pal_finder data files
+  -->
+  <token name="@CONDA_PAL_FINDER_SCRIPT_DIR@">if [ -z "\$PALFINDER_SCRIPT_DIR" ]; then export PALFINDER_SCRIPT_DIR=\$(dirname \$(readlink -e \$(which pal_finder))); fi</token>
+  <token name="@CONDA_PAL_FINDER_DATA_DIR@">if [ -z "\$PALFINDER_SCRIPT_DIR" ]; then export PALFINDER_DATA_DIR=\$(dirname \$(readlink -e \$(which pal_finder))); fi</token>
+</macros>
