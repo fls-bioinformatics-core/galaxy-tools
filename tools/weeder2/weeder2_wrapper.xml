@@ -1,9 +1,14 @@
-<tool id="motiffinding_weeder2" name="Weeder2" version="2.0.1">
+<tool id="motiffinding_weeder2" name="Weeder2" version="2.0.2">
   <description>Motif discovery in sequences from coregulated genes of a single species</description>
+  <macros>
+    <import>weeder2_macros.xml</import>
+  </macros>
   <requirements>
     <requirement type="package" version="2.0">weeder</requirement>
   </requirements>
-  <command interpreter="bash">weeder2_wrapper.sh
+  <command><![CDATA[
+  @CONDA_WEEDER2_FREQFILES_PATH@ &&
+  bash $__tool_directory__/weeder2_wrapper.sh
   $sequence_file $species_code ${species_code.fields.path}
   $output_motifs_file $output_matrix_file
   $strands
@@ -16,7 +21,7 @@
      -sim $advanced_options.sim_threshold
      -em $advanced_options.em_cycles
   #end if
-  </command>
+  ]]></command>
   <inputs>
     <param name="sequence_file" type="data" format="fasta" label="Input sequence" />
     <param name="species_code" type="select" label="Species to use for background comparison">
