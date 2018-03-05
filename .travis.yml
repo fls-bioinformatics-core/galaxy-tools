@@ -24,13 +24,11 @@ before_install:
 install:
 # Get the installer scripts
   - "git clone https://github.com/pjbriggs/bioinf-software-install.git"
-# Install Samtools 0.1.18
-  - "wget http://sourceforge.net/projects/samtools/files/samtools/0.1.18/samtools-0.1.18.tar.bz2"
-  - "bioinf-software-install/install_samtools.sh samtools-0.1.18.tar.bz2 apps"
-  - "export PATH=$PATH:$PWD/apps/samtools/0.1.18/"
 # Bootstrap Galaxy instance for tests
-  - "bioinf-software-install/install_galaxy.sh --repo https://github.com/galaxyproject/galaxy/ --release release_17.09 travis"
-  - ". travis/galaxy_venv/bin/activate"
+  - "bioinf-software-install/install_galaxy.sh --repo https://github.com/galaxyproject/galaxy/ --release release_17.09 --bare travis"
+# Install planemo
+  - "virtualenv planemo_venv"
+  - ". planemo_venv/bin/activate"
 # Update setuptools before installing planemo
 # See https://github.com/galaxyproject/planemo/issues/520
   - "pip install --upgrade pip setuptools"
@@ -39,7 +37,7 @@ install:
 
 script:
 # Use the Galaxy virtualenv
-  - ". travis/galaxy_venv/bin/activate"
+  - ". planemo_venv/bin/activate"
 # Run tool tests
   - "tools/$TOOL/run_planemo_tests.sh --galaxy_root travis/galaxy $PLANEMO_OPTIONS"
 
