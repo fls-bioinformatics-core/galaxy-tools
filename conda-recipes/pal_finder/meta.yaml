@@ -26,7 +26,7 @@ source:
 requirements:
   run:
       - perl
-      - primer3
+      - primer3 ==2.0.0a
       
 test:
     commands:

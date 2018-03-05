@@ -16,10 +16,10 @@
 CONDA_DIR=$(mktemp -u -d --tmpdir=$(pwd) --suffix=.miniconda)
 planemo conda_init --conda_prefix $CONDA_DIR
 $CONDA_DIR/bin/conda install -y conda-build
-# Build local pal_finder
+# Build local primer3, pal_finder and pandaseq
+$CONDA_DIR/bin/conda build -c bioconda $(dirname $0)/../../conda-recipes/primer3
 $CONDA_DIR/bin/conda build -c bioconda $(dirname $0)/../../conda-recipes/pal_finder
-# Build local pandaseq 2.8.1
-##$CONDA_DIR/bin/conda build -c bioconda $(dirname $0)/../../conda-recipes/pandaseq/2.8.1
+$CONDA_DIR/bin/conda build -c bioconda -m $(dirname $0)/../../conda-recipes/scripts/bioconda_env_matrix.yml $(dirname $0)/../../conda-recipes/pandaseq
 # Install local packages
 planemo conda_install --conda_prefix $CONDA_DIR --conda_use_local $(dirname $0)/pal_finder_wrapper.xml
 # Run the planemo tests
