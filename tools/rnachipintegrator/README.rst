@@ -90,6 +90,7 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+1.0.3.1    - Fetch dependencies from conda if not otherwise satisfied
 1.0.3.0    - Update to ``RnaChipIntegrator`` version 1.0.3
 1.0.2.0    - Update to ``RnaChipIntegrator`` version 1.0.2 (fixes bug with
              zero or blank cutoff)

@@ -15,7 +15,6 @@ tar cvzf $TGZ \
     rnachipintegrator_wrapper.xml \
     rnachipintegrator_canonical_genes.xml \
     rnachipintegrator_wrapper.sh \
-    tool_dependencies.xml \
     data_manager \
     data_manager_conf.xml \
     tool-data \
