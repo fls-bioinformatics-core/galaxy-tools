@@ -101,7 +101,7 @@
   ]]></command>
   <inputs>
     <!--experiment name used as base for output file names -->
-    <param name="experiment_name" type="text" value="MACS2.1.0 in Galaxy" size="50"
+    <param name="experiment_name" type="text" value="MACS2.1 in Galaxy" size="50"
 	   label="Experiment Name"/>
     <!--choose 'broad' or 'narrow' regions-->
     <conditional name="broad_options">
