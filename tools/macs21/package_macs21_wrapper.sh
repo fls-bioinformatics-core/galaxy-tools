@@ -13,7 +13,6 @@ tar cvzf $TGZ \
     README.rst \
     macs21_wrapper.xml \
     macs21_wrapper.py \
-    tool_dependencies.xml \
     test-data
 if [ -f $TGZ ] ; then
     echo Created $TGZ
