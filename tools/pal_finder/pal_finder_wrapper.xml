@@ -174,18 +174,18 @@
     </data>
   </outputs>
   <tests>
+    <!-- Test with Illumina input -->
     <test>
-      <!-- Test with Illumina input -->
       <param name="platform_type" value="illumina" />
       <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
       <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
-      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
-      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
-      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats.out" />
+      <expand macro="output_illumina_microsat_summary" />
+      <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats.out.re_match" />
+      <output name="output_filtered_microsats" compare="re_match" file="illuminaPE_filtered_microsats.out.re_match" />
       <output name="output_assembly" file="illuminaPE_assembly_after_filters.out" />
     </test>
+    <!-- Test with Illumina input as dataset pair -->
     <test>
-      <!-- Test with Illumina input as dataset pair -->
       <param name="platform_type" value="illumina" />
       <param name="paired_input_type" value="collection" />
       <param name="input_fastq_pair">
@@ -194,64 +194,65 @@
 	  <element name="reverse" value="illuminaPE_r2.fq" ftype="fastqsanger" />
 	</collection>
       </param>
-      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
-      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
-      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats.out" />
+      <expand macro="output_illumina_microsat_summary" />
+      <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats.out.re_match" />
+      <output name="output_filtered_microsats" compare="re_match" file="illuminaPE_filtered_microsats.out.re_match" />
       <output name="output_assembly" file="illuminaPE_assembly_after_filters.out" />
     </test>
+    <!-- Test with Illumina input filter to loci with PandaSEQ assembly
+	 ('-assembly' option)
+    -->
     <test>
-      <!-- Test with Illumina input filter to loci with PandaSEQ assembly
-	   ('-assembly' option) -->
       <param name="platform_type" value="illumina" />
       <param name="filters" value="" />
       <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
       <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
-      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
-      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
+      <expand macro="output_illumina_microsat_summary" />
+      <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats.out.re_match" />
       <output name="output_assembly" file="illuminaPE_assembly.out" />
     </test>
+    <!-- Test with Illumina input filter to loci with primers
+	 ('-primers' option) -->
     <test>
-      <!-- Test with Illumina input filter to loci with primers
-	   ('-primers' option) -->
       <param name="platform_type" value="illumina" />
       <param name="filters" value="-primers" />
       <param name="assembly" value="false" />
       <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
       <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
-      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
-      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
-      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats_primers.out" />
+      <expand macro="output_illumina_microsat_summary" />
+      <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats.out.re_match" />
+      <output name="output_filtered_microsats" compare="re_match" file="illuminaPE_filtered_microsats_primers.out.re_match" />
     </test>
+    <!-- Test with Illumina input filter to loci which appear only once
+	 ('-occurrences' option) -->
     <test>
-      <!-- Test with Illumina input filter to loci which appear only once
-	   ('-occurrences' option) -->
       <param name="platform_type" value="illumina" />
       <param name="filters" value="-occurrences" />
       <param name="assembly" value="false" />
       <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
       <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
-      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
-      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
-      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats_occurrences.out" />
+      <expand macro="output_illumina_microsat_summary" />
+      <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats.out.re_match" />
+      <output name="output_filtered_microsats" compare="re_match" file="illuminaPE_filtered_microsats_occurrences.out.re_match" />
     </test>
+    <!-- Test with Illumina input filter and rank loci with perfect motifs
+	 ('-rankmotifs' option) -->
     <test>
-      <!-- Test with Illumina input filter and rank loci with perfect motifs
-	   ('-rankmotifs' option) -->
       <param name="platform_type" value="illumina" />
       <param name="filters" value="-rankmotifs" />
       <param name="assembly" value="false" />
       <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
       <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
-      <output name="output_microsat_summary" file="illuminaPE_microsat_types.out" />
-      <output name="output_pal_summary" file="illuminaPE_microsats.out" />
-      <output name="output_filtered_microsats" file="illuminaPE_filtered_microsats_rankmotifs.out" />
+      <expand macro="output_illumina_microsat_summary" />
+      <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats.out.re_match" />
+      <output name="output_filtered_microsats" compare="re_match" file="illuminaPE_filtered_microsats_rankmotifs.out.re_match" />
     </test>
+    <!-- Test with 454 input -->
     <test>
-      <!-- Test with 454 input -->
       <param name="platform_type" value="454" />
       <param name="input_fasta" value="454_in.fa" ftype="fasta" />
-      <output name="output_microsat_summary" file="454_microsat_types.out" />
-      <output name="output_pal_summary" file="454_microsats.out" />
+      <expand macro="output_454_microsat_summary" />
+      <output name="output_pal_summary" compare="re_match" file="454_microsats.out.re_match" />
     </test>
   </tests>
   <help>
