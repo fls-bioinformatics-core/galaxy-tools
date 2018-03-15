@@ -31,9 +31,7 @@
 	<has_line line="totalBases:&#009;8639" />
 	<has_line line="totalReads:&#009;38" />
 	<has_line line="Microsat Type&#009;monomer length&#009;reads with loci&#009;total loci&#009;loci amplified&#009;total loci bases&#009;loci bases amplified" />
-	<has_line_matching expression="(AC|TG)\t2\t.*" />
-	<has_line_matching expression="(AT|CG)\t2\t0\t0\t0\t0\t0" />
-	<has_line_matching expression="(AG|TC)\t2\t0\t0\t0\t0\t0" />
+	<has_line_matching expression="(AC|TG|AT|CG|AG|TC)\t.*" />
       </assert_contents>
     </output>
   </xml>
