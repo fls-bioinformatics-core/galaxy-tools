@@ -1,4 +1,4 @@
-<tool id="microsat_pal_finder" name="pal_finder" version="0.02.04.5">
+<tool id="microsat_pal_finder" name="pal_finder" version="0.02.04.6">
   <description>Find microsatellite repeat elements from sequencing reads and design PCR primers to amplify them</description>
   <macros>
     <import>pal_finder_macros.xml</import>
