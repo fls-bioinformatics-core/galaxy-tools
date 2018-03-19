@@ -279,7 +279,7 @@
     <!-- Peak calling without bigwig output -->
     <test>
       <!-- Inputs -->
-      <param name="experiment_name" value="test_MACS2.1.0" />
+      <param name="experiment_name" value="test_MACS2.1.1" />
       <param name="broad_regions" value="" />
       <param name="format" value="BED" />
       <param name="input_chipseq_file1" value="test_region_IP.bed" dbkey="galGal3"
@@ -305,20 +305,20 @@
       <param name="nomodel_type_selector" value="nomodel" />
       <param name="nomodel_type|extsize" value="243" />
       <!-- Outputs -->
-      <output name="output_extra_files" file="test_MACS2.1.0_html_report.zip"
+      <output name="output_extra_files" file="test_MACS2.1.1_html_report.zip"
 	      compare="sim_size" delta="1500" />
-      <output name="output_summits_bed_file" file="test_MACS2.1.0_summits.bed" />
-      <output name="output_narrowpeaks_file" file="test_MACS2.1.0_peaks_narrowPeak.interval" />
+      <output name="output_summits_bed_file" file="test_MACS2.1.1_summits.bed" />
+      <output name="output_narrowpeaks_file" file="test_MACS2.1.1_peaks_narrowPeak.interval" />
       <output name="output_xls_to_interval_peaks_file"
-	      file="test_MACS2.1.0_peaks.xls.re_match"
+	      file="test_MACS2.1.1_peaks.xls.re_match"
 	      compare="re_match" lines_diff="1" />
-      <output name="output_treat_pileup_file" file="test_MACS2.1.0_treat_pileup.bdg" />
-      <output name="output_lambda_bedgraph_file" file="test_MACS2.1.0_control_lambda.bdg" />
+      <output name="output_treat_pileup_file" file="test_MACS2.1.1_treat_pileup.bdg" />
+      <output name="output_lambda_bedgraph_file" file="test_MACS2.1.1_control_lambda.bdg" />
     </test>
     <!-- Peak calling with bigwig output -->
     <test>
       <!-- Inputs -->
-      <param name="experiment_name" value="test_MACS2.1.0" />
+      <param name="experiment_name" value="test_MACS2.1.1" />
       <param name="broad_regions" value="" />
       <param name="format" value="BED" />
       <param name="input_chipseq_file1" value="test_region_IP.bed" dbkey="galGal3"
@@ -344,23 +344,23 @@
       <param name="nomodel_type_selector" value="nomodel" />
       <param name="nomodel_type|extsize" value="243" />
       <!-- Outputs -->
-      <output name="output_extra_files" file="test_MACS2.1.0_bw_html_report.zip"
+      <output name="output_extra_files" file="test_MACS2.1.1_bw_html_report.zip"
 	      compare="sim_size" delta="2500" />
-      <output name="output_summits_bed_file" file="test_MACS2.1.0_summits.bed" />
-      <output name="output_narrowpeaks_file" file="test_MACS2.1.0_peaks_narrowPeak.interval" />
+      <output name="output_summits_bed_file" file="test_MACS2.1.1_summits.bed" />
+      <output name="output_narrowpeaks_file" file="test_MACS2.1.1_peaks_narrowPeak.interval" />
       <output name="output_xls_to_interval_peaks_file"
-	      file="test_MACS2.1.0_peaks.xls.re_match"
+	      file="test_MACS2.1.1_peaks.xls.re_match"
 	      compare="re_match" lines_diff="1" />
-      <output name="output_treat_pileup_file" file="test_MACS2.1.0_treat_pileup.bdg" />
-      <output name="output_lambda_bedgraph_file" file="test_MACS2.1.0_control_lambda.bdg" />
-      <output name="output_bigwig_file" file="test_MACS2.1.0_treat_pileup.bw"
+      <output name="output_treat_pileup_file" file="test_MACS2.1.1_treat_pileup.bdg" />
+      <output name="output_lambda_bedgraph_file" file="test_MACS2.1.1_control_lambda.bdg" />
+      <output name="output_bigwig_file" file="test_MACS2.1.1_treat_pileup.bw"
 	      compare="sim_size" />
     </test>
   </tests>
   <help>
 **What it does**
 
-MACS (Model-based Analysis of ChIP-seq) 2.1.0 provides algorithms for identifying
+MACS (Model-based Analysis of ChIP-seq) 2.1.1 provides algorithms for identifying
 transcript factor binding sites. The program can be used either for ChIP-Seq data alone,
 or with control sample data to improve specificity.
 
