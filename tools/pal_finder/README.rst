@@ -61,6 +61,10 @@ History
 Version    Changes
 ---------- ----------------------------------------------------------------------
 
+0.02.04.6  - Update to get dependencies using ``conda`` when installed from the
+             toolshed (this removes the explicit dependency on Perl 5.16
+             introduced in 0.02.04.2, as a result the outputs from the tool are
+             now non-deterministic in some cases).
 0.02.04.5  - Update to handle large output files which can sometimes be generated
              by the ``pal_finder_v0.02.04.pl`` or ``pal_filter.py`` scripts (logs
              of hundreds of Gb's have been observed in production): log files

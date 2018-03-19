@@ -6,7 +6,7 @@ python:
 # environments
 env:
   - TOOL=trimmomatic PLANEMO_OPTIONS=
-  - TOOL=pal_finder PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
+  - TOOL=pal_finder PLANEMO_OPTIONS=
   - TOOL=weeder2 PLANEMO_OPTIONS=
   - TOOL=rnachipintegrator PLANEMO_OPTIONS=
   - TOOL=macs21 PLANEMO_OPTIONS="--no_conda_auto_install --no_conda_auto_init"
