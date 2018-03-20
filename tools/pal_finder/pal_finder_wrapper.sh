@@ -333,8 +333,16 @@ if [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
     exit 1
 fi
 #
-# Sort outputs into a consistent order regardless of Perl version
-echo "### Sorting outputs ###"
+# Sort microsat_summary output
+echo "### Sorting microsat summary output ###"
+head -n 7 Output/microsat_summary.txt | sort >microsat_summary.sorted
+grep "^$" Output/microsat_summary.txt>>microsat_summary.sorted
+grep "^Microsat Type" Output/microsat_summary.txt >>microsat_summary.sorted
+tail -n +11 Output/microsat_summary.txt >>microsat_summary.sorted
+mv microsat_summary.sorted Output/microsat_summary.txt
+#
+# Sort PAL_summary output
+echo "### Sorting PAL summary output ###"
 head -1 Output/PAL_summary.txt > Output/PAL_summary.sorted.txt
 if [ "$PLATFORM" == "Illumina" ] ; then
     grep -v "^readPairID" Output/PAL_summary.txt | sort -k 1 >> Output/PAL_summary.sorted.txt

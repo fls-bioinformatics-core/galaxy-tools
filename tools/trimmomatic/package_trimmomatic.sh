@@ -13,12 +13,11 @@ tar cvzf $TGZ \
     README.rst \
     trimmomatic.xml \
     trimmomatic_macros.xml \
-    tool_dependencies.xml \
     test-data
 if [ -f $TGZ ] ; then
     echo Created $TGZ
 else
-    echo Failed to created $TGZ >&2
+    echo Failed to create $TGZ >&2
     exit 1
 fi
 ##

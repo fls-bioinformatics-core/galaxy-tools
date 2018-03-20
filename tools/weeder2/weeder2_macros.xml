@@ -1,0 +1,6 @@
+<macros>
+  <!--
+       Set the path for the weeder2 data files
+  -->
+  <token name="@CONDA_WEEDER2_FREQFILES_PATH@">if [ -z "\$WEEDER_FREQFILES_DIR" ]; then export WEEDER_FREQFILES_DIR=\$(dirname \$(readlink -e \$(which weeder2)))/FreqFiles; fi</token>
+</macros>
