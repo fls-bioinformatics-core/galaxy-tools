@@ -1,0 +1,55 @@
+<html><head><title>Additional output created by MACS (test_MACS2.1.1)</title></head><body><h3>Additional Files:</h3><p><ul>
+<li><a href="test_MACS2.1.1_peaks.xls">test_MACS2.1.1_peaks.xls</a></li>
+<li><a href="test_MACS2.1.1_treat_pileup.bdg.clipped">test_MACS2.1.1_treat_pileup.bdg.clipped</a></li>
+<li><a href="test_MACS2.1.1_treat_pileup.bdg.clipped.sorted">test_MACS2.1.1_treat_pileup.bdg.clipped.sorted</a></li>
+</ul></p>
+<h3>Messages from MACS:</h3>
+<p><pre>INFO  @ Tue, 20 Mar 2018 14:21:47: 
+# Command line: callpeak -t /tmp/tmpHxmla3/files/000/dataset_9.dat -c /tmp/tmpHxmla3/files/000/dataset_10.dat --format=BED --name=test_MACS2.1.1 --bw=300 --gsize=775000000.0 --nomodel --extsize=243 --qvalue=0.05 -B --SPMR --mfold 5 50 --keep-dup 1
+# ARGUMENTS LIST:
+# name = test_MACS2.1.1
+# format = BED
+# ChIP-seq file = ['/tmp/tmpHxmla3/files/000/dataset_9.dat']
+# control file = ['/tmp/tmpHxmla3/files/000/dataset_10.dat']
+# effective genome size = 7.75e+08
+# band width = 300
+# model fold = [5, 50]
+# qvalue cutoff = 5.00e-02
+# Larger dataset will be scaled towards smaller dataset.
+# Range for calculating regional lambda is: 1000 bps and 10000 bps
+# Broad region calling is off
+# Paired-End mode is off
+# MACS will save fragment pileup signal per million reads
+ 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1 read tag files... 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1 read treatment tags... 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1.2 read input tags... 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1 tag size is determined as 50 bps 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1 tag size = 50 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1  total tags in treatment: 50 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1 user defined the maximum tags... 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1 filter out redundant tags at the same location and the same strand by allowing at most 1 tag(s) 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1  tags after filtering in treatment: 50 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1  Redundant rate of treatment: 0.00 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1  total tags in control: 50 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1 user defined the maximum tags... 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1 filter out redundant tags at the same location and the same strand by allowing at most 1 tag(s) 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1  tags after filtering in control: 50 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1  Redundant rate of control: 0.00 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #1 finished! 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #2 Build Peak Model... 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #2 Skipped... 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #2 Use 243 as fragment length 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #3 Call peaks... 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #3 Pre-compute pvalue-qvalue table... 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #3 In the peak calling step, the following will be performed simultaneously: 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #3   Write bedGraph files for treatment pileup (after scaling if necessary)... test_MACS2.1.1_treat_pileup.bdg 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #3   Write bedGraph files for control lambda (after scaling if necessary)... test_MACS2.1.1_control_lambda.bdg 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #3   --SPMR is requested, so pileup will be normalized by sequencing depth in million reads. 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #3 Call peaks for each chromosome... 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #4 Write output xls file... test_MACS2.1.1_peaks.xls 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #4 Write peak in narrowPeak format file... test_MACS2.1.1_peaks.narrowPeak 
+INFO  @ Tue, 20 Mar 2018 14:21:47: #4 Write summits bed file... test_MACS2.1.1_summits.bed 
+INFO  @ Tue, 20 Mar 2018 14:21:47: Done! 
+</pre></p>
+</body></html>
