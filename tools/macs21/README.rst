@@ -1,7 +1,7 @@
-MACS21: Model-based Analysis of ChIP-Seq (MACS 2.1.0) peak calling
-==================================================================
+MACS21: Model-based Analysis of ChIP-Seq (MACS 2.1) peak calling
+================================================================
 
-Galaxy tool wrapper for the peak calling function of MACS 2.1.0. MACS has been
+Galaxy tool wrapper for the peak calling function of MACS 2.1. MACS has been
 developed by Tao Lui
 https://github.com/taoliu/MACS/
 
@@ -15,7 +15,7 @@ Automated installation
 ======================
 
 Installation via the Galaxy Tool Shed will take of installing the tool wrapper and
-the MACS 2.1.0 program.
+the MACS 2.1 program.
 
 Manual Installation
 ===================
@@ -31,7 +31,7 @@ by adding the line:
 
     <tool file="macs21/macs21_wrapper.xml" />
 
-You will also need to install MACS 2.1.0 and its dependencies:
+You will also need to install MACS 2.1 and its dependencies:
 
 - https://pypi.python.org/pypi/MACS2
 
@@ -52,13 +52,14 @@ revision of the tool available via
 
 - http://toolshed.g2.bx.psu.edu/view/modencode-dcc/macs2 
 
-This version has been substantially modified both to adapt it to MACS 2.1.0, and
+This version has been substantially modified both to adapt it to MACS 2.1, and
 to re-implement the internal workings of the tool to conform with current
 practices in invoking commands from Galaxy, and to add new functionality.
 
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+2.1.1.0    - Update to use MACS 2.1.1 and use conda to resolve dependencies
 2.1.0-6    - Add bedSort step into bigWig file generation; terminate with error
              when MACS finishes with non-zero exit code.
 2.1.0-5    - User must explicitly specify the format for the inputs (to allow

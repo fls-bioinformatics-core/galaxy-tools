@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Package MACS 2.1.0 files into tgz file for upload to
+# Package MACS 2.1 files into tgz file for upload to
 # Galaxy toolshed
 #
 VERSION=$(grep "^<tool" macs21_wrapper.xml | grep -o -e version=\".*\" | cut -d= -f2 | tr -d \")
@@ -13,7 +13,6 @@ tar cvzf $TGZ \
     README.rst \
     macs21_wrapper.xml \
     macs21_wrapper.py \
-    tool_dependencies.xml \
     test-data
 if [ -f $TGZ ] ; then
     echo Created $TGZ
