@@ -1,10 +1,13 @@
-<tool id="fasta_scan_iupac_per_seq" name="IUPAC scan and output matches per seq" version="1.0.0">
+<?xml version="1.0" encoding="utf-8"?>
+<tool id="fasta_scan_iupac_per_seq" name="IUPAC scan and output matches per seq" version="@VERSION@">
   <description>Counts the matches to a given IUPAC</description>
-  <command interpreter="perl">Scan_IUPAC_output_matches_per_seq.pl $iupac $fasta $output $strand</command>
-  <requirements>
-    <requirement type="package" version="5.18.1">perl</requirement>
-    <requirement type="package" version="1.6.922">bioperl</requirement>
-  </requirements>
+  <macros>
+    <import>motif_tools_macros.xml</import>
+  </macros>
+  <expand macro="requirements" />
+  <command><![CDATA[
+  perl $__tool_directory__/Scan_IUPAC_output_matches_per_seq.pl $iupac $fasta $output $strand
+  ]]></command>
   <inputs>
     <param name="iupac" type="text" label="IUPAC string" value="e.g. WGATAR" help="Enter an IUPAC string." size="20"/>
     <param format="fasta" name="fasta" type="data" label="FASTA file" help="Select a FASTA file containing the sequences to be scanned."/>

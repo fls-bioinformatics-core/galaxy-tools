@@ -1,9 +1,13 @@
-<tool id="gff_unique_count" name="Count unique seq in GFF" version="1.0.0">
+<?xml version="1.0" encoding="utf-8"?>
+<tool id="gff_unique_count" name="Count unique seq in GFF" version="@VERSION@">
   <description>Gives the non-redundant count of sequences</description>
-  <command interpreter="perl">CountUniqueIDs.pl $input $output</command>
-  <requirements>
-    <requirement type="package" version="5.18.1">perl</requirement>
-  </requirements>
+  <macros>
+    <import>motif_tools_macros.xml</import>
+  </macros>
+  <expand macro="requirements" />
+  <command interpreter="perl"><![CDATA[
+  perl $__tool_directory__/CountUniqueIDs.pl $input $output
+  ]]></command>
   <inputs>
     <param format="gff" name="input" type="data" label="GFF file" help="Select a GFF file."/>
   </inputs>
