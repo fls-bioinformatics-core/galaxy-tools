@@ -19,6 +19,14 @@
   <outputs>
     <data format="tabular" name="output" />
   </outputs>
+  <tests>
+    <test>
+      <param name="iupac" value="WGATAR" />
+      <param name="fasta" value="phix.fa" />
+      <param name="strand" value="0" />
+      <output name="output" file="iupac_matches_per_seq.out" />
+    </test>
+  </tests>
 
   <help>
 .. class:: infomark

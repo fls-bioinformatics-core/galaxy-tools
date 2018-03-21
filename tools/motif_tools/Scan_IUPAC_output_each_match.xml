@@ -20,6 +20,15 @@
   <outputs>
     <data format="gff" name="output" />
   </outputs>
+  <tests>
+    <test>
+      <param name="iupac" value="WGATAR" />
+      <param name="fasta" value="phix.fa" />
+      <param name="label" value="IUPAC_or_name" />
+      <param name="strand" value="0" />
+      <output name="output" file="iupac_each_match.gff" />
+    </test>
+  </tests>
 
   <help>
 .. class:: infomark
