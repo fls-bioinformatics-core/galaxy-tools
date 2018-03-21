@@ -26,7 +26,7 @@ The ``tools`` subdirectory contains the following tools which wrap
 
 There are also tools wrapping in-house scripts and programs:
 
- * motif_tools
+ * `motif_tools <https://toolshed.g2.bx.psu.edu/view/pjbriggs/motif_tools>`_
  * make_macs_xls
  * qc_boxplotter
  * `RnaChipIntegrator <https://toolshed.g2.bx.psu.edu/view/pjbriggs/rnachipintegrator>`_

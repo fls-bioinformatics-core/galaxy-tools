@@ -1,10 +1,13 @@
-<tool id="fasta_scan_iupac_each" name="IUPAC scan and output each match" version="1.0.0">
+<?xml version="1.0" encoding="utf-8"?>
+<tool id="fasta_scan_iupac_each" name="IUPAC scan and output each match" version="@VERSION@">
   <description>Returns all matches to a given IUPAC in GFF format</description>
-  <command interpreter="perl">Scan_IUPAC_output_each_match.pl $iupac $fasta $output $label $strand</command>
-  <requirements>
-    <requirement type="package" version="5.18.1">perl</requirement>
-    <requirement type="package" version="1.6.922">bioperl</requirement>
-  </requirements>
+  <macros>
+    <import>motif_tools_macros.xml</import>
+  </macros>
+  <expand macro="requirements" />
+  <command><![CDATA[
+  perl $__tool_directory__/Scan_IUPAC_output_each_match.pl $iupac $fasta $output $label $strand
+  ]]></command>
   <inputs>
     <param name="iupac" type="text" label="IUPAC string" value="e.g. WGATAR" help="Enter an IUPAC string." size="20"/>
     <param format="fasta" name="fasta" type="data" label="FASTA file" help="Select a FASTA file containing the sequences to be scanned."/>
@@ -17,6 +20,15 @@
   <outputs>
     <data format="gff" name="output" />
   </outputs>
+  <tests>
+    <test>
+      <param name="iupac" value="WGATAR" />
+      <param name="fasta" value="phix.fa" />
+      <param name="label" value="IUPAC_or_name" />
+      <param name="strand" value="0" />
+      <output name="output" file="iupac_each_match.gff" />
+    </test>
+  </tests>
 
   <help>
 .. class:: infomark

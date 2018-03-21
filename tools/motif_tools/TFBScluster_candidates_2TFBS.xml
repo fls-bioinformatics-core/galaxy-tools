@@ -1,7 +1,12 @@
-<tool id="tfbscluster2" name="TFBScluster two TFBS" version="1.0.0">
+<?xml version="1.0" encoding="utf-8"?>
+<tool id="tfbscluster2" name="TFBScluster two TFBS" version="@VERSION@">
   <description>Identifies clusters of two TFBS</description>
-  <command interpreter="perl">
-    TFBScluster_candidates.pl 
+  <macros>
+    <import>motif_tools_macros.xml</import>
+  </macros>
+  <expand macro="requirements" />
+  <command><![CDATA[
+    perl $__tool_directory__/TFBScluster_candidates.pl
 
     ##TF libraries (comma delimited NO SPACES)           
     $lib1,$lib2
@@ -26,11 +31,7 @@
 
     > $output_log 
 
-  </command>
-  <requirements>
-    <requirement type="package" version="5.18.1">perl</requirement>
-    <requirement type="package" version="1.6.922">bioperl</requirement>
-  </requirements>
+  ]]></command>
   <inputs>
     <!-- TFBS GFF libraries -->
     <param format="gff" name="lib1" type="data" label="TFBS #1 GFF file" help="Select the first GFF file containing TFBS positions."/>

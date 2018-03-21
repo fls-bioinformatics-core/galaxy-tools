@@ -1,0 +1,9 @@
+<macros>
+  <token name="@VERSION@">1.0.1</token>
+  <xml name="requirements">
+    <requirements>
+      <requirement type="package" version="1.6.924">perl-bioperl</requirement
+>
+    </requirements>
+  </xml>
+</macros>
