@@ -26,7 +26,7 @@ Manual Installation
 ===================
 
 To add these to Galaxy put the following lines in tool_conf.xml for each:
-tool that you want:
+tool that you want::
 
     <tool file="motif_tools/Scan_IUPAC_output_each_match.xml" />
     <tool file="motif_tools/Scan_IUPAC_output_matches_per_seq.xml" />
@@ -42,7 +42,8 @@ History
 ========== =====================================================================
 =
 Version    Changes
----------- ---------------------------------------------------------------------
+---------- ----------------------------------------------------------------------
+- 1.0.1    Updates to use conda dependency resolution and tidy up XML
 - 1.0.0    Initial version
 ========== =====================================================================
 =
