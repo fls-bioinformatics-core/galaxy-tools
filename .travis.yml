@@ -11,6 +11,7 @@ env:
   - TOOL=rnachipintegrator PLANEMO_OPTIONS=
   - TOOL=macs21 PLANEMO_OPTIONS=
   - TOOL=ceas PLANEMO_OPTIONS=
+  - TOOL=motif_tools PLANEMO_OPTIONS=
 
 before_install:
 # Update the list of available packages
