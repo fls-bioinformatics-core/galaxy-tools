@@ -247,6 +247,19 @@
       <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats.out.re_match" />
       <output name="output_filtered_microsats" compare="re_match" file="illuminaPE_filtered_microsats_rankmotifs.out.re_match" />
     </test>
+    <!-- Test with Illumina input filter that doesn't find any
+	 microsatellites -->
+    <test expect_failure="true">
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="" />
+      <param name="assembly" value="false" />
+      <param name="min_2mer_repeats" value="8" />
+      <param name="input_fastq_r1" value="illuminaPE_r1_no_microsats.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2_no_microsats.fq" ftype="fastqsanger" />
+      <assert_stderr>
+	<has_text text="pal_finder failed to locate any microsatellites" />
+      </assert_stderr>
+    </test>
     <!-- Test with 454 input -->
     <test>
       <param name="platform_type" value="454" />
