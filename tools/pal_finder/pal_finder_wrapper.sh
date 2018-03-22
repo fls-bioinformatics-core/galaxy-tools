@@ -26,7 +26,8 @@
 # --primer-opt-tm VALUE: optimum melting temperature (Celsius)
 # --primer-pair-max-diff-tm VALUE: max difference between melting temps of left & right primers
 # --output_config_file FNAME: write a copy of the config.txt file to FNAME
-# --filter_microsats FNAME: write output of filter options FNAME
+# --bad_primer_ranges FNAME: write a list of the read IDs generating bad primer ranges to FNAME
+# --filter_microsats FNAME: write output of filter options to FNAME
 # -assembly FNAME: run the 'assembly' filter option and write to FNAME
 # -primers: run the 'primers' filter option
 # -occurrences: run the 'occurrences' filter option
@@ -205,6 +206,10 @@ while [ ! -z "$1" ] ; do
 	    shift
 	    OUTPUT_CONFIG_FILE=$1
 	    ;;
+	--bad_primer_ranges)
+	    shift
+	    BAD_PRIMER_RANGES=$1
+	    ;;
 	--filter_microsats)
 	    shift
 	    FILTERED_MICROSATS=$1
@@ -334,21 +339,26 @@ echo "### pal_finder finished ###"
 # Check for errors in pal_finder output
 echo "### Checking for errors ###"
 if [ ! -z "$(grep 'primer3_core: Illegal element in PRIMER_PRODUCT_SIZE_RANGE' pal_finder.log)" ] ; then
-    echo ERROR primer3 terminated prematurely due to bad product size ranges
-    cat >&2 <<EOF
+    echo WARNING primer3 terminated prematurely due to bad product size ranges
+    if [ -z "$BAD_PRIMER_RANGES" ] ; then
+	# No output file so report to stderr
+	cat >&2 <<EOF
 ERROR primer3 terminated prematurely due to bad product size ranges
 
 Pal_finder generated bad ranges for the following read IDs:
 EOF
-    echo $(find_bad_primer_ranges Output/pr3in.txt) >&2
-    cat >&2 <<EOF
+	echo $(find_bad_primer_ranges Output/pr3in.txt) >&2
+	cat >&2 <<EOF
 
 This error can occur when input data contains short R1 reads and has
 has not been properly trimmed and filtered.
 
 EOF
-    fatal pal_finder failed to complete successfully
-EOF
+    else
+	# Dump bad ranges to file
+	echo "### Writing read IDs with bad primer ranges ###"
+	echo $(find_bad_primer_ranges Output/pr3in.txt) >"$BAD_PRIMER_RANGES"
+    fi
 fi
 #
 # Sort microsat_summary output

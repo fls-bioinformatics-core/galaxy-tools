@@ -26,6 +26,9 @@
     --454 "$platform.input_fasta"
   #end if
   $output_microsat_summary $output_pal_summary
+  #if $report_bad_primer_ranges
+    --bad_primer_ranges "$output_bad_primer_read_ids"
+  #end if
   #if $keep_config_file
     --output_config_file "$output_config_file"
   #end if
@@ -168,6 +171,7 @@
       </when>
       <when value="default" />
     </conditional>
+    <param name="report_bad_primer_ranges" type="boolean" truevalue="True" falsevalue="False" label="Output IDs for input reads which generate bad primer ranges" help="Can be used to screen input Fastqs" />
     <param name="keep_config_file" type="boolean" truevalue="True" falsevalue="False"
 	   label="Output the config file to the history"
 	   help="Can be used to run pal_finder outside of Galaxy" />
@@ -180,6 +184,9 @@
     <data name="output_microsat_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix}: summary of microsatellite types" />
     <data name="output_assembly" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix}: assembly">
       <filter>platform['assembly'] is True</filter>
+    </data>
+    <data name="output_bad_primer_read_ids" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix}: read IDs generating bad primer ranges">
+      <filter>report_bad_primer_ranges is True</filter>
     </data>
     <data name="output_config_file" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix}: config file">
       <filter>keep_config_file is True</filter>
