@@ -1,6 +1,6 @@
 readPairID\	Motifs\(bases\)\	Bases\ in\ all\ Motifs\	Possible\ Extended\	Possible\ Spanning\	Primers\ found\ \(1\=y\,0\=n\)\	F\ Primer\ Name\	Forward\ Primer\	R\ Primer\ Name\	Reverse\ Primer\	Amplicon\ Motifs\	Number\ motif\ bases\ in\ amplicon\	Primers\ on\ sep\ reads\	Extend\ with\ primers\	Spand\ with\ primers\	Occurances\ of\ Forward\ Primer\ in\ Reads\	Occurances\ of\ Reverse\ Primer\ in\ Reads\	Occurances\ of\ Amplifiable\ Primer\ Pair\ in\ Reads\	Occurances\ of\ Amplifiable\ Primer\ Pair\ in\ PALs
-ILLUMINA\-545855\:49\:FC61RLR\:2\:1\:17449\:1584\	AC\(36\)\ \	36\	\	\	0\	\	\	\	\	\	\	\	\	\	\	\	\	
-ILLUMINA\-545855\:49\:FC61RLR\:2\:1\:5626\:1554\	AT\(14\)\ AC\(16\)\ AC\(16\)\ AT\(12\)\ \	58\	\	\	0\	\	\	\	\	\	\	\	\	\	\	\	\	
+ILLUMINA\-545855\:49\:FC61RLR\:2\:1\:17449\:1584\	(AC|TG)\(36\)\ \	36\	\	\	0\	\	\	\	\	\	\	\	\	\	\	\	\	
+ILLUMINA\-545855\:49\:FC61RLR\:2\:1\:5626\:1554\	AT\(14\)\ (AC|TG)\(16\)\ (AC|TG)\(16\)\ AT\(12\)\ \	58\	\	\	0\	\	\	\	\	\	\	\	\	\	\	\	\	
 ILLUMINA\-545855\:49\:FC61RLR\:2\:1\:5879\:1238\	AT\(12\)\ \	12\	\	\	0\	\	\	\	\	\	\	\	\	\	\	\	\	
-ILLUMINA\-545855\:49\:FC61RLR\:2\:1\:8157\:1636\	AC\(12\)\ \	12\	\	\	1\	test\_.*\	AAGTACAGTGGGGAGGCTGG\	test\_.*\	TTTTCTACACAGCTCAAGTAGCCC\	AC\(12\)\ \	12\	1\	\	\	1\	1\	1\	1
-ILLUMINA\-545855\:49\:FC61RLR\:2\:1\:8899\:1514\	AC\(12\)\ AC\(12\)\ \	24\	\	\	1\	test\_.*\	TCTTTATCTAAACACATCCTGAAATACC\	test\_.*\	AAACGCAATTATTTTGAGATGTCC\	AC\(12\)\ AC\(12\)\ \	24\	1\	\	\	1\	2\	1\	1
+ILLUMINA\-545855\:49\:FC61RLR\:2\:1\:8157\:1636\	(AC|TG)\(12\)\ \	12\	\	\	1\	test\_.*\	AAGTACAGTGGGGAGGCTGG\	test\_.*\	TTTTCTACACAGCTCAAGTAGCCC\	(AC|TG)\(12\)\ \	12\	1\	\	\	1\	1\	1\	1
+ILLUMINA\-545855\:49\:FC61RLR\:2\:1\:8899\:1514\	(AC|TG)\(12\)\ (AC|TG)\(12\)\ \	24\	\	\	1\	test\_.*\	TCTTTATCTAAACACATCCTGAAATACC\	test\_.*\	AAACGCAATTATTTTGAGATGTCC\	(AC|TG)\(12\)\ (AC|TG)\(12\)\ \	24\	1\	\	\	1\	2\	1\	1
