@@ -6,6 +6,7 @@ from Bio.SeqIO.QualityIO import FastqGeneralIterator
 
 def count_reads(fastq):
     """
+    Count number of reads in a Fastq file
     """
     n = 0
     with open(fastq,'r') as fq:
@@ -17,6 +18,12 @@ def count_reads(fastq):
 
 def fastq_subset(fastq_in,fastq_out,indices):
     """
+    Output a subset of reads from a Fastq file
+
+    The reads to output are specifed by a list
+    of integer indices; only reads at those
+    positions in the input file will be written
+    to the output.
     """
     with open(fastq_in,'r') as fq_in:
         fq_out = open(fastq_out,'w')
