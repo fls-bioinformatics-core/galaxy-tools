@@ -61,6 +61,9 @@
     #if str( $platform.assembly ) == '-assembly'
       $platform.assembly "$output_assembly"
     #end if
+    #if str( $platform.subset ) != ""
+      --subset "$platform.subset"
+    #end if
   #end if
   ]]></command>
   <inputs>
@@ -88,6 +91,7 @@
 		   label="Select FASTQ dataset collection with R1/R2 pair" />
 	  </when>
 	</conditional>
+	<param name="subset" type="text" value="" label="Use a random subset of reads for microsatellite detection" help="Either an integer number of reads or a decimal fraction (e.g. 0.5); leave blank to use all reads" />
 	<param name="filters" type="select" display="checkboxes"
 	       multiple="True" label="Filters to apply to the pal_finder results"
 	       help="Apply none, one or more filters to refine results">

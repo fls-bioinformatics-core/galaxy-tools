@@ -31,6 +31,7 @@
 # -primers: run the 'primers' filter option
 # -occurrences: run the 'occurrences' filter option
 # -rankmotifs: run the 'rankmotifs' filter option
+# --subset N: use a subset of reads of size N
 #
 # pal_finder is available from http://sourceforge.net/projects/palfinder/
 #
@@ -113,6 +114,8 @@ OUTPUT_CONFIG_FILE=
 OUTPUT_ASSEMBLY=
 FILTERED_MICROSATS=
 FILTER_OPTIONS=
+SUBSET=
+RANDOM_SEED=568765
 #
 # Collect command line arguments
 if [ $# -lt 2 ] ; then
@@ -224,6 +227,10 @@ while [ ! -z "$1" ] ; do
 	    shift
 	    OUTPUT_ASSEMBLY=$1
 	    ;;
+	--subset)
+	    shift
+	    SUBSET=$1
+	    ;;
 	*)
 	    echo Unknown option: $1 >&2
 	    exit 1
@@ -258,6 +265,14 @@ fi
 ln -s $PRIMER_MISPRIMING_LIBRARY
 PRIMER_MISPRIMING_LIBRARY=$(basename $PRIMER_MISPRIMING_LIBRARY)
 mkdir Output
+#
+# Use a subset of reads
+if [ ! -z "$SUBSET" ] ; then
+    echo "### Extracting subset of reads ###"
+    $(dirname $0)/fastq_subset.py -n $SUBSET -s $RANDOM_SEED $fastq_r1 $fastq_r2
+    fastq_r1="subset_r1.fq"
+    fastq_r2="subset_r2.fq"
+fi
 #
 # Copy in the default config.txt file
 echo "### Creating config.txt file for pal_finder run ###"
