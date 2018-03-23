@@ -9,7 +9,7 @@
     <requirement type="package" version="1.65">biopython</requirement>
     <requirement type="package" version="2.8.1">pandaseq</requirement>
   </requirements>
-  <command><![CDATA[
+  <command detect_errors="exit_code"><![CDATA[
   @CONDA_PAL_FINDER_SCRIPT_DIR@ &&
   @CONDA_PAL_FINDER_DATA_DIR@ &&
   bash $__tool_directory__/pal_finder_wrapper.sh
@@ -290,6 +290,36 @@
       <assert_stderr>
 	<has_text text="pal_finder failed to locate any microsatellites" />
       </assert_stderr>
+    </test>
+    <!-- Test with Illumina input generating bad ranges -->
+    <test>
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="" />
+      <param name="assembly" value="false" />
+      <param name="min_2mer_repeats" value="8" />
+      <param name="input_fastq_r1" value="illuminaPE_r1_bad_ranges.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2_bad_ranges.fq" ftype="fastqsanger" />
+      <param name="min_2mer_repeats" value="8" />
+      <param name="min_3mer_repeats" value="8" />
+      <param name="min_4mer_repeats" value="8" />
+      <param name="min_5mer_repeats" value="8" />
+      <param name="min_6mer_repeats" value="8" />
+      <param name="primer_options" value="custom" />
+      <param name="primer_opt_size" value="25" />
+      <param name="primer_min_size" value="21" />
+      <param name="primer_max_size" value="30" />
+      <param name="primer_min_gc" value="40.0" />
+      <param name="primer_max_gc" value="60.0" />
+      <param name="primer_gc_clamp" value="3" />
+      <param name="primer_max_end_gc" value="5" />
+      <param name="primer_min_tm" value="60.0" />
+      <param name="primer_max_tm" value="80.0" />
+      <param name="primer_opt_tm" value="68.0" />
+      <param name="primer_pair_max_diff_tm" value="3.0" />
+      <param name="report_bad_primer_ranges" value="true" />
+      <expand macro="output_illumina_microsat_summary" />
+      <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats_bad_ranges.out.re_match" />
+      <output name="output_bad_primer_read_ids" file="illuminaPE_bad_primer_read_ids.out" />
     </test>
     <!-- Test with 454 input -->
     <test>

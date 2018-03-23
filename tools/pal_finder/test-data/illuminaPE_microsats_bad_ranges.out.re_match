@@ -1,0 +1,7 @@
+readPairID\	Motifs\(bases\)\	Bases\ in\ all\ Motifs\	Possible\ Extended\	Possible\ Spanning\	Primers\ found\ \(1\=y\,0\=n\)\	F\ Primer\ Name\	Forward\ Primer\	R\ Primer\ Name\	Reverse\ Primer\	Amplicon\ Motifs\	Number\ motif\ bases\ in\ amplicon\	Primers\ on\ sep\ reads\	Extend\ with\ primers\	Spand\ with\ primers\	Occurances\ of\ Forward\ Primer\ in\ Reads\	Occurances\ of\ Reverse\ Primer\ in\ Reads\	Occurances\ of\ Amplifiable\ Primer\ Pair\ in\ Reads\	Occurances\ of\ Amplifiable\ Primer\ Pair\ in\ PALs
+M00879\:99\:000000000\-AH9KG\:1\:2107\:10006\:2535\	AT\(16\)\ AT\(16\)\ \	32\	AT\ \	\	0\	\	\	\	\	\	\	\	\	\	\	\	\	
+M00879\:99\:000000000\-AH9KG\:1\:2107\:10032\:7900\	ATAG\(56\)\ TC\(28\)\ ATAG\(56\)\ TC\(24\)\ \	164\	\	\	1\	test\_.*\	CGAAAGATGCTATAGAAGCGATGGGG\	test\_.*\	GGACATCGAGATAGAAAGGGGACCG\	ATAG\(56\)\ TC\(24\)\ \	80\	1\	\	\	2\	1\	1\	1
+M00879\:99\:000000000\-AH9KG\:1\:2107\:10061\:6317\	AG\(54\)\ AG\(22\)\ \	76\	\	\	1\	test\_.*\	GAGAGAGTACATAGATATCTCACGGGGCG\	test\_.*\	GCAACGGCACAGATCTCTTCTACGG\	AG\(22\)\ \	22\	1\	\	\	1\	1\	1\	1
+M00879\:99\:000000000\-AH9KG\:1\:2107\:10072\:8112\	AC\(22\)\ AC\(22\)\ \	44\	\	\	1\	test\_.*\	AGTTTGTTACAGGGCATGACAACGG\	test\_.*\	TCCTGTTATCTTCTTGTTGCTTGGC\	AC\(22\)\ \	22\	1\	\	\	1\	1\	1\	1
+M00879\:99\:000000000\-AH9KG\:1\:2107\:10084\:6474\	ATAG\(32\)\ AT\(18\)\ ATAG\(32\)\ AT\(18\)\ \	100\	\	\	0\	\	\	\	\	\	\	\	\	\	\	\	\	
+M00879\:99\:000000000\-AH9KG\:1\:2107\:14372\:5471\	AG\(34\)\ AG\(34\)\ \	68\	AG\ \	\	0\	\	\	\	\	\	\	\	\	\	\	\	\	

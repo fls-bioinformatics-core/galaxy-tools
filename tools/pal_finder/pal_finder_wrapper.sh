@@ -340,24 +340,25 @@ echo "### pal_finder finished ###"
 echo "### Checking for errors ###"
 if [ ! -z "$(grep 'primer3_core: Illegal element in PRIMER_PRODUCT_SIZE_RANGE' pal_finder.log)" ] ; then
     echo WARNING primer3 terminated prematurely due to bad product size ranges
+    $(find_bad_primer_ranges Output/pr3in.txt bad_primer_ranges.txt)
     if [ -z "$BAD_PRIMER_RANGES" ] ; then
 	# No output file so report to stderr
-	cat >&2 <<EOF
-ERROR primer3 terminated prematurely due to bad product size ranges
+	cat <<EOF
 
 Pal_finder generated bad ranges for the following read IDs:
+
 EOF
-	echo $(find_bad_primer_ranges Output/pr3in.txt) >&2
-	cat >&2 <<EOF
+	cat bad_primer_ranges.txt
+	cat <<EOF
 
 This error can occur when input data contains short R1 reads and has
 has not been properly trimmed and filtered.
 
 EOF
     else
-	# Dump bad ranges to file
+	# Move the bad ranges to the specified file
 	echo "### Writing read IDs with bad primer ranges ###"
-	echo $(find_bad_primer_ranges Output/pr3in.txt) >"$BAD_PRIMER_RANGES"
+	/bin/mv bad_primer_ranges.txt "$BAD_PRIMER_RANGES"
     fi
 fi
 #
