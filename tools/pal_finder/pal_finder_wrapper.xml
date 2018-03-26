@@ -317,7 +317,7 @@
       <param name="primer_opt_tm" value="68.0" />
       <param name="primer_pair_max_diff_tm" value="3.0" />
       <param name="report_bad_primer_ranges" value="true" />
-      <expand macro="output_illumina_microsat_summary" />
+      <expand macro="output_illumina_microsat_summary_bad_ranges" />
       <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats_bad_ranges.out.re_match" />
       <output name="output_bad_primer_read_ids" file="illuminaPE_bad_primer_read_ids.out" />
     </test>

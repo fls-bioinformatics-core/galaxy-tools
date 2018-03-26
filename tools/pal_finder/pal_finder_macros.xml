@@ -38,6 +38,26 @@
       </assert_contents>
     </output>
   </xml>
+  <xml name="output_illumina_microsat_summary_bad_ranges">
+    <output name="output_microsat_summary">
+      <assert_contents>
+	<has_line line="allExtended:&#009;2" />
+	<has_line line="allSpan:&#009;0" />
+	<has_line line="broken:&#009;0" />
+	<has_line line="compound:&#009;4" />
+	<has_line line="readsWithMicrosat:&#009;12" />
+	<has_line line="totalBases:&#009;2231" />
+	<has_line line="totalReads:&#009;12&#009;(2 x 6)" />
+	<has_line line="Microsat Type&#009;monomer length&#009;total loci&#009;loci w/ primers&#009;reads with loci&#009;total bases&#009;extended&#009;extended w/ primers&#009;spanning&#009;spanning w/ primers" />
+	<!--
+	    I'd like to do a basic check on the remainder of the file but
+	    there are too many lines for the 'assert_contents' method (and
+	    the tag doesn't provide the functionality to do a simple line
+	    count
+	-->
+      </assert_contents>
+    </output>
+  </xml>
   <xml name="output_454_microsat_summary">
     <output name="output_microsat_summary">
       <assert_contents>
