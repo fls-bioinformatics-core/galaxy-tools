@@ -171,7 +171,7 @@
       </when>
       <when value="default" />
     </conditional>
-    <param name="report_bad_primer_ranges" type="boolean" truevalue="True" falsevalue="False" label="Output IDs for input reads which generate bad primer ranges" help="Can be used to screen input Fastqs" />
+    <param name="report_bad_primer_ranges" type="boolean" truevalue="True" falsevalue="False" label="Output IDs for input reads which generate bad primer product size ranges" help="Can be used to screen reads in input Fastqs " />
     <param name="keep_config_file" type="boolean" truevalue="True" falsevalue="False"
 	   label="Output the config file to the history"
 	   help="Can be used to run pal_finder outside of Galaxy" />
@@ -364,16 +364,22 @@ http://primer3.sourceforge.net/primer3_manual.htm
 
 For some datasets pal_finder may generate 'bad' product size ranges (where the
 lower limit exceeds the upper limit) for one or more reads, for input into
-primer3_core.
+primer3_core. In these cases primer3_core will terminate prematurely, which can
+result in a substantially lower number of reads being used for microsatellite
+detection and potentially sub-optimal primer design.
 
-If this occurs then the tool will terminate with an error. A list of the reads
-for which the bad ranges were generated can be found in the error message
-which can be accessed via the 'bug' icon from a failed dataset.
+The number of reads generating the bad size ranges are reported in the
+*Summary of microsat types* output dataset as 'readsWithBadRanges'. Ideally
+the reported value should be zero.
 
-The conditions which cause this error are unclear. However we believe it to be
-associated with short or low quality reads. It is recommended that the input
-data are sufficiently trimmed and filtered (using e.g. the Trimmomatic tool)
-before rerunning pal_finder.
+In addition, a list of read IDs for which pal_finder generates bad product size
+ranges can be output by turning on the *Output IDs for input reads which generate
+bad primer ranges* option.
+
+The conditions which cause this issue within pal_finder are still unclear,
+however we believe it to be associated with short or low quality reads. It is
+recommended that the input data are sufficiently trimmed and filtered (using e.g.
+the Trimmomatic tool) before rerunning pal_finder.
 
 -------------
 

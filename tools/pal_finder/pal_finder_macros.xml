@@ -14,6 +14,7 @@
 	<has_line line="readsWithMicrosat:&#009;13" />
 	<has_line line="totalBases:&#009;2320" />
 	<has_line line="totalReads:&#009;20&#009;(2 x 10)" />
+	<has_line line="readsWithBadRanges:&#009;0" />
 	<has_line line="Microsat Type&#009;monomer length&#009;total loci&#009;loci w/ primers&#009;reads with loci&#009;total bases&#009;extended&#009;extended w/ primers&#009;spanning&#009;spanning w/ primers" />
 	<has_line_matching expression="(AC|TG)\t2\t7\t4\t7\t116\t0?\t0?\t0?\t0?" />
 	<has_line_matching expression="(AT|CG)\t2\t8\t0\t6\t106\t0?\t0?\t0?\t0?" />
@@ -48,6 +49,7 @@
 	<has_line line="readsWithMicrosat:&#009;12" />
 	<has_line line="totalBases:&#009;2231" />
 	<has_line line="totalReads:&#009;12&#009;(2 x 6)" />
+	<has_line line="readsWithBadRanges:&#009;2" />
 	<has_line line="Microsat Type&#009;monomer length&#009;total loci&#009;loci w/ primers&#009;reads with loci&#009;total bases&#009;extended&#009;extended w/ primers&#009;spanning&#009;spanning w/ primers" />
 	<!--
 	    I'd like to do a basic check on the remainder of the file but

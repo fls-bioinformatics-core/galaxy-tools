@@ -341,6 +341,7 @@ echo "### Checking for errors ###"
 if [ ! -z "$(grep 'primer3_core: Illegal element in PRIMER_PRODUCT_SIZE_RANGE' pal_finder.log)" ] ; then
     echo WARNING primer3 terminated prematurely due to bad product size ranges
     $(find_bad_primer_ranges Output/pr3in.txt bad_primer_ranges.txt)
+    N_BAD_PRIMERS=$(cat bad_primer_ranges.txt | wc -l)
     if [ -z "$BAD_PRIMER_RANGES" ] ; then
 	# No output file so report to stderr
 	cat <<EOF
@@ -360,14 +361,17 @@ EOF
 	echo "### Writing read IDs with bad primer ranges ###"
 	/bin/mv bad_primer_ranges.txt "$BAD_PRIMER_RANGES"
     fi
+else
+    N_BAD_PRIMERS=0
 fi
 #
 # Sort microsat_summary output
 echo "### Sorting microsat summary output ###"
 head -n 7 Output/microsat_summary.txt | sort >microsat_summary.sorted
+echo "readsWithBadRanges:"$'\t'"$((N_BAD_PRIMERS * 2))" >>microsat_summary.sorted
 grep "^$" Output/microsat_summary.txt>>microsat_summary.sorted
 grep "^Microsat Type" Output/microsat_summary.txt >>microsat_summary.sorted
-tail -n +11 Output/microsat_summary.txt >>microsat_summary.sorted
+tail -n +11 Output/microsat_summary.txt | sort -r -n -k 5 >>microsat_summary.sorted
 mv microsat_summary.sorted Output/microsat_summary.txt
 #
 # Sort PAL_summary output
