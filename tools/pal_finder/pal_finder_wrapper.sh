@@ -327,8 +327,13 @@ if [ $(wc -l pal_finder.log | cut -d" " -f1) -gt $MAX_LINES ] ; then
 fi
 tail -$MAX_LINES pal_finder.log
 #
-# Check that log ends with "Done!!" message
-if [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
+# Check for success/failure
+if [ ! -z "$(tail -n 1 pal_finder.log | grep 'No microsatellites found in any reads. Ending script.')" ] ; then
+    # No microsatellites found
+    echo ERROR pal_finder failed to locate any microsatellites >&2
+    exit 1
+elif [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
+    # Log doesn't end with "Done!!" (indicates failure)
     echo ERROR pal_finder failed to complete successfully >&2
     exit 1
 fi
