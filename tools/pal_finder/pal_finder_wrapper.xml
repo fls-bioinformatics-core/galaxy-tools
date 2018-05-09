@@ -61,8 +61,9 @@
     #if str( $platform.assembly ) == '-assembly'
       $platform.assembly "$output_assembly"
     #end if
-    #if str( $platform.subset ) != ""
-      --subset "$platform.subset"
+    #set $use_all_reads = $platform.subset_conditional.use_all_reads
+    #if str( $use_all_reads ) != "yes"
+      --subset "$platform.subset_conditional.subset"
     #end if
   #end if
   ]]></command>
@@ -91,7 +92,13 @@
 		   label="Select FASTQ dataset collection with R1/R2 pair" />
 	  </when>
 	</conditional>
-	<param name="subset" type="text" value="" label="Use a random subset of reads for microsatellite detection" help="Either an integer number of reads or a decimal fraction (e.g. 0.5); leave blank to use all reads" />
+	<conditional name="subset_conditional">
+	  <param name="use_all_reads" type="boolean" label="Use all reads for microsatellite detection?" checked="True" truevalue="yes" falsevalue="no" />
+	  <when value="no">
+	    <param name="subset" type="text" value="0.5" label="Number or fraction of reads to use" help="Either an integer number of reads or a decimal fraction (e.g. 0.5 to select 50% of reads)" />
+	  </when>
+	  <when value="yes" />
+	</conditional>
 	<param name="filters" type="select" display="checkboxes"
 	       multiple="True" label="Filters to apply to the pal_finder results"
 	       help="Apply none, one or more filters to refine results">
@@ -256,6 +263,7 @@
       <param name="platform_type" value="illumina" />
       <param name="filters" value="" />
       <param name="assembly" value="false" />
+      <param name="use_all_reads" value="no" />
       <param name="subset" value="0.5" />
       <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
       <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
