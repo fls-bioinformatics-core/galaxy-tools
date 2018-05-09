@@ -274,6 +274,7 @@
       <assert_stderr>
 	<has_text text="pal_finder failed to locate any microsatellites" />
       </assert_stderr>
+    </test>
     <!-- Test with 454 input -->
     <test>
       <param name="platform_type" value="454" />
