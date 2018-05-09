@@ -155,6 +155,7 @@
 	       label="Maximum acceptable difference between melting temperatures of left and right primers (PRIMER_PAIR_MAX_DIFF_TM)"
 	       help="Temperature should be in degrees Celsius" />
       </when>
+      <when value="default" />
     </conditional>
     <param name="keep_config_file" type="boolean" truevalue="True" falsevalue="False"
 	   label="Output the config file to the history"
