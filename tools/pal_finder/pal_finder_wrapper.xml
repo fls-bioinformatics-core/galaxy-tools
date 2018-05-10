@@ -61,6 +61,10 @@
     #if str( $platform.assembly ) == '-assembly'
       $platform.assembly "$output_assembly"
     #end if
+    #set $use_all_reads = $platform.subset_conditional.use_all_reads
+    #if str( $use_all_reads ) != "yes"
+      --subset "$platform.subset_conditional.subset"
+    #end if
   #end if
   ]]></command>
   <inputs>
@@ -87,6 +91,13 @@
 		   type="data_collection" collection_type="paired"
 		   label="Select FASTQ dataset collection with R1/R2 pair" />
 	  </when>
+	</conditional>
+	<conditional name="subset_conditional">
+	  <param name="use_all_reads" type="boolean" label="Use all reads for microsatellite detection?" checked="True" truevalue="yes" falsevalue="no" />
+	  <when value="no">
+	    <param name="subset" type="text" value="0.5" label="Number or fraction of reads to use" help="Either an integer number of reads or a decimal fraction (e.g. 0.5 to select 50% of reads)" />
+	  </when>
+	  <when value="yes" />
 	</conditional>
 	<param name="filters" type="select" display="checkboxes"
 	       multiple="True" label="Filters to apply to the pal_finder results"
@@ -247,6 +258,18 @@
       <expand macro="output_illumina_microsat_summary" />
       <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats.out.re_match" />
       <output name="output_filtered_microsats" compare="re_match" file="illuminaPE_filtered_microsats_rankmotifs.out.re_match" />
+    </test>
+    <!-- Test with Illumina input using subset of reads -->
+    <test>
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="" />
+      <param name="assembly" value="false" />
+      <param name="use_all_reads" value="no" />
+      <param name="subset" value="0.5" />
+      <param name="input_fastq_r1" value="illuminaPE_r1.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2.fq" ftype="fastqsanger" />
+      <expand macro="output_illumina_microsat_subset_summary" />
+      <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats_subset.out.re_match" />
     </test>
     <!-- Test with Illumina input filter that doesn't find any
 	 microsatellites -->

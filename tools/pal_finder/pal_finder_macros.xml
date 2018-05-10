@@ -21,6 +21,23 @@
       </assert_contents>
     </output>
   </xml>
+  <xml name="output_illumina_microsat_subset_summary">
+    <output name="output_microsat_summary">
+      <assert_contents>
+	<has_line line="allExtended:&#009;0" />
+	<has_line line="allSpan:&#009;0" />
+	<has_line line="broken:&#009;0" />
+	<has_line line="compound:&#009;2" />
+	<has_line line="readsWithMicrosat:&#009;7" />
+	<has_line line="totalBases:&#009;1160" />
+	<has_line line="totalReads:&#009;10&#009;(2 x 5)" />
+	<has_line line="Microsat Type&#009;monomer length&#009;total loci&#009;loci w/ primers&#009;reads with loci&#009;total bases&#009;extended&#009;extended w/ primers&#009;spanning&#009;spanning w/ primers" />
+	<has_line_matching expression="(AC|TG)\t2\t6\t3\t6\t104\t0?\t0?\t0?\t0?" />
+	<has_line_matching expression="(AT|CG)\t2\t3\t0\t3\t38\t0?\t0?\t0?\t0?" />
+	<has_line_matching expression="(AG|TC)\t2\t0\t0\t0\t0\t0?\t0?\t0?\t0?" />
+      </assert_contents>
+    </output>
+  </xml>
   <xml name="output_454_microsat_summary">
     <output name="output_microsat_summary">
       <assert_contents>
