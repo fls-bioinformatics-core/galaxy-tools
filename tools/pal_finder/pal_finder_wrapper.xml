@@ -354,13 +354,13 @@ http://primer3.sourceforge.net/primer3_manual.htm
 
 -------------
 
-.. class:: warning
-
-**Known problems**
-
 .. class:: infomark
 
-**Bad primer product size ranges**
+**Known issues**
+
+.. class:: warning
+
+**Low number of reads used for microsatellite detection/bad primer product size ranges**
 
 For some datasets pal_finder may generate 'bad' product size ranges (where the
 lower limit exceeds the upper limit) for one or more reads, for input into
@@ -368,20 +368,22 @@ primer3_core. In these cases primer3_core will terminate prematurely, which can
 result in a substantially lower number of reads being used for microsatellite
 detection and potentially sub-optimal primer design.
 
-* The conditions which cause this issue within pal_finder are still unclear,
-  however we believe it to be associated with short or low quality reads. It is
-  recommended that the input data are sufficiently trimmed and filtered (using
-  e.g. the Trimmomatic tool) before rerunning pal_finder.
-
 The number of reads generating the bad size ranges are reported in the
 *Summary of microsat types* output dataset as 'readsWithBadRanges'. Ideally
 the reported value should be zero.
 
-In addition, a list of read IDs for which pal_finder generates bad product size
-ranges can be output by turning on the *Output IDs for input reads which generate
-bad primer ranges* option. This can list can be used to remove read pairs from
-the input Fastq files (using e.g. the Filter sequences by ID tool) before
-rerunning pal_finder.
+The conditions which cause this issue within pal_finder are still unclear,
+however we believe it to be associated with short or low quality reads. If this
+problem affects your data then:
+
+* Ensure that the input data are sufficiently trimmed and filtered (using
+  e.g. the Trimmomatic tool) before rerunning pal_finder.
+
+* A list of read IDs for which pal_finder generates bad product size ranges can
+  be output by turning on *Output IDs for input reads which generate bad primer
+  ranges*. This outputs an additional dataset with a list of read IDs which can
+  be used to remove read pairs from the input Fastq files (using e.g. the *Filter
+  sequences by ID* tool) before rerunning pal_finder.
 
 -------------
 
