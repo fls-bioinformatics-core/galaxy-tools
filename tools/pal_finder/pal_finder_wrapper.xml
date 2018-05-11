@@ -401,6 +401,19 @@ problem affects your data then:
   be used to remove read pairs from the input Fastq files (using e.g. the *Filter
   sequences by ID* tool) before rerunning pal_finder.
 
+.. class:: warning
+
+**Pal_finder takes a long time to run for large input datasets**
+
+pal_finder was originally developed using MiSeq data, and is not optimised for
+working with the larger Fastqs that are output from other platforms such as
+HiSeq and NextSeq. As a consequence pal_finder may take a very long time to
+complete when operating on larger datasets.
+
+If this is a problem then the tool can be run using a subset of the input reads
+by unchecking the *Use all reads...* option and entering either an integer number
+of reads to use, or a decimal fraction (e.g. 0.5 will select 50% of the reads).
+
 -------------
 
 .. class:: infomark
