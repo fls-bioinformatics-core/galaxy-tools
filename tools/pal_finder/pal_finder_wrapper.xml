@@ -117,7 +117,7 @@
 	<param name="input_fasta" type="data" format="fasta" label="454 fasta file with raw reads" />
       </when>
     </conditional>
-    <param name="min_2mer_repeats" type="integer" value="6" label="Minimum number of 2-mer repeat units to detect" help="Set to zero to ignore repeats of this n-mer unit" />
+    <param name="min_2mer_repeats" type="integer" value="6" label="Minimum number of 2-mer repeat units to detect" min="1" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_3mer_repeats" type="integer" value="0" label="Minimum number of 3-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_4mer_repeats" type="integer" value="0" label="Minimum number of 4-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_5mer_repeats" type="integer" value="0" label="Minimum number of 5-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
@@ -320,6 +320,22 @@
       <expand macro="output_illumina_microsat_summary_bad_ranges" />
       <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats_bad_ranges.out.re_match" />
       <output name="output_bad_primer_read_ids" file="illuminaPE_bad_primer_read_ids.out" />
+    </test>
+    <!-- Test with bad n-mers specified -->
+    <test expect_failure="true">
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="" />
+      <param name="assembly" value="false" />
+      <param name="min_2mer_repeats" value="8" />
+      <param name="min_3mer_repeats" value="8" />
+      <param name="min_4mer_repeats" value="0" />
+      <param name="min_5mer_repeats" value="8" />
+      <param name="min_6mer_repeats" value="8" />
+      <param name="input_fastq_r1" value="illuminaPE_r1_no_microsats.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2_no_microsats.fq" ftype="fastqsanger" />
+      <assert_stderr>
+	<has_text text="Minimum number of 4-mers cannot be zero if number of 5-mers is non-zero" />
+      </assert_stderr>
     </test>
     <!-- Test with 454 input -->
     <test>

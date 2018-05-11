@@ -240,6 +240,25 @@ if [ -z "$got_primer3" ] ; then
   fatal "primer3_core not found"
 fi
 #
+# Check the n-mers specification
+if [ $MIN_6_MER_REPS -ne 0 ] ; then
+    if [ $MIN_5_MER_REPS -eq 0 ] ; then
+	fatal "Minimum number of 5-mers cannot be zero if number of 6-mers is non-zero"
+    fi
+fi
+if [ $MIN_5_MER_REPS -ne 0 ] ; then
+    if [ $MIN_4_MER_REPS -eq 0 ] ; then
+	fatal "Minimum number of 4-mers cannot be zero if number of 5-mers is non-zero"
+    fi
+fi
+if [ $MIN_4_MER_REPS -ne 0 ] ; then
+    if [ $MIN_3_MER_REPS -eq 0 ] ; then
+	fatal "Minimum number of 3-mers cannot be zero if number of 4-mers is non-zero"
+    fi
+fi
+if [ $MIN_2_MER_REPS -eq 0 ] ; then
+    fatal "Minimum number of 2-mer repeats cannot be zero"
+fi
 # Set up the working dir
 if [ "$PLATFORM" == "Illumina" ] ; then
     # Paired end Illumina data as input
