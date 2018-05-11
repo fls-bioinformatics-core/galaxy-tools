@@ -321,6 +321,22 @@
       <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats_bad_ranges.out.re_match" />
       <output name="output_bad_primer_read_ids" file="illuminaPE_bad_primer_read_ids.out" />
     </test>
+    <!-- Test with bad n-mers specified -->
+    <test expect_failure="true">
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="" />
+      <param name="assembly" value="false" />
+      <param name="min_2mer_repeats" value="8" />
+      <param name="min_3mer_repeats" value="8" />
+      <param name="min_4mer_repeats" value="0" />
+      <param name="min_5mer_repeats" value="8" />
+      <param name="min_6mer_repeats" value="8" />
+      <param name="input_fastq_r1" value="illuminaPE_r1_no_microsats.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2_no_microsats.fq" ftype="fastqsanger" />
+      <assert_stderr>
+	<has_text text="Minimum number of 4-mers cannot be zero if number of 5-mers is non-zero" />
+      </assert_stderr>
+    </test>
     <!-- Test with 454 input -->
     <test>
       <param name="platform_type" value="454" />
