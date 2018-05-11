@@ -9,7 +9,7 @@
     <requirement type="package" version="1.65">biopython</requirement>
     <requirement type="package" version="2.8.1">pandaseq</requirement>
   </requirements>
-  <command><![CDATA[
+  <command detect_errors="exit_code"><![CDATA[
   @CONDA_PAL_FINDER_SCRIPT_DIR@ &&
   @CONDA_PAL_FINDER_DATA_DIR@ &&
   bash $__tool_directory__/pal_finder_wrapper.sh
@@ -26,6 +26,9 @@
     --454 "$platform.input_fasta"
   #end if
   $output_microsat_summary $output_pal_summary
+  #if $report_bad_primer_ranges
+    --bad_primer_ranges "$output_bad_primer_read_ids"
+  #end if
   #if $keep_config_file
     --output_config_file "$output_config_file"
   #end if
@@ -168,6 +171,7 @@
       </when>
       <when value="default" />
     </conditional>
+    <param name="report_bad_primer_ranges" type="boolean" truevalue="True" falsevalue="False" label="Output IDs for input reads which generate bad primer product size ranges" help="Can be used to screen reads in input Fastqs " />
     <param name="keep_config_file" type="boolean" truevalue="True" falsevalue="False"
 	   label="Output the config file to the history"
 	   help="Can be used to run pal_finder outside of Galaxy" />
@@ -180,6 +184,9 @@
     <data name="output_microsat_summary" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix}: summary of microsatellite types" />
     <data name="output_assembly" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix}: assembly">
       <filter>platform['assembly'] is True</filter>
+    </data>
+    <data name="output_bad_primer_read_ids" format="tabular" label="${tool.name} on ${on_string} for ${primer_prefix}: read IDs generating bad primer ranges">
+      <filter>report_bad_primer_ranges is True</filter>
     </data>
     <data name="output_config_file" format="txt" label="${tool.name} on ${on_string} for ${primer_prefix}: config file">
       <filter>keep_config_file is True</filter>
@@ -284,6 +291,36 @@
 	<has_text text="pal_finder failed to locate any microsatellites" />
       </assert_stderr>
     </test>
+    <!-- Test with Illumina input generating bad ranges -->
+    <test>
+      <param name="platform_type" value="illumina" />
+      <param name="filters" value="" />
+      <param name="assembly" value="false" />
+      <param name="min_2mer_repeats" value="8" />
+      <param name="input_fastq_r1" value="illuminaPE_r1_bad_ranges.fq" ftype="fastqsanger" />
+      <param name="input_fastq_r2" value="illuminaPE_r2_bad_ranges.fq" ftype="fastqsanger" />
+      <param name="min_2mer_repeats" value="8" />
+      <param name="min_3mer_repeats" value="8" />
+      <param name="min_4mer_repeats" value="8" />
+      <param name="min_5mer_repeats" value="8" />
+      <param name="min_6mer_repeats" value="8" />
+      <param name="primer_options" value="custom" />
+      <param name="primer_opt_size" value="25" />
+      <param name="primer_min_size" value="21" />
+      <param name="primer_max_size" value="30" />
+      <param name="primer_min_gc" value="40.0" />
+      <param name="primer_max_gc" value="60.0" />
+      <param name="primer_gc_clamp" value="3" />
+      <param name="primer_max_end_gc" value="5" />
+      <param name="primer_min_tm" value="60.0" />
+      <param name="primer_max_tm" value="80.0" />
+      <param name="primer_opt_tm" value="68.0" />
+      <param name="primer_pair_max_diff_tm" value="3.0" />
+      <param name="report_bad_primer_ranges" value="true" />
+      <expand macro="output_illumina_microsat_summary_bad_ranges" />
+      <output name="output_pal_summary" compare="re_match" file="illuminaPE_microsats_bad_ranges.out.re_match" />
+      <output name="output_bad_primer_read_ids" file="illuminaPE_bad_primer_read_ids.out" />
+    </test>
     <!-- Test with 454 input -->
     <test>
       <param name="platform_type" value="454" />
@@ -314,6 +351,39 @@ pal_finder to:
 Pal_finder runs the primer3_core program; information on the settings used in
 primer3_core can be found in the Primer3 manual at
 http://primer3.sourceforge.net/primer3_manual.htm
+
+-------------
+
+.. class:: infomark
+
+**Known issues**
+
+.. class:: warning
+
+**Low number of reads used for microsatellite detection/bad primer product size ranges**
+
+For some datasets pal_finder may generate 'bad' product size ranges (where the
+lower limit exceeds the upper limit) for one or more reads, for input into
+primer3_core. In these cases primer3_core will terminate prematurely, which can
+result in a substantially lower number of reads being used for microsatellite
+detection and potentially sub-optimal primer design.
+
+The number of reads generating the bad size ranges are reported in the
+*Summary of microsat types* output dataset as 'readsWithBadRanges'. Ideally
+the reported value should be zero.
+
+The conditions which cause this issue within pal_finder are still unclear,
+however we believe it to be associated with short or low quality reads. If this
+problem affects your data then:
+
+* Ensure that the input data are sufficiently trimmed and filtered (using
+  e.g. the Trimmomatic tool) before rerunning pal_finder.
+
+* A list of read IDs for which pal_finder generates bad product size ranges can
+  be output by turning on *Output IDs for input reads which generate bad primer
+  ranges*. This outputs an additional dataset with a list of read IDs which can
+  be used to remove read pairs from the input Fastq files (using e.g. the *Filter
+  sequences by ID* tool) before rerunning pal_finder.
 
 -------------
 

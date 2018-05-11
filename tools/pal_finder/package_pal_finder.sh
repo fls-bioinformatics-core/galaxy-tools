@@ -12,6 +12,7 @@ fi
 tar cvzf $TGZ \
     README.rst \
     pal_finder_wrapper.sh \
+    pal_finder_wrapper_utils.sh \
     pal_finder_wrapper.xml \
     pal_finder_macros.xml \
     pal_filter.py \

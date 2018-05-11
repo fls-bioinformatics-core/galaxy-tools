@@ -26,7 +26,8 @@
 # --primer-opt-tm VALUE: optimum melting temperature (Celsius)
 # --primer-pair-max-diff-tm VALUE: max difference between melting temps of left & right primers
 # --output_config_file FNAME: write a copy of the config.txt file to FNAME
-# --filter_microsats FNAME: write output of filter options FNAME
+# --bad_primer_ranges FNAME: write a list of the read IDs generating bad primer ranges to FNAME
+# --filter_microsats FNAME: write output of filter options to FNAME
 # -assembly FNAME: run the 'assembly' filter option and write to FNAME
 # -primers: run the 'primers' filter option
 # -occurrences: run the 'occurrences' filter option
@@ -54,6 +55,9 @@ echo $*
 # Maximum size reporting log file contents
 MAX_LINES=500
 #
+# Get helper functions
+. $(dirname $0)/pal_finder_wrapper_utils.sh
+#
 # Initialise locations of scripts, data and executables
 #
 # Set these in the environment to overide at execution time
@@ -64,31 +68,18 @@ MAX_LINES=500
 # Filter script is in the same directory as this script
 PALFINDER_FILTER=$(dirname $0)/pal_filter.py
 if [ ! -f $PALFINDER_FILTER ] ; then
-    echo No $PALFINDER_FILTER script >&2
-    exit 1
+    fatal No $PALFINDER_FILTER script
 fi
 #
 # Check that we have all the components
-function have_program() {
-    local program=$1
-    local got_program=$(which $program 2>&1 | grep "no $(basename $program) in")
-    if [ -z "$got_program" ] ; then
-	echo yes
-    else
-	echo no
-    fi	
-}
 if [ "$(have_program $PRIMER3_CORE_EXE)" == "no" ] ; then
-    echo "ERROR primer3_core missing: ${PRIMER3_CORE_EXE} not found" >&2
-    exit 1
+    fatal "primer3_core missing: ${PRIMER3_CORE_EXE} not found"
 fi
 if [ ! -f "${PALFINDER_DATA_DIR}/config.txt" ] ; then
-    echo "ERROR pal_finder config.txt not found in ${PALFINDER_DATA_DIR}" >&2
-    exit 1
+    fatal "pal_finder config.txt not found in ${PALFINDER_DATA_DIR}"
 fi
 if [ ! -f "${PALFINDER_SCRIPT_DIR}/pal_finder_v0.02.04.pl" ] ; then
-    echo "ERROR pal_finder_v0.02.04.pl not found in ${PALFINDER_SCRIPT_DIR}" >&2
-    exit 1
+    fatal "pal_finder_v0.02.04.pl not found in ${PALFINDER_SCRIPT_DIR}"
 fi
 #
 # Initialise parameters used in the config.txt file
@@ -121,7 +112,7 @@ RANDOM_SEED=568765
 if [ $# -lt 2 ] ; then
   echo "Usage: $0 FASTQ_R1 FASTQ_R2 MICROSAT_SUMMARY PAL_SUMMARY [OPTIONS]"
   echo "       $0 --454    FASTA    MICROSAT_SUMMARY PAL_SUMMARY [OPTIONS]"
-  exits
+  fatal "Bad command line"
 fi
 if [ "$1" == "--454" ] ; then
     PLATFORM="454"
@@ -215,6 +206,10 @@ while [ ! -z "$1" ] ; do
 	    shift
 	    OUTPUT_CONFIG_FILE=$1
 	    ;;
+	--bad_primer_ranges)
+	    shift
+	    BAD_PRIMER_RANGES=$1
+	    ;;
 	--filter_microsats)
 	    shift
 	    FILTERED_MICROSATS=$1
@@ -242,16 +237,14 @@ done
 # Check that primer3_core is available
 got_primer3=`which $PRIMER3_CORE_EXE 2>&1 | grep -v "no primer3_core in"`
 if [ -z "$got_primer3" ] ; then
-  echo ERROR primer3_core not found >&2
-  exit 1
+  fatal "primer3_core not found"
 fi
 #
 # Set up the working dir
 if [ "$PLATFORM" == "Illumina" ] ; then
     # Paired end Illumina data as input
     if [ $FASTQ_R1 == $FASTQ_R2 ] ; then
-	echo ERROR R1 and R2 fastqs are the same file >&2
-	exit 1
+	fatal ERROR R1 and R2 fastqs are the same file
     fi
     ln -s $FASTQ_R1
     ln -s $FASTQ_R2
@@ -279,17 +272,6 @@ echo "### Creating config.txt file for pal_finder run ###"
 /bin/cp $PALFINDER_DATA_DIR/config.txt .
 #
 # Update the config.txt file with new values
-function set_config_value() {
-    local key=$1
-    local value=$2
-    local config_txt=$3
-    if [ -z "$value" ] ; then
-	echo "No value for $key, left as default"
-    else
-	echo Setting "$key" to "$value"
-	sed -i 's,^'"$key"' .*,'"$key"'  '"$value"',' $config_txt
-    fi
-}
 # Input files
 set_config_value platform $PLATFORM config.txt
 if [ "$PLATFORM" == "Illumina" ] ; then
@@ -314,6 +296,7 @@ set_config_value 6merMinReps $MIN_6_MER_REPS config.txt
 # Primer3 settings
 set_config_value primer3input Output/pr3in.txt config.txt
 set_config_value primer3output Output/pr3out.txt config.txt
+set_config_value keepPrimer3files 1 config.txt
 set_config_value primer3executable $PRIMER3_CORE_EXE config.txt
 set_config_value prNamePrefix ${PRIMER_PREFIX}_ config.txt
 set_config_value PRIMER_MISPRIMING_LIBRARY "$PRIMER_MISPRIMING_LIBRARY" config.txt
@@ -345,20 +328,50 @@ tail -$MAX_LINES pal_finder.log
 # Check for success/failure
 if [ ! -z "$(tail -n 1 pal_finder.log | grep 'No microsatellites found in any reads. Ending script.')" ] ; then
     # No microsatellites found
-    echo ERROR pal_finder failed to locate any microsatellites >&2
+    fatal ERROR pal_finder failed to locate any microsatellites
     exit 1
 elif [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
     # Log doesn't end with "Done!!" (indicates failure)
-    echo ERROR pal_finder failed to complete successfully >&2
-    exit 1
+    fatal ERROR pal_finder failed to complete successfully
+fi
+echo "### pal_finder finished ###"
+#
+# Check for errors in pal_finder output
+echo "### Checking for errors ###"
+if [ ! -z "$(grep 'primer3_core: Illegal element in PRIMER_PRODUCT_SIZE_RANGE' pal_finder.log)" ] ; then
+    echo WARNING primer3 terminated prematurely due to bad product size ranges
+    $(find_bad_primer_ranges Output/pr3in.txt bad_primer_ranges.txt)
+    N_BAD_PRIMERS=$(cat bad_primer_ranges.txt | wc -l)
+    if [ -z "$BAD_PRIMER_RANGES" ] ; then
+	# No output file so report to stderr
+	cat <<EOF
+
+Pal_finder generated bad ranges for the following read IDs:
+
+EOF
+	cat bad_primer_ranges.txt
+	cat <<EOF
+
+This error can occur when input data contains short R1 reads and has
+has not been properly trimmed and filtered.
+
+EOF
+    else
+	# Move the bad ranges to the specified file
+	echo "### Writing read IDs with bad primer ranges ###"
+	/bin/mv bad_primer_ranges.txt "$BAD_PRIMER_RANGES"
+    fi
+else
+    N_BAD_PRIMERS=0
 fi
 #
 # Sort microsat_summary output
 echo "### Sorting microsat summary output ###"
 head -n 7 Output/microsat_summary.txt | sort >microsat_summary.sorted
+echo "readsWithBadRanges:"$'\t'"$((N_BAD_PRIMERS * 2))" >>microsat_summary.sorted
 grep "^$" Output/microsat_summary.txt>>microsat_summary.sorted
 grep "^Microsat Type" Output/microsat_summary.txt >>microsat_summary.sorted
-tail -n +11 Output/microsat_summary.txt >>microsat_summary.sorted
+tail -n +11 Output/microsat_summary.txt | sort -r -n -k 5 >>microsat_summary.sorted
 mv microsat_summary.sorted Output/microsat_summary.txt
 #
 # Sort PAL_summary output
@@ -382,11 +395,9 @@ if [ ! -z "$FILTERED_MICROSATS" ] || [ ! -z "$OUTPUT_ASSEMBLY" ] ; then
     fi
     tail -$MAX_LINES pal_filter.log
     if [ $? -ne 0 ] ; then
-	echo ERROR $PALFINDER_FILTER exited with non-zero status >&2
-	exit 1
+	fatal $PALFINDER_FILTER exited with non-zero status
     elif [ ! -f PAL_summary.filtered ] ; then
-	echo ERROR no output from $PALFINDER_FILTER >&2
-	exit 1
+	fatal no output from $PALFINDER_FILTER
     fi
 fi
 #
@@ -406,8 +417,7 @@ if [ ! -z "$OUTPUT_ASSEMBLY" ] ; then
     if [ -f "$assembly" ] ; then
 	/bin/mv $assembly "$OUTPUT_ASSEMBLY"
     else
-	echo ERROR no assembly output found >&2
-	exit 1
+	fatal no assembly output found
     fi
 fi
 if [ ! -z "$OUTPUT_CONFIG_FILE" ] && [ -f config.txt ] ; then
