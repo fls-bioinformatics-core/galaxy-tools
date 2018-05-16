@@ -16,6 +16,7 @@ tar cvzf $TGZ \
     pal_finder_wrapper.xml \
     pal_finder_macros.xml \
     pal_filter.py \
+    fastq_subset.py \
     test-data
 if [ -f $TGZ ] ; then
     echo Created $TGZ

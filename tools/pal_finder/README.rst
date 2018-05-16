@@ -63,7 +63,9 @@ Version    Changes
 
 0.02.04.7  - Trap for errors in ``pal_finder_v0.02.04.pl`` resulting in bad
              ranges being supplied to ``primer3_core`` for some reads via
-             ``PRIMER_PRODUCT_RANGE_SIZE``.
+             ``PRIMER_PRODUCT_RANGE_SIZE`` (and enable 'bad' reads to be output
+	     to a dataset); add new option to use a random subset of reads for
+	     microsatellite detection.
 0.02.04.6  - Update to get dependencies using ``conda`` when installed from the
              toolshed (this removes the explicit dependency on Perl 5.16
              introduced in 0.02.04.2, as a result the outputs from the tool are

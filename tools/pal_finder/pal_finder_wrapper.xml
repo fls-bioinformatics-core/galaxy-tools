@@ -1,4 +1,4 @@
-<tool id="microsat_pal_finder" name="pal_finder" version="0.02.04.6">
+<tool id="microsat_pal_finder" name="pal_finder" version="0.02.04.7">
   <description>Find microsatellite repeat elements from sequencing reads and design PCR primers to amplify them</description>
   <macros>
     <import>pal_finder_macros.xml</import>
@@ -117,7 +117,7 @@
 	<param name="input_fasta" type="data" format="fasta" label="454 fasta file with raw reads" />
       </when>
     </conditional>
-    <param name="min_2mer_repeats" type="integer" value="6" label="Minimum number of 2-mer repeat units to detect" min="1" help="Set to zero to ignore repeats of this n-mer unit" />
+    <param name="min_2mer_repeats" type="integer" value="6" label="Minimum number of 2-mer repeat units to detect" min="1" help="Must detect at least one repeat of this n-mer unit" />
     <param name="min_3mer_repeats" type="integer" value="0" label="Minimum number of 3-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_4mer_repeats" type="integer" value="0" label="Minimum number of 4-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
     <param name="min_5mer_repeats" type="integer" value="0" label="Minimum number of 5-mer repeat units" help="Set to zero to ignore repeats of this n-mer unit" />
@@ -400,6 +400,19 @@ problem affects your data then:
   ranges*. This outputs an additional dataset with a list of read IDs which can
   be used to remove read pairs from the input Fastq files (using e.g. the *Filter
   sequences by ID* tool) before rerunning pal_finder.
+
+.. class:: warning
+
+**Pal_finder takes a long time to run for large input datasets**
+
+pal_finder was originally developed using MiSeq data, and is not optimised for
+working with the larger Fastqs that are output from other platforms such as
+HiSeq and NextSeq. As a consequence pal_finder may take a very long time to
+complete when operating on larger datasets.
+
+If this is a problem then the tool can be run using a subset of the input reads
+by unchecking the *Use all reads...* option and entering either an integer number
+of reads to use, or a decimal fraction (e.g. 0.5 will select 50% of the reads).
 
 -------------
 
