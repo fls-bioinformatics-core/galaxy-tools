@@ -61,6 +61,7 @@ History
 Version    Changes
 ---------- ----------------------------------------------------------------------
 
+0.02.04.8  - Update the FASTQ subsetting option to make it more efficient
 0.02.04.7  - Trap for errors in ``pal_finder_v0.02.04.pl`` resulting in bad
              ranges being supplied to ``primer3_core`` for some reads via
              ``PRIMER_PRODUCT_RANGE_SIZE`` (and enable 'bad' reads to be output
