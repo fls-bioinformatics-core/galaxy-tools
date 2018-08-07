@@ -90,6 +90,8 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+1.1.0.0    - Update to ``RnaChipIntegrator`` version 1.1.0 (fixes bug with
+             missing peaks in gene-centric analyses when using both edges)
 1.0.3.1    - Fetch dependencies from conda if not otherwise satisfied
 1.0.3.0    - Update to ``RnaChipIntegrator`` version 1.0.3
 1.0.2.0    - Update to ``RnaChipIntegrator`` version 1.0.2 (fixes bug with
