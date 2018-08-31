@@ -24,12 +24,12 @@
   #end if
   java \${_JAVA_OPTIONS:--Xmx8G} -jar \$TRIMMOMATIC_JAR_PATH/trimmomatic.jar
   #if $readtype.single_or_paired in ["pair_of_files","collection"]
-    PE -threads \${GALAXY_SLOTS:-6} -phred33
+    PE -threads \${GALAXY_SLOTS:-6}
       fastq_r1.'$r1_ext' fastq_r2.'$r2_ext'
       fastq_out_r1_paired.'$r1_ext' fastq_out_r1_unpaired.'$r1_ext'
       fastq_out_r2_paired.'$r2_ext' fastq_out_r2_unpaired.'$r2_ext'
   #else
-    SE -threads \${GALAXY_SLOTS:-6} -phred33 fastq_in.'$fastq_in.extension' fastq_out.'$fastq_in.extension'
+    SE -threads \${GALAXY_SLOTS:-6} fastq_in.'$fastq_in.extension' fastq_out.'$fastq_in.extension'
   #end if
   ## ILLUMINACLIP option
   #if $illuminaclip.do_illuminaclip
@@ -112,7 +112,7 @@ ${from_text_area}</configfile>
          <option value="collection">Paired-end (as collection)</option>
       </param>
     <when value="se">
-      <param name="fastq_in" type="data" format="fastqsanger,fastqsanger.gz" label="Input FASTQ file" />
+      <param name="fastq_in" type="data" format="fastqsanger,fastqsanger.gz,fastqillumina,fastqillumina.gz,fastqsolexa,fastqsolexa.gz" label="Input FASTQ file" />
     </when>
     <when value="pair_of_files">
       <param name="fastq_r1_in" type="data" format="fastqsanger,fastqsanger.gz"
@@ -279,6 +279,28 @@ ${from_text_area}</configfile>
       <output name="fastq_out_r1_unpaired" file="trimmomatic_pe_r1_unpaired_out1.fastq" />
       <output name="fastq_out_r2_paired" file="trimmomatic_pe_r2_paired_out1.fastq" />
       <output name="fastq_out_r2_unpaired" file="trimmomatic_pe_r2_unpaired_out1.fastq" />
+    </test>
+    <test>
+      <!-- Paired-end Illumina 1.3-1.7 quality encoding -->
+      <param name="single_or_paired" value="pair_of_files" />
+      <param name="fastq_r1_in" value="Illumina_SG_R1.fastqillumina" ftype="fastqillumina" />
+      <param name="fastq_r2_in" value="Illumina_SG_R2.fastqillumina" ftype="fastqillumina" />
+      <param name="operations_0|operation|name" value="SLIDINGWINDOW" />
+      <output name="fastq_out_r1_paired" file="trimmomatic_pe_r1_paired_out1.fastqillumina" />
+      <output name="fastq_out_r1_unpaired" file="trimmomatic_pe_r1_unpaired_out1.fastqillumina" />
+      <output name="fastq_out_r2_paired" file="trimmomatic_pe_r2_paired_out1.fastqillumina" />
+      <output name="fastq_out_r2_unpaired" file="trimmomatic_pe_r2_unpaired_out1.fastqillumina" />
+    </test>
+    <test>
+      <!-- Paired-end Solexa quality encoding -->
+      <param name="single_or_paired" value="pair_of_files" />
+      <param name="fastq_r1_in" value="Illumina_SG_R1.fastqsolexa" ftype="fastqsolexa" />
+      <param name="fastq_r2_in" value="Illumina_SG_R2.fastqsolexa" ftype="fastqsolexa" />
+      <param name="operations_0|operation|name" value="SLIDINGWINDOW" />
+      <output name="fastq_out_r1_paired" file="trimmomatic_pe_r1_paired_out1.fastqsolexa" />
+      <output name="fastq_out_r1_unpaired" file="trimmomatic_pe_r1_unpaired_out1.fastqsolexa" />
+      <output name="fastq_out_r2_paired" file="trimmomatic_pe_r2_paired_out1.fastqsolexa" />
+      <output name="fastq_out_r2_unpaired" file="trimmomatic_pe_r2_unpaired_out1.fastqsolexa" />
     </test>
     <test>
       <!-- Single-end example (cropping) -->
