@@ -3,6 +3,7 @@
   <requirements>
     <requirement type="package" version="1.0.2b1">cistrome-ceas</requirement>
     <requirement type="package" version="357">ucsc-fetchchromsizes</requirement>
+    <requirement type="package" version="3.5.0">R</requirement>
   </requirements>
   <version_command>ceas --version 2&gt;&amp;1 | tail -1</version_command>
   <command><![CDATA[
