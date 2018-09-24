@@ -67,6 +67,7 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+1.0.2-4    - Explicitly include R 3.5.0 as a dependency
 1.0.2-3    - Updated to fetch all dependencies from conda
 1.0.2-2    - Major updates to fix various bugs, add tests and enable ceasBW to
              be used without an existing chromosome sizes file.

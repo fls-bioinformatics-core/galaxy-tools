@@ -79,6 +79,8 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+2.0.3      - Update handling of frequency files to accommodate changes in
+             latest bioconda version of weeder2.
 2.0.2      - Drop ``tool_dependencies.xml`` & use conda to resolve dependencies
 2.0.1      - Explicitly specify frequency files in ``weeder2.loc``.
 2.0.0      - Initial version
