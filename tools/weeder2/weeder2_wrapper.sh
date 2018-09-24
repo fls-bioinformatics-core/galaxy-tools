@@ -25,8 +25,9 @@ ln -s $FASTA_IN
 #
 # Locate the FreqFiles directory
 if [ $FREQFILES_DIR == "." ] ; then
-    # Use the files in the Weeder2 distribution
-    freqfiles_dir=$WEEDER_FREQFILES_DIR
+    # Don't explicitly set the location - Weeder2 from
+    # bioconda handles this automatically
+    freqfiles_dir=
 else
     # Alternative location
     freqfiles_dir=$FREQFILES_DIR
@@ -34,12 +35,16 @@ fi
 #
 # Link to the FreqFiles directory as weeder2 executable
 # expects it to be the same directory
-if [ -d $freqfiles_dir ] ; then
-    echo "Linking to FreqFiles directory: $freqfiles_dir"
-    ln -s $freqfiles_dir FreqFiles
+if [ ! -z "$freqfiles_dir" ] ; then
+    if [ -d $freqfiles_dir ] ; then
+	echo "Linking to FreqFiles directory: $freqfiles_dir"
+	ln -s $freqfiles_dir FreqFiles
+    else
+	echo "ERROR FreqFiles directory not found" >&2
+	exit 1
+    fi
 else
-    echo "ERROR FreqFiles directory not found" >&2
-    exit 1
+    echo "WARNING FreqFiles directory not set" >&2
 fi
 #
 # Construct names of input and output files
