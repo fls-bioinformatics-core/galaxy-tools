@@ -48,9 +48,9 @@ else
 fi
 #
 # Construct names of input and output files
-fasta=`basename $FASTA_IN`
-motifs_out=$fasta.w2
-matrix_out=$fasta.matrix.w2
+fasta=$(basename $FASTA_IN)
+motifs_out=${fasta}.w2
+matrix_out=${fasta}.matrix.w2
 #
 # Construct and run weeder command
 # NB weeder logs output to stderr so redirect to stdout
@@ -68,9 +68,16 @@ fi
 # Move outputs to final destinations
 if [ -e $motifs_out ] ; then
     /bin/mv $motifs_out $MOTIFS_OUT
+else
+    echo ERROR missing output file: $motifs_out >&2
+    status=1
 fi
 if [ -e $matrix_out ] ; then
     /bin/mv $matrix_out $MATRIX_OUT
+else
+    echo ERROR missing output file: $matrix_out >&2
+    status=1
 fi
 #
 # Done
+exit $status
