@@ -7,7 +7,6 @@
     <requirement type="package" version="0.36">trimmomatic</requirement>
   </requirements>
   <command detect_errors="aggressive"><![CDATA[
-  @CONDA_TRIMMOMATIC_JAR_PATH@ &&
   @CONDA_TRIMMOMATIC_ADAPTERS_PATH@ &&
   #if $readtype.single_or_paired == "pair_of_files"
     #set r1_ext = $readtype.fastq_r1_in.extension
@@ -22,7 +21,7 @@
   #else
     ln -s '$fastq_in' fastq_in.'$fastq_in.extension' &&
   #end if
-  java \${_JAVA_OPTIONS:--Xmx8G} -jar \$TRIMMOMATIC_JAR_PATH/trimmomatic.jar
+  trimmomatic 
   #if $readtype.single_or_paired in ["pair_of_files","collection"]
     PE -threads \${GALAXY_SLOTS:-6} -phred33
       fastq_r1.'$r1_ext' fastq_r2.'$r2_ext'
@@ -76,6 +75,9 @@
       MAXINFO:$op.operation.target_length:$op.operation.strictness
     #end if
   #end for
+  #if $output_logs:
+    -trimlog logs
+  #end if
   2>&1 | tee trimmomatic.log &&
   if [ -z "\$(tail -1 trimmomatic.log | grep "Completed successfully")" ]; then echo "Trimmomatic did not finish successfully" >&2 ; exit 1 ; fi
   &&
@@ -226,7 +228,7 @@ ${from_text_area}</configfile>
         <data name="forward" label="${tool.name} on ${readtype.fastq_pair.forward.name} (R1 unpaired)" format_source="fastq_pair['forward']"/>
         <data name="reverse" label="${tool.name} on ${readtype.fastq_pair.reverse.name} (R2 unpaired)" format_source="fastq_pair['reverse']"/>
     </collection>
-    <data name="log_file" format="text" label="${tool.name} on ${on_string} (log file)" from_work_dir="trimmomatic.log">
+    <data name="log_file" format="txt" label="${tool.name} on ${on_string} (log file)" from_work_dir="logs">
       <filter>output_logs</filter>
     </data>
   </outputs>
@@ -240,6 +242,7 @@ ${from_text_area}</configfile>
       <param name="operations_0|operation|name" value="SLIDINGWINDOW" />
       <param name="output_logs" value="yes" />
       <output name="fastq_out" file="trimmomatic_se_out1.fastq" />
+      <output name="log_file" file="trimmomatic_se_out1.log" />
     </test>
     <test>
       <!-- Single-end example - gzipped -->
