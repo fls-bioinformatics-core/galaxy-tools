@@ -115,13 +115,13 @@ ${from_text_area}</configfile>
       <param name="fastq_in" type="data" format="fastqsanger,fastqsanger.gz,fastqillumina,fastqillumina.gz,fastqsolexa,fastqsolexa.gz" label="Input FASTQ file" />
     </when>
     <when value="pair_of_files">
-      <param name="fastq_r1_in" type="data" format="fastqsanger,fastqsanger.gz"
+      <param name="fastq_r1_in" type="data" format="fastqsanger,fastqsanger.gz,fastqillumina,fastqillumina.gz,fastqsolexa,fastqsolexa.gz"
          label="Input FASTQ file (R1/first of pair)" />
-      <param name="fastq_r2_in" type="data" format="fastqsanger,fastqsanger.gz"
+      <param name="fastq_r2_in" type="data" format="fastqsanger,fastqsanger.gz,fastqillumina,fastqillumina.gz,fastqsolexa,fastqsolexa.gz"
          label="Input FASTQ file (R2/second of pair)" />
     </when>
       <when value="collection">
-        <param name="fastq_pair" format="fastqsanger,fastqsanger.gz" type="data_collection" collection_type="paired" label="Select FASTQ dataset collection with R1/R2 pair" />
+        <param name="fastq_pair" format="fastqsanger,fastqsanger.gz,fastqillumina,fastqillumina.gz,fastqsolexa,fastqsolexa.gz" type="data_collection" collection_type="paired" label="Select FASTQ dataset collection with R1/R2 pair" />
       </when>
     </conditional>
     <conditional name="illuminaclip">
