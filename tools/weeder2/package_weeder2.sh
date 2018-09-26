@@ -13,7 +13,6 @@ tar cvzf $TGZ \
     README.rst \
     weeder2_wrapper.sh \
     weeder2_wrapper.xml \
-    weeder2_macros.xml \
     tool_data_table_conf.xml.sample \
     tool_data_table_conf.xml.test \
     tool-data/weeder2.loc.sample \
