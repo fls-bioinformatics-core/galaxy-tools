@@ -1,4 +1,4 @@
-<tool id="trimmomatic" name="Trimmomatic" version="0.36.5">
+<tool id="trimmomatic" name="Trimmomatic" version="0.36.6">
   <description>flexible read trimming tool for Illumina NGS data</description>
   <macros>
     <import>trimmomatic_macros.xml</import>
@@ -230,7 +230,7 @@ ${from_text_area}</configfile>
         <data name="forward" label="${tool.name} on ${readtype.fastq_pair.forward.name} (R1 unpaired)" format_source="fastq_pair['forward']"/>
         <data name="reverse" label="${tool.name} on ${readtype.fastq_pair.reverse.name} (R2 unpaired)" format_source="fastq_pair['reverse']"/>
     </collection>
-    <data name="log_file" format="txt" label="${tool.name} on ${on_string} (log file)" from_work_dir="trimlog">
+    <data name="log_file" format="txt" label="${tool.name} on ${on_string} (trimlog file)" from_work_dir="trimlog">
       <filter>output_logs</filter>
     </data>
     <data name="err_file" format="txt" label="${tool.name} on ${on_string} (log file)" from_work_dir="trimmomatic.log">
@@ -451,7 +451,7 @@ reads.
 
 This Galaxy tool has been developed within the Bioinformatics Core Facility at the
 University of Manchester, with contributions from Peter van Heusden, Marius
-van den Beek, Jelle Scholtalbers and Charles Girardot.
+van den Beek, Jelle Scholtalbers, Charles Girardot, and Matthias Bernt.
 
 It runs the Trimmomatic program which has been developed
 within Bjorn Usadel's group at RWTH Aachen university.
