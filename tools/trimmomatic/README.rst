@@ -71,6 +71,7 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.36.6     - Added trimlog and log outputs
 0.36.5     - Remove tool_dependencies.xml and always use conda to resolve tool
              dependencies
 0.36.4     - Add option to provide custom adapter sequences for ILLUMINACLIP
@@ -110,10 +111,10 @@ Credits
 =======
 
 This wrapper has been developed and is maintained by Peter Briggs (@pjbriggs).
-Peter van Heusden (@pvanheus) and Marius van den Beek (@mvdbeek) contributed
+Peter van Heusden (@pvanheus) and Marius van den Beek (@mvdbeek) contributed 
 support for gz compressed FastQ files. Charles Girardot (@cgirardot) and
 Jelle Scholtalbers (@scholtalbers) contributed additional options to ILLUMINACLIP.
-
+Matthias Bernt (@bernt-matthias) added log and trimlog output.
 
 Developers
 ==========
