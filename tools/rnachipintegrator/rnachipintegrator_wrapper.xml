@@ -6,8 +6,8 @@
   </macros>
   <expand macro="requirements" />
   <expand macro="version_command" />
-  <command interpreter="bash"><![CDATA[
-  rnachipintegrator_wrapper.sh
+  <command detect_errors="aggressive"><![CDATA[
+  bash $__tool_directory__/rnachipintegrator_wrapper.sh
   #if $peaks_in.metadata.chromCol
     --peak_cols=${peaks_in.metadata.chromCol},${peaks_in.metadata.startCol},${peaks_in.metadata.endCol}
   #end if
