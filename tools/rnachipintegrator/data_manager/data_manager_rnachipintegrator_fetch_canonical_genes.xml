@@ -36,6 +36,8 @@
     <outputs>
         <data name="out_file" format="data_manager_json"/>
     </outputs>
+    <!-- Disable tests - they break with planemo 0.55.0->0.57.1
+	 under Galaxy release_18.09
     <tests>
         <test>
           <param name="dbkey" value="mm9"/>
@@ -45,6 +47,7 @@
           <output name="out_file" file="mm9_canonical_genes.data_manager_json"/>
         </test>
     </tests>
+    -->
     <help>
 
 .. class:: infomark
