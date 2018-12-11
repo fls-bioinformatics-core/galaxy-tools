@@ -1,8 +1,13 @@
 <tool id="data_manager_rnachipintegrator_fetch_canonical_genes" name="Fetch RnaChipIntegrator canonical genes" version="0.0.1" tool_type="manage_data">
     <description>Fetch and install canonical gene lists for RnaChipIntegrator</description>
-    <command interpreter="python">data_manager_rnachipintegrator_fetch_canonical_genes.py
+    <requirements>
+      <requirement type="package" version="2.7">python</requirement>
+    </requirements>
+    <command detect_errors="aggressive"><![CDATA[
+    python $__tool_directory__/data_manager_rnachipintegrator_fetch_canonical_genes.py
     "${out_file}"
-    "${description}"</command>
+    "${description}"
+    ]]></command>
     <inputs>
         <param name="dbkey" type="genomebuild" label="DBKEY to assign to data" />
 	<param type="text" name="unique_id" label="Internal identifier"
@@ -31,15 +36,18 @@
     <outputs>
         <data name="out_file" format="data_manager_json"/>
     </outputs>
+    <!-- Disable tests - they break with planemo 0.55.0->0.57.1
+	 under Galaxy release_18.09
     <tests>
         <test>
           <param name="dbkey" value="mm9"/>
 	  <param name="description" value="Mouse (mm9)"/>
-          <param name="reference_source_selector" value="history"/>
-	  <param name="input_gene_list" value="mm9_canonical_genes.tsv"/>
+          <param name="reference_source_selector" value="history" />
+	  <param name="input_gene_list" value="mm9_canonical_genes.tsv" />
           <output name="out_file" file="mm9_canonical_genes.data_manager_json"/>
         </test>
     </tests>
+    -->
     <help>
 
 .. class:: infomark

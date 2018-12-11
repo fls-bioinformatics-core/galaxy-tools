@@ -26,7 +26,7 @@ install:
 # Get the installer scripts
   - "git clone https://github.com/pjbriggs/bioinf-software-install.git"
 # Bootstrap Galaxy instance for tests
-  - "bioinf-software-install/install_galaxy.sh --repo https://github.com/galaxyproject/galaxy/ --release release_17.09 --bare travis"
+  - "bioinf-software-install/install_galaxy.sh --repo https://github.com/galaxyproject/galaxy/ --release release_18.05 --bare travis"
 # Install planemo
   - "virtualenv planemo_venv"
   - ". planemo_venv/bin/activate"
