@@ -15,7 +15,7 @@ Automated installation
 ======================
 
 Installation via the Galaxy Tool Shed will take of installing the tool wrapper and
-the MACS 2.1 program.
+the MACS 2.1.2 program.
 
 Manual Installation
 ===================
@@ -31,7 +31,7 @@ by adding the line:
 
     <tool file="macs21/macs21_wrapper.xml" />
 
-You will also need to install MACS 2.1 and its dependencies:
+You will also need to install MACS 2.1.2 and its dependencies:
 
 - https://pypi.python.org/pypi/MACS2
 
@@ -59,6 +59,7 @@ practices in invoking commands from Galaxy, and to add new functionality.
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+2.1.2.0    - Update to use MACS 2.1.2
 2.1.1.0    - Update to use MACS 2.1.1 and use conda to resolve dependencies
 2.1.0-6    - Add bedSort step into bigWig file generation; terminate with error
              when MACS finishes with non-zero exit code.
