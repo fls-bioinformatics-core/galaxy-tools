@@ -71,6 +71,7 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.38.0     - Update to Trimmomatic 0.38.
 0.36.6     - Added trimlog and log outputs; add support for ``fastqillumina``
              and ``fastqsolexa`` input types
 0.36.5     - Remove tool_dependencies.xml and always use conda to resolve tool
