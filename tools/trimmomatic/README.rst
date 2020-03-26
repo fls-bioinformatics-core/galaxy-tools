@@ -46,9 +46,9 @@ by adding the line:
 
     <tool file="trimmomatic/trimmomatic.xml" />
 
-You will also need to install trimmomatic 0.36:
+You will also need to install trimmomatic 0.38:
 
-- http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.36.zip
+- http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.38.zip
 
 The tool wrapper uses the following environment variables in order to find the
 appropriate files:
