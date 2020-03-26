@@ -1,10 +1,16 @@
-<tool id="trimmomatic" name="Trimmomatic" version="0.38.0">
+<tool id="trimmomatic" name="Trimmomatic" version="0.38.1">
   <description>flexible read trimming tool for Illumina NGS data</description>
   <macros>
     <import>trimmomatic_macros.xml</import>
   </macros>
   <requirements>
     <requirement type="package" version="0.38">trimmomatic</requirement>
+    <!--
+	Coreutils required for 'readlink -e' work across platforms
+	See similar fix for snpSift
+	https://github.com/galaxyproject/tools-iuc/commit/b5e2080a7afdea9fa476895693b6115824c6fbb9
+    -->
+    <requirement type="package" version="8.25">coreutils</requirement>
   </requirements>
   <command detect_errors="aggressive"><![CDATA[
   @CONDA_TRIMMOMATIC_JAR_PATH@ &&
