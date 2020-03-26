@@ -71,6 +71,8 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.38.1     - Bug fix: add dependency on ``coreutils`` so that ``readlink -e`` is
+             supported across both Linux and MacOS platforms.
 0.38.0     - Update to Trimmomatic 0.38.
 0.36.6     - Added trimlog and log outputs; add support for ``fastqillumina``
              and ``fastqsolexa`` input types
@@ -117,6 +119,8 @@ Peter van Heusden (@pvanheus) and Marius van den Beek (@mvdbeek) contributed
 support for gz compressed FastQ files. Charles Girardot (@cgirardot) and
 Jelle Scholtalbers (@scholtalbers) contributed additional options to ILLUMINACLIP.
 Matthias Bernt (@bernt-matthias) added log and trimlog output.
+Nicola Soranzo (@nsoranzo) suggested using coreutils to enable cross-platform
+support across Linux and MacOS.
 
 Developers
 ==========
