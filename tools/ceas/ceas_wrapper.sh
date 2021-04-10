@@ -32,18 +32,17 @@ while [ ! -z "$6" ] ; do
     elif [ "$6" == "--length" ] ; then
 	# Need a chrom sizes file
 	chrom_sizes=$7
-	if [ ! -f "$chrom_sizes" ] ; then
+	# Check the dbkey is set
+	dbkey=$(echo $(basename $chrom_sizes) | cut -d'.' -f1)
+	if [ $dbkey == '?' ] ; then
+	    # DBkey not set, this is fatal
+	    echo "ERROR genome build not set (name is '?')" >&2
+	    echo "Assign a genome build to your input dataset and rerun" >&2
+	    exit 1
+	elif [ ! -f "$chrom_sizes" ] ; then
 	    # If chrom sizes file doesn't already exist then attempt to
-	    # download the data from UCSC
+	    # download the data from UCSC using fetchChromSizes
 	    echo "WARNING no file $chrom_sizes"
-	    dbkey=$(echo $(basename $chrom_sizes) | cut -d'.' -f1)
-	    if [ $dbkey == '?' ] ; then
-		# DBkey not set, this is fatal
-		echo "ERROR genome build not set, cannot get sizes for '?'" >&2
-		echo "Assign a genome build to your input dataset and rerun" >&2
-		exit 1
-	    fi
-	    # Fetch the sizes using fetchChromSizes
 	    echo -n "Attempting to download chromosome sizes for $dbkey..."
 	    chrom_sizes=$(basename $chrom_sizes)
 	    fetchChromSizes $dbkey >$chrom_sizes 2>/dev/null
