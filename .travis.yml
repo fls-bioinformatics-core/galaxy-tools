@@ -1,7 +1,7 @@
 # Config file for Travis CI
 language: python
 python:
-  - "2.7"
+  - "3.6"
 # Attempt to split the tests into separate
 # environments
 env:
