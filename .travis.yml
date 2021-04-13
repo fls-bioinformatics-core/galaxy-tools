@@ -28,9 +28,6 @@ install:
 # Install planemo
   - "virtualenv planemo_venv"
   - ". planemo_venv/bin/activate"
-# Update setuptools before installing planemo
-# See https://github.com/galaxyproject/planemo/issues/520
-  - "pip install --upgrade pip setuptools"
 # Install planemo to do the testing
   - "pip install planemo"
 
