@@ -16,8 +16,6 @@ env:
 before_install:
 # Update the list of available packages
   - sudo apt-get -qq update
-# Java needed for Trimmomatic
-  - "sudo apt-get install java-common"
 # Dependencies needed for Galaxy installer
   - sudo apt-get install pwgen
   - sudo apt-get install r-base
