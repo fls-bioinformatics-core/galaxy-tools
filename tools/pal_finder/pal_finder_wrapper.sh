@@ -351,7 +351,13 @@ if [ ! -z "$(tail -n 1 pal_finder.log | grep 'No microsatellites found in any re
     exit 1
 elif [ -z "$(tail -n 1 pal_finder.log | grep Done!!)" ] ; then
     # Log doesn't end with "Done!!" (indicates failure)
-    fatal ERROR pal_finder failed to complete successfully
+    errmsg="ERROR pal_finder failed to complete successfully"
+    if [ ! -z "$(grep 'Non-valid paired end read' pal_finder.log)" ] ; then
+	errmsg="${errmsg}: unable to pair reads?"
+    elif [ ! -z "$(grep 'Sequence Tag .* not in correct format' pal_finder.log)" ] ; then
+	errmsg="${errmsg}: unable to extract sequence tags from Fastqs?"
+    fi
+    fatal $errmsg
 fi
 echo "### pal_finder finished ###"
 #

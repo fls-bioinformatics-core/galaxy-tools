@@ -414,6 +414,24 @@ If this is a problem then the tool can be run using a subset of the input reads
 by unchecking the *Use all reads...* option and entering either an integer number
 of reads to use, or a decimal fraction (e.g. 0.5 will select 50% of the reads).
 
+.. class:: warning
+
+**Pal_finder fails with error "unable to pair reads?"**
+
+This message indicates that pal_finder wasn't able to pair up the reads in
+R1 and R2 Fastqs supplied as input. Check that the supplied Fastqs really
+are a pair, and that the read headers conform to an Illumina-style format
+(see https://en.wikipedia.org/wiki/FASTQ_format#Illumina_sequence_identifiers).
+
+.. class:: warning
+
+**Pal_finder fails with error "unable to extract sequence tags from Fastqs?"**
+
+This message indicates that pal_finder wasn't able to extract sequence tag
+information from the read headers in the supplied Fastq pair. Check that the
+read headers conform to an Illumina-style format (see
+https://en.wikipedia.org/wiki/FASTQ_format#Illumina_sequence_identifiers).
+
 -------------
 
 .. class:: infomark
