@@ -67,7 +67,7 @@ def count_reads(fastq):
     n = 0
     with open(fastq,'r') as fq:
         while True:
-            buf = fq.read()
+            buf = fq.read(CHUNKSIZE)
             n += buf.count('\n')
             if buf == "": break
     return n/4
