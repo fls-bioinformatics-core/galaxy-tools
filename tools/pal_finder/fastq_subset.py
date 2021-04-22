@@ -3,6 +3,7 @@
 import argparse
 import random
 import gzip
+from builtins import range
 
 CHUNKSIZE = 102400
 
@@ -143,6 +144,6 @@ if __name__ == "__main__":
         if args.seed is not None:
             print "Random number generator seed: %d" % args.seed
             random.seed(args.seed)
-        subset = sorted(random.sample(xrange(nreads),subset_size))
+        subset = sorted(random.sample(range(nreads),subset_size))
         fastq_subset(args.fastq_r1,"subset_r1.fq",subset)
         fastq_subset(args.fastq_r2,"subset_r2.fq",subset)
