@@ -3,6 +3,7 @@
 import argparse
 import random
 import gzip
+from builtins import range
 
 CHUNKSIZE = 102400
 
@@ -30,9 +31,9 @@ def getlines(filen):
         newline character removed.
     """
     if filen.split('.')[-1] == 'gz':
-        fp = gzip.open(filen,'rb')
+        fp = gzip.open(filen,'rt')
     else:
-        fp = open(filen,'rb')
+        fp = open(filen,'rt')
     # Read in data in chunks
     buf = ''
     lines = []
@@ -70,7 +71,7 @@ def count_reads(fastq):
             buf = fq.read()
             n += buf.count('\n')
             if buf == "": break
-    return n/4
+    return n//4
 
 def fastq_subset(fastq_in,fastq_out,indices):
     """
@@ -126,12 +127,12 @@ if __name__ == "__main__":
                    help="seed for random number generator")
     args = p.parse_args()
 
-    print "Processing fastq pair:"
-    print "\t%s" % args.fastq_r1
-    print "\t%s" % args.fastq_r2
+    print("Processing fastq pair:")
+    print("\t%s" % args.fastq_r1)
+    print("\t%s" % args.fastq_r2)
 
     nreads = count_reads(args.fastq_r1)
-    print "Counted %d reads in %s" % (nreads,args.fastq_r1)
+    print("Counted %d reads in %s" % (nreads,args.fastq_r1))
 
     if args.subset_size is not None:
         subset_size = float(args.subset_size)
@@ -139,10 +140,10 @@ if __name__ == "__main__":
             subset_size = int(nreads*subset_size)
         else:
             subset_size = int(subset_size)
-        print "Extracting subset of reads: %s" % subset_size
+        print("Extracting subset of reads: %s" % subset_size)
         if args.seed is not None:
-            print "Random number generator seed: %d" % args.seed
+            print("Random number generator seed: %d" % args.seed)
             random.seed(args.seed)
-        subset = sorted(random.sample(xrange(nreads),subset_size))
+        subset = sorted(random.sample(range(nreads),subset_size))
         fastq_subset(args.fastq_r1,"subset_r1.fq",subset)
         fastq_subset(args.fastq_r2,"subset_r2.fq",subset)
