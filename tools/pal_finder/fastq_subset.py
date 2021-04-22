@@ -71,7 +71,7 @@ def count_reads(fastq):
             buf = fq.read()
             n += buf.count('\n')
             if buf == "": break
-    return n/4
+    return n//4
 
 def fastq_subset(fastq_in,fastq_out,indices):
     """
