@@ -231,7 +231,9 @@ wanted_lines = set()
 # read the pal_finder output file into a csv reader
 with open (args.pal_finder) as csvfile_infile:
     csv_f = csv.reader(csvfile_infile, delimiter='\t')
-    header = csv_f.next()
+    for row in csv_f:
+        header = row
+        break
     header.extend(("R1_Sequence_ID", \
                    "R1_Sequence", \
                    "R2_Sequence_ID", \
@@ -297,7 +299,9 @@ if args.rankmotifs:
             os.path.splitext(os.path.basename(args.pal_finder))[0] + \
             ".filtered") as csvfile_ranksize:
         csv_rank = csv.reader(csvfile_ranksize, delimiter='\t')
-        header = csv_rank.next()
+        for line in csv_rank:
+            header = line
+            break
         for line in csv_rank:
             rank_motif.append(line)
 
@@ -343,7 +347,9 @@ if args.assembly:
             os.path.splitext(os.path.basename(args.pal_finder))[0] + \
             ".filtered") as input_csv:
         pal_finder_csv = csv.reader(input_csv, delimiter='\t')
-        header = pal_finder_csv.next()
+        for row in  pal_finder_csv:
+            header = row
+            break
         for row in pal_finder_csv:
             seqIDs.append(row[0])
             motif.append(row[1])
