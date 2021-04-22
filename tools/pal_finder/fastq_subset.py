@@ -127,12 +127,12 @@ if __name__ == "__main__":
                    help="seed for random number generator")
     args = p.parse_args()
 
-    print "Processing fastq pair:"
-    print "\t%s" % args.fastq_r1
-    print "\t%s" % args.fastq_r2
+    print("Processing fastq pair:")
+    print("\t%s" % args.fastq_r1)
+    print("\t%s" % args.fastq_r2)
 
     nreads = count_reads(args.fastq_r1)
-    print "Counted %d reads in %s" % (nreads,args.fastq_r1)
+    print("Counted %d reads in %s" % (nreads,args.fastq_r1))
 
     if args.subset_size is not None:
         subset_size = float(args.subset_size)
@@ -140,9 +140,9 @@ if __name__ == "__main__":
             subset_size = int(nreads*subset_size)
         else:
             subset_size = int(subset_size)
-        print "Extracting subset of reads: %s" % subset_size
+        print("Extracting subset of reads: %s" % subset_size)
         if args.seed is not None:
-            print "Random number generator seed: %d" % args.seed
+            print("Random number generator seed: %d" % args.seed)
             random.seed(args.seed)
         subset = sorted(random.sample(range(nreads),subset_size))
         fastq_subset(args.fastq_r1,"subset_r1.fq",subset)
