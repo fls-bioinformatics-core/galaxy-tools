@@ -126,14 +126,14 @@ def strip_barcodes(input_file, wanted_set):
 ############################################################
 # MAIN PROGRAM                                             #
 ############################################################
-print "\n~~~~~~~~~~"
-print "pal_filter"
-print "~~~~~~~~~~"
-print "Version: " + __version__
+print("\n~~~~~~~~~~")
+print("pal_filter")
+print("~~~~~~~~~~")
+print("Version: " + __version__)
 time.sleep(1)
-print "\nFind the optimum loci in your pal_finder output and increase "\
-                    "the rate of successful microsatellite marker development"
-print "\nSee Griffiths et al. (currently unpublished) for more details......"
+print("\nFind the optimum loci in your pal_finder output and increase "\
+                    "the rate of successful microsatellite marker development")
+print("\nSee Griffiths et al. (currently unpublished) for more details......")
 time.sleep(2)
 
 # Get values for all the required and optional arguments
@@ -178,51 +178,51 @@ args = parser.parse_args()
 
 if not args.assembly and not args.primers and not args.occurrences \
         and not args.rankmotifs:
-    print "\nNo optional arguments supplied."
-    print "\nBy default this program does nothing."
-    print "\nNo files produced and no modifications made."
-    print "\nFinished.\n"
+    print("\nNo optional arguments supplied.")
+    print("\nBy default this program does nothing.")
+    print("\nNo files produced and no modifications made.")
+    print("\nFinished.\n")
     exit()
 else:
-    print "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    print "Checking supplied filtering parameters:"
-    print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Checking supplied filtering parameters:")
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     time.sleep(2)
     if args.get_version:
-        print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        print "pal_filter version is " + __version__ + " (03/03/2016)"
-        print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("pal_filter version is " + __version__ + " (03/03/2016)")
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
     if args.primers:
-        print "-primers flag supplied."
-        print "Filtering pal_finder output on the \"Primers found (1=y,0=n)\"" \
-                    " column."
-        print "Only rows where primers have successfully been designed will"\
-                    " pass the filter.\n"
+        print("-primers flag supplied.")
+        print("Filtering pal_finder output on the \"Primers found (1=y,0=n)\"" \
+                    " column.")
+        print("Only rows where primers have successfully been designed will"\
+                    " pass the filter.\n")
         time.sleep(2)
     if args.occurrences:
-        print "-occurrences flag supplied."
-        print "Filtering pal_finder output on the \"Occurrences of Forward" \
+        print("-occurrences flag supplied.")
+        print("Filtering pal_finder output on the \"Occurrences of Forward" \
                     " Primer in Reads\" and \"Occurrences of Reverse Primer" \
-                    " in Reads\" columns."
-        print "Only rows where both primers occur only a single time in the"\
-                    " reads pass the filter.\n"
+                    " in Reads\" columns.")
+        print("Only rows where both primers occur only a single time in the"\
+                    " reads pass the filter.\n")
         time.sleep(2)
     if args.rankmotifs:
-        print "-rankmotifs flag supplied."
-        print "Filtering pal_finder output on the \"Motifs(bases)\" column to" \
-                    " just those with perfect repeats."
-        print "Only rows containing 'perfect' repeats will pass the filter."
-        print "Also, ranking output by size of motif (largest first).\n"
+        print("-rankmotifs flag supplied.")
+        print("Filtering pal_finder output on the \"Motifs(bases)\" column to" \
+                    " just those with perfect repeats.")
+        print("Only rows containing 'perfect' repeats will pass the filter.")
+        print("Also, ranking output by size of motif (largest first).\n")
         time.sleep(2)
 
 # index the raw fastq files so that the sequences can be pulled out and
 # added to the filtered output file
-print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-print "Indexing FastQ files....."
-print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+print("Indexing FastQ files.....")
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 R1fastq_sequences_index = SeqIO.index(args.input1,'fastq')
 R2fastq_sequences_index = SeqIO.index(args.input2,'fastq')
-print "Indexing complete."
+print("Indexing complete.")
 
 # create a set to hold the filtered output
 wanted_lines = set()
@@ -323,15 +323,15 @@ if args.rankmotifs:
         for row in ranked_list:
             rankwriter.writerow(row)
 
-print "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-print "Checking assembly flags supplied:"
-print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+print("Checking assembly flags supplied:")
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 if not args.assembly:
-    print "Assembly flag not supplied. Not performing assembly QC.\n"
+    print("Assembly flag not supplied. Not performing assembly QC.\n")
 if args.assembly:
-    print "-assembly flag supplied: Perform PandaSeq assembly quality checks."
-    print "See Fox et al. (currently unpublished) for full details on the"\
-                        " quality-check process.\n"
+    print("-assembly flag supplied: Perform PandaSeq assembly quality checks.")
+    print("See Fox et al. (currently unpublished) for full details on the"\
+                        " quality-check process.\n")
     time.sleep(5)
 
 # Get readID, F primers, R primers and motifs from filtered pal_finder output
@@ -369,12 +369,12 @@ if args.assembly:
                         args.input2 + ' -o 25 -t 0.95 -w Assembly.fasta'
         subprocess.call(pandaseq_command, shell=True)
         strip_barcodes("Assembly.fasta", wanted)
-        print "\nPaired end reads been assembled into overlapping reads."
-        print "\nFor future analysis, you can skip this assembly step using" \
+        print("\nPaired end reads been assembled into overlapping reads.")
+        print("\nFor future analysis, you can skip this assembly step using" \
                         " the -a flag, provided that the assembly.fasta file" \
-                        " is intact and in the same location."
+                        " is intact and in the same location.")
     else:
-        print "\n(Skipping the assembly step as you provided the -a flag)"
+        print("\n(Skipping the assembly step as you provided the -a flag)")
     """
     Fastq files need to be converted to fasta. The first time you run the script
     you MUST not enable the -c flag, but you are able to skip the conversion
@@ -384,13 +384,13 @@ if args.assembly:
     if not args.skip_conversion:
         fastq_to_fasta(args.input1, wanted)
         fastq_to_fasta(args.input2, wanted)
-        print "\nThe input fastq files have been converted to the fasta format."
-        print "\nFor any future analysis, you can skip this conversion step" \
+        print("\nThe input fastq files have been converted to the fasta format.")
+        print("\nFor any future analysis, you can skip this conversion step" \
                         " using the -c flag, provided that the fasta files" \
-                        " are intact and in the same location."
+                        " are intact and in the same location.")
     else:
-        print "\n(Skipping the fastq -> fasta conversion as you provided the" \
-                        " -c flag).\n"
+        print("\n(Skipping the fastq -> fasta conversion as you provided the" \
+                        " -c flag).\n")
 
     # get the files and everything else needed
     # Assembled fasta file
@@ -482,15 +482,15 @@ if args.assembly:
                                 str(R1_output),
                                 str(R2_output + "\n"))
                     outputfile.write("\t".join(output))
-        print "\nPANDAseq quality check complete."
-        print "Results from PANDAseq quality check (and filtering, if any" \
+        print("\nPANDAseq quality check complete.")
+        print("Results from PANDAseq quality check (and filtering, if any" \
                                 " any filters enabled) written to output file" \
-                                " ending \"_pal_filter_assembly_output.txt\".\n"
-    print "Filtering of pal_finder results complete."
-    print "Filtered results written to output file ending \".filtered\"."
-    print "\nFinished\n"
+                                " ending \"_pal_filter_assembly_output.txt\".\n")
+    print("Filtering of pal_finder results complete.")
+    print("Filtered results written to output file ending \".filtered\".")
+    print("\nFinished\n")
 else:
     if args.skip_assembly or args.skip_conversion:
-        print "\nERROR: You cannot supply the -a flag or the -c flag without \
-                    also supplying the -assembly flag.\n"
-        print "\nProgram Finished\n"
+        print("\nERROR: You cannot supply the -a flag or the -c flag without \
+                    also supplying the -assembly flag.\n")
+        print("\nProgram Finished\n")
