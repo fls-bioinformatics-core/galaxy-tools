@@ -1,4 +1,4 @@
-#!/usr/bin/python -tt
+#!/usr/bin/env python
 """
 pal_filter
 https://github.com/graemefox/pal_filter
