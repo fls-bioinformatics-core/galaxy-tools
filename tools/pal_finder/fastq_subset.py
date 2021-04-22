@@ -31,9 +31,9 @@ def getlines(filen):
         newline character removed.
     """
     if filen.split('.')[-1] == 'gz':
-        fp = gzip.open(filen,'rb')
+        fp = gzip.open(filen,'rt')
     else:
-        fp = open(filen,'rb')
+        fp = open(filen,'rt')
     # Read in data in chunks
     buf = ''
     lines = []
