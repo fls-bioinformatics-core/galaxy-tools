@@ -71,6 +71,7 @@ History
 ========== ======================================================================
 Version    Changes
 ---------- ----------------------------------------------------------------------
+0.39       - Update to Trimmomatic 0.39.
 0.38.1     - Bug fix: add dependency on ``coreutils`` so that ``readlink -e`` is
              supported across both Linux and MacOS platforms.
 0.38.0     - Update to Trimmomatic 0.38.
@@ -121,6 +122,7 @@ Jelle Scholtalbers (@scholtalbers) contributed additional options to ILLUMINACLI
 Matthias Bernt (@bernt-matthias) added log and trimlog output.
 Nicola Soranzo (@nsoranzo) suggested using coreutils to enable cross-platform
 support across Linux and MacOS.
+Cristóbal Gallardo (@gallardoalba) updated Trimmomatic up to version 0.39.
 
 Developers
 ==========
