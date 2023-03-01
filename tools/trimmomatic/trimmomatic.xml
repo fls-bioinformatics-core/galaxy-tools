@@ -420,7 +420,7 @@ ${from_text_area}</configfile>
       <param name="quality_score" value="-phred33"/>
       <output name="fastq_out" file="trimmomatic_se_out1.fastq" />
       <output name="log_file" file="trimmomatic_se_out1.log" />
-      <output name="err_file" file="trimmomatic_se_out1.err" />
+      <output name="err_file" file="trimmomatic_se_out2.err" />
     </test>
   </tests>
   <help><![CDATA[
