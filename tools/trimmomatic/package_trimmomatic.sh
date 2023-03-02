@@ -5,7 +5,7 @@
 #
 TOOL_VERSION=$(grep "@TOOL_VERSION@" trimmomatic_macros.xml | cut -f 2 -d'>' | cut -f 1 -d'<')
 VERSION_SUFFIX=$(grep "@VERSION_SUFFIX@" trimmomatic_macros.xml | cut -f 2 -d'>' | cut -f 1 -d'<')
-TGZ=trimmomatic-${TOOL_VERSION}.${VERSION_SUFFIX}.tgz
+TGZ=trimmomatic-${TOOL_VERSION}+galaxy${VERSION_SUFFIX}.tgz
 if [ -f $TGZ ] ; then
     echo $TGZ: already exists, please remove >&2
     exit 1
