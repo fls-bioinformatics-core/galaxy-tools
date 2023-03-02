@@ -3,8 +3,9 @@
 # Package Trimmomatic tool files into tgz file for upload to
 # Galaxy toolshed
 #
-VERSION=$(grep "^<tool" trimmomatic.xml | grep -o -e version=\".*\" | cut -d= -f2 | tr -d \")
-TGZ=trimmomatic-${VERSION}.tgz
+TOOL_VERSION=$(grep "@TOOL_VERSION@" trimmomatic_macros.xml | cut -f 2 -d'>' | cut -f 1 -d'<')
+VERSION_SUFFIX=$(grep "@VERSION_SUFFIX@" trimmomatic_macros.xml | cut -f 2 -d'>' | cut -f 1 -d'<')
+TGZ=trimmomatic-${TOOL_VERSION}.${VERSION_SUFFIX}.tgz
 if [ -f $TGZ ] ; then
     echo $TGZ: already exists, please remove >&2
     exit 1
