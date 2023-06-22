@@ -22,5 +22,9 @@ jobs:
       matrix:
         galaxy-tool: ["trimmomatic", "pal_finder", "weeder2", "rnachipintegrator", "macs21", "motif_tools"]
     steps:
+      - name: Report CWD
+        run: pwd
+      - name: List contents of CWD
+        run: ls -l
       - name: Run test for ${{ matrix.galaxy-tool }}
-        run: tools/${{ matrix.galaxy-tool }}/run_planemo_tests.sh
+        run: ./tools/${{ matrix.galaxy-tool }}/run_planemo_tests.sh
