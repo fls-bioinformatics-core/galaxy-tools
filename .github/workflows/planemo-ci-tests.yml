@@ -24,11 +24,6 @@ jobs:
       - name: Install Planemo
         run: python -m pip install planemo
       - name: Checkout Galaxy version ${{ matrix.galaxy-version }}
-        run: |
-	  git clone https://github.com/galaxyproject/galaxy/ \
-	  -b release_${{ matrix.galaxy-version }} \
-	  galaxy_${{ matrix.galaxy-version }}
+        run: "git clone https://github.com/galaxyproject/galaxy/ -b release_${{ matrix.galaxy-version }} galaxy_${{ matrix.galaxy-version }}"
       - name: Run test for ${{ matrix.galaxy-tool }}
-        run: |
-	  ./tools/${{ matrix.galaxy-tool }}/run_planemo_tests.sh \
-	  --galaxy_root galaxy_${{ matrix.galaxy-version }}
+        run: "./tools/${{ matrix.galaxy-tool }}/run_planemo_tests.sh --galaxy_root galaxy_${{ matrix.galaxy-version }}"
