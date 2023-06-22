@@ -15,7 +15,7 @@ jobs:
         # Define the tools to test
         galaxy-tool: ["trimmomatic", "pal_finder", "weeder2", "rnachipintegrator", "macs21", "motif_tools"]
 	# This gives the option to test against multiple Galaxy versions
-	galaxy-version: ["20.05"]
+	# galaxy-version: [20.05]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -23,7 +23,11 @@ jobs:
         run: sudo apt-get install python3-virtualenv
       - name: Install Planemo
         run: python -m pip install planemo
-      - name: Checkout Galaxy version ${{ matrix.galaxy-version }}
-        run: "git clone https://github.com/galaxyproject/galaxy/ -b release_${{ matrix.galaxy-version }} galaxy_${{ matrix.galaxy-version }}"
+      #- name: Checkout Galaxy version ${{ matrix.galaxy-version }}
+      #  run: "git clone https://github.com/galaxyproject/galaxy/ -b release_${{ matrix.galaxy-version }} galaxy_${{ matrix.galaxy-version }}"
+      #- name: Run test for ${{ matrix.galaxy-tool }}
+      #  run: "./tools/${{ matrix.galaxy-tool }}/run_planemo_tests.sh --galaxy_root galaxy_${{ matrix.galaxy-version }}"
+      - name: Checkout Galaxy version 20.05
+        run: "git clone https://github.com/galaxyproject/galaxy/ -b release_20.05 galaxy_20.05"
       - name: Run test for ${{ matrix.galaxy-tool }}
-        run: "./tools/${{ matrix.galaxy-tool }}/run_planemo_tests.sh --galaxy_root galaxy_${{ matrix.galaxy-version }}"
+        run: "./tools/${{ matrix.galaxy-tool }}/run_planemo_tests.sh --galaxy_root galaxy_20.05"
