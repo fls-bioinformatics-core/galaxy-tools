@@ -18,6 +18,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - name: Install Virtualenv
         run: sudo apt-get install python3-virtualenv
       - name: Install Planemo
