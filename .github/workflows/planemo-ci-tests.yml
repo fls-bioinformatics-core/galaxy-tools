@@ -22,6 +22,8 @@ jobs:
       matrix:
         galaxy-tool: ["trimmomatic", "pal_finder", "weeder2", "rnachipintegrator", "macs21", "motif_tools"]
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Report CWD
         run: pwd
       - name: List contents of CWD
