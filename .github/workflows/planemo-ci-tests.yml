@@ -6,17 +6,8 @@ name: planemo-ci-tests
 on: [push, pull_request]
 
 jobs:
-  setup:
-    # Use 'runs-on: ubuntu-20.04' if you need Python 3.6
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Install Planemo
-        run: python -m pip install planemo
-
   run-ci-tests:
-    needs: setup
+    # Use 'runs-on: ubuntu-20.04' if you need Python 3.6
     runs-on: ubuntu-latest
     strategy:
       matrix:
