@@ -1,8 +1,7 @@
 galaxy-tools
 ============
 
-.. image:: https://travis-ci.org/fls-bioinformatics-core/galaxy-tools.png?branch=master
-   :target: https://travis-ci.org/fls-bioinformatics-core/galaxy-tools
+[![planemo-ci-tests](https://github.com/fls-bioinformatics-core/galaxy-tools/actions/workflows/planemo-ci-tests.yml/badge.svg)](https://github.com/fls-bioinformatics-core/galaxy-tools/actions/workflows/planemo-ci-tests.yml)
 
 Tools, tool-wrappers and tool dependency packages for Galaxy developed
 within the Bioinformatics Core Facility at the University of Manchester.
