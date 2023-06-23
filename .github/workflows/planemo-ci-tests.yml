@@ -19,7 +19,7 @@ jobs:
           - weeder2
           - rnachipintegrator
           - macs21
-          - motif_tool
+          - motif_tools
         galaxy-version:
           - "20.05"
     steps:
