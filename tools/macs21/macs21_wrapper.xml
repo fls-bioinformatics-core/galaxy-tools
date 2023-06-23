@@ -1,13 +1,13 @@
-<tool id="macs2_1_peakcalling" name="MACS2.1.2" version="2.1.2.0">
+<tool id="macs2_1_peakcalling" name="MACS2.1.2" version="2.1.2-galaxy1">
   <description>Model-based Analysis of ChIP-Seq: peak calling</description>
   <requirements>
     <requirement type="package" version="2.7">python</requirement>
     <requirement type="package" version="2.1.2">macs2</requirement>
     <requirement type="package" version="3.5">R</requirement>
-    <requirement type="package" version="357">ucsc-fetchchromsizes</requirement>
-    <requirement type="package" version="357">ucsc-bedclip</requirement>
-    <requirement type="package" version="357">ucsc-bedsort</requirement>
-    <requirement type="package" version="357">ucsc-bedgraphtobigwig</requirement>
+    <requirement type="package" version="377">ucsc-fetchchromsizes</requirement>
+    <requirement type="package" version="377">ucsc-bedclip</requirement>
+    <requirement type="package" version="377">ucsc-bedsort</requirement>
+    <requirement type="package" version="377">ucsc-bedgraphtobigwig</requirement>
   </requirements>
   <version_command>macs2 --version</version_command>
   <command><![CDATA[
