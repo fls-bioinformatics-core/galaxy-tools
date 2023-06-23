@@ -32,7 +32,7 @@ jobs:
       - name: Install Virtualenv
         run: sudo apt-get install python3-virtualenv
       - name: Install Planemo 0.75
-        run: python -m pip install planemo==0.75
+        run: python -m pip install planemo==0.75.8
       - name: Checkout Galaxy version ${{ matrix.galaxy-version }}
         run: |
           git clone https://github.com/galaxyproject/galaxy/ \
