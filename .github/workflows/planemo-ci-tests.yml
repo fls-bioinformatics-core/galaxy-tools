@@ -1,0 +1,44 @@
+# This workflow will run the Planemo test scripts for the tools
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: planemo-ci-tests
+
+on: [push, pull_request]
+
+jobs:
+  run-ci-tests:
+    # Use 'runs-on: ubuntu-20.04' if you need Python 3.6
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Define the tools and Galaxy versions to test
+        galaxy-tool:
+          - trimmomatic
+          - pal_finder
+          - weeder2
+          - rnachipintegrator
+          - macs21
+          - motif_tools
+        galaxy-version:
+          - "20.05"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install Virtualenv
+        run: sudo apt-get install python3-virtualenv
+      - name: Install Planemo 0.75
+        run: python -m pip install planemo==0.75.8
+      - name: Checkout Galaxy version ${{ matrix.galaxy-version }}
+        run: |
+          git clone https://github.com/galaxyproject/galaxy/ \
+          -b release_${{ matrix.galaxy-version }} \
+          galaxy_${{ matrix.galaxy-version }}
+      - name: Run Planemo tests for ${{ matrix.galaxy-tool }}
+        run: |
+          ./tools/${{ matrix.galaxy-tool }}/run_planemo_tests.sh \
+          --galaxy_root galaxy_${{ matrix.galaxy-version }}
