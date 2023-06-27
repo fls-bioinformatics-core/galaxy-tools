@@ -56,21 +56,22 @@ This version has been substantially modified both to adapt it to MACS 2.1, and
 to re-implement the internal workings of the tool to conform with current
 practices in invoking commands from Galaxy, and to add new functionality.
 
-========== ======================================================================
-Version    Changes
----------- ----------------------------------------------------------------------
-2.1.2.0    - Update to use MACS 2.1.2
-2.1.1.0    - Update to use MACS 2.1.1 and use conda to resolve dependencies
-2.1.0-6    - Add bedSort step into bigWig file generation; terminate with error
-             when MACS finishes with non-zero exit code.
-2.1.0-5    - User must explicitly specify the format for the inputs (to allow
-             for paired-end data)
-2.1.0-4    - Remove 'bdgcmp' functionality.
-2.1.0-3    - Add tool tests
-2.1.0-2    - Add option to create bigWig file from bedGraphs; fix bug with -B
-             option; make --mfold defaults consistent.
-2.1.0-1    - Initial version
-========== ======================================================================
+============= =================================================================
+Version       Changes
+------------- -----------------------------------------------------------------
+2.1.2-galaxy1 - Update UCSC tool dependencies to version 357
+2.1.2.0       - Update to use MACS 2.1.2
+2.1.1.0       - Update to use MACS 2.1.1 and use conda to resolve dependencies
+2.1.0-6       - Add bedSort step into bigWig file generation; terminate with
+                error when MACS finishes with non-zero exit code.
+2.1.0-5       - User must explicitly specify the format for the inputs (to
+                allow for paired-end data)
+2.1.0-4       - Remove 'bdgcmp' functionality.
+2.1.0-3       - Add tool tests
+2.1.0-2       - Add option to create bigWig file from bedGraphs; fix bug with
+                ``-B`` option; make ``--mfold`` defaults consistent.
+2.1.0-1       - Initial version
+============= =================================================================
 
 
 Developers
