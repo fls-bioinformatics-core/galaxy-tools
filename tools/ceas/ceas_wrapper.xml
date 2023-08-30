@@ -1,4 +1,4 @@
-<tool id="ceas" name="CEAS" version="1.0.2-4">
+<tool id="ceas" name="CEAS" version="1.0.2-5">
   <description>Annotate intervals and scores with genome features</description>
   <requirements>
     <requirement type="package" version="1.0.2b1">cistrome-ceas</requirement>

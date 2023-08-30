@@ -1,4 +1,4 @@
-<tool id="macs2_1_peakcalling" name="MACS2.1.2" version="2.1.2-galaxy1">
+<tool id="macs2_1_peakcalling" name="MACS2.1.2" version="2.1.2-galaxy2">
   <description>Model-based Analysis of ChIP-Seq: peak calling</description>
   <requirements>
     <requirement type="package" version="2.7">python</requirement>

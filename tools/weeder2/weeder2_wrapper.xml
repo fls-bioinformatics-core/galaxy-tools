@@ -1,4 +1,4 @@
-<tool id="motiffinding_weeder2" name="Weeder2" version="2.0.3">
+<tool id="motiffinding_weeder2" name="Weeder2" version="2.0.4">
   <description>Motif discovery in sequences from coregulated genes of a single species</description>
   <requirements>
     <requirement type="package" version="2.0">weeder</requirement>
