@@ -1,0 +1,5 @@
+conda-recipes/
+legacy/
+local_dependency_installers/
+packages/
+testing/
