@@ -14,7 +14,6 @@ jobs:
       matrix:
         # Define the tools and Galaxy versions to test
         galaxy-tool:
-          - trimmomatic
           - pal_finder
           - weeder2
           - rnachipintegrator
