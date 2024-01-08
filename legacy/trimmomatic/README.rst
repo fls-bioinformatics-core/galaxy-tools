@@ -1,6 +1,11 @@
 Trimmomatic: flexible read trimming tool for Illumina NGS data
 ==============================================================
 
+* **This data manager has been pushed to the
+  [galaxproject/tools-iuc](https://github.com/galaxyproject/tools-iuc)
+  repository (see
+  [pull request 5698](https://github.com/galaxyproject/tools-iuc/pull/5698)**
+
 Galaxy tool wrapper for the Trimmomatic program, which provides various functions for
 manipluating Illumina FASTQ files (both single and paired-end).
 

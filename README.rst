@@ -19,7 +19,6 @@ The ``tools`` subdirectory contains the following tools which wrap
  * `MACS2 <https://toolshed.g2.bx.psu.edu/view/pjbriggs/macs21/>`_
  * `pal_finder <https://toolshed.g2.bx.psu.edu/view/pjbriggs/pal_finder/>`_
  * SOLiD_preprocess_filter_v2.pl
- * `trimmomatic <https://toolshed.g2.bx.psu.edu/view/pjbriggs/trimmomatic/>`_
  * weeder
  * `weeder2 <https://toolshed.g2.bx.psu.edu/view/pjbriggs/weeder2/>`_
  * bedgraph_to_wig converter
