@@ -12,3 +12,7 @@ developed elsewhere.
  * ``rnachipintegrator``: version which pre-dates the change of format
    for the ``.loc`` file used for the "canonical genes" tool.
    Current version of the tool is in the ``tools`` subdirectory.
+
+ * ``trimmomatic``: now pushed to the
+   `galaxproject/tools-iuc (https://github.com/galaxyproject/tools-iuc)`_
+   repository (see `pull request 5698 (https://github.com/galaxyproject/tools-iuc/pull/5698)`_
