@@ -26,6 +26,7 @@
 	   label="Gene 'edges' to consider in distance calculations"
 	   help="(--edge)">
       <option value="tss" selected="true">TSS only</option>
+      <option value="tes" selected="true">TES only</option>
       <option value="both">Nearest of TSS or TES</option>
     </param>
   </xml>
