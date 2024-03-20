@@ -1,9 +1,9 @@
 <macros>
-  <token name="@VERSION@">1.1.0.0</token>
+  <token name="@VERSION@">3.0.0+galaxy0</token>
   <xml name="requirements">
     <requirements>
-      <requirement type="package" version="2.7">python</requirement>
-      <requirement type="package" version="1.1.0">rnachipintegrator</requirement>
+      <requirement type="package" version="3.9">python</requirement>
+      <requirement type="package" version="3.0.0">rnachipintegrator</requirement>
     </requirements>
   </xml>
   <xml name="version_command">
@@ -26,6 +26,7 @@
 	   label="Gene 'edges' to consider in distance calculations"
 	   help="(--edge)">
       <option value="tss" selected="true">TSS only</option>
+      <option value="tes" selected="true">TES only</option>
       <option value="both">Nearest of TSS or TES</option>
     </param>
   </xml>
