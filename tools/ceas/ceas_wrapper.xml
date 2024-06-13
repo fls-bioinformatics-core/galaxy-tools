@@ -97,6 +97,12 @@
       <output name="pdf_report" file="ceas_out3.pdf" />
       <output name="xls_output" file="ceas_out3.xls" />
     </test>
+    <test expect_failure="true" expect_exit_code="1">
+      <!-- Test expected failure with unspecified dbkey -->
+      <param name="bed_file" value="ceas_in.bed" ftype="bed" dbkey="?" />
+      <param name="wig_file" value="ceas_in.bigwig" ftype="bigwig" />
+      <param name="gdb_file" value="galGal3_test" />
+    </test>
   </tests>
   <help>
 **What it does**
